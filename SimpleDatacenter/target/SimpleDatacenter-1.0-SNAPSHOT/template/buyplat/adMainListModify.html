@@ -1,0 +1,153 @@
+<div class="col-xs-8 col-xs-offset-2">
+    <div class="panel panel-default panel_1">
+        <div class="panel-heading">
+            <strong>
+                 {{title}} {{'广告主' | translate}}
+                <!--------提示框--------- -->
+            </strong>
+            <!--------下载按钮--------- -->
+            <div class="clear"></div>
+        </div>
+        <div class="panel-body pdlf pdtb">
+            <div class="col-xs-10 col-xs-offset-1 form-horizontal" style="padding:50px 0;">
+                <div class="form-group">                    
+                    <label for=""  class="col-sm-2 text-right control-label">{{'广告开始时间' | translate}}:</label>
+                    <select class="form-control"  style="" ng-change="addDay()"  ng-model="mainListData.timeStartDate.year"  ng-options="abc for  abc in timeStartData.year">
+                    </select>{{'年' | translate}}
+                    <select class="form-control"  style="" ng-model="mainListData.timeStartDate.month"  ng-change="addDay()"  ng-options="abc for abc in timeStartData.month">
+                    </select>{{'月' | translate}}
+                    <select class="form-control"  style="" ng-model="mainListData.timeStartDate.day" ng-options="abc for abc in timeStartData.day">
+                    </select>{{'日' | translate}}
+                    <select class="form-control"  style="" ng-model="mainListData.timeStartDate.hour" ng-options="abc for abc in timeStartData.hour">
+                    </select>{{'时' | translate}}
+                    <select class="form-control"  style="" ng-model="mainListData.timeStartDate.minute" ng-options="abc for abc in timeStartData.minute">
+                    </select>{{'分' | translate}}
+                    <select class="form-control" style="" ng-model="mainListData.timeStartDate.second" ng-options="abc for abc in timeStartData.second">
+                    </select>{{'秒' | translate}}
+                </div>
+                <div class="form-group">                    
+                    <label for=""  class="col-sm-2 text-right control-label">{{'广告结束时间' | translate}}:</label>
+                    <select class="form-control"  style="" ng-change="addDay()"  ng-model="mainListData.timeEndDate.year"  ng-options="abc for  abc in timeEndData.year">
+                    </select>{{'年' | translate}}
+                    <select class="form-control"  style="" ng-model="mainListData.timeEndDate.month"  ng-change="addDay()"  ng-options="abc for abc in timeEndData.month">
+                    </select>{{'月' | translate}}
+                    <select class="form-control"  style="" ng-model="mainListData.timeEndDate.day" ng-options="abc for abc in timeEndData.day">
+                    </select>{{'日' | translate}}
+                    <select class="form-control"  style="" ng-model="mainListData.timeEndDate.hour" ng-options="abc for abc in timeEndData.hour">
+                    </select>{{'时' | translate}}
+                    <select class="form-control"  style="" ng-model="mainListData.timeEndDate.minute" ng-options="abc for abc in timeEndData.minute">
+                    </select>{{'分' | translate}}
+                    <select class="form-control" style="" ng-model="mainListData.timeEndDate.second" ng-options="abc for abc in timeEndData.second">
+                    </select>{{'秒' | translate}}
+                </div>
+                <div class="form-group">                    
+                    <label for=""  class="col-sm-2 text-right control-label">{{'游戏' | translate}}:</label>
+                    <select class="form-control" style="width:195px;" ng-model="mainListData.gameid" ng-options="m.id as m.name for m in gameList">
+                        
+                    </select>   
+                </div>
+                <div class="form-group">                    
+                    <label for=""  class="col-sm-2 text-right control-label">{{'终端' | translate}}:</label>
+                    <select class="form-control" style="width:195px;" ng-model="mainListData.termType" ng-options="m.id as m.name for m in terminalList">
+                        
+                    </select>
+                </div>
+                <div class="form-group">                    
+                    <label for=""  class="col-sm-2 text-right control-label">{{'渠道名称' | translate}}:</label>
+                    <select class="form-control" style="width:195px;" ng-model="mainListData.channelName" ng-options="m.channelName as m.channelName for m in channelList"  >
+                        
+                    </select>
+                    <!-- <input type="text" class="form-control"  placeholder="" ng-model="mainListData.channelName"> --> 
+                </div>
+                <div class="form-group">                    
+                    <label for=""  class="col-sm-2 text-right control-label">{{'渠道主' | translate}}ID:</label>
+                    <input type="text" class="form-control" placeholder="" readonly  value="{{getAdchannelName()}}" >
+                </div> 
+                <div class="form-group">
+                    <label for=""  class="col-sm-2 text-right control-label">{{'渠道子' | translate}}ID:</label>
+                    <input type="text" class="form-control" placeholder="" ng-model="mainListData.subchannel">                   
+                </div> 
+               
+                <div class="form-group">                    
+                    <label for=""  class="col-sm-2 text-right control-label">{{'广告位' | translate}}:</label>
+                    <input type="text" class="form-control" placeholder="" ng-model="mainListData.adSpaces">
+                </div>
+                <div class="form-group">                    
+                    <label for=""  class="col-sm-2 text-right control-label">{{'广告类型' | translate}}:</label>
+                    <select class="form-control" style="width:195px;" ng-model="mainListData.adType" ng-options="m.id as m.name for m in adTypeList" ng-change="showType()">
+                        
+                    </select>   
+                </div>
+                <!-- <div class="form-group" ng-show="showTypeid==1 || showTypeid==2">                    
+                    <label for=""  class="col-sm-2 text-right control-label">广告展示量:</label>
+                    <input type="text" class="form-control" placeholder="" ng-model="mainListData.addisplaytime">
+                </div>
+                <div class="form-group" ng-show="showTypeid==2">
+                    <label for=""  class="col-sm-2 text-right control-label">点击数:</label>
+                    <input type="text" class="form-control" placeholder="" ng-model="mainListData.clickcount">
+                </div>
+                <div class="form-group" ng-show="showTypeid==3">                    
+                    <label for=""  class="col-sm-2 text-right control-label">安装数:</label>
+                    <input type="text" class="form-control" placeholder="" ng-model="mainListData.installcount">
+                </div> -->
+
+               <!--  <div class="form-group" ng-show="showTypeid==1">    CPA  安装或注册量
+                   <label for=""  class="col-sm-2 text-right control-label">安装数:</label>
+                   <input type="text" class="form-control" placeholder="" ng-model="mainListData.installcount" />
+               </div>
+               <div class="form-group" ng-show="showTypeid==1">    CPA  安装或注册量
+                   <label for=""  class="col-sm-2 text-right control-label">注册量:</label>
+                   <input type="text" class="form-control" placeholder="" ng-model="mainListData.installcount" />
+               </div>
+               <div class="form-group" ng-show="showTypeid==2">    CPT  展示天数
+                   <label for=""  class="col-sm-2 text-right control-label">展示天数:</label>
+                   <input type="text" class="form-control" placeholder="" ng-model="mainListData.addisplaytime" />
+               </div>
+               <div class="form-group" ng-show="showTypeid==3">    CPC  点击量
+                   <label for=""  class="col-sm-2 text-right control-label">点击量:</label>
+                   <input type="text" class="form-control" placeholder="" ng-model="mainListData.clickcount" />
+               </div>
+               <div class="form-group" ng-show="showTypeid==4">    CPD 下载量（安装数）               
+                   <label for=""  class="col-sm-2 text-right control-label">下载量:</label>
+                   <input type="text" class="form-control" placeholder="" ng-model="mainListData.installcount">
+               </div> -->
+                <div class="form-group" title="广告类型CPA，对应广告用户量的“安装或注册量”
+广告类型CPD，对应广告用户量“下载量”
+广告类型CPC，对应广告用户量“点击量”
+广告类型CPT，对应广告用户量“展示天数”
+                ">    <!-- 广告用户量 -->
+                    <label for=""  class="col-sm-2 text-right control-label">{{'广告用户量' | translate}}:</label>
+                    <input type="text" class="form-control" placeholder="" ng-model="mainListData.busicount" ng-change="changeAdcost()" />
+                </div>
+                <!-- <div class="form-group" ng-show="showTypeid">    CPA/T/C/D  激活数或注册数
+                    <label for=""  class="col-sm-2 text-right control-label">激活数:</label>
+                    <input type="text" class="form-control" placeholder="" ng-model="mainListData.installcount" />
+                </div>
+                <div class="form-group" ng-show="showTypeid">    CPA/T/C/D  激活数或注册数
+                    <label for=""  class="col-sm-2 text-right control-label">注册数:</label>
+                    <input type="text" class="form-control" placeholder="" ng-model="mainListData.installcount" />
+                </div>-->
+                <div class="form-group">                    
+                    <label for=""  class="col-sm-2 text-right control-label">{{'单价' | translate}}:</label>
+                    <input type="text" class="form-control" placeholder="" ng-model="mainListData.price" ng-change="changeAdcost()">
+                </div> 
+                <div class="form-group">                    
+                    <label for=""  class="col-sm-2 text-right control-label">{{'计价方式' | translate}}:</label>
+                    <select class="form-control" style="width:195px;" ng-model="mainListData.pricingType" ng-options="m.id as m.name for m in pricingsList" >
+                        
+                    </select>
+                </div>
+                <div class="form-group">                    
+                    <label for=""  class="col-sm-2 text-right control-label">{{'广告费' | translate}}:</label>
+                    <input type="text" class="form-control" placeholder="" ng-model="mainListData.adcost" >
+                </div>            
+                <div class="form-group">
+                    <div class="col-xs-offset-2">
+                    <button class="btn btn-default btn-sm" ng-click="postData()">{{title}}</button>
+                    <button class="btn btn-default btn-sm" ng-click="backGo()">{{'返回' | translate}}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,57 @@
+
+{
+  "totalGamePlaytittle": [
+    {
+      "title": "<10分钟",
+      "accounts": 720,
+      "percentage": 48.2
+    },
+    {
+      "title": "10~30分钟",
+      "accounts": 172,
+      "percentage": 11.5
+    },
+    {
+      "title": "30~60分钟",
+      "accounts": 137,
+      "percentage": 9.2
+    },
+    {
+      "title": "1~2小时",
+      "accounts": 105,
+      "percentage": 7.0
+    },
+    {
+      "title": "2~4小时", 
+      "accounts": 253,
+      "percentage": 16.9
+    },
+    {
+      "title": "4~6小时",
+      "accounts": 48,
+      "percentage": 3.2
+    },
+    {
+      "title": "6~10小时",
+      "accounts": 32,
+      "percentage": 2.1
+    },
+    {
+      "title": "10~15小时",
+      "accounts": 22,
+      "percentage": 1.5
+    },
+    {
+      "title": "15~20小时",
+      "accounts": 2,
+      "percentage": 0.1
+    },
+    {
+      "title": "20~30小时",
+      "accounts": 4,
+      "percentage": 0.3
+    }
+  ],
+  "AVG": "1.3小时",
+  "MD": "13分钟"
+}

@@ -1,0 +1,36 @@
+{
+  "dailyReturningPaidPlayers7Days": [
+    {
+      "statdate": "2014-08-24",
+      "accounts": 94.0
+    },
+    {
+      "statdate": "2014-08-25",
+      "accounts": 93.0
+    },
+    {
+      "statdate": "2014-08-26",
+      "accounts": 89.0
+    },
+    {
+      "statdate": "2014-08-27",
+      "accounts": 85.0
+    },
+    {
+      "statdate": "2014-08-28",
+      "accounts": 60.0
+    },
+    {
+      "statdate": "2014-08-29",
+      "accounts": 74.0
+    },
+    {
+      "statdate": "2014-08-30",
+      "accounts": 59.0
+    },
+    {
+      "statdate": "2014-08-31",
+      "accounts": 49.0
+    }
+  ]
+}

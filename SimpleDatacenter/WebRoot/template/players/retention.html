@@ -1,0 +1,380 @@
+<style>
+.scroll_menu{
+    height:430px;
+    font-size:14px;
+    overflow:auto;
+}
+.panel-showData .table_scroll{
+overflow-x:auto;
+height:100%;
+}
+.panel-showData .table_style{
+width:1642px;
+}
+</style>
+<div>
+	<div class="maintop">
+		<div datepicker class="col-xs-3 timeSelect" mstatdate="mstatdate">
+		</div>
+		<label for="" style="font-size: 14px;">{{'区域' | translate}}：</label>
+		<!-- <select multiple class="form-control" ng-model="cityArr" ng-options="data.city as data.city for data in cityData"></select> -->
+          <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              {{cityText}} <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" ng-class="{'scroll_menu': cityData.length>14}">
+              <li>
+                <div class="col-xs-offset-1">
+                 <input name="city" type="checkbox" ng-click="clickAllSelect()" ng-checked="isSelectedAll()"> <label for="">全部{{'' | translate}}</label>
+                 </div>
+              </li>
+                <li role="separator" class="divider"></li>
+              <li ng-repeat="data in cityData">
+                 <div class="col-xs-offset-1">
+                  <input name="city" type="checkbox" ng-click="setCityList(data.city)" ng-checked="isSelected(data.id)"> <label for="">{{data.city}}</label>
+                  </div>
+              </li>
+            </ul>
+          </div>
+          <button class="btn btn-default" ng-click="getAllData()">{{'查询' | translate}}</button>
+		<div selectChoose class="selectChoose">
+		</div>
+		<div class="clear"></div>
+		<div class="panel-selectChoose" callbackchannelqf ng-show="iscallback">
+			<ul ng-show="ischannel" class="cl">
+				<li>{{'渠道' | translate}}：</li>
+				<li ng-repeat="channellist in callbackchannelqfdata.channellist">{{channellist}}</li>
+			</ul>
+			<ul ng-show="isqf" class="cl">
+				<li>{{'区服' | translate}}：</li>
+				<li ng-repeat="qflist in callbackchannelqfdata.qflist">{{qflist}}</li>
+			</ul>
+		</div>
+	</div>
+	<div class="panel panel-default panel_1">
+		<div class="panel-heading">
+			<strong>{{'留存率' | translate}}</strong>
+			<div class="panel_downloadBtn"  down-file down-file-url="players/playersRetention/exportRetentionOfNewUser.action" down-file-type="xlsx" down-file-name="留存率{{mstatdate}}" savedata="" postdata="searchData" ></div>
+			<div class="panel_rightBtn" ng-click="changeRetention(retentionType)">{{retentionTypeArr[retentionType]}}</div>
+			<div class="clear"></div>
+		</div>
+		<div class="panel-body" ng-class="{'table':panel_1.model=='table','graph':panel_1.model=='graph'}">
+			<ul class="nav nav-tabs fl cl" navtabs>
+				<li role="presentation" class="active" ng-click="showtype=true">
+					<a href="javascript:void(0);">{{'新增玩家留存' | translate}}</a>
+					<div tipsmsg>{{'某日新增的玩家(角色)/设备中，在该日后的第N日中，还有进行游戏的玩家(角色)/设备比例' | translate}}</div>
+					</li>
+				<li role="presentation" ng-click="showtype=false">
+					<a href="javascript:void(0);">{{'活跃玩家留存' | translate}}</a>
+					<div tipsmsg>{{'某日活跃的玩家(角色)/设备中，在该日后的第N日中，还有进行游戏的玩家(角色)/设备比例' | translate}}</div>
+				</li>
+				<li role="presentation" ng-click="showtype=false">
+					<a href="javascript:void(0);">{{'回流玩家留存' | translate}}</a>
+					<div tipsmsg>{{'某日回流的玩家(角色)/设备中，在该日后的第N日中，还有进行游戏的玩家(角色)/设备比例' | translate}}</div>
+				</li>
+				<li role="presentation" ng-click="showtype=false">
+					<a href="javascript:void(0);">{{'新增账号留存' | translate}}</a>
+					<div tipsmsg>{{'某日新增的账号/设备中，在该日后的第N日中，还有进行游戏的账号/设备比例' | translate}}</div>
+				</li>
+			</ul>
+			<div class="fl cl info">
+				<div class="infoact">
+
+				</div>
+				<div class="">
+
+				</div>
+				<div class="">
+
+				</div>
+			</div>
+			<div class="clear"></div>
+			<div class="panel-showData">
+				<div class="dataList dataList3 dataList_1">
+					<div class="dataGraph">
+						<div class="graph" data="dataList_1_1_graph"></div>
+					</div>
+					<div class="dataTable table_scroll">
+						<table class="table table-bordered text-center table_style">
+							<tr class="tableTr">
+								<th width='' ng-click="changeOrderBy(panel_1.dataList_1,'statdate')">{{'日期' | translate}}</th>
+								<th width='' ng-click="changeOrderBy(panel_1.dataList_1,'accounts')">{{'角色数' | translate}}</th>
+								<th width='' ng-click="changeOrderBy(panel_1.dataList_1,'retentionType==0?day1:day1RetNum')">{{retention_rate_arr[retentionType].day1_retention}}</th>
+								<th width='' ng-click="changeOrderBy(panel_1.dataList_1,'retentionType==0?day2:day2RetNum')">{{retention_rate_arr[retentionType].day2_retention}}</th>
+								<th width='' ng-click="changeOrderBy(panel_1.dataList_1,'retentionType==0?day3:day3RetNum')">{{retention_rate_arr[retentionType].day3_retention}}</th>
+								<th width='' ng-click="changeOrderBy(panel_1.dataList_1,'retentionType==0?day4:day4RetNum')">{{retention_rate_arr[retentionType].day4_retention}}</th>
+								<th width='' ng-click="changeOrderBy(panel_1.dataList_1,'retentionType==0?day5:day5RetNum')">{{retention_rate_arr[retentionType].day5_retention}}</th>
+								<th width='' ng-click="changeOrderBy(panel_1.dataList_1,'retentionType==0?day6:day6RetNum')">{{retention_rate_arr[retentionType].day6_retention}}</th>
+								<th width='' ng-click="changeOrderBy(panel_1.dataList_1,'retentionType==0?day7:day7RetNum')">{{retention_rate_arr[retentionType].day7_retention}}</th>
+								<th width='' ng-click="changeOrderBy(panel_1.dataList_1,'retentionType==0?day14:day14RetNum')">{{retention_rate_arr[retentionType].day14_retention}}</th>
+								<th width='' ng-click="changeOrderBy(panel_1.dataList_1,'retentionType==0?day30:day30RetNum')">{{retention_rate_arr[retentionType].day30_retention}}</th>
+								<th width='' ng-click="changeOrderBy(panel_1.dataList_1,'retentionType==0?day60:day60RetNum')">{{retention_rate_arr[retentionType].day60_retention}}</th>
+								<th width='' ng-click="changeOrderBy(panel_1.dataList_1,'retentionType==0?day90:day90RetNum')">{{retention_rate_arr[retentionType].day90_retention}}</th>
+								<th width='' ng-click="changeOrderBy(panel_1.dataList_1,'retentionType==0?day120:day120RetNum')">{{retention_rate_arr[retentionType].day120_retention}}</th>
+								<th width='' ng-click="changeOrderBy(panel_1.dataList_1,'retentionType==0?day150:day150RetNum')">{{retention_rate_arr[retentionType].day150_retention}}</th>
+								<th width='' ng-click="changeOrderBy(panel_1.dataList_1,'retentionType==0?day180:day180RetNum')">{{retention_rate_arr[retentionType].day180_retention}}</th>
+							</tr>
+							<tr ng-repeat="data in panel_1.dataList_1.data | orderBy: panel_1.dataList_1.orderBy.t+panel_1.dataList_1.orderBy.s | pageStartFrom : panel_1.dataList_1.limit.now*panel_1.dataList_1.limit.max | limitTo: panel_1.dataList_1.limit.max">
+								<td>{{data.statdate}}</td>
+								<td>{{data.accounts}}</td>
+								<td><span ng-show="retentionType==0">{{data.day1}}%</span><span ng-show="retentionType==1">{{data.day1RetNum}}</span></td>
+								<td><span ng-show="retentionType==0">{{data.day2}}%</span><span ng-show="retentionType==1">{{data.day2RetNum}}</span></td>
+								<td><span ng-show="retentionType==0">{{data.day3}}%</span><span ng-show="retentionType==1">{{data.day3RetNum}}</span></td>
+								<td><span ng-show="retentionType==0">{{data.day4}}%</span><span ng-show="retentionType==1">{{data.day4RetNum}}</span></td>
+								<td><span ng-show="retentionType==0">{{data.day5}}%</span><span ng-show="retentionType==1">{{data.day5RetNum}}</span></td>
+								<td><span ng-show="retentionType==0">{{data.day6}}%</span><span ng-show="retentionType==1">{{data.day6RetNum}}</span></td>
+								<td><span ng-show="retentionType==0">{{data.day7}}%</span><span ng-show="retentionType==1">{{data.day7RetNum}}</span></td>
+								<td><span ng-show="retentionType==0">{{data.day14}}%</span><span ng-show="retentionType==1">{{data.day14RetNum}}</span></td>
+								<td><span ng-show="retentionType==0">{{data.day30}}%</span><span ng-show="retentionType==1">{{data.day30RetNum}}</span></td>
+								<td><span ng-show="retentionType==0">{{data.day60}}%</span><span ng-show="retentionType==1">{{data.day60RetNum}}</span></td>
+								<td><span ng-show="retentionType==0">{{data.day90}}%</span><span ng-show="retentionType==1">{{data.day90RetNum}}</span></td>
+								<td><span ng-show="retentionType==0">{{data.day120}}%</span><span ng-show="retentionType==1">{{data.day120RetNum}}</span></td>
+								<td><span ng-show="retentionType==0">{{data.day150}}%</span><span ng-show="retentionType==1">{{data.day150RetNum}}</span></td>
+								<td><span ng-show="retentionType==0">{{data.day180}}%</span><span ng-show="retentionType==1">{{data.day180RetNum}}</span></td>
+							</tr>
+						</table>
+						<div class="tableLimit" tablelimit datalimit="panel_1.dataList_1.limit" tabledata="panel_1.dataList_1.data">
+						</div>
+					</div>
+				</div>
+				<div class="dataList dataList3 dataList_2">
+					<div class="dataGraph">
+						<div class="graph" data="dataList_1_2_graph"></div>
+					</div>
+					<div class="dataTable">
+						<table class="table table-bordered text-center">
+							<tr class="tableTr">
+								<th width='9%' ng-click="changeOrderBy(panel_1.dataList_2,'statdate')">{{'日期' | translate}}</th>
+								<th width='9%' ng-click="changeOrderBy(panel_1.dataList_2,'accounts')">{{'角色数' | translate}}</th>
+								<th width='9%' ng-click="changeOrderBy(panel_1.dataList_2,'day1')">1{{'日留存率' | translate}}(%)</th>
+								<th width='9%' ng-click="changeOrderBy(panel_1.dataList_2,'day2')">2{{'日留存率' | translate}}(%)</th>
+								<th width='9%' ng-click="changeOrderBy(panel_1.dataList_2,'day3')">3{{'日留存率' | translate}}(%)</th>
+								<th width='9%' ng-click="changeOrderBy(panel_1.dataList_2,'day4')">4{{'日留存率' | translate}}(%)</th>
+								<th width='9%' ng-click="changeOrderBy(panel_1.dataList_2,'day5')">5{{'日留存率' | translate}}(%)</th>
+								<th width='9%' ng-click="changeOrderBy(panel_1.dataList_2,'day6')">6{{'日留存率' | translate}}(%)</th>
+								<th width='9%' ng-click="changeOrderBy(panel_1.dataList_2,'day7')">7{{'日留存率' | translate}}(%)</th>
+								<th width='9%' ng-click="changeOrderBy(panel_1.dataList_2,'day14')">14{{'日留存率' | translate}}(%)</th>
+								<th width='9%' ng-click="changeOrderBy(panel_1.dataList_2,'day30')">30{{'日留存率' | translate}}(%)</th>
+							</tr>
+							<tr ng-repeat="data in panel_1.dataList_2.data | orderBy: panel_1.dataList_2.orderBy.t+panel_1.dataList_2.orderBy.s | pageStartFrom : panel_1.dataList_2.limit.now*panel_1.dataList_2.limit.max | limitTo: panel_1.dataList_2.limit.max">
+								<td>{{data.statdate}}</td>
+								<td>{{data.accounts}}</td>
+								<td>{{data.day1}}%</td>
+								<td>{{data.day2}}%</td>
+								<td>{{data.day3}}%</td>
+								<td>{{data.day4}}%</td>
+								<td>{{data.day5}}%</td>
+								<td>{{data.day6}}%</td>
+								<td>{{data.day7}}%</td>
+								<td>{{data.day14}}%</td>
+								<td>{{data.day30}}%</td>
+							</tr>
+						</table>
+						<div class="tableLimit" tablelimit datalimit="panel_1.dataList_2.limit" tabledata="panel_1.dataList_2.data">
+						</div>
+					</div>
+				</div>
+				<div class="dataList dataList3 dataList_3">
+					<div class="dataGraph"> 
+						<div class="graph" data="dataList_1_3_graph"></div>
+					</div>
+					<div class="dataTable">
+						<table class="table table-bordered text-center">
+							<tr class="tableTr">
+								<th width='9%' ng-click="changeOrderBy(panel_1.dataList_3,'statdate')">{{'日期' | translate}}</th>
+								<th width='9%' ng-click="changeOrderBy(panel_1.dataList_3,'accounts')">{{'角色数' | translate}}</th>
+								<th width='9%' ng-click="changeOrderBy(panel_1.dataList_3,'day1')">1{{'日留存率' | translate}}(%)</th>
+								<th width='9%' ng-click="changeOrderBy(panel_1.dataList_3,'day2')">2{{'日留存率' | translate}}(%)</th>
+								<th width='9%' ng-click="changeOrderBy(panel_1.dataList_3,'day3')">3{{'日留存率' | translate}}(%)</th>
+								<th width='9%' ng-click="changeOrderBy(panel_1.dataList_3,'day4')">4{{'日留存率' | translate}}(%)</th>
+								<th width='9%' ng-click="changeOrderBy(panel_1.dataList_3,'day5')">5{{'日留存率' | translate}}(%)</th>
+								<th width='9%' ng-click="changeOrderBy(panel_1.dataList_3,'day6')">6{{'日留存率' | translate}}(%)</th>
+								<th width='9%' ng-click="changeOrderBy(panel_1.dataList_3,'day7')">7{{'日留存率' | translate}}(%)</th>
+								<th width='9%' ng-click="changeOrderBy(panel_1.dataList_3,'day14')">14{{'日留存率' | translate}}(%)</th>
+								<th width='9%' ng-click="changeOrderBy(panel_1.dataList_3,'day30')">30{{'日留存率' | translate}}(%)</th>
+							</tr>
+							<tr ng-repeat="data in panel_1.dataList_3.data | orderBy: panel_1.dataList_3.orderBy.t+panel_1.dataList_3.orderBy.s | pageStartFrom : panel_1.dataList_3.limit.now*panel_1.dataList_3.limit.max | limitTo: panel_1.dataList_3.limit.max">
+								<td>{{data.statdate}}</td>
+								<td>{{data.accounts}}</td>
+								<td>{{data.day1}}%</td>
+								<td>{{data.day2}}%</td>
+								<td>{{data.day3}}%</td>
+								<td>{{data.day4}}%</td>
+								<td>{{data.day5}}%</td>
+								<td>{{data.day6}}%</td>
+								<td>{{data.day7}}%</td>
+								<td>{{data.day14}}%</td>
+								<td>{{data.day30}}%</td>
+							</tr>
+						</table>
+						<div class="tableLimit" tablelimit datalimit="panel_1.dataList_3.limit" tabledata="panel_1.dataList_3.data">
+						</div>
+					</div>
+				</div>
+				<div class="dataList dataList3 dataList_4">
+					<div class="dataGraph"> 
+						<div class="graph" data="dataList_1_4_graph"></div>
+					</div>
+					<div class="dataTable table_scroll">
+						<table class="table table-bordered text-center table_style">
+							<tr class="tableTr">
+								<th width='' ng-click="changeOrderBy(panel_1.dataList_4,'statdate')">{{'日期' | translate}}</th>
+								<th width='' ng-click="changeOrderBy(panel_1.dataList_4,'accounts')">{{'账号数' | translate}}</th>
+								<th width='' ng-click="changeOrderBy(panel_1.dataList_4,'retentionType==0?day1:day1RetNum')">{{retention_rate_arr[retentionType].day1_retention}}</th>
+								<th width='' ng-click="changeOrderBy(panel_1.dataList_4,'retentionType==0?day2:day2RetNum')">{{retention_rate_arr[retentionType].day2_retention}}</th>
+								<th width='' ng-click="changeOrderBy(panel_1.dataList_4,'retentionType==0?day3:day3RetNum')">{{retention_rate_arr[retentionType].day3_retention}}</th>
+								<th width='' ng-click="changeOrderBy(panel_1.dataList_4,'retentionType==0?day4:day4RetNum')">{{retention_rate_arr[retentionType].day4_retention}}</th>
+								<th width='' ng-click="changeOrderBy(panel_1.dataList_4,'retentionType==0?day5:day5RetNum')">{{retention_rate_arr[retentionType].day5_retention}}</th>
+								<th width='' ng-click="changeOrderBy(panel_1.dataList_4,'retentionType==0?day6:day6RetNum')">{{retention_rate_arr[retentionType].day6_retention}}</th>
+								<th width='' ng-click="changeOrderBy(panel_1.dataList_4,'retentionType==0?day7:day7RetNum')">{{retention_rate_arr[retentionType].day7_retention}}</th>
+								<th width='' ng-click="changeOrderBy(panel_1.dataList_4,'retentionType==0?day14:day14RetNum')">{{retention_rate_arr[retentionType].day14_retention}}</th>
+								<th width='' ng-click="changeOrderBy(panel_1.dataList_4,'retentionType==0?day30:day30RetNum')">{{retention_rate_arr[retentionType].day30_retention}}</th>
+								<th width='' ng-click="changeOrderBy(panel_1.dataList_4,'retentionType==0?day60:day60RetNum')">{{retention_rate_arr[retentionType].day60_retention}}</th>
+								<th width='' ng-click="changeOrderBy(panel_1.dataList_4,'retentionType==0?day90:day90RetNum')">{{retention_rate_arr[retentionType].day90_retention}}</th>
+								<th width='' ng-click="changeOrderBy(panel_1.dataList_4,'retentionType==0?day120:day120RetNum')">{{retention_rate_arr[retentionType].day120_retention}}</th>
+								<th width='' ng-click="changeOrderBy(panel_1.dataList_4,'retentionType==0?day150:day150RetNum')">{{retention_rate_arr[retentionType].day150_retention}}</th>
+								<th width='' ng-click="changeOrderBy(panel_1.dataList_4,'retentionType==0?day180:day180RetNum')">{{retention_rate_arr[retentionType].day180_retention}}</th>
+							</tr>
+							<tr ng-repeat="data in panel_1.dataList_4.data | orderBy: panel_1.dataList_4.orderBy.t+panel_1.dataList_4.orderBy.s | pageStartFrom : panel_1.dataList_4.limit.now*panel_1.dataList_4.limit.max | limitTo: panel_1.dataList_4.limit.max">
+								<td>{{data.statdate}}</td>
+								<td>{{data.accounts}}</td>
+								<td><span ng-show="retentionType==0">{{data.day1}}%</span><span ng-show="retentionType==1">{{data.day1RetNum}}</span></td>
+								<td><span ng-show="retentionType==0">{{data.day2}}%</span><span ng-show="retentionType==1">{{data.day2RetNum}}</span></td>
+								<td><span ng-show="retentionType==0">{{data.day3}}%</span><span ng-show="retentionType==1">{{data.day3RetNum}}</span></td>
+								<td><span ng-show="retentionType==0">{{data.day4}}%</span><span ng-show="retentionType==1">{{data.day4RetNum}}</span></td>
+								<td><span ng-show="retentionType==0">{{data.day5}}%</span><span ng-show="retentionType==1">{{data.day5RetNum}}</span></td>
+								<td><span ng-show="retentionType==0">{{data.day6}}%</span><span ng-show="retentionType==1">{{data.day6RetNum}}</span></td>
+								<td><span ng-show="retentionType==0">{{data.day7}}%</span><span ng-show="retentionType==1">{{data.day7RetNum}}</span></td>
+								<td><span ng-show="retentionType==0">{{data.day14}}%</span><span ng-show="retentionType==1">{{data.day14RetNum}}</span></td>
+								<td><span ng-show="retentionType==0">{{data.day30}}%</span><span ng-show="retentionType==1">{{data.day30RetNum}}</span></td>
+								<td><span ng-show="retentionType==0">{{data.day60}}%</span><span ng-show="retentionType==1">{{data.day60RetNum}}</span></td>
+								<td><span ng-show="retentionType==0">{{data.day90}}%</span><span ng-show="retentionType==1">{{data.day90RetNum}}</span></td>
+								<td><span ng-show="retentionType==0">{{data.day120}}%</span><span ng-show="retentionType==1">{{data.day120RetNum}}</span></td>
+								<td><span ng-show="retentionType==0">{{data.day150}}%</span><span ng-show="retentionType==1">{{data.day150RetNum}}</span></td>
+								<td><span ng-show="retentionType==0">{{data.day180}}%</span><span ng-show="retentionType==1">{{data.day180RetNum}}</span></td>
+							</tr>
+						</table>
+						<div class="tableLimit" tablelimit datalimit="panel_1.dataList_4.limit" tabledata="panel_1.dataList_4.data">
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="panel-changeData" graphtbale graphfun="graphfun" datachange="panel_1_change" datalimit="0" model="panel_1.model">
+			</div>
+		</div>
+	</div>
+
+	<div class="clear cl" ng-show="showtype">
+		<div class="col-xs-4">
+			<div class="panel panel-default panel_2">
+				<div class="panel-heading">
+					<strong>{{'次日留存' | translate}}</strong>
+					<div class="clear"></div>
+				</div>
+				<div class="panel-body w-body">
+					<div class="col-xs-6">AVG</div>
+					<div class="col-xs-6">{{day1AVG}}%</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-xs-4">
+			<div class="panel panel-default panel_3">
+				<div class="panel-heading">
+					<strong>7{{'日留存' | translate}}</strong>
+					<div class="clear"></div>
+				</div>
+				<div class="panel-body w-body">
+					<div class="col-xs-6">AVG</div>
+					<div class="col-xs-6">{{day7AVG}}%</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-xs-4">
+			<div class="panel panel-default panel_4">
+				<div class="panel-heading">
+					<strong>30{{'日留存' | translate}}</strong>
+					<div class="clear"></div>
+				</div>
+				<div class="panel-body w-body">
+					<div class="col-xs-6">AVG</div>
+					<div class="col-xs-6">{{day30AVG}}%</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="panel panel-default panel_2" ng-show="showtype">
+		<div class="panel-heading">
+			<strong class="fl">
+				{{'留存用户分析' | translate}}
+				<div tipsmsg>{{'圈定时期内符合次日/7日/30日留存条件的新玩家，根据其新增日的使用行为（等级、游戏次数、是否付费等）来进行分布，可有效的分析新增日行为与留存的相关性' | translate}}</div>
+			</strong>
+			<div class="buttondiv fl" analysisdrop>
+				<div class="selectlable fl">{{'用户群' | translate}}：</div>
+				<div class="analysisdrop fl">
+					<div class="hadchoose"><h6>{{val | translate}}</h6></div>
+					<ul class="dropUl">
+						<li ng-click="c('Day1 留存用户');changeusergroup(1)" >Day1 {{'留存用户' | translate}}</li>
+						<li ng-click="c('Day7 留存用户');changeusergroup(2)">Day7 {{'留存用户' | translate}}</li>
+						<li ng-click="c('Day30 留存用户');changeusergroup(3)">Day30 {{'留存用户' | translate}}</li>
+					</ul>
+				</div>
+			</div>
+			<div class="buttondiv fl" analysisdrop changei="changetype()">
+				<div class="selectlable fl">{{'分析方式' | translate}}：</div>
+				<div class="analysisdrop fl"  style="width:140px;">
+					<div class="hadchoose"><h6>{{val | translate}}</h6></div>
+					<ul class="dropUl">
+						<li ng-click="c('新增日等级');changetype(1)">{{'新增日等级' | translate}}</li>
+						<li ng-click="c('新增日游戏次数');changetype(2)">{{'新增日游戏次数' | translate}}</li>
+						<li  ng-click="c('新增日游戏时长');changetype(3)">{{'新增日游戏时长' | translate}}</li>
+						<li  ng-click="c('新增日是否付费');changetype(4)">{{'新增日是否付费' | translate}}</li>
+					</ul>
+				</div>
+			</div>
+			<div class="panel_downloadBtn"  down-file down-file-url="players/playersRetention/exportRetentionUserAnalys.action" down-file-type="xlsx" down-file-name="留存用户分析{{mstatdate}}" savedata="" postdata="searchData" ></div>
+			<div class="clear"></div>
+		</div>
+		<div class="panel-body" ng-class="{'table':panel_2.model=='table','graph':panel_2.model=='graph'}">
+			<div class="clear"></div>
+			<div class="panel-showData">
+				<div class="dataList dataList3 dataList_1 dataListAct">
+					<div class="dataGraph">
+						<div class="graph" data="dataList_2_1_graph"></div>
+					</div>
+					<div class="dataTable">
+						<table class="table table-bordered text-center">
+							<tr class="tableTr">
+								<th width='33.33%' ng-click="changeOrderBy(panel_2.dataList_1,'statType')">
+								<span ng-switch="panel_2.analysis.type">
+									<span ng-switch-when="3">{{panel_2.th.type[panel_2.analysis.type]}}(s)</span>
+									<span ng-switch-default>{{panel_2.th.type[panel_2.analysis.type]}}</span>
+								</span>
+								</th>
+								<th width='33.33%' ng-click="changeOrderBy(panel_2.dataList_1,'accounts')">{{panel_2.th.usergroup[panel_2.analysis.usergroup]}}({{'角色' | translate}})</th>
+								<th width='33.33%' ng-click="changeOrderBy(panel_2.dataList_1,'rate')">{{'百分比' | translate}}</th>
+							</tr>
+							<tr ng-repeat="data in panel_2.dataList_1.data | orderBy: panel_2.dataList_1.orderBy.t+panel_2.dataList_1.orderBy.s | pageStartFrom : panel_2.dataList_1.limit.now*panel_2.dataList_1.limit.max | limitTo: panel_2.dataList_1.limit.max">
+								<td>
+								<span ng-switch="panel_2.analysis.type">
+									<span ng-switch-when="4">
+										<span ng-if="data.statType == 0">{{'否' | translate}}</span>
+										<span ng-if="data.statType == 1">{{'是' | translate}}</span>
+									</span>
+									<span ng-switch-default>{{data.statType}}</span>
+								</span>
+								</td>
+								<td>{{data.accounts}}</td>
+								<td>{{data.rate}}%</td>
+							</tr>
+						</table>
+						<div class="tableLimit" tablelimit datalimit="panel_2.dataList_1.limit" tabledata="panel_2.dataList_1.data">
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="panel-changeData" graphtbale graphfun="graphfun" datachange="panel_2_change" datalimit="0" model="panel_2.model">
+			</div>
+		</div>
+	</div>
+</div>

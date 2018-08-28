@@ -1,0 +1,149 @@
+{
+  "revenueByWorld": [
+    {
+      "percentage": 0.1,
+      "data": 0.64,
+      "title": "澳大利亚"
+    },
+    {
+      "percentage": 0.1,
+      "data": 0.64,
+      "title": "保加利亚"
+    },
+    {
+      "percentage": 0.1,
+      "data": 1.12,
+      "title": "柬埔寨"
+    },
+    {
+      "percentage": 0.1,
+      "data": 0.48,
+      "title": "加拿大"
+    },
+    {
+      "percentage": 93.1,
+      "data": 845.6,
+      "title": "中国"
+    },
+    {
+      "percentage": 0.4,
+      "data": 3.2,
+      "title": "法国"
+    },
+    {
+      "percentage": 0.0,
+      "data": 0.16,
+      "title": "德国"
+    },
+    {
+      "percentage": 0.2,
+      "data": 1.92,
+      "title": "印尼"
+    },
+    {
+      "percentage": 0.1,
+      "data": 0.96,
+      "title": "日本"
+    },
+    {
+      "percentage": 0.3,
+      "data": 2.4,
+      "title": "科威特"
+    },
+    {
+      "percentage": 0.0,
+      "data": 0.32,
+      "title": "拉脱维亚"
+    },
+    {
+      "percentage": 0.1,
+      "data": 0.48,
+      "title": "马来西亚"
+    },
+    {
+      "percentage": 0.0,
+      "data": 0.32,
+      "title": "墨西哥"
+    },
+    {
+      "percentage": 0.0,
+      "data": 0.16,
+      "title": "摩洛哥"
+    },
+    {
+      "percentage": 0.0,
+      "data": 0.32,
+      "title": "巴基斯坦"
+    },
+    {
+      "percentage": 0.2,
+      "data": 1.76,
+      "title": "菲律宾"
+    },
+    {
+      "percentage": 0.1,
+      "data": 0.8,
+      "title": "卡塔尔"
+    },
+    {
+      "percentage": 0.0,
+      "data": 0.16,
+      "title": "韩国"
+    },
+    {
+      "percentage": 0.1,
+      "data": 0.48,
+      "title": "俄罗斯"
+    },
+    {
+      "percentage": 0.1,
+      "data": 0.48,
+      "title": "沙特阿拉伯"
+    },
+    {
+      "percentage": 0.2,
+      "data": 2.24,
+      "title": "泰国"
+    },
+    {
+      "percentage": 0.0,
+      "data": 0.16,
+      "title": "土耳其"
+    },
+    {
+      "percentage": 0.1,
+      "data": 0.64,
+      "title": "阿拉伯联合酋长国"
+    },
+    {
+      "percentage": 0.1,
+      "data": 0.64,
+      "title": "英国"
+    },
+    {
+      "percentage": 2.5,
+      "data": 22.88,
+      "title": "美国"
+    },
+    {
+      "percentage": 1.7,
+      "data": 15.84,
+      "title": "越南"
+    },
+    {
+      "percentage": 0.0,
+      "data": 0.32,
+      "title": "阿尔及利亚"
+    },
+    {
+      "percentage": 0.3,
+      "data": 2.56,
+      "title": "伊拉克"
+    },
+    {
+      "percentage": 0.1,
+      "data": 0.48,
+      "title": "突尼斯"
+    }
+  ]
+}

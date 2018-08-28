@@ -1,0 +1,23 @@
+<div>
+	<div class="maintop">
+		<div datepicker class="col-xs-3 timeSelect" mstatdate="mstatdate">
+		</div>
+		<!--------日期选择控件----------->
+		<div selectChoose class="selectChoose">
+		</div>
+		<!--------渠道区服选择控件----------->
+		<div class="clear"></div>
+		<div class="panel-selectChoose" callbackchannelqf ng-show="iscallback">
+			<ul ng-show="ischannel" class="cl">
+				<li>{{'渠道' | translate}}：</li>
+				<li ng-repeat="channellist in callbackchannelqfdata.channellist">{{channellist}}</li>
+			</ul>
+			<ul ng-show="isqf"  class="cl">
+				<li>{{'区服' | translate}}：</li>				
+				<li ng-repeat="qflist in callbackchannelqfdata.qflist">{{qflist}}</li>
+			</ul>
+		</div>
+		<!--------已选择渠道区服显示----------->
+	</div>
+<!--	<div paneldata></div>-->
+</div>

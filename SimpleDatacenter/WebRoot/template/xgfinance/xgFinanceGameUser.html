@@ -1,0 +1,88 @@
+<style type="text/css">
+    .table th,.table td{ border:1px solid #ddd;}
+    .form-group{ margin-left: 10px; margin-top: 10px;}
+    .form-control{ display: inline-block; vertical-align: middle;}
+    .tableListTh{
+    	white-space: nowrap;
+    	text-align:center;
+    }
+    .channelTd{
+    	white-space: nowrap;
+    	text-align:center;
+    }
+    .form-group .form-member{
+    float: left;
+    }
+    .form-group .member-control{
+   	margin-left: 10px;
+    }
+</style>
+<div>
+	 <div>
+			<div class="form-group">
+				<div class="form-member">
+					<label for="startDate">{{'起始日期' | translate}}: </label>
+					<input type="text" id="startDate" class="form-control" placeholder="{{o.startDate}}" uib-datepicker-popup="{{format}}" ng-model="o.startDate" is-open="o.opened1" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" ng-click="o.opened1=!o.opened1" />
+				</div>
+				<div class="form-member member-control">
+					<label for="endDate">{{'结束日期' | translate}}: </label>
+					<input type="text" id="endDate" class="form-control" placeholder="{{o.endDate}}" uib-datepicker-popup="{{format}}" ng-model="o.endDate" is-open="o.opened2" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" ng-click="o.opened2=!o.opened2" />
+				</div>
+				<div class="form-member member-control">
+					<label for="">{{'游戏' | translate}}：</label>
+	            <select ng-model="postData.gameName" class="form-control" ng-options="data.name as data.value for data in gameList">
+	            </select>
+				</div>
+				&nbsp;&nbsp;
+				<button class="btn btn-default" ng-click="getData()">{{'查询' | translate}}</button>
+			</div>
+	</div>
+	<div class="clear"></div>
+		<!--------tab选择按钮----------->
+	<div class="panel panel-default panel_1">
+			<div class="panel-heading">
+				<strong>
+					{{'用户数统计' | translate}}
+				</strong>
+				<div class="panel_downloadBtn"  down-file down-file-url="xgfinace/exportFinanceGameUserNumList.action" 
+					down-file-type="xlsx" down-file-name="用户数统计{{mstatdate}}" savedata="" postdata="postData" ></div>
+				<div class="clear"></div>
+			</div>
+			<div class="panel-body" ng-class="{'table':panel_1.model=='table','graph':panel_1.model=='graph'}" style="padding-bottom: 40px;">	
+				<!--------各选项卡数据展示----------->
+				<div class="clear"></div>
+				<div class="panel-showData">
+					<div class="dataList dataList5 dataList_1 dataListAct">
+						<div class="dataTable">
+							<table class="table table-bordered text-center">
+								<tr class="tableTr">
+									<th width='33.3%' ng-click="changeOrderBy(panel_1.dataList_1,'statdate')">{{'客日期' | translate}}</th>
+									<th width='33.3%' ng-click="changeOrderBy(panel_1.dataList_1,'gameName')">{{'游戏' | translate}}</th>
+									<th width='33.3%' ng-click="changeOrderBy(panel_1.dataList_1,'newUser')">{{'新增用户总数' | translate}}</th>
+									
+								</tr>
+								<tr ng-repeat="data in panel_1.dataList_1.data | orderBy: panel_1.dataList_1.orderBy.t+panel_1.dataList_1.orderBy.s | pageStartFrom : panel_1.dataList_1.limit.now*panel_1.dataList_1.limit.max | limitTo: panel_1.dataList_1.limit.max">
+									<td>{{data.statdate}}</td>
+									<td>{{data.gameName}}</td>
+									<td>{{data.newUser}}</td>
+									
+								</tr>
+								<tr class="tableTr" ng-show="panel_1.dataList_1.data.length!=0">
+									<td>{{'汇总' | translate}}</td>
+									<td></td>
+									<td>{{panel_1.dataList_1.totalData.totalNewUserNum}}</td>
+								</tr>
+							</table>
+							<div class="tableLimit" tablelimit datalimit="panel_1.dataList_1.limit"  tabledata="panel_1.dataList_1.data">							
+							</div>
+							<!--------表格分页，datalimit为分页参数，tabledata为数据----------->
+						</div>
+					</div>
+				</div>
+				<!--  <div class="panel-changeData" graphtbale  graphfun="graphfun" datachange="panel_1_change"  datalimit="0" model="panel_1.model">
+				</div>-->
+				<!-------------图表表格切换，graphfun ----datachange(需要分页时删除不填)------------->
+			</div>
+	</div>
+	
+</div>

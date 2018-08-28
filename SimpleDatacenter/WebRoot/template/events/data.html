@@ -1,0 +1,224 @@
+<div>	
+	<div class="maintop">
+		<div datepicker class="col-xs-3 timeSelect" mstatdate="mstatdate">
+		</div>
+		<!--------日期选择控件----------->
+		<div selectChoose class="selectChoose">
+		</div>
+		<!--------渠道区服选择控件----------->
+		<div class="clear"></div>
+		<div class="panel-selectChoose" callbackchannelqf ng-show="iscallback">
+			<ul ng-show="ischannel" class="cl">
+				<li>{{'渠道' | translate}}：</li>
+				<li ng-repeat="channellist in callbackchannelqfdata.channellist">{{channellist}}</li>
+			</ul>
+			<ul ng-show="isqf"  class="cl">
+				<li>{{'区服' | translate}}：</li>				
+				<li ng-repeat="qflist in callbackchannelqfdata.qflist">{{qflist}}</li>
+			</ul>
+		</div>
+		<!--------已选择渠道区服显示----------->
+	</div>
+	<div class="panel panel-default panel_1">
+		<div class="panel-heading">
+			<strong>
+				{{'事件概况' | translate}}
+				<!--------提示框----------->
+			</strong>
+			<div class="panel_downloadBtn" ng-click="mdownloaddata('avgGameTime')"></div>
+			
+			<input class="fr tableBoxSearch" ng-model="tablesearch" type="text" placeholder="搜索事件" >
+			<!--------下载按钮----------->
+			<div class="clear"></div>
+		</div>
+		<div class="panel-body pdlf pdtb">
+			<div class="tableBox">
+				<table class="table table-striped">
+					<tr>
+						<th class="text-center" width="20%">{{'事件显示名' | translate}}</th>
+						<th class="text-center" width="20%">{{'事件数' | translate}}</th>
+						<th class="text-center" width="20%">{{'达成事件用户' | translate}}</th>
+						<th class="text-center" width="20%">{{'每启动发生次数' | translate}}</th>
+						<th class="text-center" width="20%">{{'操作' | translate}}</th>
+					</tr>
+					<tr ng-repeat="data in panel_1.dataList_1.data | filter :  {'account':tablesearch} | orderBy: panel_1.dataList_1.orderBy.t+panel_1.dataList_1.orderBy.s | pageStartFrom : panel_1.dataList_1.limit.now*panel_1.dataList_1.limit.max | limitTo: panel_1.dataList_1.limit.max" class="text-center">
+						<td>{{data.ranking}}</td>
+						<td>{{data.account}}</td>
+						<td>{{data.consume}}</td>
+						<td>{{data.currentLevel}}</td>
+						<td>
+							<a href="#" ui-sref="main.events.detail({'eventsId':123})">{{'详情' | translate}}</a>
+						</td>
+					</tr>
+				</table>
+				<div class="tableFooter">
+					<div class="buttondiv fl" analysisdrop changei="changetype()">
+						<div class="selectlable fl">{{'每页显示' | translate}}：</div>
+						<div class="analysisdrop fl" style="width:60px;">
+							<div class="hadchoose">
+								<h6>{{val | translate}}</h6></div>
+							<ul class="dropUl">
+								<li ng-click="c('10');changetype(10)">10</li>
+								<li ng-click="c('20');changetype(20)">20</li>
+								<li ng-click="c('50');changetype(50)">50</li>
+								<li ng-click="c('100');changetype(100)">100</li>
+							</ul>
+						</div>
+						<div class="selectlable fl">&nbsp;&nbsp;{{'条记录' | translate}}</div>
+					</div>
+					<div class="dataTables_paginate fr" datatableslimit  datalimit="panel_1.dataList_1.limit"  tabledata="panel_1.dataList_1.data"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="panel panel-default" ng-repeat="funnelData in funnelData" >	
+		<div class="panel-heading">
+			<strong>
+				{{'转化漏斗' | translate}}-{{funnelData.name}}
+				<!--------提示框----------->
+			</strong>
+			<a href="" class="fr delBtn" ng-click="showDelDialog()">×</a>
+			<a href="" class="fr changeBtn" ng-click="showChangeFunnel('changeFunnel');"></a>
+			<!--------下载按钮----------->
+			<div class="clear"></div>
+		</div>
+		<div class="panel-body ">
+			<div class="funnels_style" id="funnel-1524">
+				<p>
+					<span class="fl">
+						<strong>6199</strong>{{'玩家进入' | translate}}<strong>5879</strong>{{'玩家完成' | translate}}
+					</span>
+					<span class="fr">
+						{{'总转化率' | translate}}：<strong>94.8%</strong>
+					</span>
+				</p>
+				<ul>
+					<li class="after">
+						<div class="Schedule_txt after">
+							<small>1</small>
+							<b title="qwq">qwq</b>
+							<font style="display:block">94.8%</font>
+						</div>
+						<div class="Schedule_bg">
+							<div class="Schedule" style="width:100%">6199 {{'玩家' | translate}} &nbsp;</div>
+						</div>
+					</li>
+					<li class="Final after">
+						<div class="Schedule_txt after">
+							<small>2</small>
+							<b title="qeqwe">qeqwe</b>
+							<font style="display:none">%</font>
+						</div>
+						<div class="Schedule_bg">
+							<div class="Schedule" style="width:94.8%">5879 {{'玩家' | translate}} &nbsp;</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="boxmax">
+		<a class="maxbut" id="addFunnelBtn" data-toggle="modal" ng-click="showAddFunnel('addFunnel')"><font class="add">{{'增加转化漏斗' | translate}}</font>
+		</a>
+	</div>
+	<div class="modal fade" id="addFunnel" tabindex="-1" role="dialog" aria-labelledby="">
+	  <div class="modal-dialog" role="document">
+		<div class="modal-content">
+		  <div class="modal-header EditPop_top  pdtb">
+			{{'转化漏斗设置' | translate}}
+		  </div>
+		  <div class="modal-body">
+			<p class="setupPop_P">{{'以用户逐步执行的事件为依据，构造最多200个步骤的转化漏斗，平台将逐步过滤，计算出用户在整个过程中的转化比例。' | translate}}</p>
+			<ul class="setup_Pop">
+				<li>
+					<b style="letter-spacing: 2px;">{{'名称' | translate}}：</b>
+					<input value="" class="textinput" style="width:200px; margin-left:10px;" type="text" ng-model="addFunnel.name" >
+				</li>
+				<li class="clear cl" ng-repeat="step in addFunnel.step">	
+					<b class="fl">Step{{$index+1}}：</b>
+					<div class="buttondiv fl" analysisdrop >
+						<div class="selectlable fl">{{'追踪依据' | translate}}&nbsp;&nbsp;</div>
+						<div class="analysisdrop fl" style="width:120px;">
+							<div class="hadchoose"><h6>{{step.val}}</h6></div>
+							<ul class="dropUl">
+								<li ng-repeat="eventsList in eventsList" ng-click="step.eventId=eventsList.id;step.val=eventsList.name;hideDrop()" >{{eventsList.name}}</li>
+							</ul>
+						</div>
+					</div>	
+					<div class="buttondiv fl" analysisdrop>
+						<div class="selectlable fl">{{'步骤别名' | translate}}&nbsp;&nbsp;</div>
+						<input value="" class="textinput" type="text" ng-model="step.name" >
+					</div>
+					<div class="fr">
+						<em class="fr close_em deleteItemtype" ng-click="removeFunnelStep($index)"></em>
+					</div>
+				</li>
+			  </ul>
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-default fl" ng-click="addFunnelStep();">{{'增加阶段' | translate}}</button>
+			<button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clearAddFunnel()">{{'取消' | translate}}</button>
+			<button type="button" class="btn btn-primary" ng-click="postAddFunnel()">{{'添加' | translate}}</button>
+		  </div>
+		</div>
+	  </div>
+	</div>
+	<div class="modal fade" id="changeFunnel" tabindex="-1" role="dialog" aria-labelledby="">
+	  <div class="modal-dialog" role="document">
+		<div class="modal-content">
+		  <div class="modal-header EditPop_top  pdtb">
+			{{'修改转化漏斗设置' | translate}}
+		  </div>
+		  <div class="modal-body">
+			<p class="setupPop_P">{{'以用户逐步执行的事件为依据，构造最多200个步骤的转化漏斗，平台将逐步过滤，计算出用户在整个过程中的转化比例。' | translate}}</p>
+			<ul class="setup_Pop">
+				<li>
+					<b style="letter-spacing: 2px;">{{'名称' | translate}}：</b>
+					<input value="" class="textinput" style="width:200px; margin-left:10px;" type="text" ng-model="changeFunnel.name" >
+				</li>
+				<li class="clear cl" ng-repeat="step in changeFunnel.step">	
+					<b class="fl">Step{{$index+1}}：</b>
+					<div class="buttondiv fl" analysisdrop >
+						<div class="selectlable fl">{{'追踪依据' | translate}}&nbsp;&nbsp;</div>
+						<div class="analysisdrop fl" style="width:120px;">
+							<div class="hadchoose"><h6>{{step.val}}</h6></div>
+							<ul class="dropUl">
+								<li ng-repeat="eventsList in eventsList" ng-click="step.eventId=eventsList.id;step.val=eventsList.name;hideDrop()" >{{eventsList.name}}</li>
+							</ul>
+						</div>
+					</div>	
+					<div class="buttondiv fl" analysisdrop>
+						<div class="selectlable fl">{{'步骤别名' | translate}}&nbsp;&nbsp;</div>
+						<input value="" class="textinput" type="text" ng-model="step.name" >
+					</div>
+					<div class="fr">
+						<em class="fr close_em deleteItemtype" ng-click="removeChangeFunnelStep($index)"></em>
+					</div>
+				</li>
+			  </ul>
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-default fl" ng-click="addchangeFunnelStep();">{{'增加阶段' | translate}}</button>
+			<button type="button" class="btn btn-default" data-dismiss="modal" ng-click="">{{'取消' | translate}}</button>
+			<button type="button" class="btn btn-primary" ng-click="postChangeFunnel()">{{'保存' | translate}}</button>
+		  </div>
+		</div>
+	  </div>
+	</div>
+	<div class="modal fade bs-example-modal-sm" id="delDialog" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      	<div class="modal-header EditPop_top  pdtb">
+			{{'提示' | translate}}
+		 </div>
+		 <div class="modal-body">
+			{{'确定要删除吗' | translate}}？
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-default" data-dismiss="modal" ng-click="">{{'取消' | translate}}</button>
+			<button type="button" class="btn btn-primary" ng-click="postChangeFunnel()">{{'确定' | translate}}</button>
+		  </div>
+    </div>
+  </div>
+</div>
+</div>

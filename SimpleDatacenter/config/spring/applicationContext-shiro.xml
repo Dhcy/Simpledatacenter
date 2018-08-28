@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans-4.2.xsd 
+		http://www.springframework.org/schema/mvc 
+		http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd 
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context-4.2.xsd 
+		http://www.springframework.org/schema/aop 
+		http://www.springframework.org/schema/aop/spring-aop-4.2.xsd 
+		http://www.springframework.org/schema/tx 
+		http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
+
+	
+	<bean id="chainDefinitionSectionMetaSource" class="com.good.plat.datacenter.login.auth.ChainDefinitionSectionMetaSource">
+	    <property name="filterChainDefinitions">
+	    	<!-- 这些过滤器优先于数据库中配置的过滤器，是先加载的 -->
+	        <value>
+	        	/login* = anon
+	        	/logout* = anon
+	        	/index.html = anon
+	        	/*.html = anon
+	            /css/** = anon
+	            /images/** = anon
+	            /img/** = anon
+	            /jss/** = anon
+	            /javascript/** = anon
+	            /plug/** = anon
+	        </value>
+	    </property>
+	</bean>
+	
+	<bean id="shiroSecurityFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+	    <!-- shiro的核心安全接口 -->
+	    <property name="securityManager" ref="securityManager" />
+	    <!-- 要求登录时的链接 -->
+	    <property name="loginUrl" value="/login.html" />
+	    <!-- 登陆成功后要跳转的连接 -->
+	    <property name="successUrl" value="/index.html" />
+	    <!-- 未授权时要跳转的连接 -->
+	    <property name="unauthorizedUrl" value="/forbidden.jsp" />
+	    <property name="filters">
+			<map>
+				<entry key="perms" value-ref="URLPermissionsFilter" />
+			</map>
+		</property>
+	    
+	    <!-- shiro连接约束配置,在这里使用自定义的动态获取资源类 -->
+    	<property name="filterChainDefinitionMap" ref="chainDefinitionSectionMetaSource" />
+	</bean>
+	
+	<bean id="URLPermissionsFilter" class="com.good.plat.datacenter.login.auth.URLPermissionsFilter" >
+	</bean>
+
+	<bean id="shiroDataBaseRealm" class="com.good.plat.datacenter.login.auth.ShiroDataBaseRealm">
+		<!-- 数据操作接口 -->
+    	<!-- MD5加密 
+	    <property name="credentialsMatcher">
+	        <bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+	            <property name="hashAlgorithmName" value="MD5" />
+	        </bean>
+	    </property>
+	    -->
+	</bean>
+	
+	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+	    <property name="realm" ref="shiroDataBaseRealm" />
+	    <!-- <property name="sessionManager" ref="sessionManager"/> -->
+	</bean>
+	
+	<!-- <bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
+		<property name="globalSessionTimeout" value="600000" />
+	</bean> -->
+	
+	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+		
+	
+	<!-- 添加注解功能(直接使用会影响struts的action) -->
+	<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" depends-on="lifecycleBeanPostProcessor">
+		<!-- 必须添加，不然struts的注入会有问题 -->
+		<property name="proxyTargetClass" value="true" />
+	</bean>
+
+	<bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+	    <property name="securityManager" ref="securityManager"/>
+	</bean>
+	 
+</beans>

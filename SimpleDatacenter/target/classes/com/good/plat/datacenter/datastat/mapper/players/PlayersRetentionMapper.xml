@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.datastat.mapper.players.PlayersRetentionMapper">
+	<resultMap id="BaseResultMap" type="com.good.plat.datacenter.datastat.entity.players.PlayersRetention">
+		<result column="gameid" property="gameid"/>
+		<result column="gameName" property="gameName"/>
+		<result column="channelid" property="channelid"/>
+		<result column="channelName" property="channelName"/>
+		<result column="subchannelid" property="subchannelid"/>
+		<result column="areaid" property="areaid"/>
+		<result column="areaName" property="areaName"/>
+		<result column="statdate" property="statdate"/>
+		<result column="statType" property="statType"/>
+		<result column="rate" property="rate"/>
+		<result column="day1" property="day1"/>
+		<result column="day2" property="day2"/>
+		<result column="day3" property="day3"/>
+		<result column="day4" property="day4"/>
+		<result column="day5" property="day5"/>
+		<result column="day6" property="day6"/>
+		<result column="day7" property="day7"/>
+		<result column="day14" property="day14"/>
+		<result column="day30" property="day30"/>
+		<result column="day60" property="day60"/>
+		<result column="day90" property="day90"/>
+		<result column="day120" property="day120"/>
+		<result column="day150" property="day150"/>
+		<result column="day180" property="day180"/>
+		<result column="day1RetNum" property="day1RetNum"/>
+		<result column="day2RetNum" property="day2RetNum"/>
+		<result column="day3RetNum" property="day3RetNum"/>
+		<result column="day4RetNum" property="day4RetNum"/>
+		<result column="day5RetNum" property="day5RetNum"/>
+		<result column="day6RetNum" property="day6RetNum"/>
+		<result column="day7RetNum" property="day7RetNum"/>
+		<result column="day14RetNum" property="day14RetNum"/>
+		<result column="day30RetNum" property="day30RetNum"/>
+		<result column="day60RetNum" property="day60RetNum"/>
+		<result column="day90RetNum" property="day90RetNum"/>
+		<result column="day120RetNum" property="day120RetNum"/>
+		<result column="day150RetNum" property="day150RetNum"/>
+		<result column="day180RetNum" property="day180RetNum"/>
+		<result column="accounts" property="accounts"/>
+		<result column="city" property="city"/>
+	</resultMap>
+	
+	<sql id="BaseSelect">
+		where statdate between #{startdate} and #{enddate} 
+		<if test="termtypes != null">
+			and termtype in
+			<foreach collection="termtypes" item="term" index="index" open="(" close=")" separator=",">
+				#{term}
+			</foreach>
+		</if>
+		and gameid=#{gameid}
+		<if test="areas != null">
+			and areaid in
+			<foreach collection="areas" item="area" index="index" open="(" close=")" separator=",">
+				#{area}
+			</foreach>
+		</if>
+		<if test="channelList != null">
+			and channel in
+			<foreach collection="channelList" item="channel" index="index" open="(" close=")" separator=",">
+				#{channel.id}
+			</foreach>
+		</if>
+		<if test="subchannels != null">
+			and chnnnl in
+			<foreach collection="subchannels" item="subchannel" index="index" open="(" close=")" separator=",">
+				#{subchannel}
+			</foreach>
+		</if>
+	</sql>
+	
+	<sql id="AnalysisBaseSelect">
+		where statdate between #{startdate} and #{enddate} 
+		<if test="termtypes != null">
+			and termtype in
+			<foreach collection="termtypes" item="term" index="index" open="(" close=")" separator=",">
+				#{term}
+			</foreach>
+		</if>
+		and gameid=#{gameid}
+		<if test="areas != null">
+			and areaid in
+			<foreach collection="areas" item="area" index="index" open="(" close=")" separator=",">
+				#{area}
+			</foreach>
+		</if>
+		<if test="channelList != null">
+			and channel in
+			<foreach collection="channelList" item="channel" index="index" open="(" close=")" separator=",">
+				#{channel.id}
+			</foreach>
+		</if>
+		<if test="subchannels != null">
+			and chnnnl in
+			<foreach collection="subchannels" item="subchannel" index="index" open="(" close=")" separator=",">
+				#{subchannel}
+			</foreach>
+		</if>
+		<if test="checktype1 != null">
+			and type=#{checktype1}
+		</if>
+	</sql>
+
+	<!-- 新增玩家留存 -->
+	<select id="selectRetentionOfNewUser" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select 
+			statdate, 
+			sum(newact) as accounts,
+			ifnull(sum(1dayret),0) as day1RetNum,
+			ifnull(sum(2dayret),0) as day2RetNum,
+			ifnull(sum(3dayret),0) as day3RetNum,
+			ifnull(sum(4dayret),0) as day4RetNum,
+			ifnull(sum(5dayret),0) as day5RetNum,
+			ifnull(sum(6dayret),0) as day6RetNum,
+			ifnull(sum(7dayret),0) as day7RetNum,
+			ifnull(sum(14dayret),0) as day14RetNum,
+			ifnull(sum(30dayret),0) as day30RetNum,
+			ifnull(sum(60dayret),0) as day60RetNum,
+			ifnull(sum(90dayret),0) as day90RetNum,
+			ifnull(sum(120dayret),0) as day120RetNum,
+			ifnull(sum(150dayret),0) as day150RetNum,
+			ifnull(sum(180dayret),0) as day180RetNum,
+			round(sum(1dayret)/sum(newact)*100,2) as day1,
+			round(sum(2dayret)/sum(newact)*100,2) as day2,
+			round(sum(3dayret)/sum(newact)*100,2) as day3,
+			round(sum(4dayret)/sum(newact)*100,2) as day4,
+			round(sum(5dayret)/sum(newact)*100,2) as day5,
+			round(sum(6dayret)/sum(newact)*100,2) as day6, 
+			round(sum(7dayret)/sum(newact)*100,2) as day7,
+			round(sum(14dayret)/sum(newact)*100,2) as day14, 
+			round(sum(30dayret)/sum(newact)*100,2) as day30,
+			round(sum(60dayret)/sum(newact)*100,2) as day60, 
+			round(sum(90dayret)/sum(newact)*100,2) as day90, 
+			round(sum(120dayret)/sum(newact)*100,2) as day120,
+			round(sum(150dayret)/sum(newact)*100,2) as day150,
+			round(sum(180dayret)/sum(newact)*100,2) as day180
+		from 
+			logplat_daily_retain_city 
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelectWithoutLanguageEdition" />
+		and type=-1
+		 <choose>
+         <when test="cityList!=null">
+	         and city in
+			<foreach collection="cityList" item="city" index="index" open="(" close=")" separator=",">
+				#{city}
+			</foreach>
+         </when>
+          <!-- 全选或者没有区域 -->
+         <otherwise>
+         and city='-1'
+         </otherwise>
+      	 </choose>
+		group by statdate order by statdate
+	</select>
+	
+	<select id="exportRetentionOfNewUser" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	
+	<!-- 激活设备留存 -->
+	<select id="selectRetentionOfDevice" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	<select id="exportRetentionOfDevice" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	<!--checktype1 统计类型,-1:总留存;1:等级;2:游戏次数;3:游戏时长;4:是否付费 -->
+	<sql id="IfTem">
+		<if test="checktype1 == 1 and checktype1 != null">
+			and type=1
+		</if>
+		
+		<if test="checktype1 == 2 and checktype1 != null">
+			and type=2
+		</if>
+		
+		<if test="checktype1 == 3 and checktype1 != null">
+			and type=3
+		</if>
+		
+		<if test="checktype1 == 4 and checktype1 != null">
+			and type=4
+		</if>
+	</sql>
+	
+	<!-- 留存用户分析 -->
+	<select id="selectRetentionUserAnalys" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select 
+			subtype as statType,
+		<if test="checktype2 != null and checktype2 == 1">
+			sum(1dayret) as accounts
+		</if>
+		<if test="checktype2 != null and checktype2 == 2">
+			sum(7dayret) as accounts
+		</if>
+		<if test="checktype2 != null and checktype2 == 3">
+			sum(30dayret) as accounts
+		</if>
+		from logplat_daily_retain
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelectWithoutLanguageEdition"/>
+		<if test="checktype1 != null">
+			and type=#{checktype1}
+		</if>
+		group by subtype order by subtype
+	</select>
+	
+	<select id="exportRetentionUserAnalys" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	<!-- 活跃玩家留存 -->
+	<select id="selectRetentionOfActUser" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		SELECT
+			a.statdate as statdate,
+			ifnull(SUM(a.actorcnt),0) as accounts,
+			round((sum(if(a.nday=1,a.count,0))/SUM(a.actorcnt))*100,2) as day1,
+			round((sum(if(a.nday=2,a.count,0))/SUM(a.actorcnt))*100,2) as day2,
+			round((sum(if(a.nday=3,a.count,0))/SUM(a.actorcnt))*100,2) as day3,
+			round((sum(if(a.nday=4,a.count,0))/SUM(a.actorcnt))*100,2) as day4,
+			round((sum(if(a.nday=5,a.count,0))/SUM(a.actorcnt))*100,2) as day5,
+			round((sum(if(a.nday=6,a.count,0))/SUM(a.actorcnt))*100,2) as day6,
+			round((sum(if(a.nday=7,a.count,0))/SUM(a.actorcnt))*100,2) as day7,
+			round((sum(if(a.nday=14,a.count,0))/SUM(a.actorcnt))*100,2) as day14,
+			round((sum(if(a.nday=30,a.count,0))/SUM(a.actorcnt))*100,2) as day30
+		FROM
+			logplat_active_retain a 
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.ABaseSelectWithoutLanguageEdition" />
+		group by statdate order by statdate
+	</select>
+	
+	<!--回流玩家留存 -->
+	<select id="selectRetentionOfreturnUser" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		SELECT
+			a.statdate as statdate,
+			ifnull(SUM(a.retruncnt),0) as accounts,
+			round((sum(if(a.nday=1,a.count,0))/SUM(a.retruncnt))*100,2) as day1,
+			round((sum(if(a.nday=2,a.count,0))/SUM(a.retruncnt))*100,2) as day2,
+			round((sum(if(a.nday=3,a.count,0))/SUM(a.retruncnt))*100,2) as day3,
+			round((sum(if(a.nday=4,a.count,0))/SUM(a.retruncnt))*100,2) as day4,
+			round((sum(if(a.nday=5,a.count,0))/SUM(a.retruncnt))*100,2) as day5,
+			round((sum(if(a.nday=6,a.count,0))/SUM(a.retruncnt))*100,2) as day6,
+			round((sum(if(a.nday=7,a.count,0))/SUM(a.retruncnt))*100,2) as day7,
+			round((sum(if(a.nday=14,a.count,0))/SUM(a.retruncnt))*100,2) as day14,
+			round((sum(if(a.nday=30,a.count,0))/SUM(a.retruncnt))*100,2) as day30
+		FROM
+			logplat_return_retain a
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.ABaseSelectWithoutLanguageEdition" />
+		group by statdate order by statdate
+	</select>
+	
+	<!-- 新增账户留存(首次创建角色数) -->
+	<select id="selectRetentionOfNewAccount" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select 
+			statdate, 
+			IFNULL(sum(newact),0) as accounts,
+			ifnull(sum(1dayret),0) as day1RetNum,
+			ifnull(sum(2dayret),0) as day2RetNum,
+			ifnull(sum(3dayret),0) as day3RetNum,
+			ifnull(sum(4dayret),0) as day4RetNum,
+			ifnull(sum(5dayret),0) as day5RetNum,
+			ifnull(sum(6dayret),0) as day6RetNum,
+			ifnull(sum(7dayret),0) as day7RetNum,
+			ifnull(sum(14dayret),0) as day14RetNum,
+			ifnull(sum(30dayret),0) as day30RetNum,
+			ifnull(sum(60dayret),0) as day60RetNum,
+			ifnull(sum(90dayret),0) as day90RetNum,
+			ifnull(sum(120dayret),0) as day120RetNum,
+			ifnull(sum(150dayret),0) as day150RetNum,
+			ifnull(sum(180dayret),0) as day180RetNum,
+			round(sum(1dayret)/sum(newact)*100,2) as day1,
+			round(sum(2dayret)/sum(newact)*100,2) as day2,
+			round(sum(3dayret)/sum(newact)*100,2) as day3,
+			round(sum(4dayret)/sum(newact)*100,2) as day4,
+			round(sum(5dayret)/sum(newact)*100,2) as day5,
+			round(sum(6dayret)/sum(newact)*100,2) as day6, 
+			round(sum(7dayret)/sum(newact)*100,2) as day7,
+			round(sum(14dayret)/sum(newact)*100,2) as day14, 
+			round(sum(30dayret)/sum(newact)*100,2) as day30, 
+			round(sum(60dayret)/sum(newact)*100,2) as day60, 
+			round(sum(90dayret)/sum(newact)*100,2) as day90, 
+			round(sum(120dayret)/sum(newact)*100,2) as day120,
+			round(sum(150dayret)/sum(newact)*100,2) as day150,
+			round(sum(180dayret)/sum(newact)*100,2) as day180
+		from 
+			logplat_daily_retain_uid 
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelectWithoutLanguageEdition" />
+		<choose>
+            <when test="cityList!=null">
+            and city in
+			<foreach collection="cityList" item="city" index="index" open="(" close=")" separator=",">
+				#{city}
+			</foreach>
+            </when>
+            <!-- 全选或者没有区域 -->
+            <otherwise>
+            and city='-1'
+            </otherwise>
+       	 </choose>
+		and type=-1
+		group by statdate order by statdate
+	</select>
+		<!-- 留存区域列表 -->
+	<select id="selectUserRetainCityList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		(SELECT city FROM logplat_daily_retain_city <include refid="BaseSelect"/> and city<![CDATA[<>]]>'-1')UNION(
+		SELECT
+			city
+		FROM
+			logplat_daily_retain_uid
+	<include refid="BaseSelect"/>
+	 and city<![CDATA[<>]]>'-1');
+	</select>
+	
+</mapper>

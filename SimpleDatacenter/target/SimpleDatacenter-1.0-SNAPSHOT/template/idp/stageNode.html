@@ -1,0 +1,85 @@
+<style type="text/css">
+    .table th,.table td{ border:1px solid #ddd;}
+    .form-group{ margin-left: 10px; margin-top: 10px;}
+    .form-control{ display: inline-block; vertical-align: middle;}
+    .tableListTh{
+    	white-space: nowrap;
+    	text-align:center;
+    }
+    .channelTd{
+    	white-space: nowrap;
+    	text-align:center;
+    }
+</style>
+<div>
+	<div class="maintop">
+		<div class="form-group">
+			<div datepicker format="yyyy-MM-dd" class="col-xs-3 timeSelect" mstatdate="mstatdate">
+			</div>
+			&nbsp;&nbsp;
+			<label for="">{{'关卡选择' | translate}}：</label>
+            <select ng-model="searchData.stageId" class="form-control" ng-options="data.stageId as data.stageName for data in stageList" >
+            </select>
+            <button class="btn btn-default" ng-click="getAllData()">{{'查询' | translate}}</button>
+		</div>
+		
+		<!--------日期选择控件----------->
+	</div>	
+	<div class="clear"></div>
+		<!--------tab选择按钮----------->
+	<div class="panel panel-default panel_1">
+			<div class="panel-heading">
+			<strong>{{'关卡节点' | translate}}</strong>
+				<div class="panel_downloadBtn"  down-file down-file-url="summary/exportStageNodeSuccessList.action" down-file-type="xlsx" down-file-name="关卡节点{{mstatdate}}" savedata="" postdata="searchData" ></div>
+				<div class="clear"></div>
+			</div>
+			<div class="panel-body pdlf pdtb">
+			<div class="tableList tableListAct" >
+				<ul class="tableListUl">
+					<li class="tableListLi tableListLiTh clear">
+						<span class="tableListTh" style="width:33.3%" ng-click="changeOrderBy(panel_1.dataList_1,'stageName')">
+							<strong title="">{{'关卡名称' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:33.3%" ng-click="changeOrderBy(panel_1.dataList_1,'nodeName')">
+							<strong title="">{{'关卡节点' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:33.3%" ng-click="changeOrderBy(panel_1.dataList_1,'amount')">
+							<strong title="">{{'通过人数' | translate}}</strong>
+						</span>
+					</li>
+					
+					<li class="tableListLi clear" ng-repeat="data in panel_1.dataList_1.data | orderBy: panel_1.dataList_1.orderBy.t+panel_1.dataList_1.orderBy.s | pageStartFrom : panel_1.dataList_1.limit.now*panel_1.dataList_1.limit.max | limitTo: panel_1.dataList_1.limit.max" ng-class="({'show_panel':data.show_panel})">
+						<div class="channelTr clear">
+							<span class="channelTd" style="width:33.3%" >
+								{{data.stageName}}
+							</span>
+							<span class="channelTd" style="width:33.3%">
+								{{data.nodeName}}
+							</span>
+							<span class="channelTd" style="width:33.3%">
+								{{data.amount}}
+							</span>
+						</div>
+				</li>
+				</ul>
+				<div class="tableFooter">
+						<div class="buttondiv fl" analysisdrop changei="changetype()">
+							<div class="selectlable fl">{{'每页显示' | translate}}：</div>
+							<div class="analysisdrop fl" style="width:60px;">
+								<div class="hadchoose">
+									<h6>{{val | translate}}</h6></div>
+								<ul class="dropUl">
+									<li ng-click="c('10');changetype(10)">10</li>
+									<li ng-click="c('20');changetype(20)">20</li>
+									<li ng-click="c('50');changetype(50)">50</li>
+									<li ng-click="c('100');changetype(100)">100</li>
+								</ul>
+							</div>
+							<div class="selectlable fl">&nbsp;&nbsp;{{'条记录' | translate}}</div>
+						</div>
+						<div class="dataTables_paginate fr" datatableslimit  datalimit="panel_1.dataList_1.limit"  tabledata="panel_1.dataList_1.data"  datachange="panel_1_change"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

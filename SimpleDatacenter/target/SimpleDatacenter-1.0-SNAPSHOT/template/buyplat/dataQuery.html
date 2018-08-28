@@ -1,0 +1,142 @@
+<style type="text/css">
+    .table th,.table td{ border:1px solid #ddd; padding-left: 0; padding-right: 0;}
+    .form-group{ margin-left: 10px; margin-top: 10px;}
+    .form-control{ display: inline-block; vertical-align: middle;}
+</style>
+<div>
+    <div>
+        <div class="form-group">
+            <div class="div_select">
+                
+            </div>
+            <label for="">{{'时间区域' | translate}}：</label>
+            <div datepicker class="col-xs-3 timeSelect" mstatdate="mstatdate" style="width:250px;"></div>
+            <label for="">{{'游戏' | translate}}：</label>
+            <select ng-model="postData.gameid" class="form-control" ng-options="abc.id as abc.name for abc in panel_1.gameList" ng-change="getSubChannelList(abc)">
+
+            </select>&nbsp;&nbsp;
+            <label for="">{{'渠道' | translate}}：</label>
+            <select ng-model="postData.channelid" class="form-control" ng-options="abc.id as abc.channelName for abc in panel_1.channelList" ng-change="getSubChannelList(abc)">
+			
+            </select>&nbsp;&nbsp;
+             <label for="">{{'子渠道' | translate}}：</label>
+            <select ng-model="postData.subChannelid" class="form-control" ng-options="abc.id as abc.channelName for abc in panel_1.subChannelList">
+
+            </select>&nbsp;&nbsp;
+            <label for="">{{'终端' | translate}}：</label>
+            <select ng-model="postData.terminalid" class="form-control" ng-options="abc.id as abc.name for abc in terminalList">
+                
+            </select>&nbsp;&nbsp;
+            <button class="btn btn-default" ng-click="mdownloaddata('avgGameTime')">{{'导出' | translate}}</button>
+            <button class="btn btn-default" ng-click="searchData()">{{'搜索' | translate}}</button>
+        </div>
+    </div>
+    <div class="panel panel-default panel_1">
+        <div class="panel-heading">
+            <strong>
+                {{'数据查询' | translate}}
+                <!--------提示框--------- -->
+            </strong>
+            <div class="panel_downloadBtn" ng-click="mdownloaddata('avgGameTime')"></div>
+            <!--------下载按钮--------- -->
+            <div class="clear"></div>
+        </div>
+        <div class="panel-body pdlf pdtb">
+            <div class="tableBox">
+                <table class="table table-striped">
+                    <tr>
+                        <th class="text-center" width="3.3%">{{'日期' | translate}}</th>
+                        <th class="text-center" width="3.3%">{{'游戏名称' | translate}}</th>
+                        <th class="text-center" width="3.3%" title="终端设备">{{'终端' | translate}}</th>
+                        <th class="text-center" width="3.3%">{{'渠道名称' | translate}}</th>
+                        <th class="text-center" width="3.3%" title="渠道主ID+渠道子ID">{{'渠道' | translate}}ID</th>
+                        <th class="text-center" width="3.3%" title="去重设备ID，用户下载打开游戏界面算一次激活">{{'激活数' | translate}}</th>
+                        <th class="text-center" width="3.3%" title="注册账号且进入游戏，算一个有效,设备ID去重">{{'注册数' | translate}}</th>
+                        <th class="text-center" width="3.3%" title="注册数/激活数">{{'注册转化率' | translate}}(%)</th>
+                        <th class="text-center" width="3.3%" title="去重设备ID ，注册账号且创建了角色的账户数，算一个有效">{{'新增创角数' | translate}}</th>
+                        <th class="text-center" width="3.3%" title="创角账户/注册数">{{'新增创角转化率' | translate}}(%)</th>
+                        <th class="text-center" width="3.3%" title="当日登陆进入游戏的用户数">{{'活跃数' | translate}}</th>
+                        <th class="text-center" width="3.3%" title="">{{'等级3以上账户' | translate}}</th>
+                        <th class="text-center" width="3.3%" title="">{{'等级3以上比例' | translate}}(%)</th>
+                        <th class="text-center" width="3.3%" title="次日留存率=第2天登录用户/新增用户*100%">{{'次日留存率' | translate}}(%)</th>
+                        <th class="text-center" width="3.3%" title="n日留存率=第n天登录用户/新增用户*100%">3{{'日留存率' | translate}}(%)</th>
+                        <th class="text-center" width="3.3%" title="n日留存率=第n天登录用户/新增用户*100%">7{{'日留存率' | translate}}(%)</th>
+                        <th class="text-center" width="3.3%" title="n日留存率=第n天登录用户/新增用户*100%">15{{'日留存率' | translate}}(%)</th>
+                        <th class="text-center" width="3.3%" title="n日留存率=第n天登录用户/新增用户*100%">30{{'日留存率' | translate}}(%)</th>
+                        <th class="text-center" width="3.3%" title="当天新增用户所带来的充值人数">{{'新充值人数' | translate}}</th>
+                        <th class="text-center" width="3.3%" title="当天新增用户所带来的付费金额">{{'新充值金额' | translate}}</th>
+                        <th class="text-center" width="3.3%" title="新付费人数/注册人数">{{'新增付费率' | translate}}(%)</th>
+                        <th class="text-center" width="3.3%" title="新充值金额/新充值人数">{{'新增付费ARPU值' | translate}}</th>
+                        <th class="text-center" width="3.3%" title="新增广告主时录入">{{'广告费' | translate}}</th>
+                        <th class="text-center" width="3.3%" title="投入产出比=广告费/总充值金额">{{'投入产出比' | translate}}(%)</th>
+                        <th class="text-center" width="3.3%" title="此老用户是指已经在我们的用户库里面的用户，如IMEI、deviceid等">{{'老用户数量' | translate}}</th>
+                        <th class="text-center" width="3.3%" title="老用户数量/当天注册用户">{{'老用户比例' | translate}}(%)</th>
+                        
+                        <th class="text-center" width="3.3%" title="登录的用户总充值金额">{{'总充值流水' | translate}}</th>
+                        <th class="text-center" width="3.3%" title="（总充值人数/总注册数）*100%">{{'总用户付费率' | translate}}(%)</th>
+                        <th class="text-center" width="3.3%" title="登录的用户总充值人数">{{'总充值人数' | translate}}</th>
+                        <th class="text-center" width="3.3%" title="总充值流水/总充值人数">{{'总用户付费' | translate}}arpu</th>
+                    </tr>
+                    <tr ng-repeat="data in panel_1.dataList_1.data | filter:searchData.gameList | filter:searchData.channelList | filter:searchData.terminalList |orderBy: panel_1.dataList_1.orderBy.t+panel_1.dataList_1.orderBy.s | pageStartFrom : panel_1.dataList_1.limit.now*panel_1.dataList_1.limit.max | limitTo: panel_1.dataList_1.limit.max" class="text-center">
+                        <td>{{data.startDataTxt}}</td>
+                        <td>{{data.gameName}}</td>
+                        <td>{{data.termtypeName}}</td>
+                        <td>{{data.channelName}}</td>
+                        <td>{{data.adchannel}} {{data.subchannel}}</td>
+                        <td>{{data.acvcount}}</td>
+                        <td>{{data.regcount}}</td>
+                        <td>{{data.registerTransRate}}</td>
+                        
+                        <td>{{data.actregcount}}</td>
+                        <td>{{data.actregcountRate}}</td>
+                        <td>{{data.acticount}}</td>
+                        <!-- <td>{{data.activeRate}}</td> -->
+                        <td>{{data.lvl3count}}</td>
+                        <td>{{data.lvl3Rate}}</td>
+                        <td>{{data.day2Rate}}</td>
+                        <td>{{data.day3Rate}}</td>
+                        <td>{{data.day7Rate}}</td>
+                        <td>{{data.day15Rate}}</td>
+                        <td>{{data.day30Rate}}</td>
+                        <td>{{data.rechgcount}}</td>
+                        <td>{{data.rechgmoney}}</td>
+                        <td>{{data.payRate}}</td>
+                        <td>{{data.arpu}}</td>
+                        <td>{{data.adcost}}</td>
+                        <td>{{data.costIncomeRate}}</td>
+						<td>{{data.oldcount}}</td>
+                        <td>{{data.oldRate}}</td>
+                        <td>{{data.totalrechgmoney}}</td>
+                        <td>{{data.totalrechgPayRate}}</td>
+                        <td>{{data.totalrechgcount}}</td>
+                        <td>{{data.totalrechgARPU}}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="26">{{'汇总' | translate}}</td>
+                        <td>{{panel_1.gather.sumOfRechgMoney}}</td>
+                        <td>{{panel_1.gather.sumOfPayRate}}</td>
+                        <td>{{panel_1.gather.sumOfRechgCount}}</td>
+                        <td>{{panel_1.gather.sumOfPayARPU}}</td>
+                    </tr>
+                </table>
+                <div class="tableFooter">
+                    <div class="buttondiv fl" analysisdrop changei="changetype()">
+                        <div class="selectlable fl">{{'每页显示' | translate}}：</div>
+                        <div class="analysisdrop fl" style="width:60px;">
+                            <div class="hadchoose">
+                                <h6>{{val | translate}}</h6></div>
+                            <ul class="dropUl">
+                                <li ng-click="c('10');changetype(10)">10</li>
+                                <li ng-click="c('20');changetype(20)">20</li>
+                                <li ng-click="c('50');changetype(50)">50</li>
+                                <li ng-click="c('100');changetype(100)">100</li>
+                            </ul>
+                        </div>
+                        <div class="selectlable fl">&nbsp;&nbsp;{{'条记录' | translate}}</div>
+                    </div>
+                    <div class="dataTables_paginate fr" datatableslimit  datalimit="panel_1.dataList_1.limit"  tabledata="panel_1.dataList_1.data"></div>
+                </div>
+            </div> 
+        </div>
+    </div>
+</div>

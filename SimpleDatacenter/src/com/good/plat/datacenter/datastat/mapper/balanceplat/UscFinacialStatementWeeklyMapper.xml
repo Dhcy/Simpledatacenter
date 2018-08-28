@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.datastat.mapper.balanceplat.UscFinacialStatementWeeklyMapper" >
+  <resultMap id="BaseResultMap" type="com.good.plat.datacenter.datastat.entity.balanceplat.UscFinacialStatementWeekly" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="gameid" property="gameid" jdbcType="INTEGER" />
+    <result column="channel" property="channel" jdbcType="INTEGER" />
+    <result column="statdate" property="statdate" jdbcType="DATE" />
+    <result column="currency" property="currency" jdbcType="INTEGER" />
+    <result column="money" property="money" jdbcType="DECIMAL" />
+    <result column="payrate" property="payrate" jdbcType="DECIMAL" />
+    <result column="taxrate" property="taxrate" jdbcType="DECIMAL" />
+    <result column="sharerate" property="sharerate" jdbcType="DECIMAL" />
+    <result column="confcurr" property="confcurr" jdbcType="INTEGER" />
+    <result column="exchrate" property="exchrate" jdbcType="DECIMAL" />
+    <result column="rmbrate" property="rmbrate" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, gameid, channel, statdate, currency, money, payrate, taxrate, sharerate, confcurr, 
+    exchrate, rmbrate
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from usc_finacial_statement_weekly
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from usc_finacial_statement_weekly
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.good.plat.datacenter.datastat.entity.balanceplat.UscFinacialStatementWeekly" >
+    insert into usc_finacial_statement_weekly (id, gameid, channel, 
+      statdate, currency, money, 
+      payrate, taxrate, sharerate, 
+      confcurr, exchrate, rmbrate
+      )
+    values (#{id,jdbcType=INTEGER}, #{gameid,jdbcType=INTEGER}, #{channel,jdbcType=INTEGER}, 
+      #{statdate,jdbcType=DATE}, #{currency,jdbcType=INTEGER}, #{money,jdbcType=DECIMAL}, 
+      #{payrate,jdbcType=DECIMAL}, #{taxrate,jdbcType=DECIMAL}, #{sharerate,jdbcType=DECIMAL}, 
+      #{confcurr,jdbcType=INTEGER}, #{exchrate,jdbcType=DECIMAL}, #{rmbrate,jdbcType=DECIMAL}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.good.plat.datacenter.datastat.entity.balanceplat.UscFinacialStatementWeekly" >
+    insert into usc_finacial_statement_weekly
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="gameid != null" >
+        gameid,
+      </if>
+      <if test="channel != null" >
+        channel,
+      </if>
+      <if test="statdate != null" >
+        statdate,
+      </if>
+      <if test="currency != null" >
+        currency,
+      </if>
+      <if test="money != null" >
+        money,
+      </if>
+      <if test="payrate != null" >
+        payrate,
+      </if>
+      <if test="taxrate != null" >
+        taxrate,
+      </if>
+      <if test="sharerate != null" >
+        sharerate,
+      </if>
+      <if test="confcurr != null" >
+        confcurr,
+      </if>
+      <if test="exchrate != null" >
+        exchrate,
+      </if>
+      <if test="rmbrate != null" >
+        rmbrate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="gameid != null" >
+        #{gameid,jdbcType=INTEGER},
+      </if>
+      <if test="channel != null" >
+        #{channel,jdbcType=INTEGER},
+      </if>
+      <if test="statdate != null" >
+        #{statdate,jdbcType=DATE},
+      </if>
+      <if test="currency != null" >
+        #{currency,jdbcType=INTEGER},
+      </if>
+      <if test="money != null" >
+        #{money,jdbcType=DECIMAL},
+      </if>
+      <if test="payrate != null" >
+        #{payrate,jdbcType=DECIMAL},
+      </if>
+      <if test="taxrate != null" >
+        #{taxrate,jdbcType=DECIMAL},
+      </if>
+      <if test="sharerate != null" >
+        #{sharerate,jdbcType=DECIMAL},
+      </if>
+      <if test="confcurr != null" >
+        #{confcurr,jdbcType=INTEGER},
+      </if>
+      <if test="exchrate != null" >
+        #{exchrate,jdbcType=DECIMAL},
+      </if>
+      <if test="rmbrate != null" >
+        #{rmbrate,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.good.plat.datacenter.datastat.entity.balanceplat.UscFinacialStatementWeekly" >
+    update usc_finacial_statement_weekly
+    <set >
+      <if test="gameid != null" >
+        gameid = #{gameid,jdbcType=INTEGER},
+      </if>
+      <if test="channel != null" >
+        channel = #{channel,jdbcType=INTEGER},
+      </if>
+      <if test="statdate != null" >
+        statdate = #{statdate,jdbcType=DATE},
+      </if>
+      <if test="currency != null" >
+        currency = #{currency,jdbcType=INTEGER},
+      </if>
+      <if test="money != null" >
+        money = #{money,jdbcType=DECIMAL},
+      </if>
+      <if test="payrate != null" >
+        payrate = #{payrate,jdbcType=DECIMAL},
+      </if>
+      <if test="taxrate != null" >
+        taxrate = #{taxrate,jdbcType=DECIMAL},
+      </if>
+      <if test="sharerate != null" >
+        sharerate = #{sharerate,jdbcType=DECIMAL},
+      </if>
+      <if test="confcurr != null" >
+        confcurr = #{confcurr,jdbcType=INTEGER},
+      </if>
+      <if test="exchrate != null" >
+        exchrate = #{exchrate,jdbcType=DECIMAL},
+      </if>
+      <if test="rmbrate != null" >
+        rmbrate = #{rmbrate,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.good.plat.datacenter.datastat.entity.balanceplat.UscFinacialStatementWeekly" >
+    update usc_finacial_statement_weekly
+    set gameid = #{gameid,jdbcType=INTEGER},
+      channel = #{channel,jdbcType=INTEGER},
+      statdate = #{statdate,jdbcType=DATE},
+      currency = #{currency,jdbcType=INTEGER},
+      money = #{money,jdbcType=DECIMAL},
+      payrate = #{payrate,jdbcType=DECIMAL},
+      taxrate = #{taxrate,jdbcType=DECIMAL},
+      sharerate = #{sharerate,jdbcType=DECIMAL},
+      confcurr = #{confcurr,jdbcType=INTEGER},
+      exchrate = #{exchrate,jdbcType=DECIMAL},
+      rmbrate = #{rmbrate,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

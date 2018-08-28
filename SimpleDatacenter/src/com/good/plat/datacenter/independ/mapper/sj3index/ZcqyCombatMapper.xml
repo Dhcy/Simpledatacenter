@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.independ.mapper.sj3index.ZcqyCombatMapper">
+	<resultMap id="BaseResultMap" type="com.good.plat.datacenter.independ.entity.sj3index.ZcqyCombat">
+		<result column="statdate" property="statdate"/>
+		<result column="areaid" property="areaid"/>
+		<result column="areaName" property="areaName"/>
+		<result column="channelid" property="channelid"/>
+		<result column="channelName" property="channelName"/>
+		<result column="country" property="country"/>
+		<result column="openCombatCnt" property="openCombatCnt"/>
+		<result column="avgCombatTime" property="avgCombatTime"/>
+		<result column="gamerCnt" property="gamerCnt"/>
+		<result column="successCnt" property="successCnt"/>
+		<result column="failCnt" property="failCnt"/>
+		<result column="type" property="type"/>
+		<result column="playName" property="playName"/>
+		<result column="jobs" property="jobs"/>
+		
+		
+	</resultMap>
+	
+		<sql id="ABaseSelect">
+			where a.statdate between #{startdate} and #{enddate} 
+			and a.gameid=#{gameid}
+			<if test="areas != null">
+				and a.areaid in
+				<foreach collection="areas" item="area" index="index" open="(" close=")" separator=",">
+					#{area}
+				</foreach>
+			</if>
+			<if test="channelList != null">
+				and a.channel in
+				<foreach collection="channelList" item="channel" index="index" open="(" close=")" separator=",">
+					#{channel.id}
+				</foreach>
+			</if>
+			<if test="subchannels != null">
+				and a.chnnnl in
+				<foreach collection="subchannels" item="subchannel" index="index" open="(" close=")" separator=",">
+					#{subchannel}
+				</foreach>
+			</if>
+		</sql>
+	
+	<!--
+	主城奇缘战斗(日期,区服,国家,渠道,职业,开启战斗数,平均战斗 用时(s),参与玩家数,胜利人数,失败人数,玩法类型)
+	-->
+	<select id="selectZcCombatList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.IndependBaseSearchData">
+		SELECT
+			a.statdate,
+			a.areaid,
+			IF(c.`name` IS NULL,CONCAT('未知区服: ',a.areaid),c.`name`) as areaName,
+			a.country,
+			a.channel as channelid,
+			IF(b.channelSimName is NULL,CONCAT('未知渠道： ',a.channel),b.channelSimName) as channelName,
+			a.jobs,
+			IFNULL(SUM(a.count),0) as openCombatCnt,
+			IFNULL(SUM(a.time)/SUM(a.successcnt),0) as avgCombatTime,
+			IFNULL(SUM(a.gamercnt),0) as gamerCnt,
+			IFNULL(SUM(a.successcnt),0) as successCnt,
+			IFNULL(SUM(a.failcnt),0) as failCnt,
+			a.type
+		FROM
+			sj3_zc_qy_stat a LEFT JOIN tb_logplat_channel b on b.id=a.channel
+			LEFT JOIN tb_logplat_gamearea c on c.areaid=a.areaid and c.gameid=a.gameid
+		<include refid="ABaseSelect"/>
+		AND a.type =-1
+		GROUP BY
+			a.statdate,
+			a.areaid,
+			a.country,
+			a.channel,
+			a.jobs;
+	</select>
+	<!--  玩法战斗详情-->
+	<select id="selectPlayTypeCombatDetailList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.IndependBaseSearchData">
+		SELECT
+			a.statdate,
+			a.areaid,
+			IF(c.`name` IS NULL,CONCAT('未知区服: ',a.areaid),c.`name`) as areaName,
+			a.country,
+			a.channel as channelid,
+			IF(b.channelSimName is NULL,CONCAT('未知渠道： ',a.channel),b.channelSimName) as channelName,
+			a.jobs,
+			a.type,
+			a.name as playName,
+			sum(count) as openCombatCnt,
+			IF(sum(successcnt)<![CDATA[<>]]>0,sum(time)/ sum(successcnt),0) AS avgCombatTime,
+			IFNULL(sum(gamercnt),0) as gamerCnt,
+			IFNULL(sum(successcnt),0) as successCnt,
+			IFNULL(sum(failcnt),0) as failCnt
+		FROM
+			sj3_zc_qy_stat a LEFT JOIN tb_logplat_channel b on b.id=a.channel
+			LEFT JOIN tb_logplat_gamearea c on c.areaid=a.areaid and c.gameid=a.gameid
+		where a.statdate between #{startdate} and #{enddate} 
+			and a.gameid=#{gameid}
+		 <choose>
+        <when test="checktype1!=null and checktype1!='' and checktype1!=-1">
+            AND a.type=#{checktype1}
+        </when>
+        <otherwise>
+          AND a.type<![CDATA[<>]]>-1
+        </otherwise>
+    </choose>
+		and a.areaid=#{areaid}
+		and a.country=#{country}
+		and a.channel=#{channelid}
+		<if test="checktype2!=null and checktype2!='' and checktype2!='全部'">
+		and a.jobs=#{checktype2}
+		</if>
+		GROUP BY
+			a.statdate,
+			a.areaid,
+			a.country,
+			a.channel,
+			a.jobs,
+			a.name;
+	</select>
+	
+</mapper>

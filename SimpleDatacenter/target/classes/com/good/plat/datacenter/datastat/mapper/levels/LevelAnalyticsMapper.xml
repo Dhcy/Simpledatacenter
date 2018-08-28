@@ -1,0 +1,498 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.datastat.mapper.levels.LevelAnalyticsMapper">
+	<resultMap id="LevelDetailtMap" type="com.good.plat.datacenter.datastat.entity.levels.LevelDetail">
+		<result column="gameid" property="gameid"/>
+		<result column="gameName" property="gameName"/>
+		<result column="channelid" property="channelid"/>
+		<result column="channelName" property="channelName"/>
+		<result column="subchannelid" property="subchannelid"/>
+		<result column="areaid" property="areaid"/>
+		<result column="areaName" property="areaName"/>
+		<result column="statdate" property="statdate"/>
+		<result column="statType" property="statType"/>
+		<result column="rate" property="rate"/>
+		<result column="times" property="times"/>
+		<result column="payCount" property="payCount"/>
+		<result column="payMoney" property="payMoney"/>
+		<result column="stallcnt" property="stallcnt"/>
+	</resultMap>
+	
+	<resultMap id="LevelDistributeMap" type="com.good.plat.datacenter.datastat.entity.levels.LevelDistribute">
+		<result column="gameid" property="gameid"/>
+		<result column="gameName" property="gameName"/>
+		<result column="channelid" property="channelid"/>
+		<result column="channelName" property="channelName"/>
+		<result column="subchannelid" property="subchannelid"/>
+		<result column="areaid" property="areaid"/>
+		<result column="areaName" property="areaName"/>
+		<result column="statdate" property="statdate"/>
+		<result column="statType" property="statType"/>
+		<result column="rate" property="rate"/>
+		<result column="activePlayers" property="activePlayers"/>
+		<result column="gameCounts" property="gameCounts"/>
+		<result column="statType" property="statType"/>
+		<result column="day7" property="day7"/>
+		<result column="day14" property="day14"/>
+		<result column="day30" property="day30"/>
+		<result column="durationLevPlayCnt" property="durationLevPlayCnt"/>
+		<result column="currLevPlayCnt" property="currLevPlayCnt"/>
+		
+		
+	</resultMap>
+	
+	<resultMap id="NewPlayerProgressMap" type="com.good.plat.datacenter.datastat.entity.levels.NewPlayerProgress">
+		<result column="gameid" property="gameid"/>
+		<result column="gameName" property="gameName"/>
+		<result column="channelid" property="channelid"/>
+		<result column="channelName" property="channelName"/>
+		<result column="subchannelid" property="subchannelid"/>
+		<result column="areaid" property="areaid"/>
+		<result column="areaName" property="areaName"/>
+		<result column="statdate" property="statdate"/>
+		<result column="statType" property="statType"/>
+		<result column="rate" property="rate"/>
+		
+		<result column="level" property="level"/>
+		<result column="count" property="count"/>
+		<result column="day0" property="day0"/>
+		<result column="day1" property="day1"/>
+		<result column="day2" property="day2"/>
+		<result column="day3" property="day3"/>
+		<result column="day4" property="day4"/>
+		<result column="day5" property="day5"/>
+		<result column="day6" property="day6"/>
+	</resultMap>
+	
+	<sql id="BaseSelect">
+		where statdate between #{startdate} and #{enddate} 
+		<if test="termtypes != null">
+			and termtype in
+			<foreach collection="termtypes" item="term" index="index" open="(" close=")" separator=",">
+				#{term}
+			</foreach>
+		</if>
+		and gameid=#{gameid}
+		<if test="areas != null">
+			and areaid in
+			<foreach collection="areas" item="area" index="index" open="(" close=")" separator=",">
+				#{area}
+			</foreach>
+		</if>
+		<if test="channelList != null">
+			and channel in
+			<foreach collection="channelList" item="channel" index="index" open="(" close=")" separator=",">
+				#{channel.id}
+			</foreach>
+		</if>
+		<if test="subchannels != null">
+			and chnnnl in
+			<foreach collection="subchannels" item="subchannel" index="index" open="(" close=")" separator=",">
+				#{subchannel}
+			</foreach>
+		</if>
+	</sql>
+	<!--
+	时段等级、当前等级玩家数查询条件
+	-->
+	<sql id="registDateBaseSelect">
+		where registdate between #{startdate} and #{enddate} 
+		<if test="termtypes != null">
+			and os in
+			<foreach collection="termtypes" item="term" index="index" open="(" close=")" separator=",">
+				#{term}
+			</foreach>
+		</if>
+		and gameid=#{gameid}
+		<if test="areas != null">
+			and areaid in
+			<foreach collection="areas" item="area" index="index" open="(" close=")" separator=",">
+				#{area}
+			</foreach>
+		</if>
+		<if test="channelList != null">
+			and channel in
+			<foreach collection="channelList" item="channel" index="index" open="(" close=")" separator=",">
+				#{channel.id}
+			</foreach>
+		</if>
+		<if test="subchannels != null">
+			and chnnnl in
+			<foreach collection="subchannels" item="subchannel" index="index" open="(" close=")" separator=",">
+				#{subchannel}
+			</foreach>
+		</if>
+		<if test="versionList != null">
+			and edition in
+			<foreach collection="versionList" item="version" index="index" open="(" close=")" separator=",">
+				#{version.version_name}
+			 </foreach>
+		</if>
+		<if test="languageList != null">
+			and language in
+			<foreach collection="languageList" item="language" index="index" open="(" close=")" separator=",">
+				#{language.language_name}
+			 </foreach>
+		</if>
+	</sql>
+	<sql id="currDateBaseSelect">
+		where 1=1 and statdate =#{currDate} 
+		<if test="termtypes != null">
+			and os in
+			<foreach collection="termtypes" item="term" index="index" open="(" close=")" separator=",">
+				#{term}
+			</foreach>
+		</if>
+		and gameid=#{gameid}
+		<if test="areas != null">
+			and areaid in
+			<foreach collection="areas" item="area" index="index" open="(" close=")" separator=",">
+				#{area}
+			</foreach>
+		</if>
+		<if test="channelList != null">
+			and channel in
+			<foreach collection="channelList" item="channel" index="index" open="(" close=")" separator=",">
+				#{channel.id}
+			</foreach>
+		</if>
+		<if test="subchannels != null">
+			and chnnnl in
+			<foreach collection="subchannels" item="subchannel" index="index" open="(" close=")" separator=",">
+				#{subchannel}
+			</foreach>
+		</if>
+		<if test="versionList != null">
+			and edition in
+			<foreach collection="versionList" item="version" index="index" open="(" close=")" separator=",">
+				#{version.version_name}
+			 </foreach>
+		</if>
+		<if test="languageList != null">
+			and language in
+			<foreach collection="languageList" item="language" index="index" open="(" close=")" separator=",">
+				#{language.language_name}
+			 </foreach>
+		</if>
+	</sql>
+	
+	<sql id="BaseSelectwithEndDate">
+		where statdate=#{enddate}  
+		<if test="termtypes != null">
+			and termtype in
+			<foreach collection="termtypes" item="term" index="index" open="(" close=")" separator=",">
+				#{term}
+			</foreach>
+		</if>
+		and gameid=#{gameid}
+		<if test="areas != null">
+			and areaid in
+			<foreach collection="areas" item="area" index="index" open="(" close=")" separator=",">
+				#{area}
+			</foreach>
+		</if>
+		<if test="channelList != null">
+			and channel in
+			<foreach collection="channelList" item="channel" index="index" open="(" close=")" separator=",">
+				#{channel.id}
+			</foreach>
+		</if>
+		<if test="subchannels != null">
+			and chnnnl in
+			<foreach collection="subchannels" item="subchannel" index="index" open="(" close=")" separator=",">
+				#{subchannel}
+			</foreach>
+		</if>
+		<if test="versionList != null">
+			and edition in
+			<foreach collection="versionList" item="version" index="index" open="(" close=")" separator=",">
+				#{version.version_name}
+			 </foreach>
+		</if>
+		<if test="languageList != null">
+			and language in
+			<foreach collection="languageList" item="language" index="index" open="(" close=")" separator=",">
+				#{language.language_name}
+			 </foreach>
+		</if>
+	</sql>
+	
+	<!-- 等级详情 -->
+	<select id="selectLevelStageData" resultMap="LevelDetailtMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		SELECT
+		a.`LEVEL` AS statType,
+		a.lvltime,
+		a.totalcnt,
+		IF (
+			a.totalcnt = 0 or ISNULL(a.totalcnt),
+			0,
+			ROUND(a.lvltime / a.totalcnt)
+		) AS times,
+		 IFNULL(c.stallcnt, 0) AS stallcnt,
+		IF (
+			c.allstallcnt = 0 or ISNULL(c.allstallcnt),
+			0,
+			c.stallcnt / c.allstallcnt * 100
+		) AS rate,
+		 ifnull(b.count, 0) AS payCount,
+		 ifnull(b.money, 0) AS payMoney
+	FROM
+		(
+			SELECT
+				LEVEL,
+				sum(IFNULL(lvltime, 0)) AS lvltime,
+				sum(IFNULL(totalcnt, 0)) AS totalcnt
+			FROM
+				logplat_actorlvl_detail
+			<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/>
+			GROUP BY
+				LEVEL
+		) a
+	LEFT JOIN (
+		SELECT
+			j. LEVEL,
+			min(j.stallcnt) stallcnt,
+			sum(IF(k.stallcnt is NULL,0,k.stallcnt)) allstallcnt
+		FROM
+			(
+				SELECT
+					LEVEL,
+					sum(IFNULL(stallcnt, 0)) stallcnt
+				FROM
+					logplat_actorlvl_detail
+				<include refid="BaseSelectwithEndDate"/>
+				GROUP BY
+					LEVEL
+			) j
+		LEFT JOIN (
+			SELECT
+				LEVEL,
+				sum(IFNULL(stallcnt, 0)) stallcnt
+			FROM
+				logplat_actorlvl_detail
+			<include refid="BaseSelectwithEndDate"/>
+			GROUP BY
+				LEVEL
+		) k ON j.LEVEL &lt;= k.LEVEL
+		GROUP BY
+			j. LEVEL
+	) c ON (a.`LEVEL` = c.`LEVEL`)
+		LEFT JOIN (
+				SELECT
+					actorlevel,
+					count(orderid) AS count,
+					sum(money) AS money
+				FROM
+					logplat_actor_recharge
+			<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/>
+				GROUP BY
+					actorlevel
+			) b ON (a. LEVEL = b.actorlevel);
+	</select>
+	
+	<select id="exportLevelStageData" resultMap="LevelDetailtMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+	</select>
+	
+	
+	<!-- 升级时长 -->
+	<select id="selectLevelUpTimeDistribution" resultMap="LevelDetailtMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select lvltimedesc as statType,ifnull(sum(actorcnt),0) as times
+		from logplat_lvlup_time_detail
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/> and level=#{checktype1,jdbcType=INTEGER}
+		group by lvltimedesc order by lvltime
+	</select>
+	
+	<!-- 按日趋势 -->
+	<select id="selectRemarkList" resultMap="LevelDetailtMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+	</select>
+	
+	<!-- 按日升级时长 -->
+	<select id="selectDailyUpgradeList" resultMap="LevelDetailtMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select statdate,if(sum(totalcnt)=0,0,sum(lvltime)/sum(totalcnt)) as times,sum(totalcnt) as totalcnt
+		from logplat_actorlvl_detail
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/>and level=#{checktype1,jdbcType=INTEGER}
+		group by statdate order by statdate
+	</select>
+	
+	<!-- 等级停滞 -->
+	<select id="selectLevelPlateauList" resultMap="LevelDetailtMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		SELECT
+		j.statdate,
+		j.LEVEL,
+		min(j.stallcnt) stallcnt,
+		sum(k.stallcnt) allstallcnt,
+		IF(sum(k.stallcnt)=0,0,ROUND(min(j.stallcnt)/sum(k.stallcnt)*100,4)) as rate
+		FROM
+			(
+				SELECT
+					statdate,
+					LEVEL,
+					sum(IFNULL(stallcnt, 0)) stallcnt
+				FROM
+					logplat_actorlvl_detail
+				<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/>
+				and LEVEL=#{checktype1,jdbcType=INTEGER}
+				GROUP BY
+					statdate,
+					LEVEL
+			) j
+		LEFT JOIN (
+			SELECT
+				statdate,
+				LEVEL,
+				sum(IFNULL(stallcnt, 0)) stallcnt
+			FROM
+				logplat_actorlvl_detail
+			<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/>
+			and `level`&gt;=#{checktype1,jdbcType=INTEGER}<!-- 到达改等级及等级以上 -->
+			GROUP BY
+				statdate,
+				LEVEL
+		) k ON j.statdate = k.statdate
+		AND j.LEVEL &lt;= k.LEVEL
+		GROUP BY
+			j.statdate,
+			j.LEVEL;
+	</select>
+	
+	<!-- 付费次数  & 付费金额-->
+	<select id="selectPayTimeAndMoneyList" resultMap="LevelDetailtMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select statdate,count(orderid) as payCount,ifnull(sum(money),0) as payMoney
+		from logplat_actor_recharge
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/>  and actorlevel=#{checktype1,jdbcType=INTEGER} 
+		GROUP BY statdate ORDER BY statdate;
+	</select>
+	
+	<!-- 玩家等级分布 -->
+	<select id="selectLevelDistributionOfActivePlayer" resultMap="LevelDistributeMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select level as statType,ifnull(sum(loginact),0) as activePlayers
+		from logplat_actorlvl_stat
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/> 
+		group by level order by level
+	</select>
+	
+	<select id="exportLevelDistributionOfActivePlayer" resultMap="LevelDistributeMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+	</select>
+	
+	
+	<!-- 游戏次数等级分布 -->
+	<select id="selectLevelDistributionOfPlayTimes" resultMap="LevelDistributeMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select level as statType,ifnull(sum(logincnt),0) as gameCounts
+		from logplat_actorlvl_stat
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/>
+		group by level order by level
+	</select>
+	
+	<select id="exportLevelDistributionOfPlayTimes" resultMap="LevelDistributeMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+	</select>
+	
+	
+	<!-- 流失玩家停留等级 -->
+	<select id="selectLevelOfLossPlayer" resultMap="LevelDistributeMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select subtype as statType,ifnull(sum(case when nday=7 then lostcnt end),0) as day7
+		,ifnull(sum(case when nday=14 then lostcnt end),0) as day14
+		,ifnull(sum(case when nday=30 then lostcnt end),0) as day30
+		from logplat_daily_lost
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/> and type=1
+		group by subtype order by subtype
+	</select>
+	
+	<select id="exportLevelOfLossPlayer" resultMap="LevelDistributeMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+	</select>
+	
+	<!-- 首个n日等级玩家 -->
+	<select id="selectFirstNDayLevelPlayer" resultMap="NewPlayerProgressMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select level as level,ifnull(sum(actorcnt),0) as count
+		from logplat_newactorlvl_stat
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/> and nday=#{checktype1,jdbcType=INTEGER}
+		group by level order by level
+	</select>
+	
+	<!-- n日玩家等级变迁 -->
+	<select id="selectNDayPlayerLevelChange" resultMap="NewPlayerProgressMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select level,sum(case when nday=0 then actorcnt else 0 end) as day0,
+			sum(case when nday=1 then actorcnt else 0 end) as day1,
+			sum(case when nday=2 then actorcnt else 0 end) as day2,
+			sum(case when nday=3 then actorcnt else 0 end) as day3,
+			sum(case when nday=4 then actorcnt else 0 end) as day4,
+			sum(case when nday=5 then actorcnt else 0 end) as day5,
+			sum(case when nday=6 then actorcnt else 0 end) as day6
+		from logplat_newactorlvl_stat 
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/>
+		and type=1
+		group by level order by level
+	</select>
+	
+		<!-- n日新付费玩家等级变迁 -->
+	<select id="selectNPayPlayerLevelChange" resultMap="NewPlayerProgressMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select level,sum(case when nday=0 then actorcnt else 0 end) as day0,
+			sum(case when nday=1 then actorcnt else 0 end) as day1,
+			sum(case when nday=2 then actorcnt else 0 end) as day2,
+			sum(case when nday=3 then actorcnt else 0 end) as day3,
+			sum(case when nday=4 then actorcnt else 0 end) as day4,
+			sum(case when nday=5 then actorcnt else 0 end) as day5,
+			sum(case when nday=6 then actorcnt else 0 end) as day6
+		from logplat_newactorlvl_stat 
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/>
+		and type=2
+		group by level order by level
+	</select>
+	
+	<!-- 等级玩家数 (时段等级、当前等级)-->
+	<select id="selectPlayerCntOfLevel" resultMap="LevelDistributeMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+	select
+		b.`level` statType,
+		ifnull(a.durationPlayCnt,0) durationLevPlayCnt,
+		ifnull(b.currPlayCnt,0) currLevPlayCnt
+	from
+		(
+			select
+			level,
+			sum(actorcnt) AS 'durationPlayCnt'
+		from
+			logplat_lvlup_time_detail2
+		<include refid="registDateBaseSelect"/>
+		and statdate =#{currDate}
+		group by
+			level
+		) a
+	 right join (
+		select
+				level,
+				sum(actorcnt) AS 'currPlayCnt'
+			from
+				logplat_lvlup_time_detail2
+			<include refid="currDateBaseSelect"/>
+			group by
+				level
+	) b on a. level = b. level
+	</select>
+	
+	
+	
+	
+	
+	
+</mapper>

@@ -1,0 +1,3556 @@
+{
+  "topSaleItemsByItem": [
+    {
+      "currencySum": 2487600.0,
+      "currencyPurchase": 4485.0,
+      "virtualGoods": "item45",
+      "numberOfExpense": 14314.0,
+      "view": {
+        "currencyPurchase": [
+          {
+            "item": "140824",
+            "value": 708
+          },
+          {
+            "item": "140825",
+            "value": 426
+          },
+          {
+            "item": "140826",
+            "value": 597
+          },
+          {
+            "item": "140827",
+            "value": 531
+          },
+          {
+            "item": "140828",
+            "value": 456
+          },
+          {
+            "item": "140829",
+            "value": 318
+          },
+          {
+            "item": "140830",
+            "value": 474
+          },
+          {
+            "item": "140831",
+            "value": 975
+          }
+        ],
+        "currencySum": [
+          {
+            "item": "140824",
+            "value": 409500
+          },
+          {
+            "item": "140825",
+            "value": 229500
+          },
+          {
+            "item": "140826",
+            "value": 342900
+          },
+          {
+            "item": "140827",
+            "value": 290700
+          },
+          {
+            "item": "140828",
+            "value": 258300
+          },
+          {
+            "item": "140829",
+            "value": 173700
+          },
+          {
+            "item": "140830",
+            "value": 234000
+          },
+          {
+            "item": "140831",
+            "value": 549000
+          }
+        ],
+        "numberOfExpense": [
+          {
+            "item": "140824",
+            "value": 2145
+          },
+          {
+            "item": "140825",
+            "value": 1871
+          },
+          {
+            "item": "140826",
+            "value": 1937
+          },
+          {
+            "item": "140827",
+            "value": 1952
+          },
+          {
+            "item": "140828",
+            "value": 1366
+          },
+          {
+            "item": "140829",
+            "value": 1475
+          },
+          {
+            "item": "140830",
+            "value": 1634
+          },
+          {
+            "item": "140831",
+            "value": 1934
+          }
+        ],
+        "spendingAccounts": [
+          {
+            "item": "140824",
+            "value": 1522
+          },
+          {
+            "item": "140825",
+            "value": 1558
+          },
+          {
+            "item": "140826",
+            "value": 1684
+          },
+          {
+            "item": "140827",
+            "value": 1717
+          },
+          {
+            "item": "140828",
+            "value": 1455
+          },
+          {
+            "item": "140829",
+            "value": 1468
+          },
+          {
+            "item": "140830",
+            "value": 1442
+          },
+          {
+            "item": "140831",
+            "value": 1470
+          }
+        ]
+      },
+      "levels": {
+        "currencyPurchase": [
+          {
+            "item": 1.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 2.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 3.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 4.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 5.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 6.0,
+            "percentage": 1.9,
+            "accounts": 84.0
+          },
+          {
+            "item": 7.0,
+            "percentage": 6.6,
+            "accounts": 297.0
+          },
+          {
+            "item": 8.0,
+            "percentage": 6.6,
+            "accounts": 297.0
+          },
+          {
+            "item": 9.0,
+            "percentage": 12.0,
+            "accounts": 537.0
+          },
+          {
+            "item": 10.0,
+            "percentage": 72.9,
+            "accounts": 3270.0
+          }
+        ],
+        "currencySum": [
+          {
+            "item": 1.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 2.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 3.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 4.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 5.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 6.0,
+            "percentage": 1.9,
+            "accounts": 84.0
+          },
+          {
+            "item": 7.0,
+            "percentage": 6.6,
+            "accounts": 297.0
+          },
+          {
+            "item": 8.0,
+            "percentage": 6.6,
+            "accounts": 297.0
+          },
+          {
+            "item": 9.0,
+            "percentage": 12.0,
+            "accounts": 537.0
+          },
+          {
+            "item": 10.0,
+            "percentage": 72.9,
+            "accounts": 3270.0
+          }
+        ],
+        "numberOfExpense": [
+          {
+            "item": 1.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 2.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 3.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 4.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 5.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 6.0,
+            "percentage": 1.9,
+            "accounts": 84.0
+          },
+          {
+            "item": 7.0,
+            "percentage": 6.6,
+            "accounts": 297.0
+          },
+          {
+            "item": 8.0,
+            "percentage": 6.6,
+            "accounts": 297.0
+          },
+          {
+            "item": 9.0,
+            "percentage": 12.0,
+            "accounts": 537.0
+          },
+          {
+            "item": 10.0,
+            "percentage": 72.9,
+            "accounts": 3270.0
+          }
+        ],
+        "spendingAccounts": [
+          {
+            "item": 1.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 2.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 3.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 4.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 5.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 6.0,
+            "percentage": 1.9,
+            "accounts": 84.0
+          },
+          {
+            "item": 7.0,
+            "percentage": 6.6,
+            "accounts": 297.0
+          },
+          {
+            "item": 8.0,
+            "percentage": 6.6,
+            "accounts": 297.0
+          },
+          {
+            "item": 9.0,
+            "percentage": 12.0,
+            "accounts": 537.0
+          },
+          {
+            "item": 10.0,
+            "percentage": 72.9,
+            "accounts": 3270.0
+          }
+        ]
+      },
+      "stages": {
+        "currencyPurchase": [
+          {
+            "item": "关卡01",
+            "percentage": 31.8,
+            "accounts": 1425.0
+          },
+          {
+            "item": "关卡02",
+            "percentage": 28.1,
+            "accounts": 1260.0
+          },
+          {
+            "item": "关卡03",
+            "percentage": 19.9,
+            "accounts": 894.0
+          },
+          {
+            "item": "关卡04",
+            "percentage": 20.2,
+            "accounts": 906.0
+          }
+        ],
+        "currencySum": [
+          {
+            "item": "关卡01",
+            "percentage": 30.9,
+            "accounts": 767700.0
+          },
+          {
+            "item": "关卡02",
+            "percentage": 28.3,
+            "accounts": 702900.0
+          },
+          {
+            "item": "关卡03",
+            "percentage": 20.5,
+            "accounts": 510300.0
+          },
+          {
+            "item": "关卡04",
+            "percentage": 20.4,
+            "accounts": 506700.0
+          }
+        ],
+        "numberOfExpense": [
+          {
+            "item": "关卡01",
+            "percentage": 30.3,
+            "accounts": 4339.0
+          },
+          {
+            "item": "关卡02",
+            "percentage": 23.7,
+            "accounts": 3398.0
+          },
+          {
+            "item": "关卡03",
+            "percentage": 20.3,
+            "accounts": 2909.0
+          },
+          {
+            "item": "关卡04",
+            "percentage": 25.6,
+            "accounts": 3668.0
+          }
+        ],
+        "spendingAccounts": [
+          {
+            "item": "关卡01",
+            "percentage": 34.2,
+            "accounts": 191.0
+          },
+          {
+            "item": "关卡02",
+            "percentage": 23.1,
+            "accounts": 129.0
+          },
+          {
+            "item": "关卡03",
+            "percentage": 20.8,
+            "accounts": 116.0
+          },
+          {
+            "item": "关卡04",
+            "percentage": 21.9,
+            "accounts": 122.0
+          }
+        ]
+      }
+    },
+    {
+      "currencySum": 734250.0,
+      "currencyPurchase": 1473.0,
+      "virtualGoods": "item51",
+      "numberOfExpense": 0.0,
+      "view": {
+        "currencyPurchase": [
+          {
+            "item": "140824",
+            "value": 708
+          },
+          {
+            "item": "140825",
+            "value": 426
+          },
+          {
+            "item": "140826",
+            "value": 597
+          },
+          {
+            "item": "140827",
+            "value": 531
+          },
+          {
+            "item": "140828",
+            "value": 456
+          },
+          {
+            "item": "140829",
+            "value": 318
+          },
+          {
+            "item": "140830",
+            "value": 474
+          },
+          {
+            "item": "140831",
+            "value": 975
+          }
+        ],
+        "currencySum": [
+          {
+            "item": "140824",
+            "value": 409500
+          },
+          {
+            "item": "140825",
+            "value": 229500
+          },
+          {
+            "item": "140826",
+            "value": 342900
+          },
+          {
+            "item": "140827",
+            "value": 290700
+          },
+          {
+            "item": "140828",
+            "value": 258300
+          },
+          {
+            "item": "140829",
+            "value": 173700
+          },
+          {
+            "item": "140830",
+            "value": 234000
+          },
+          {
+            "item": "140831",
+            "value": 549000
+          }
+        ],
+        "numberOfExpense": [
+          {
+            "item": "140824",
+            "value": 2145
+          },
+          {
+            "item": "140825",
+            "value": 1871
+          },
+          {
+            "item": "140826",
+            "value": 1937
+          },
+          {
+            "item": "140827",
+            "value": 1952
+          },
+          {
+            "item": "140828",
+            "value": 1366
+          },
+          {
+            "item": "140829",
+            "value": 1475
+          },
+          {
+            "item": "140830",
+            "value": 1634
+          },
+          {
+            "item": "140831",
+            "value": 1934
+          }
+        ],
+        "spendingAccounts": [
+          {
+            "item": "140824",
+            "value": 1522
+          },
+          {
+            "item": "140825",
+            "value": 1558
+          },
+          {
+            "item": "140826",
+            "value": 1684
+          },
+          {
+            "item": "140827",
+            "value": 1717
+          },
+          {
+            "item": "140828",
+            "value": 1455
+          },
+          {
+            "item": "140829",
+            "value": 1468
+          },
+          {
+            "item": "140830",
+            "value": 1442
+          },
+          {
+            "item": "140831",
+            "value": 1470
+          }
+        ]
+      },
+      "levels": {
+        "currencyPurchase": [
+          {
+            "item": 1.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 2.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 3.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 4.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 5.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 6.0,
+            "percentage": 1.9,
+            "accounts": 84.0
+          },
+          {
+            "item": 7.0,
+            "percentage": 6.6,
+            "accounts": 297.0
+          },
+          {
+            "item": 8.0,
+            "percentage": 6.6,
+            "accounts": 297.0
+          },
+          {
+            "item": 9.0,
+            "percentage": 12.0,
+            "accounts": 537.0
+          },
+          {
+            "item": 10.0,
+            "percentage": 72.9,
+            "accounts": 3270.0
+          }
+        ],
+        "currencySum": [
+          {
+            "item": 1.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 2.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 3.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 4.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 5.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 6.0,
+            "percentage": 1.9,
+            "accounts": 84.0
+          },
+          {
+            "item": 7.0,
+            "percentage": 6.6,
+            "accounts": 297.0
+          },
+          {
+            "item": 8.0,
+            "percentage": 6.6,
+            "accounts": 297.0
+          },
+          {
+            "item": 9.0,
+            "percentage": 12.0,
+            "accounts": 537.0
+          },
+          {
+            "item": 10.0,
+            "percentage": 72.9,
+            "accounts": 3270.0
+          }
+        ],
+        "numberOfExpense": [
+          {
+            "item": 1.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 2.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 3.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 4.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 5.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 6.0,
+            "percentage": 1.9,
+            "accounts": 84.0
+          },
+          {
+            "item": 7.0,
+            "percentage": 6.6,
+            "accounts": 297.0
+          },
+          {
+            "item": 8.0,
+            "percentage": 6.6,
+            "accounts": 297.0
+          },
+          {
+            "item": 9.0,
+            "percentage": 12.0,
+            "accounts": 537.0
+          },
+          {
+            "item": 10.0,
+            "percentage": 72.9,
+            "accounts": 3270.0
+          }
+        ],
+        "spendingAccounts": [
+          {
+            "item": 1.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 2.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 3.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 4.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 5.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 6.0,
+            "percentage": 1.9,
+            "accounts": 84.0
+          },
+          {
+            "item": 7.0,
+            "percentage": 6.6,
+            "accounts": 297.0
+          },
+          {
+            "item": 8.0,
+            "percentage": 6.6,
+            "accounts": 297.0
+          },
+          {
+            "item": 9.0,
+            "percentage": 12.0,
+            "accounts": 537.0
+          },
+          {
+            "item": 10.0,
+            "percentage": 72.9,
+            "accounts": 3270.0
+          }
+        ]
+      },
+      "stages": {
+        "currencyPurchase": [
+          {
+            "item": "关卡01",
+            "percentage": 31.8,
+            "accounts": 1425.0
+          },
+          {
+            "item": "关卡02",
+            "percentage": 28.1,
+            "accounts": 1260.0
+          },
+          {
+            "item": "关卡03",
+            "percentage": 19.9,
+            "accounts": 894.0
+          },
+          {
+            "item": "关卡04",
+            "percentage": 20.2,
+            "accounts": 906.0
+          }
+        ],
+        "currencySum": [
+          {
+            "item": "关卡01",
+            "percentage": 30.9,
+            "accounts": 767700.0
+          },
+          {
+            "item": "关卡02",
+            "percentage": 28.3,
+            "accounts": 702900.0
+          },
+          {
+            "item": "关卡03",
+            "percentage": 20.5,
+            "accounts": 510300.0
+          },
+          {
+            "item": "关卡04",
+            "percentage": 20.4,
+            "accounts": 506700.0
+          }
+        ],
+        "numberOfExpense": [
+          {
+            "item": "关卡01",
+            "percentage": 30.3,
+            "accounts": 4339.0
+          },
+          {
+            "item": "关卡02",
+            "percentage": 23.7,
+            "accounts": 3398.0
+          },
+          {
+            "item": "关卡03",
+            "percentage": 20.3,
+            "accounts": 2909.0
+          },
+          {
+            "item": "关卡04",
+            "percentage": 25.6,
+            "accounts": 3668.0
+          }
+        ],
+        "spendingAccounts": [
+          {
+            "item": "关卡01",
+            "percentage": 34.2,
+            "accounts": 191.0
+          },
+          {
+            "item": "关卡02",
+            "percentage": 23.1,
+            "accounts": 129.0
+          },
+          {
+            "item": "关卡03",
+            "percentage": 20.8,
+            "accounts": 116.0
+          },
+          {
+            "item": "关卡04",
+            "percentage": 21.9,
+            "accounts": 122.0
+          }
+        ]
+      }
+    },
+    {
+      "currencySum": 262200.0,
+      "currencyPurchase": 437.0,
+      "virtualGoods": "item44",
+      "numberOfExpense": 0.0,
+      "view": {
+        "currencyPurchase": [
+          {
+            "item": "140824",
+            "value": 708
+          },
+          {
+            "item": "140825",
+            "value": 426
+          },
+          {
+            "item": "140826",
+            "value": 597
+          },
+          {
+            "item": "140827",
+            "value": 531
+          },
+          {
+            "item": "140828",
+            "value": 456
+          },
+          {
+            "item": "140829",
+            "value": 318
+          },
+          {
+            "item": "140830",
+            "value": 474
+          },
+          {
+            "item": "140831",
+            "value": 975
+          }
+        ],
+        "currencySum": [
+          {
+            "item": "140824",
+            "value": 409500
+          },
+          {
+            "item": "140825",
+            "value": 229500
+          },
+          {
+            "item": "140826",
+            "value": 342900
+          },
+          {
+            "item": "140827",
+            "value": 290700
+          },
+          {
+            "item": "140828",
+            "value": 258300
+          },
+          {
+            "item": "140829",
+            "value": 173700
+          },
+          {
+            "item": "140830",
+            "value": 234000
+          },
+          {
+            "item": "140831",
+            "value": 549000
+          }
+        ],
+        "numberOfExpense": [
+          {
+            "item": "140824",
+            "value": 2145
+          },
+          {
+            "item": "140825",
+            "value": 1871
+          },
+          {
+            "item": "140826",
+            "value": 1937
+          },
+          {
+            "item": "140827",
+            "value": 1952
+          },
+          {
+            "item": "140828",
+            "value": 1366
+          },
+          {
+            "item": "140829",
+            "value": 1475
+          },
+          {
+            "item": "140830",
+            "value": 1634
+          },
+          {
+            "item": "140831",
+            "value": 1934
+          }
+        ],
+        "spendingAccounts": [
+          {
+            "item": "140824",
+            "value": 1522
+          },
+          {
+            "item": "140825",
+            "value": 1558
+          },
+          {
+            "item": "140826",
+            "value": 1684
+          },
+          {
+            "item": "140827",
+            "value": 1717
+          },
+          {
+            "item": "140828",
+            "value": 1455
+          },
+          {
+            "item": "140829",
+            "value": 1468
+          },
+          {
+            "item": "140830",
+            "value": 1442
+          },
+          {
+            "item": "140831",
+            "value": 1470
+          }
+        ]
+      },
+      "levels": {
+        "currencyPurchase": [
+          {
+            "item": 1.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 2.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 3.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 4.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 5.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 6.0,
+            "percentage": 1.9,
+            "accounts": 84.0
+          },
+          {
+            "item": 7.0,
+            "percentage": 6.6,
+            "accounts": 297.0
+          },
+          {
+            "item": 8.0,
+            "percentage": 6.6,
+            "accounts": 297.0
+          },
+          {
+            "item": 9.0,
+            "percentage": 12.0,
+            "accounts": 537.0
+          },
+          {
+            "item": 10.0,
+            "percentage": 72.9,
+            "accounts": 3270.0
+          }
+        ],
+        "currencySum": [
+          {
+            "item": 1.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 2.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 3.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 4.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 5.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 6.0,
+            "percentage": 1.9,
+            "accounts": 84.0
+          },
+          {
+            "item": 7.0,
+            "percentage": 6.6,
+            "accounts": 297.0
+          },
+          {
+            "item": 8.0,
+            "percentage": 6.6,
+            "accounts": 297.0
+          },
+          {
+            "item": 9.0,
+            "percentage": 12.0,
+            "accounts": 537.0
+          },
+          {
+            "item": 10.0,
+            "percentage": 72.9,
+            "accounts": 3270.0
+          }
+        ],
+        "numberOfExpense": [
+          {
+            "item": 1.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 2.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 3.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 4.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 5.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 6.0,
+            "percentage": 1.9,
+            "accounts": 84.0
+          },
+          {
+            "item": 7.0,
+            "percentage": 6.6,
+            "accounts": 297.0
+          },
+          {
+            "item": 8.0,
+            "percentage": 6.6,
+            "accounts": 297.0
+          },
+          {
+            "item": 9.0,
+            "percentage": 12.0,
+            "accounts": 537.0
+          },
+          {
+            "item": 10.0,
+            "percentage": 72.9,
+            "accounts": 3270.0
+          }
+        ],
+        "spendingAccounts": [
+          {
+            "item": 1.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 2.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 3.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 4.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 5.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 6.0,
+            "percentage": 1.9,
+            "accounts": 84.0
+          },
+          {
+            "item": 7.0,
+            "percentage": 6.6,
+            "accounts": 297.0
+          },
+          {
+            "item": 8.0,
+            "percentage": 6.6,
+            "accounts": 297.0
+          },
+          {
+            "item": 9.0,
+            "percentage": 12.0,
+            "accounts": 537.0
+          },
+          {
+            "item": 10.0,
+            "percentage": 72.9,
+            "accounts": 3270.0
+          }
+        ]
+      },
+      "stages": {
+        "currencyPurchase": [
+          {
+            "item": "关卡01",
+            "percentage": 31.8,
+            "accounts": 1425.0
+          },
+          {
+            "item": "关卡02",
+            "percentage": 28.1,
+            "accounts": 1260.0
+          },
+          {
+            "item": "关卡03",
+            "percentage": 19.9,
+            "accounts": 894.0
+          },
+          {
+            "item": "关卡04",
+            "percentage": 20.2,
+            "accounts": 906.0
+          }
+        ],
+        "currencySum": [
+          {
+            "item": "关卡01",
+            "percentage": 30.9,
+            "accounts": 767700.0
+          },
+          {
+            "item": "关卡02",
+            "percentage": 28.3,
+            "accounts": 702900.0
+          },
+          {
+            "item": "关卡03",
+            "percentage": 20.5,
+            "accounts": 510300.0
+          },
+          {
+            "item": "关卡04",
+            "percentage": 20.4,
+            "accounts": 506700.0
+          }
+        ],
+        "numberOfExpense": [
+          {
+            "item": "关卡01",
+            "percentage": 30.3,
+            "accounts": 4339.0
+          },
+          {
+            "item": "关卡02",
+            "percentage": 23.7,
+            "accounts": 3398.0
+          },
+          {
+            "item": "关卡03",
+            "percentage": 20.3,
+            "accounts": 2909.0
+          },
+          {
+            "item": "关卡04",
+            "percentage": 25.6,
+            "accounts": 3668.0
+          }
+        ],
+        "spendingAccounts": [
+          {
+            "item": "关卡01",
+            "percentage": 34.2,
+            "accounts": 191.0
+          },
+          {
+            "item": "关卡02",
+            "percentage": 23.1,
+            "accounts": 129.0
+          },
+          {
+            "item": "关卡03",
+            "percentage": 20.8,
+            "accounts": 116.0
+          },
+          {
+            "item": "关卡04",
+            "percentage": 21.9,
+            "accounts": 122.0
+          }
+        ]
+      }
+    },
+    {
+      "currencySum": 2358300.0,
+      "currencyPurchase": 2552.0,
+      "virtualGoods": "item70",
+      "numberOfExpense": 0.0,
+      "view": {
+        "currencyPurchase": [
+          {
+            "item": "140824",
+            "value": 708
+          },
+          {
+            "item": "140825",
+            "value": 426
+          },
+          {
+            "item": "140826",
+            "value": 597
+          },
+          {
+            "item": "140827",
+            "value": 531
+          },
+          {
+            "item": "140828",
+            "value": 456
+          },
+          {
+            "item": "140829",
+            "value": 318
+          },
+          {
+            "item": "140830",
+            "value": 474
+          },
+          {
+            "item": "140831",
+            "value": 975
+          }
+        ],
+        "currencySum": [
+          {
+            "item": "140824",
+            "value": 409500
+          },
+          {
+            "item": "140825",
+            "value": 229500
+          },
+          {
+            "item": "140826",
+            "value": 342900
+          },
+          {
+            "item": "140827",
+            "value": 290700
+          },
+          {
+            "item": "140828",
+            "value": 258300
+          },
+          {
+            "item": "140829",
+            "value": 173700
+          },
+          {
+            "item": "140830",
+            "value": 234000
+          },
+          {
+            "item": "140831",
+            "value": 549000
+          }
+        ],
+        "numberOfExpense": [
+          {
+            "item": "140824",
+            "value": 2145
+          },
+          {
+            "item": "140825",
+            "value": 1871
+          },
+          {
+            "item": "140826",
+            "value": 1937
+          },
+          {
+            "item": "140827",
+            "value": 1952
+          },
+          {
+            "item": "140828",
+            "value": 1366
+          },
+          {
+            "item": "140829",
+            "value": 1475
+          },
+          {
+            "item": "140830",
+            "value": 1634
+          },
+          {
+            "item": "140831",
+            "value": 1934
+          }
+        ],
+        "spendingAccounts": [
+          {
+            "item": "140824",
+            "value": 1522
+          },
+          {
+            "item": "140825",
+            "value": 1558
+          },
+          {
+            "item": "140826",
+            "value": 1684
+          },
+          {
+            "item": "140827",
+            "value": 1717
+          },
+          {
+            "item": "140828",
+            "value": 1455
+          },
+          {
+            "item": "140829",
+            "value": 1468
+          },
+          {
+            "item": "140830",
+            "value": 1442
+          },
+          {
+            "item": "140831",
+            "value": 1470
+          }
+        ]
+      },
+      "levels": {
+        "currencyPurchase": [
+          {
+            "item": 1.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 2.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 3.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 4.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 5.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 6.0,
+            "percentage": 1.9,
+            "accounts": 84.0
+          },
+          {
+            "item": 7.0,
+            "percentage": 6.6,
+            "accounts": 297.0
+          },
+          {
+            "item": 8.0,
+            "percentage": 6.6,
+            "accounts": 297.0
+          },
+          {
+            "item": 9.0,
+            "percentage": 12.0,
+            "accounts": 537.0
+          },
+          {
+            "item": 10.0,
+            "percentage": 72.9,
+            "accounts": 3270.0
+          }
+        ],
+        "currencySum": [
+          {
+            "item": 1.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 2.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 3.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 4.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 5.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 6.0,
+            "percentage": 1.9,
+            "accounts": 84.0
+          },
+          {
+            "item": 7.0,
+            "percentage": 6.6,
+            "accounts": 297.0
+          },
+          {
+            "item": 8.0,
+            "percentage": 6.6,
+            "accounts": 297.0
+          },
+          {
+            "item": 9.0,
+            "percentage": 12.0,
+            "accounts": 537.0
+          },
+          {
+            "item": 10.0,
+            "percentage": 72.9,
+            "accounts": 3270.0
+          }
+        ],
+        "numberOfExpense": [
+          {
+            "item": 1.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 2.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 3.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 4.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 5.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 6.0,
+            "percentage": 1.9,
+            "accounts": 84.0
+          },
+          {
+            "item": 7.0,
+            "percentage": 6.6,
+            "accounts": 297.0
+          },
+          {
+            "item": 8.0,
+            "percentage": 6.6,
+            "accounts": 297.0
+          },
+          {
+            "item": 9.0,
+            "percentage": 12.0,
+            "accounts": 537.0
+          },
+          {
+            "item": 10.0,
+            "percentage": 72.9,
+            "accounts": 3270.0
+          }
+        ],
+        "spendingAccounts": [
+          {
+            "item": 1.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 2.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 3.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 4.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 5.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 6.0,
+            "percentage": 1.9,
+            "accounts": 84.0
+          },
+          {
+            "item": 7.0,
+            "percentage": 6.6,
+            "accounts": 297.0
+          },
+          {
+            "item": 8.0,
+            "percentage": 6.6,
+            "accounts": 297.0
+          },
+          {
+            "item": 9.0,
+            "percentage": 12.0,
+            "accounts": 537.0
+          },
+          {
+            "item": 10.0,
+            "percentage": 72.9,
+            "accounts": 3270.0
+          }
+        ]
+      },
+      "stages": {
+        "currencyPurchase": [
+          {
+            "item": "关卡01",
+            "percentage": 31.8,
+            "accounts": 1425.0
+          },
+          {
+            "item": "关卡02",
+            "percentage": 28.1,
+            "accounts": 1260.0
+          },
+          {
+            "item": "关卡03",
+            "percentage": 19.9,
+            "accounts": 894.0
+          },
+          {
+            "item": "关卡04",
+            "percentage": 20.2,
+            "accounts": 906.0
+          }
+        ],
+        "currencySum": [
+          {
+            "item": "关卡01",
+            "percentage": 30.9,
+            "accounts": 767700.0
+          },
+          {
+            "item": "关卡02",
+            "percentage": 28.3,
+            "accounts": 702900.0
+          },
+          {
+            "item": "关卡03",
+            "percentage": 20.5,
+            "accounts": 510300.0
+          },
+          {
+            "item": "关卡04",
+            "percentage": 20.4,
+            "accounts": 506700.0
+          }
+        ],
+        "numberOfExpense": [
+          {
+            "item": "关卡01",
+            "percentage": 30.3,
+            "accounts": 4339.0
+          },
+          {
+            "item": "关卡02",
+            "percentage": 23.7,
+            "accounts": 3398.0
+          },
+          {
+            "item": "关卡03",
+            "percentage": 20.3,
+            "accounts": 2909.0
+          },
+          {
+            "item": "关卡04",
+            "percentage": 25.6,
+            "accounts": 3668.0
+          }
+        ],
+        "spendingAccounts": [
+          {
+            "item": "关卡01",
+            "percentage": 34.2,
+            "accounts": 191.0
+          },
+          {
+            "item": "关卡02",
+            "percentage": 23.1,
+            "accounts": 129.0
+          },
+          {
+            "item": "关卡03",
+            "percentage": 20.8,
+            "accounts": 116.0
+          },
+          {
+            "item": "关卡04",
+            "percentage": 21.9,
+            "accounts": 122.0
+          }
+        ]
+      }
+    },
+    {
+      "currencySum": 699600.0,
+      "currencyPurchase": 2925.0,
+      "virtualGoods": "item50",
+      "numberOfExpense": 0.0,
+      "view": {
+        "currencyPurchase": [
+          {
+            "item": "140824",
+            "value": 708
+          },
+          {
+            "item": "140825",
+            "value": 426
+          },
+          {
+            "item": "140826",
+            "value": 597
+          },
+          {
+            "item": "140827",
+            "value": 531
+          },
+          {
+            "item": "140828",
+            "value": 456
+          },
+          {
+            "item": "140829",
+            "value": 318
+          },
+          {
+            "item": "140830",
+            "value": 474
+          },
+          {
+            "item": "140831",
+            "value": 975
+          }
+        ],
+        "currencySum": [
+          {
+            "item": "140824",
+            "value": 409500
+          },
+          {
+            "item": "140825",
+            "value": 229500
+          },
+          {
+            "item": "140826",
+            "value": 342900
+          },
+          {
+            "item": "140827",
+            "value": 290700
+          },
+          {
+            "item": "140828",
+            "value": 258300
+          },
+          {
+            "item": "140829",
+            "value": 173700
+          },
+          {
+            "item": "140830",
+            "value": 234000
+          },
+          {
+            "item": "140831",
+            "value": 549000
+          }
+        ],
+        "numberOfExpense": [
+          {
+            "item": "140824",
+            "value": 2145
+          },
+          {
+            "item": "140825",
+            "value": 1871
+          },
+          {
+            "item": "140826",
+            "value": 1937
+          },
+          {
+            "item": "140827",
+            "value": 1952
+          },
+          {
+            "item": "140828",
+            "value": 1366
+          },
+          {
+            "item": "140829",
+            "value": 1475
+          },
+          {
+            "item": "140830",
+            "value": 1634
+          },
+          {
+            "item": "140831",
+            "value": 1934
+          }
+        ],
+        "spendingAccounts": [
+          {
+            "item": "140824",
+            "value": 1522
+          },
+          {
+            "item": "140825",
+            "value": 1558
+          },
+          {
+            "item": "140826",
+            "value": 1684
+          },
+          {
+            "item": "140827",
+            "value": 1717
+          },
+          {
+            "item": "140828",
+            "value": 1455
+          },
+          {
+            "item": "140829",
+            "value": 1468
+          },
+          {
+            "item": "140830",
+            "value": 1442
+          },
+          {
+            "item": "140831",
+            "value": 1470
+          }
+        ]
+      },
+      "levels": {
+        "currencyPurchase": [
+          {
+            "item": 1.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 2.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 3.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 4.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 5.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 6.0,
+            "percentage": 1.9,
+            "accounts": 84.0
+          },
+          {
+            "item": 7.0,
+            "percentage": 6.6,
+            "accounts": 297.0
+          },
+          {
+            "item": 8.0,
+            "percentage": 6.6,
+            "accounts": 297.0
+          },
+          {
+            "item": 9.0,
+            "percentage": 12.0,
+            "accounts": 537.0
+          },
+          {
+            "item": 10.0,
+            "percentage": 72.9,
+            "accounts": 3270.0
+          }
+        ],
+        "currencySum": [
+          {
+            "item": 1.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 2.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 3.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 4.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 5.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 6.0,
+            "percentage": 1.9,
+            "accounts": 84.0
+          },
+          {
+            "item": 7.0,
+            "percentage": 6.6,
+            "accounts": 297.0
+          },
+          {
+            "item": 8.0,
+            "percentage": 6.6,
+            "accounts": 297.0
+          },
+          {
+            "item": 9.0,
+            "percentage": 12.0,
+            "accounts": 537.0
+          },
+          {
+            "item": 10.0,
+            "percentage": 72.9,
+            "accounts": 3270.0
+          }
+        ],
+        "numberOfExpense": [
+          {
+            "item": 1.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 2.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 3.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 4.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 5.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 6.0,
+            "percentage": 1.9,
+            "accounts": 84.0
+          },
+          {
+            "item": 7.0,
+            "percentage": 6.6,
+            "accounts": 297.0
+          },
+          {
+            "item": 8.0,
+            "percentage": 6.6,
+            "accounts": 297.0
+          },
+          {
+            "item": 9.0,
+            "percentage": 12.0,
+            "accounts": 537.0
+          },
+          {
+            "item": 10.0,
+            "percentage": 72.9,
+            "accounts": 3270.0
+          }
+        ],
+        "spendingAccounts": [
+          {
+            "item": 1.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 2.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 3.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 4.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 5.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 6.0,
+            "percentage": 1.9,
+            "accounts": 84.0
+          },
+          {
+            "item": 7.0,
+            "percentage": 6.6,
+            "accounts": 297.0
+          },
+          {
+            "item": 8.0,
+            "percentage": 6.6,
+            "accounts": 297.0
+          },
+          {
+            "item": 9.0,
+            "percentage": 12.0,
+            "accounts": 537.0
+          },
+          {
+            "item": 10.0,
+            "percentage": 72.9,
+            "accounts": 3270.0
+          }
+        ]
+      },
+      "stages": {
+        "currencyPurchase": [
+          {
+            "item": "关卡01",
+            "percentage": 31.8,
+            "accounts": 1425.0
+          },
+          {
+            "item": "关卡02",
+            "percentage": 28.1,
+            "accounts": 1260.0
+          },
+          {
+            "item": "关卡03",
+            "percentage": 19.9,
+            "accounts": 894.0
+          },
+          {
+            "item": "关卡04",
+            "percentage": 20.2,
+            "accounts": 906.0
+          }
+        ],
+        "currencySum": [
+          {
+            "item": "关卡01",
+            "percentage": 30.9,
+            "accounts": 767700.0
+          },
+          {
+            "item": "关卡02",
+            "percentage": 28.3,
+            "accounts": 702900.0
+          },
+          {
+            "item": "关卡03",
+            "percentage": 20.5,
+            "accounts": 510300.0
+          },
+          {
+            "item": "关卡04",
+            "percentage": 20.4,
+            "accounts": 506700.0
+          }
+        ],
+        "numberOfExpense": [
+          {
+            "item": "关卡01",
+            "percentage": 30.3,
+            "accounts": 4339.0
+          },
+          {
+            "item": "关卡02",
+            "percentage": 23.7,
+            "accounts": 3398.0
+          },
+          {
+            "item": "关卡03",
+            "percentage": 20.3,
+            "accounts": 2909.0
+          },
+          {
+            "item": "关卡04",
+            "percentage": 25.6,
+            "accounts": 3668.0
+          }
+        ],
+        "spendingAccounts": [
+          {
+            "item": "关卡01",
+            "percentage": 34.2,
+            "accounts": 191.0
+          },
+          {
+            "item": "关卡02",
+            "percentage": 23.1,
+            "accounts": 129.0
+          },
+          {
+            "item": "关卡03",
+            "percentage": 20.8,
+            "accounts": 116.0
+          },
+          {
+            "item": "关卡04",
+            "percentage": 21.9,
+            "accounts": 122.0
+          }
+        ]
+      }
+    },
+    {
+      "currencySum": 496800.0,
+      "currencyPurchase": 252.0,
+      "virtualGoods": "item02",
+      "numberOfExpense": 980.0,
+      "view": {
+        "currencyPurchase": [
+          {
+            "item": "140824",
+            "value": 708
+          },
+          {
+            "item": "140825",
+            "value": 426
+          },
+          {
+            "item": "140826",
+            "value": 597
+          },
+          {
+            "item": "140827",
+            "value": 531
+          },
+          {
+            "item": "140828",
+            "value": 456
+          },
+          {
+            "item": "140829",
+            "value": 318
+          },
+          {
+            "item": "140830",
+            "value": 474
+          },
+          {
+            "item": "140831",
+            "value": 975
+          }
+        ],
+        "currencySum": [
+          {
+            "item": "140824",
+            "value": 409500
+          },
+          {
+            "item": "140825",
+            "value": 229500
+          },
+          {
+            "item": "140826",
+            "value": 342900
+          },
+          {
+            "item": "140827",
+            "value": 290700
+          },
+          {
+            "item": "140828",
+            "value": 258300
+          },
+          {
+            "item": "140829",
+            "value": 173700
+          },
+          {
+            "item": "140830",
+            "value": 234000
+          },
+          {
+            "item": "140831",
+            "value": 549000
+          }
+        ],
+        "numberOfExpense": [
+          {
+            "item": "140824",
+            "value": 2145
+          },
+          {
+            "item": "140825",
+            "value": 1871
+          },
+          {
+            "item": "140826",
+            "value": 1937
+          },
+          {
+            "item": "140827",
+            "value": 1952
+          },
+          {
+            "item": "140828",
+            "value": 1366
+          },
+          {
+            "item": "140829",
+            "value": 1475
+          },
+          {
+            "item": "140830",
+            "value": 1634
+          },
+          {
+            "item": "140831",
+            "value": 1934
+          }
+        ],
+        "spendingAccounts": [
+          {
+            "item": "140824",
+            "value": 1522
+          },
+          {
+            "item": "140825",
+            "value": 1558
+          },
+          {
+            "item": "140826",
+            "value": 1684
+          },
+          {
+            "item": "140827",
+            "value": 1717
+          },
+          {
+            "item": "140828",
+            "value": 1455
+          },
+          {
+            "item": "140829",
+            "value": 1468
+          },
+          {
+            "item": "140830",
+            "value": 1442
+          },
+          {
+            "item": "140831",
+            "value": 1470
+          }
+        ]
+      },
+      "levels": {
+        "currencyPurchase": [
+          {
+            "item": 1.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 2.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 3.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 4.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 5.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 6.0,
+            "percentage": 1.9,
+            "accounts": 84.0
+          },
+          {
+            "item": 7.0,
+            "percentage": 6.6,
+            "accounts": 297.0
+          },
+          {
+            "item": 8.0,
+            "percentage": 6.6,
+            "accounts": 297.0
+          },
+          {
+            "item": 9.0,
+            "percentage": 12.0,
+            "accounts": 537.0
+          },
+          {
+            "item": 10.0,
+            "percentage": 72.9,
+            "accounts": 3270.0
+          }
+        ],
+        "currencySum": [
+          {
+            "item": 1.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 2.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 3.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 4.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 5.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 6.0,
+            "percentage": 1.9,
+            "accounts": 84.0
+          },
+          {
+            "item": 7.0,
+            "percentage": 6.6,
+            "accounts": 297.0
+          },
+          {
+            "item": 8.0,
+            "percentage": 6.6,
+            "accounts": 297.0
+          },
+          {
+            "item": 9.0,
+            "percentage": 12.0,
+            "accounts": 537.0
+          },
+          {
+            "item": 10.0,
+            "percentage": 72.9,
+            "accounts": 3270.0
+          }
+        ],
+        "numberOfExpense": [
+          {
+            "item": 1.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 2.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 3.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 4.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 5.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 6.0,
+            "percentage": 1.9,
+            "accounts": 84.0
+          },
+          {
+            "item": 7.0,
+            "percentage": 6.6,
+            "accounts": 297.0
+          },
+          {
+            "item": 8.0,
+            "percentage": 6.6,
+            "accounts": 297.0
+          },
+          {
+            "item": 9.0,
+            "percentage": 12.0,
+            "accounts": 537.0
+          },
+          {
+            "item": 10.0,
+            "percentage": 72.9,
+            "accounts": 3270.0
+          }
+        ],
+        "spendingAccounts": [
+          {
+            "item": 1.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 2.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 3.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 4.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 5.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 6.0,
+            "percentage": 1.9,
+            "accounts": 84.0
+          },
+          {
+            "item": 7.0,
+            "percentage": 6.6,
+            "accounts": 297.0
+          },
+          {
+            "item": 8.0,
+            "percentage": 6.6,
+            "accounts": 297.0
+          },
+          {
+            "item": 9.0,
+            "percentage": 12.0,
+            "accounts": 537.0
+          },
+          {
+            "item": 10.0,
+            "percentage": 72.9,
+            "accounts": 3270.0
+          }
+        ]
+      },
+      "stages": {
+        "currencyPurchase": [
+          {
+            "item": "关卡01",
+            "percentage": 31.8,
+            "accounts": 1425.0
+          },
+          {
+            "item": "关卡02",
+            "percentage": 28.1,
+            "accounts": 1260.0
+          },
+          {
+            "item": "关卡03",
+            "percentage": 19.9,
+            "accounts": 894.0
+          },
+          {
+            "item": "关卡04",
+            "percentage": 20.2,
+            "accounts": 906.0
+          }
+        ],
+        "currencySum": [
+          {
+            "item": "关卡01",
+            "percentage": 30.9,
+            "accounts": 767700.0
+          },
+          {
+            "item": "关卡02",
+            "percentage": 28.3,
+            "accounts": 702900.0
+          },
+          {
+            "item": "关卡03",
+            "percentage": 20.5,
+            "accounts": 510300.0
+          },
+          {
+            "item": "关卡04",
+            "percentage": 20.4,
+            "accounts": 506700.0
+          }
+        ],
+        "numberOfExpense": [
+          {
+            "item": "关卡01",
+            "percentage": 30.3,
+            "accounts": 4339.0
+          },
+          {
+            "item": "关卡02",
+            "percentage": 23.7,
+            "accounts": 3398.0
+          },
+          {
+            "item": "关卡03",
+            "percentage": 20.3,
+            "accounts": 2909.0
+          },
+          {
+            "item": "关卡04",
+            "percentage": 25.6,
+            "accounts": 3668.0
+          }
+        ],
+        "spendingAccounts": [
+          {
+            "item": "关卡01",
+            "percentage": 34.2,
+            "accounts": 191.0
+          },
+          {
+            "item": "关卡02",
+            "percentage": 23.1,
+            "accounts": 129.0
+          },
+          {
+            "item": "关卡03",
+            "percentage": 20.8,
+            "accounts": 116.0
+          },
+          {
+            "item": "关卡04",
+            "percentage": 21.9,
+            "accounts": 122.0
+          }
+        ]
+      }
+    },
+    {
+      "currencySum": 850.0,
+      "currencyPurchase": 425.0,
+      "virtualGoods": "item27",
+      "numberOfExpense": 0.0,
+      "view": {
+        "currencyPurchase": [
+          {
+            "item": "140824",
+            "value": 708
+          },
+          {
+            "item": "140825",
+            "value": 426
+          },
+          {
+            "item": "140826",
+            "value": 597
+          },
+          {
+            "item": "140827",
+            "value": 531
+          },
+          {
+            "item": "140828",
+            "value": 456
+          },
+          {
+            "item": "140829",
+            "value": 318
+          },
+          {
+            "item": "140830",
+            "value": 474
+          },
+          {
+            "item": "140831",
+            "value": 975
+          }
+        ],
+        "currencySum": [
+          {
+            "item": "140824",
+            "value": 409500
+          },
+          {
+            "item": "140825",
+            "value": 229500
+          },
+          {
+            "item": "140826",
+            "value": 342900
+          },
+          {
+            "item": "140827",
+            "value": 290700
+          },
+          {
+            "item": "140828",
+            "value": 258300
+          },
+          {
+            "item": "140829",
+            "value": 173700
+          },
+          {
+            "item": "140830",
+            "value": 234000
+          },
+          {
+            "item": "140831",
+            "value": 549000
+          }
+        ],
+        "numberOfExpense": [
+          {
+            "item": "140824",
+            "value": 2145
+          },
+          {
+            "item": "140825",
+            "value": 1871
+          },
+          {
+            "item": "140826",
+            "value": 1937
+          },
+          {
+            "item": "140827",
+            "value": 1952
+          },
+          {
+            "item": "140828",
+            "value": 1366
+          },
+          {
+            "item": "140829",
+            "value": 1475
+          },
+          {
+            "item": "140830",
+            "value": 1634
+          },
+          {
+            "item": "140831",
+            "value": 1934
+          }
+        ],
+        "spendingAccounts": [
+          {
+            "item": "140824",
+            "value": 1522
+          },
+          {
+            "item": "140825",
+            "value": 1558
+          },
+          {
+            "item": "140826",
+            "value": 1684
+          },
+          {
+            "item": "140827",
+            "value": 1717
+          },
+          {
+            "item": "140828",
+            "value": 1455
+          },
+          {
+            "item": "140829",
+            "value": 1468
+          },
+          {
+            "item": "140830",
+            "value": 1442
+          },
+          {
+            "item": "140831",
+            "value": 1470
+          }
+        ]
+      },
+      "levels": {
+        "currencyPurchase": [
+          {
+            "item": 1.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 2.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 3.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 4.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 5.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 6.0,
+            "percentage": 1.9,
+            "accounts": 84.0
+          },
+          {
+            "item": 7.0,
+            "percentage": 6.6,
+            "accounts": 297.0
+          },
+          {
+            "item": 8.0,
+            "percentage": 6.6,
+            "accounts": 297.0
+          },
+          {
+            "item": 9.0,
+            "percentage": 12.0,
+            "accounts": 537.0
+          },
+          {
+            "item": 10.0,
+            "percentage": 72.9,
+            "accounts": 3270.0
+          }
+        ],
+        "currencySum": [
+          {
+            "item": 1.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 2.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 3.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 4.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 5.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 6.0,
+            "percentage": 1.9,
+            "accounts": 84.0
+          },
+          {
+            "item": 7.0,
+            "percentage": 6.6,
+            "accounts": 297.0
+          },
+          {
+            "item": 8.0,
+            "percentage": 6.6,
+            "accounts": 297.0
+          },
+          {
+            "item": 9.0,
+            "percentage": 12.0,
+            "accounts": 537.0
+          },
+          {
+            "item": 10.0,
+            "percentage": 72.9,
+            "accounts": 3270.0
+          }
+        ],
+        "numberOfExpense": [
+          {
+            "item": 1.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 2.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 3.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 4.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 5.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 6.0,
+            "percentage": 1.9,
+            "accounts": 84.0
+          },
+          {
+            "item": 7.0,
+            "percentage": 6.6,
+            "accounts": 297.0
+          },
+          {
+            "item": 8.0,
+            "percentage": 6.6,
+            "accounts": 297.0
+          },
+          {
+            "item": 9.0,
+            "percentage": 12.0,
+            "accounts": 537.0
+          },
+          {
+            "item": 10.0,
+            "percentage": 72.9,
+            "accounts": 3270.0
+          }
+        ],
+        "spendingAccounts": [
+          {
+            "item": 1.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 2.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 3.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 4.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 5.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 6.0,
+            "percentage": 1.9,
+            "accounts": 84.0
+          },
+          {
+            "item": 7.0,
+            "percentage": 6.6,
+            "accounts": 297.0
+          },
+          {
+            "item": 8.0,
+            "percentage": 6.6,
+            "accounts": 297.0
+          },
+          {
+            "item": 9.0,
+            "percentage": 12.0,
+            "accounts": 537.0
+          },
+          {
+            "item": 10.0,
+            "percentage": 72.9,
+            "accounts": 3270.0
+          }
+        ]
+      },
+      "stages": {
+        "currencyPurchase": [
+          {
+            "item": "关卡01",
+            "percentage": 31.8,
+            "accounts": 1425.0
+          },
+          {
+            "item": "关卡02",
+            "percentage": 28.1,
+            "accounts": 1260.0
+          },
+          {
+            "item": "关卡03",
+            "percentage": 19.9,
+            "accounts": 894.0
+          },
+          {
+            "item": "关卡04",
+            "percentage": 20.2,
+            "accounts": 906.0
+          }
+        ],
+        "currencySum": [
+          {
+            "item": "关卡01",
+            "percentage": 30.9,
+            "accounts": 767700.0
+          },
+          {
+            "item": "关卡02",
+            "percentage": 28.3,
+            "accounts": 702900.0
+          },
+          {
+            "item": "关卡03",
+            "percentage": 20.5,
+            "accounts": 510300.0
+          },
+          {
+            "item": "关卡04",
+            "percentage": 20.4,
+            "accounts": 506700.0
+          }
+        ],
+        "numberOfExpense": [
+          {
+            "item": "关卡01",
+            "percentage": 30.3,
+            "accounts": 4339.0
+          },
+          {
+            "item": "关卡02",
+            "percentage": 23.7,
+            "accounts": 3398.0
+          },
+          {
+            "item": "关卡03",
+            "percentage": 20.3,
+            "accounts": 2909.0
+          },
+          {
+            "item": "关卡04",
+            "percentage": 25.6,
+            "accounts": 3668.0
+          }
+        ],
+        "spendingAccounts": [
+          {
+            "item": "关卡01",
+            "percentage": 34.2,
+            "accounts": 191.0
+          },
+          {
+            "item": "关卡02",
+            "percentage": 23.1,
+            "accounts": 129.0
+          },
+          {
+            "item": "关卡03",
+            "percentage": 20.8,
+            "accounts": 116.0
+          },
+          {
+            "item": "关卡04",
+            "percentage": 21.9,
+            "accounts": 122.0
+          }
+        ]
+      }
+    },
+    {
+      "currencySum": 232600.0,
+      "currencyPurchase": 388.0,
+      "virtualGoods": "item07",
+      "numberOfExpense": 0.0,
+      "view": {
+        "currencyPurchase": [
+          {
+            "item": "140824",
+            "value": 708
+          },
+          {
+            "item": "140825",
+            "value": 426
+          },
+          {
+            "item": "140826",
+            "value": 597
+          },
+          {
+            "item": "140827",
+            "value": 531
+          },
+          {
+            "item": "140828",
+            "value": 456
+          },
+          {
+            "item": "140829",
+            "value": 318
+          },
+          {
+            "item": "140830",
+            "value": 474
+          },
+          {
+            "item": "140831",
+            "value": 975
+          }
+        ],
+        "currencySum": [
+          {
+            "item": "140824",
+            "value": 409500
+          },
+          {
+            "item": "140825",
+            "value": 229500
+          },
+          {
+            "item": "140826",
+            "value": 342900
+          },
+          {
+            "item": "140827",
+            "value": 290700
+          },
+          {
+            "item": "140828",
+            "value": 258300
+          },
+          {
+            "item": "140829",
+            "value": 173700
+          },
+          {
+            "item": "140830",
+            "value": 234000
+          },
+          {
+            "item": "140831",
+            "value": 549000
+          }
+        ],
+        "numberOfExpense": [
+          {
+            "item": "140824",
+            "value": 2145
+          },
+          {
+            "item": "140825",
+            "value": 1871
+          },
+          {
+            "item": "140826",
+            "value": 1937
+          },
+          {
+            "item": "140827",
+            "value": 1952
+          },
+          {
+            "item": "140828",
+            "value": 1366
+          },
+          {
+            "item": "140829",
+            "value": 1475
+          },
+          {
+            "item": "140830",
+            "value": 1634
+          },
+          {
+            "item": "140831",
+            "value": 1934
+          }
+        ],
+        "spendingAccounts": [
+          {
+            "item": "140824",
+            "value": 1522
+          },
+          {
+            "item": "140825",
+            "value": 1558
+          },
+          {
+            "item": "140826",
+            "value": 1684
+          },
+          {
+            "item": "140827",
+            "value": 1717
+          },
+          {
+            "item": "140828",
+            "value": 1455
+          },
+          {
+            "item": "140829",
+            "value": 1468
+          },
+          {
+            "item": "140830",
+            "value": 1442
+          },
+          {
+            "item": "140831",
+            "value": 1470
+          }
+        ]
+      },
+      "levels": {
+        "currencyPurchase": [
+          {
+            "item": 1.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 2.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 3.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 4.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 5.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 6.0,
+            "percentage": 1.9,
+            "accounts": 84.0
+          },
+          {
+            "item": 7.0,
+            "percentage": 6.6,
+            "accounts": 297.0
+          },
+          {
+            "item": 8.0,
+            "percentage": 6.6,
+            "accounts": 297.0
+          },
+          {
+            "item": 9.0,
+            "percentage": 12.0,
+            "accounts": 537.0
+          },
+          {
+            "item": 10.0,
+            "percentage": 72.9,
+            "accounts": 3270.0
+          }
+        ],
+        "currencySum": [
+          {
+            "item": 1.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 2.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 3.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 4.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 5.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 6.0,
+            "percentage": 1.9,
+            "accounts": 84.0
+          },
+          {
+            "item": 7.0,
+            "percentage": 6.6,
+            "accounts": 297.0
+          },
+          {
+            "item": 8.0,
+            "percentage": 6.6,
+            "accounts": 297.0
+          },
+          {
+            "item": 9.0,
+            "percentage": 12.0,
+            "accounts": 537.0
+          },
+          {
+            "item": 10.0,
+            "percentage": 72.9,
+            "accounts": 3270.0
+          }
+        ],
+        "numberOfExpense": [
+          {
+            "item": 1.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 2.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 3.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 4.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 5.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 6.0,
+            "percentage": 1.9,
+            "accounts": 84.0
+          },
+          {
+            "item": 7.0,
+            "percentage": 6.6,
+            "accounts": 297.0
+          },
+          {
+            "item": 8.0,
+            "percentage": 6.6,
+            "accounts": 297.0
+          },
+          {
+            "item": 9.0,
+            "percentage": 12.0,
+            "accounts": 537.0
+          },
+          {
+            "item": 10.0,
+            "percentage": 72.9,
+            "accounts": 3270.0
+          }
+        ],
+        "spendingAccounts": [
+          {
+            "item": 1.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 2.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 3.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 4.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 5.0,
+            "percentage": 0.0,
+            "accounts": 0.0
+          },
+          {
+            "item": 6.0,
+            "percentage": 1.9,
+            "accounts": 84.0
+          },
+          {
+            "item": 7.0,
+            "percentage": 6.6,
+            "accounts": 297.0
+          },
+          {
+            "item": 8.0,
+            "percentage": 6.6,
+            "accounts": 297.0
+          },
+          {
+            "item": 9.0,
+            "percentage": 12.0,
+            "accounts": 537.0
+          },
+          {
+            "item": 10.0,
+            "percentage": 72.9,
+            "accounts": 3270.0
+          }
+        ]
+      },
+      "stages": {
+        "currencyPurchase": [
+          {
+            "item": "关卡01",
+            "percentage": 31.8,
+            "accounts": 1425.0
+          },
+          {
+            "item": "关卡02",
+            "percentage": 28.1,
+            "accounts": 1260.0
+          },
+          {
+            "item": "关卡03",
+            "percentage": 19.9,
+            "accounts": 894.0
+          },
+          {
+            "item": "关卡04",
+            "percentage": 20.2,
+            "accounts": 906.0
+          }
+        ],
+        "currencySum": [
+          {
+            "item": "关卡01",
+            "percentage": 30.9,
+            "accounts": 767700.0
+          },
+          {
+            "item": "关卡02",
+            "percentage": 28.3,
+            "accounts": 702900.0
+          },
+          {
+            "item": "关卡03",
+            "percentage": 20.5,
+            "accounts": 510300.0
+          },
+          {
+            "item": "关卡04",
+            "percentage": 20.4,
+            "accounts": 506700.0
+          }
+        ],
+        "numberOfExpense": [
+          {
+            "item": "关卡01",
+            "percentage": 30.3,
+            "accounts": 4339.0
+          },
+          {
+            "item": "关卡02",
+            "percentage": 23.7,
+            "accounts": 3398.0
+          },
+          {
+            "item": "关卡03",
+            "percentage": 20.3,
+            "accounts": 2909.0
+          },
+          {
+            "item": "关卡04",
+            "percentage": 25.6,
+            "accounts": 3668.0
+          }
+        ],
+        "spendingAccounts": [
+          {
+            "item": "关卡01",
+            "percentage": 34.2,
+            "accounts": 191.0
+          },
+          {
+            "item": "关卡02",
+            "percentage": 23.1,
+            "accounts": 129.0
+          },
+          {
+            "item": "关卡03",
+            "percentage": 20.8,
+            "accounts": 116.0
+          },
+          {
+            "item": "关卡04",
+            "percentage": 21.9,
+            "accounts": 122.0
+          }
+        ]
+      }
+    }
+  ]
+}

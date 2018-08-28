@@ -1,0 +1,587 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.good.plat.datacenter.datastat.mapper.buyplat.BuyPlatMapper" >
+
+  <resultMap id="BuyPlatDataQueryMap" type="com.good.plat.datacenter.datastat.entity.buyplat.BuyPlatDataQuery" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="statdate" property="statdate" jdbcType="DATE" />
+    <result column="gameid" property="gameid" jdbcType="INTEGER" />
+    <result column="termtype" property="termtype" jdbcType="INTEGER" />
+    <result column="adchannel" property="adchannel" jdbcType="INTEGER" />
+    <result column="subchannel" property="subchannel" jdbcType="VARCHAR" />
+    <result column="acvcount" property="acvcount" jdbcType="INTEGER" />
+    <result column="regcount" property="regcount" jdbcType="INTEGER" />
+    <result column="actregcount" property="actregcount" jdbcType="INTEGER" />
+    <result column="acticount" property="acticount" jdbcType="INTEGER" />
+    <result column="regucount" property="regucount" jdbcType="INTEGER" />
+    <result column="logucount" property="logucount" jdbcType="INTEGER" />
+	<result column="lvl3count" property="lvl3count" jdbcType="INTEGER" />
+	<result column="rechgcount" property="rechgcount" jdbcType="INTEGER" />
+	<result column="day2count" property="day2count" jdbcType="INTEGER" />
+	<result column="day3count" property="day3count" jdbcType="INTEGER" />
+	<result column="day7count" property="day7count" jdbcType="INTEGER" />
+   	<result column="day15count" property="day15count" jdbcType="INTEGER" />
+   	<result column="day30count" property="day30count" jdbcType="INTEGER" />
+   	<!--  -->
+   	<result column="gameName" property="gameName" jdbcType="VARCHAR" />
+   	<result column="termtypeName" property="termtypeName" jdbcType="VARCHAR" />
+   	<result column="channelName" property="channelName" jdbcType="VARCHAR" />
+   	<!--  -->
+   	<result column="payRate" property="payRate" jdbcType="DOUBLE" />
+   	<result column="arpu" property="arpu" jdbcType="DOUBLE" />
+   	<result column="activeRate" property="activeRate" jdbcType="DOUBLE" />
+   	<result column="registerTransRate" property="registerTransRate" jdbcType="DOUBLE" />
+   	<result column="lvl3Rate" property="lvl3Rate" jdbcType="DOUBLE" />
+   	<result column="day2Rate" property="day2Rate" jdbcType="DOUBLE" />
+	<result column="day3Rate" property="day3Rate" jdbcType="DOUBLE" />
+	<result column="day7Rate" property="day7Rate" jdbcType="DOUBLE" />
+	<result column="day15Rate" property="day15Rate" jdbcType="DOUBLE" />
+	<result column="day30Rate" property="day30Rate" jdbcType="DOUBLE" />
+	<result column="adcost" property="adcost" jdbcType="DOUBLE" />
+	<result column="costIncomeRate" property="costIncomeRate" jdbcType="DOUBLE" />
+	<result column="oldcount" property="oldcount" jdbcType="INTEGER" />
+    
+    <result column="actregcountRate" property="actregcountRate" jdbcType="DOUBLE" />
+    
+    <result column="totalrechgcount" property="totalrechgcount" jdbcType="INTEGER" />
+    <result column="totalrechgmoney" property="totalrechgmoney" jdbcType="DOUBLE" />
+    <result column="totalrechgPayRate" property="totalrechgPayRate" jdbcType="DOUBLE" />
+    <result column="totalrechgARPU" property="totalrechgARPU" jdbcType="DOUBLE" />
+  </resultMap>
+  
+  
+  
+  <sql id="Base_Column_List3" >
+    id, statdate, gameid, termtype, adchannel, subchannel, acvcount, regcount, actregcount, 
+    acticount, regucount, lvl3count, rechgcount, rechgmoney,oldcount,totalrechgcount,totalrechgmoney
+  </sql>
+  <sql id="Base_Column_List3_1" >
+    acvcount, regcount, actregcount, 
+    acticount, regucount, lvl3count, rechgcount, rechgmoney,oldcount,totalrechgcount,totalrechgmoney
+  </sql>
+  <sql id="Base_Column_List4" >
+    id, statdate, gameid, termtype, adchannel, subchannel, day2count, day3count, day7count, 
+    day15count, day30count
+  </sql>
+  <sql id="Base_Column_List4_1" >
+    day2count, day3count, day7count, 
+    day15count, day30count
+  </sql>
+  
+  <select id="selectBuyPlatDataQuery" resultMap="BuyPlatDataQueryMap" parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+  	select aa.*
+  	<if test="channelid != null and channelid > 0">
+  		,dd.channelName
+  	</if>
+  	,if(acvcount = 0,0,100 * regcount/acvcount) as registerTransRate
+  	,if(regcount = 0,0,100 * acticount/regcount) as activeRate
+  	,if(regcount = 0,0,100 * lvl3count/regcount) as lvl3Rate
+  	,if(regcount = 0,0,100 * day2count/regcount) as day2Rate
+  	,if(regcount = 0,0,100 * day3count/regcount) as day3Rate
+  	,if(regcount = 0,0,100 * day7count/regcount) as day7Rate
+  	,if(regcount = 0,0,100 * day15count/regcount) as day15Rate
+  	,if(regcount = 0,0,100 * day30count/regcount) as day30Rate
+  	,if(regcount = 0,0,100 * rechgcount/regcount) as payRate
+  	,if(rechgcount = 0,0,100 * rechgmoney/rechgcount) as arpu
+  	,if(actregcount = 0,0,100 * actregcount/regcount) as actregcountRate
+  	,c.name as gameName
+  	,if(totalrechgcount = 0,0,totalrechgmoney/totalrechgcount) as totalrechgARPU
+  	from(
+  	select a.statdate,a.gameid,a.termtype
+  	<if test="channelid != null and channelid > 0">
+  		, a.adchannel
+  	</if>
+  	<if test="channelid != null and channelid > 0 and subChannelid != null and subChannelid > 0">
+  		, a.subchannel
+  	</if>
+  	,sum(acvcount) as acvcount,sum(regcount) as regcount,sum(actregcount) as actregcount,sum(acticount) as acticount
+  	,sum(regucount) as regucount,sum(logucount) as logucount,sum(lvl3count) as lvl3count
+  	,sum(rechgcount) as rechgcount,sum(rechgmoney) as rechgmoney
+  	,sum(day2count) as day2count,sum(day3count) as day3count,sum(day7count) as day7count
+  	,sum(day15count) as day15count,sum(day30count) as day30count,sum(oldcount) as oldcount
+  	,sum(totalrechgcount) as totalrechgcount
+  	,sum(totalrechgmoney) as totalrechgmoney
+  	,sum(e.adcost) as adcost
+	from tb_logplat_mlchnl_detail_stat a
+	left join (
+  		select gameid,adchannel,subchannel,termtype,sum(adcost) as adcost
+  		from tb_logplat_mlchnl_advertisers 
+  		group by gameid,termtype,adchannel,subchannel
+  	) e on(e.gameid=a.gameid and e.termtype=a.termtype and e.adchannel=a.adchannel and e.subchannel=a.subchannel)
+	<include refid="WHERE_A"/>
+	group by a.statdate, a.gameid, a.termtype
+	<if test="channelid != null and channelid > 0">
+  		, a.adchannel
+  	</if>
+  	<if test="channelid != null and channelid > 0 and subChannelid != null and subChannelid > 0">
+  		, a.subchannel
+  	</if>
+	) aa join  tb_logplat_game c on(aa.gameid=c.id)
+	<if test="channelid != null and channelid > 0">
+  		left join tb_logplat_mlchnl_adchannel dd on(aa.adchannel = dd.channelid)
+  	</if>
+  </select>
+  
+  <resultMap id="TBLogplatMlchnlRegisterStatMap" type="com.good.plat.datacenter.datastat.entity.buyplat.TBLogplatMlchnlRegisterStat" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="statdate" property="statdate" jdbcType="DATE" />
+    <result column="gameid" property="gameid" jdbcType="INTEGER" />
+    <result column="termtype" property="termtype" jdbcType="INTEGER" />
+    <result column="adchannel" property="adchannel" jdbcType="INTEGER" />
+    <result column="subchannel" property="subchannel" jdbcType="VARCHAR" />
+    <result column="hourzone" property="hourzone" jdbcType="INTEGER" />
+    <result column="regcount" property="regcount" jdbcType="INTEGER" />
+    <!--  -->
+    <result column="gameName" property="gameName" jdbcType="VARCHAR" />
+    <result column="termtypeName" property="termtypeName" jdbcType="VARCHAR" />
+    <result column="channelName" property="channelName" jdbcType="VARCHAR" />
+    <!--  -->
+    <result column="hour_0" property="hour_0" jdbcType="INTEGER" />
+    <result column="hour_1" property="hour_1" jdbcType="INTEGER" />
+    <result column="hour_2" property="hour_2" jdbcType="INTEGER" />
+   	<result column="hour_3" property="hour_3" jdbcType="INTEGER" />
+   	<result column="hour_4" property="hour_4" jdbcType="INTEGER" />
+   	<result column="hour_5" property="hour_5" jdbcType="INTEGER" />
+   	<result column="hour_6" property="hour_6" jdbcType="INTEGER" />
+   	<result column="hour_7" property="hour_7" jdbcType="INTEGER" />
+   	<result column="hour_8" property="hour_8" jdbcType="INTEGER" />
+   	<result column="hour_9" property="hour_9" jdbcType="INTEGER" />
+   	<result column="hour_10" property="hour_10" jdbcType="INTEGER" />
+   	<result column="hour_11" property="hour_11" jdbcType="INTEGER" />
+   	<result column="hour_12" property="hour_12" jdbcType="INTEGER" />
+   	<result column="hour_13" property="hour_13" jdbcType="INTEGER" />
+   	<result column="hour_14" property="hour_14" jdbcType="INTEGER" />
+   	<result column="hour_15" property="hour_15" jdbcType="INTEGER" />
+   	<result column="hour_16" property="hour_16" jdbcType="INTEGER" />
+   	<result column="hour_17" property="hour_17" jdbcType="INTEGER" />
+   	<result column="hour_18" property="hour_18" jdbcType="INTEGER" />
+   	<result column="hour_19" property="hour_19" jdbcType="INTEGER" />
+   	<result column="hour_20" property="hour_20" jdbcType="INTEGER" />
+   	<result column="hour_21" property="hour_21" jdbcType="INTEGER" />
+   	<result column="hour_22" property="hour_22" jdbcType="INTEGER" />
+   	<result column="hour_23" property="hour_23" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List5" >
+    id, statdate, gameid, termtype, adchannel, subchannel, hourzone, regcount
+  </sql>
+  <sql id="Base_Column_List5_1" >
+    statdate, gameid, termtype, adchannel, subchannel,hour_0,hour_1,hour_2,hour_3,hour_4,hour_5,hour_6,hour_7,hour_8,hour_9,hour_10,hour_11,hour_12,hour_13,hour_14,hour_15,hour_16,hour_17,hour_18
+    ,hour_19,hour_20,hour_21,hour_22,hour_23
+  </sql>
+  
+  <select id="selectBuyPlatActorRegisterTimeDist" resultMap="TBLogplatMlchnlRegisterStatMap" parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+  	select <include refid="Base_Column_List5_1"/>
+  	,c.name as gameName
+  	,d.channelName,d.channelid as adchannel
+  	from (
+  	select *,sum(case when hourzone=0 then regcount else 0 end) as hour_0
+  	,sum(case when hourzone=1 then regcount else 0 end) as hour_1,sum(case when hourzone=2 then regcount else 0 end) as hour_2,sum(case when hourzone=3 then regcount else 0 end) as hour_3
+  	,sum(case when hourzone=4 then regcount else 0 end) as hour_4,sum(case when hourzone=5 then regcount else 0 end) as hour_5,sum(case when hourzone=6 then regcount else 0 end) as hour_6
+  	,sum(case when hourzone=7 then regcount else 0 end) as hour_7,sum(case when hourzone=8 then regcount else 0 end) as hour_8,sum(case when hourzone=9 then regcount else 0 end) as hour_9
+  	,sum(case when hourzone=10 then regcount else 0 end) as hour_10,sum(case when hourzone=11 then regcount else 0 end) as hour_11,sum(case when hourzone=12 then regcount else 0 end) as hour_12
+  	,sum(case when hourzone=13 then regcount else 0 end) as hour_13,sum(case when hourzone=14 then regcount else 0 end) as hour_14,sum(case when hourzone=15 then regcount else 0 end) as hour_15
+  	,sum(case when hourzone=16 then regcount else 0 end) as hour_16,sum(case when hourzone=17 then regcount else 0 end) as hour_17,sum(case when hourzone=18 then regcount else 0 end) as hour_18
+  	,sum(case when hourzone=19 then regcount else 0 end) as hour_19,sum(case when hourzone=20 then regcount else 0 end) as hour_20,sum(case when hourzone=21 then regcount else 0 end) as hour_21
+  	,sum(case when hourzone=22 then regcount else 0 end) as hour_22,sum(case when hourzone=23 then regcount else 0 end) as hour_23
+  	from tb_logplat_mlchnl_register_stat <include refid="WHERE2"/>
+  	group by statdate, gameid, termtype, adchannel,subchannel
+  	) a 
+  	join  tb_logplat_game c on(a.gameid=c.id)
+  	left join tb_logplat_mlchnl_adchannel d on(a.adchannel = d.channelid)
+  </select>
+  
+  <resultMap id="TBLogplatMlchnlActlvlStatMap" type="com.good.plat.datacenter.datastat.entity.buyplat.TBLogplatMlchnlActlvlStat" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="statdate" property="statdate" jdbcType="DATE" />
+    <result column="gameid" property="gameid" jdbcType="INTEGER" />
+    <result column="termtype" property="termtype" jdbcType="INTEGER" />
+    <result column="adchannel" property="adchannel" jdbcType="INTEGER" />
+    <result column="subchannel" property="subchannel" jdbcType="VARCHAR" />
+    <result column="actlvl" property="actlvl" jdbcType="INTEGER" />
+    <result column="usercount" property="usercount" jdbcType="INTEGER" />
+    <!--  -->
+    <result column="gameName" property="gameName" jdbcType="VARCHAR" />
+    <result column="termtypeName" property="termtypeName" jdbcType="VARCHAR" />
+    <result column="channelName" property="channelName" jdbcType="VARCHAR" />
+    <!--  -->
+    <result column="actlvl_1_2" property="actlvl_1_2" jdbcType="INTEGER" />
+    <result column="actlvl_3_6" property="actlvl_3_6" jdbcType="INTEGER" />
+    <result column="actlvl_7_15" property="actlvl_7_15" jdbcType="INTEGER" />
+    <result column="actlvl_16_20" property="actlvl_16_20" jdbcType="INTEGER" />
+    <result column="actlvl_21_25" property="actlvl_21_25" jdbcType="INTEGER" />
+    <result column="actlvl_26_30" property="actlvl_26_30" jdbcType="INTEGER" />
+    <result column="actlvl_31_X" property="actlvl_31_X" jdbcType="INTEGER" />
+    <result column="acticount" property="acticount" jdbcType="INTEGER" />
+    <result column="regcount" property="regcount" jdbcType="INTEGER" />
+    <!--  -->
+    <result column="actlvl_3_10" property="actlvl_3_10" jdbcType="INTEGER" />
+    <result column="actlvl_11_20" property="actlvl_11_20" jdbcType="INTEGER" />
+    <result column="actlvl_21_30" property="actlvl_21_30" jdbcType="INTEGER" />
+    <result column="actlvl_31_40" property="actlvl_31_40" jdbcType="INTEGER" />
+    <result column="actlvl_40_50" property="actlvl_40_50" jdbcType="INTEGER" />
+    <result column="actlvl_51_X" property="actlvl_51_X" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <sql id="Base_Column_List7_1">
+  	 actlvl_1_2, actlvl_3_10,actlvl_11_20,actlvl_21_30,actlvl_31_40,actlvl_41_50,actlvl_51_X
+  </sql>
+  <select id="selectBuyPlatActorLevelDist" resultMap="TBLogplatMlchnlActlvlStatMap" parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+    select a.statdate,a.gameid, a.termtype, a.adchannel, a.subchannel,<include refid="Base_Column_List7_1"/>
+  	,c.name as gameName
+  	,d.channelName,d.channelid as adchannel
+  	,e.acticount,e.regcount
+  	from (
+  	select statdate, gameid, termtype, adchannel,subchannel
+  	,sum(case when actlvl &gt;= 1 and actlvl &lt;= 2 then usercount else 0 end) as actlvl_1_2
+  	,sum(case when actlvl &gt;= 3 and actlvl &lt;=10 then usercount else 0 end) as actlvl_3_10
+  	,sum(case when actlvl &gt;= 11 and actlvl &lt;=20 then usercount else 0 end) as actlvl_11_20
+  	,sum(case when actlvl &gt;= 21 and actlvl &lt;=30 then usercount else 0 end) as actlvl_21_30
+  	,sum(case when actlvl &gt;= 31 and actlvl &lt;=40 then usercount else 0 end) as actlvl_31_40
+  	,sum(case when actlvl &gt;= 41 and actlvl &lt;=50 then usercount else 0 end) as actlvl_41_50
+  	,sum(case when actlvl &gt;= 51  then usercount else 0 end) as actlvl_51_X
+  	from tb_logplat_mlchnl_actlvl_stat <include refid="WHERE2"/>
+  	group by statdate, gameid, termtype, adchannel,subchannel
+  	) a 
+  	left join tb_logplat_mlchnl_detail_stat e on(e.gameid=a.gameid and e.statdate=a.statdate and e.termtype=a.termtype and e.adchannel=a.adchannel and a.subchannel=e.subchannel)
+  	join  tb_logplat_game c on(a.gameid=c.id)
+  	left join tb_logplat_mlchnl_adchannel d on(a.adchannel = d.channelid)
+  </select>
+  
+  <resultMap id="TBLogplatMlchnlRegcountStatMap" type="com.good.plat.datacenter.datastat.entity.buyplat.TBLogplatMlchnlRegcountStat" >
+  	<id column="id" property="id" jdbcType="INTEGER" />
+    <result column="statdate" property="statdate" jdbcType="DATE" />
+    <result column="gameid" property="gameid" jdbcType="INTEGER" />
+    <result column="termtype" property="termtype" jdbcType="INTEGER" />
+    <result column="adchannel" property="adchannel" jdbcType="INTEGER" />
+    <result column="subchannel" property="subchannel" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="subtype" property="subtype" jdbcType="VARCHAR" />
+    <result column="count" property="count" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <select id="selectBuyPlatActorRegisterInfo" resultMap="TBLogplatMlchnlRegcountStatMap" parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+  	select subtype, sum(count) as count
+  	from tb_logplat_mlchnl_regcount_stat 
+  	<include refid="WHERE2"/> and type=#{checktype2,jdbcType=INTEGER}
+  	group by subtype
+  </select>
+ 
+  
+ 
+  <!-- 扣量 -->
+  <resultMap id="TBLogplatMlchnlBuckleMap" type="com.good.plat.datacenter.datastat.entity.buyplat.TBLogplatMlchnlBuckle" >
+  	<id column="id" property="id" jdbcType="INTEGER" />
+    <result column="startdate" property="startdate" jdbcType="DATE" />
+    <result column="enddate" property="enddate" jdbcType="DATE" />
+    <result column="adchannel" property="adchannel" jdbcType="INTEGER" />
+    <result column="gameid" property="gameid" jdbcType="INTEGER" />
+    <result column="termType" property="termType" jdbcType="INTEGER" />
+    <result column="regCount" property="regCount" jdbcType="INTEGER" />
+    <result column="buckleRate" property="buckleRate" jdbcType="DOUBLE" />
+    <result column="buckleRegCount" property="buckleRegCount" jdbcType="INTEGER" />
+    <result column="cooperationType" property="cooperationType" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="TINYINT" />
+    <!--  -->
+    <result column="gameName" property="gameName" jdbcType="VARCHAR" />
+    <result column="channelName" property="channelName" jdbcType="VARCHAR" />
+    <collection property="adspaces" javaType="ArrayList" ofType="com.good.plat.datacenter.datastat.entity.buyplat.MLAdSpace">
+    	<id column="id" property="id" jdbcType="INTEGER"/>
+    	<result column="adSpaces" property="adspaces" jdbcType="VARCHAR"/>
+    </collection>
+  </resultMap>
+  <sql id="Base_Column_List6" >
+    id, startdate, enddate, adchannel , gameid, termType, regCount, buckleRate, 
+    buckleRegCount, cooperationType, state
+  </sql>
+  
+  <select id="selectMlchnlBuckleList" resultMap="TBLogplatMlchnlBuckleMap" parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+  	select a.*
+  	,b.adSpaces
+  	,c.name as gameName
+  	,d.channelName,d.channelid as adchannel
+  	from (
+  	select <include refid="Base_Column_List6"/>
+  	from tb_logplat_mlchnl_buckle
+  	<include refid="WHERE"/>
+  	) a 
+  	left join tb_logplat_mlchnl_advertisers b on(a.gameid=b.gameid and a.adchannel=b.adchannel and a.termType=b.termType)
+  	left join  tb_logplat_game c on(a.gameid=c.id)
+  	left join tb_logplat_mlchnl_adchannel d on(a.adchannel = d.channelid)
+  </select>
+  
+  
+  <!-- 广告主 -->
+  <resultMap id="TBLogplatMlchnlAdvertisersMap" type="com.good.plat.datacenter.datastat.entity.buyplat.TBLogplatMlchnlAdvertisers" >
+  	 <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="gameid" property="gameid" jdbcType="INTEGER" />
+    <result column="termType" property="termType" jdbcType="INTEGER" />
+    <result column="channel" property="channel" jdbcType="INTEGER" />
+    <result column="channelName" property="channelName" jdbcType="VARCHAR" />
+    <result column="subchannel" property="subchannel" jdbcType="VARCHAR" />
+    <result column="adSpaces" property="adSpaces" jdbcType="VARCHAR" />
+    <result column="adType" property="adType" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="DOUBLE" />
+    <result column="pricingType" property="pricingType" jdbcType="VARCHAR" />
+    <result column="startdate" property="startdate" jdbcType="DATE" />
+    <result column="enddate" property="enddate" jdbcType="DATE" />
+    <!--  -->
+    <result column="gameName" property="gameName" jdbcType="VARCHAR" />
+    <result column="termtypeName" property="termtypeName" jdbcType="VARCHAR" />
+    <result column="addisplaytime" property="addisplaytime" jdbcType="INTEGER" />
+    <result column="adcost" property="adcost" jdbcType="INTEGER" />
+    <result column="clickcount" property="clickcount" jdbcType="INTEGER" />
+    <result column="installcount" property="installcount" jdbcType="INTEGER" />
+  </resultMap>
+  
+  
+  <sql id="WHERE">
+  	where 1=1 
+  	<if test="channelid != null and channelid > 0 ">
+  		and adchannel=#{channelid,jdbcType=INTEGER}
+  	</if>
+  	<if test="startdate != null">
+  		and startdate >= #{startdate,jdbcType=TIMESTAMP}
+  	</if>
+  	<if test="enddate != null">
+  	<![CDATA[ 
+  		and enddate <= #{enddate,jdbcType=TIMESTAMP}
+  		]]>
+  	</if>
+  	<if test="gameid != null and gameid > 0">
+  		and gameid = #{gameid,jdbcType=TIMESTAMP}
+  	</if>
+  	<if test="termtypes != null">
+  		and termType in  
+  		<foreach collection="termtypes" index="index" item="item" open="(" close=")" separator=",">
+  			#{item}
+  		</foreach>
+  	</if>
+  	<if test="subChannelid != null">
+  		and subchannel = #{subChannelid,jdbcType=VARCHAR}
+  	</if>
+  </sql>
+  <sql id="WHERE2">
+  	where 1=1 
+  	<if test="channelid != null and channelid > 0 ">
+  		and adchannel=#{channelid,jdbcType=INTEGER}
+  	</if>
+  	<if test="channelid != null and channelid > 0 and subchannelid != null and subchannelid > 0 ">
+  		and subchannel=#{subchannelid,jdbcType=INTEGER}
+  	</if>
+  	<if test="startdate != null">
+  		and statdate >= #{startdate,jdbcType=TIMESTAMP}
+  	</if>
+  	<if test="enddate != null">
+  	<![CDATA[ 
+  		and statdate <= #{enddate,jdbcType=TIMESTAMP}
+  		]]>
+  	</if>
+  	<if test="gameid != null and gameid > 0">
+  		and gameid = #{gameid,jdbcType=TIMESTAMP}
+  	</if>
+  	<if test="termtypes != null">
+  		and termType in  
+  		<foreach collection="termtypes" index="index" item="item" open="(" close=")" separator=",">
+  			#{item}
+  		</foreach>
+  	</if>
+  </sql>
+  <sql id="WHERE_A">
+  	where 1=1 
+  	<if test="channelid != null and channelid > 0 ">
+  		and a.adchannel=#{channelid,jdbcType=INTEGER}
+  	</if>
+  	<if test="channelid != null and channelid > 0 and subChannelid != null and subChannelid > 0 ">
+  		and a.subchannel=#{subChannelid,jdbcType=INTEGER}
+  	</if>
+  	<if test="startdate != null">
+  		and a.statdate >= #{startdate,jdbcType=TIMESTAMP}
+  	</if>
+  	<if test="enddate != null">
+  	<![CDATA[ 
+  		and a.statdate <= #{enddate,jdbcType=TIMESTAMP}
+  		]]>
+  	</if>
+  	<if test="gameid != null and gameid > 0">
+  		and a.gameid = #{gameid,jdbcType=TIMESTAMP}
+  	</if>
+  	<if test="termtypes != null">
+  		and a.termType in  
+  		<foreach collection="termtypes" index="index" item="item" open="(" close=")" separator=",">
+  			#{item}
+  		</foreach>
+  	</if>
+  </sql>
+  <select id="selectAdvertiserList" resultMap="TBLogplatMlchnlAdvertisersMap" parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+  	select a.*
+  	,c.name as gameName
+  	,d.channelName,d.channelid as adchannel
+  	from (
+  	select <include refid="com.good.plat.datacenter.datastat.mapper.buyplat.TBLogplatMlchnlAdvertisersMapper.Base_Column_List"/>
+  	from tb_logplat_mlchnl_advertisers
+  	<include refid="WHERE"/>
+  	 ) a 
+  	left join  tb_logplat_game c on(a.gameid=c.id)
+  	left join tb_logplat_mlchnl_adchannel d on(a.adchannel = d.channelid)
+  </select>
+  
+  <!--  -->
+  <resultMap id="BuyPlatAdvertiserMap" type="com.good.plat.datacenter.datastat.entity.buyplat.BuyPlatAdvertiser" >
+  	<id column="id" property="id" jdbcType="INTEGER" />
+    <result column="statdate" property="statdate" jdbcType="DATE" />
+    <result column="gameid" property="gameid" jdbcType="INTEGER" />
+    <result column="termtype" property="termtype" jdbcType="INTEGER" />
+    <result column="adchannel" property="adchannel" jdbcType="INTEGER" />
+    <result column="subchannel" property="subchannel" jdbcType="VARCHAR" />
+    <result column="regcount" property="regcount" jdbcType="INTEGER" />
+    <result column="rechgcount" property="rechgcount" jdbcType="INTEGER" />
+    <result column="rechgmoney" property="rechgmoney" jdbcType="DOUBLE" />
+   <!--  -->
+   <result column="day2retation" property="day2retation" jdbcType="INTEGER" />
+   <result column="day3retation" property="day3retation" jdbcType="INTEGER" />
+   <result column="day7retation" property="rechgcount" jdbcType="INTEGER" />
+   <result column="day15retation" property="day15retation" jdbcType="INTEGER" />
+   <result column="day30retation" property="day30retation" jdbcType="INTEGER" />
+   <result column="day2retation_rate" property="day2retation_rate" jdbcType="DOUBLE" />
+   <result column="day3retation_rate" property="day3retation_rate" jdbcType="DOUBLE" />
+   <result column="day7retation_rate" property="day7retation_rate" jdbcType="DOUBLE" />
+   <result column="day15retation_rate" property="day15retation_rate" jdbcType="DOUBLE" />
+   <result column="day30retation_rate" property="day30retation_rate" jdbcType="DOUBLE" />
+   <!--  -->
+   <result column="acticount" property="acticount" jdbcType="INTEGER" />
+   <result column="addisplaytime" property="addisplaytime" jdbcType="INTEGER" />
+   <result column="adcost" property="adcost" jdbcType="INTEGER" />
+   <result column="clickcount" property="clickcount" jdbcType="INTEGER" />
+   <result column="installcount" property="installcount" jdbcType="INTEGER" />
+   <result column="adSpaces" property="adspace" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List8" >
+    day2count, day3count, day7count, 
+    day15count, day30count
+  </sql>
+  <sql id="BASEWHERE_CPX">
+  	where 1=1 
+  	<if test="gameid != null and gameid > 0">and a.gameid=#{gameid,jdbcType=INTEGER} </if>
+  	<if test="startdate != null">and a.statdate &gt;= #{startdate,jdbcType=DATE}</if>
+  	<if test="enddate != null">and a.statdate &lt;= #{enddate,jdbcType=DATE}</if>
+  	<if test="termtypes != null">
+  		and a.termtype in  
+  		<foreach collection="termtypes" index="index" item="item" open="(" close=")" separator=",">
+  			#{item}
+  		</foreach>
+  	</if>
+  	<if test="channelid != null and channelid > 0">
+  		and a.adchannel=#{channelid,jdbcType=INTEGER}
+  	</if>
+  	<if test="subChannelid != null and subChannelid > 0">
+  		and a.subchannel = #{subChannelid,jdbcType=VARCHAR}
+  	</if>
+  </sql>
+  <select id="selectAdvOfCPAList" resultMap="BuyPlatAdvertiserMap" parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+  	select a.statdate, a.gameid, a.termtype, a.adchannel, a.subchannel,<include refid="Base_Column_List8"/>
+  	,a.regcount,a.rechgcount,a.rechgmoney,a.acticount
+  	,c.name as gameName
+  	,d.channelName,d.channelid as adchannel
+  	from tb_logplat_mlchnl_detail_stat a
+  	left join  tb_logplat_game c on(a.gameid=c.id)
+  	left join tb_logplat_mlchnl_adchannel d on(a.adchannel = d.channelid)
+  	<include refid="BASEWHERE_CPX"/>
+  </select>
+  <select id="selectAdvOfCPTList" resultMap="BuyPlatAdvertiserMap" parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+  	select a.statdate, a.gameid, a.termtype, a.adchannel, a.subchannel,<include refid="Base_Column_List8"/>
+  	,a.regcount,a.rechgcount,a.rechgmoney,a.acticount
+  	,c.name as gameName
+  	,d.channelName,d.channelid as adchannel
+  	,e.adSpaces,e.addisplaytime,e.adcost,e.clickcount,e.installcount
+  	from tb_logplat_mlchnl_detail_stat a
+  	left join  tb_logplat_game c on(a.gameid=c.id)
+  	left join tb_logplat_mlchnl_adchannel d on(a.adchannel = d.channelid)
+  	left join (select gameid,adchannel,subchannel,termtype,adSpaces
+  		,sum(busicount) as addisplaytime, sum(adcost) as adcost,sum(busicount) as clickcount,sum(busicount) as installcount
+  		from tb_logplat_mlchnl_advertisers group by gameid,adchannel,subchannel,termtype,adSpaces
+  		) e on(e.gameid=a.gameid and e.termtype=a.termtype and e.adchannel=a.adchannel and e.subchannel=a.subchannel)
+  	<include refid="BASEWHERE_CPX"/>
+  </select>
+  <select id="selectAdvOfCPCList" resultMap="BuyPlatAdvertiserMap" parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+  	select a.statdate, a.gameid, a.termtype, a.adchannel, a.subchannel,<include refid="Base_Column_List8"/>
+  	,a.regcount,a.rechgcount,a.rechgmoney,a.acticount
+  	,c.name as gameName
+  	,d.channelName,d.channelid as adchannel
+  	,e.addisplaytime,e.adcost,e.clickcount,e.installcount
+  	from tb_logplat_mlchnl_detail_stat a
+  	left join  tb_logplat_game c on(a.gameid=c.id)
+  	left join tb_logplat_mlchnl_adchannel d on(a.adchannel = d.channelid)
+  	left join (select gameid,adchannel,subchannel,termtype,adSpaces
+  		,sum(busicount) as addisplaytime, sum(adcost) as adcost,sum(busicount) as clickcount,sum(busicount) as installcount
+  		from tb_logplat_mlchnl_advertisers group by gameid,adchannel,subchannel,termtype,adSpaces
+  		) e on(e.gameid=a.gameid and e.termtype=a.termtype and e.adchannel=a.adchannel and e.subchannel=a.subchannel)
+  	<include refid="BASEWHERE_CPX"/>
+  </select>
+  <select id="selectAdvOfCPDList" resultMap="BuyPlatAdvertiserMap" parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+  	select a.statdate, a.gameid, a.termtype, a.adchannel, a.subchannel,<include refid="Base_Column_List8"/>
+  	,a.regcount,a.rechgcount,a.rechgmoney,a.acticount
+  	,c.name as gameName
+  	,d.channelName,d.channelid as adchannel
+  	,e.addisplaytime,e.adcost,e.clickcount,e.installcount
+  	from tb_logplat_mlchnl_detail_stat a
+  	left join  tb_logplat_game c on(a.gameid=c.id)
+  	left join tb_logplat_mlchnl_adchannel d on(a.adchannel = d.channelid)
+  	left join (select gameid,adchannel,subchannel,termtype,adSpaces
+  		,sum(busicount) as addisplaytime, sum(adcost) as adcost,sum(busicount) as clickcount,sum(busicount) as installcount
+  		from tb_logplat_mlchnl_advertisers group by gameid,adchannel,subchannel,termtype,adSpaces
+  		) e on(e.gameid=a.gameid and e.termtype=a.termtype and e.adchannel=a.adchannel and e.subchannel=a.subchannel)
+  	<include refid="BASEWHERE_CPX"/>
+  </select>
+  
+  <select id="selectAdChannelList" parameterType="com.good.plat.datacenter.common.base.BaseSearchData" resultMap="com.good.plat.datacenter.datastat.mapper.buyplat.TBLogplatMlchnlAdchannelMapper.BaseResultMap">
+  	select *
+  	from tb_logplat_mlchnl_adchannel
+  </select>
+
+  <select id="selectAdChannel" parameterType="com.good.plat.datacenter.common.base.BaseSearchData" resultMap="com.good.plat.datacenter.datastat.mapper.buyplat.TBLogplatMlchnlAdchannelMapper.BaseResultMap">
+  	select *
+  	from tb_logplat_mlchnl_adchannel where id=#{checktype1,jdbcType=INTEGER} 
+  	<if test="checktype2 != null">
+  		and channelid=#{checktype2,jdbcType=INTEGER}
+  	</if>
+  </select>
+  
+  
+  <select id="selectAdChannelByChannelID" resultMap="com.good.plat.datacenter.datastat.mapper.buyplat.TBLogplatMlchnlAdchannelMapper.BaseResultMap" parameterType="java.lang.Integer">
+  	select *
+  	from tb_logplat_mlchnl_adchannel where channelid=#{id,jdbcType=INTEGER}
+  </select>
+  
+  <delete id="deleteAdChannelByIDAndChanneldID" parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+  	delete from tb_logplat_mlchnl_adchannel where id=#{checktype1,jdbcType=INTEGER} and channelid=#{checktype2,jdbcType=INTEGER}
+  </delete>
+  
+  <select id="selectUserAdchannelList" parameterType="com.good.plat.datacenter.common.base.BaseSearchData" resultMap="com.good.plat.datacenter.datastat.mapper.buyplat.TBLogplatMlchnlAdchannelMapper.BaseResultMap">
+  	select a.* from 
+  	tb_logplat_mlchnl_adchannel a
+  	join tb_logplat_user_resource b on(a.id = b.relationid and b.restype='adchannel' and b.userid=#{userid,jdbcType=INTEGER})
+  </select>
+  
+  <resultMap type="com.good.plat.datacenter.datastat.entity.buyplat.SubAdvertiseChannel" id="SubChannelListMap">
+  	<id column="id" property="id" jdbcType="INTEGER"/>
+  	<result column="channelName" property="channelName" jdbcType="VARCHAR"/>
+  	<result column="channelid" property="channelid" jdbcType="INTEGER"/>
+  </resultMap>
+  
+  <select id="selectSubChannelList" parameterType="com.good.plat.datacenter.datastat.entity.buyplat.SubAdvertiseChannel" resultMap="SubChannelListMap">
+  	select advt.subchannel as id,advt.adchannel as channelid,CONCAT(advt.adchannel,advt.subchannel) as channelName from 
+  	tb_logplat_mlchnl_advertisers advt
+  	join (
+		select adv.channelid from tb_logplat_mlchnl_adchannel adv 
+		join tb_logplat_user_resource res on(res.restype='adchannel' and res.relationid=adv.id 
+			and res.userid=#{userid,jdbcType=INTEGER} 
+			<if test="channelid != null and channelid > 0">
+				and adv.channelid=#{channelid,jdbcType=INTEGER}
+			</if>)
+	) adv on(advt.adchannel=adv.channelid 
+		<if test="gameid != null and gameid > 0">
+			and advt.gameid=#{gameid,jdbcType=INTEGER}
+		</if>)
+  </select>
+</mapper>

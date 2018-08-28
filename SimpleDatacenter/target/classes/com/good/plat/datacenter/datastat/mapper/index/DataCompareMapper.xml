@@ -1,0 +1,487 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.datastat.mapper.index.DataCompareMapper">
+	<resultMap id="BaseResultMap" type="com.good.plat.datacenter.datastat.entity.index.DataCompare">
+		<result column="devices" property="devices"/>
+		<result column="newPlayers" property="newPlayers"/>
+		<result column="account" property="account"/>
+		<result column="newPayUser" property="newPayUser"/>
+		<result column="totalPayUser" property="totalPayUser"/>
+		<result column="incomes" property="incomes"/>
+		<result column="payCounts" property="payCounts"/>
+		<result column="acu" property="acu"/>
+		<result column="pcu" property="pcu"/>
+		<result column="day1Rate" property="day1Rate"/>
+		<result column="payRate" property="payRate"/>
+		<result column="acuRate" property="acuRate"/>
+		
+		
+		
+		
+	</resultMap>
+	
+	<!-- 日新增激活和账户 -->
+	<select id="selectDailyNewPlayerList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select 
+			statdate, 
+		<if test="checktype3!=null and checktype3=='actvcount'">
+			ifnull(sum(actvcount),0) as devices 
+		</if>
+		<if test="checktype3!=null and checktype3=='newact'">
+			ifnull(sum(newact),0) as devices 
+		</if>
+		from 
+			logplat_daily_rpt 
+			<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect" />
+		group by statdate order by statdate
+		
+	</select>
+	<!-- 周新增激活和账户 -->
+	<select id="selectWeekOrMonthNewPlayerList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select 
+		<if test="checktype1!=null and checktype1=='2'.toString()">
+			datediff(#{enddate}, statdate) DIV 7 statdate,
+			<if test="checktype3!=null and checktype3=='actvcount'">
+				ifnull(sum(actvcount),0) devices
+			</if>
+			<if test="checktype3!=null and checktype3=='newact'">
+				ifnull(sum(newact),0) devices
+			</if>
+			 
+		</if>
+		<if test="checktype1!=null and checktype1=='3'.toString()">
+			datediff(#{enddate}, statdate) DIV 30 statdate,
+			<if test="checktype3!=null and checktype3=='actvcount'">
+				ifnull(sum(actvcount),0) devices
+			</if>
+			<if test="checktype3!=null and checktype3=='newact'">
+				ifnull(sum(newact),0) devices
+			</if>
+		</if>
+		from 
+			logplat_daily_rpt 
+			<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect" />
+		GROUP BY
+		<if test="checktype1!=null and checktype1=='2'.toString()">
+		datediff(#{enddate}, statdate) DIV 7
+		</if>
+		<if test="checktype1!=null and checktype1=='3'.toString()">
+		datediff(#{enddate}, statdate) DIV 30
+		</if>
+	</select>
+	
+	<!-- 日活跃用户(dau,wau,mau) -->
+	<select id="selectAUList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select 
+			statdate, 
+		<if test="checktype3!=null and checktype3=='dau'">
+			ifnull(sum(newdau+olddau),0) as account
+		</if>
+		<if test="checktype3!=null and checktype3=='wau'">
+			ifnull(sum(wau),0) as account 
+		</if>
+		<if test="checktype3!=null and checktype3=='mau'">
+			ifnull(sum(mau),0) as account 
+		</if>
+		from 
+			logplat_active_user 
+			<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect" />
+		group by statdate order by statdate
+		
+	</select>
+	
+	
+	<!--周或者月活跃用户 -->
+	<select id="selectWeekOrMonthAUList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select 
+		<if test="checktype1!=null and checktype1=='2'.toString()">
+			datediff(#{enddate}, statdate) DIV 7 statdate,
+			<if test="checktype3!=null and checktype3=='dau'">
+				ifnull(sum(newdau+olddau),0) as account
+			</if>
+			<if test="checktype3!=null and checktype3=='wau'">
+				ifnull(sum(wau),0) as account
+			</if>
+			<if test="checktype3!=null and checktype3=='mau'">
+			ifnull(sum(mau),0) as account 
+			</if>
+		</if>
+		<if test="checktype1!=null and checktype1=='3'.toString()">
+			datediff(#{enddate}, statdate) DIV 30 statdate,
+			<if test="checktype3!=null and checktype3=='dau'">
+				ifnull(sum(newdau+olddau),0) as account
+			</if>
+			<if test="checktype3!=null and checktype3=='wau'">
+				ifnull(sum(wau),0) as account
+			</if>
+			<if test="checktype3!=null and checktype3=='mau'">
+			ifnull(sum(mau),0) as account 
+			</if>
+		</if>
+		from 
+			logplat_active_user 
+			<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect" />
+		GROUP BY
+		<if test="checktype1!=null and checktype1=='2'.toString()">
+		datediff(#{enddate}, statdate) DIV 7
+		</if>
+		<if test="checktype1!=null and checktype1=='3'.toString()">
+		datediff(#{enddate}, statdate) DIV 30
+		</if>
+	</select>
+	
+	
+	
+	
+	
+	
+	<!-- 日收入(收入金额，充值次数) -->
+	<select id="selectIncomeList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select 
+			statdate, 
+		<if test="checktype3!=null and checktype3=='money'">
+			ifnull(round(sum(money),2),0) as incomes 
+		</if>
+		<if test="checktype3!=null and checktype3=='times'">
+			ifnull(count(money),0) as payCounts 
+		</if>
+		from 
+			logplat_actor_recharge 
+			<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect" />
+		group by statdate order by statdate
+		
+	</select>
+	
+	<!--周收入(收入金额，充值次数) -->
+	<select id="selectWeekOrMonthIncomeList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select 
+		<if test="checktype1!=null and checktype1=='2'.toString()">
+			datediff(#{enddate}, statdate) DIV 7 statdate,
+			<if test="checktype3!=null and checktype3=='money'">
+			ifnull(round(sum(money),2),0) as incomes 
+			</if>
+			<if test="checktype3!=null and checktype3=='times'">
+				ifnull(count(money),0) as payCounts 
+			</if>
+		</if>
+		<if test="checktype1!=null and checktype1=='3'.toString()">
+			datediff(#{enddate}, statdate) DIV 30 statdate,
+			<if test="checktype3!=null and checktype3=='money'">
+			ifnull(round(sum(money),2),0) as incomes 
+			</if>
+			<if test="checktype3!=null and checktype3=='times'">
+				ifnull(count(money),0) as payCounts 
+			</if>
+		</if>
+		from 
+			logplat_actor_recharge 
+			<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect" />
+		GROUP BY
+		<if test="checktype1!=null and checktype1=='2'.toString()">
+		datediff(#{enddate}, statdate) DIV 7
+		</if>
+		<if test="checktype1!=null and checktype1=='3'.toString()">
+		datediff(#{enddate}, statdate) DIV 30
+		</if>
+	</select>
+	
+<!-- 日新增付费玩家,总付费玩家 -->
+	<select id="selectDailyPayPlayerList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		<if test="checktype3!=null and checktype3=='totalPayUser'">
+			SELECT
+			statdate,
+			ifnull(SUM(rechgactor), 0) AS totalPayUser
+		FROM
+			logplat_total_regist_recharge
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/>
+		</if>
+		<if test="checktype3!=null and checktype3=='newPayUser'">
+			SELECT
+				statdate,
+				count(DISTINCT uid, actorid) AS newPayUser
+			FROM
+				logplat_actor_recharge
+			<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/>
+			AND isfirst = 1
+		</if>
+		GROUP BY
+			statdate
+		ORDER BY
+			statdate
+	</select>
+	<!-- 周或者月新增付费玩家,总付费玩家 -->
+	<select id="selectWeekAndMonthPayPlayerList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select 
+		<if test="checktype1!=null and checktype1=='2'.toString()">
+			datediff(#{enddate}, statdate) DIV 7 statdate,
+			<if test="checktype3!=null and checktype3=='newPayUser'">
+				count(DISTINCT uid, actorid) AS newPayUser
+			FROM
+				logplat_actor_recharge
+			<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/>
+			AND isfirst = 1
+			</if>
+			<if test="checktype3!=null and checktype3=='totalPayUser'">
+				ifnull(SUM(rechgactor), 0) AS totalPayUser
+			FROM
+			logplat_total_regist_recharge
+			<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/>
+			</if>
+		</if>
+		<if test="checktype1!=null and checktype1=='3'.toString()">
+			datediff(#{enddate}, statdate) DIV 30 statdate,
+			<if test="checktype3!=null and checktype3=='newPayUser'">
+				count(DISTINCT uid, actorid) AS newPayUser
+			FROM
+				logplat_actor_recharge
+			<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/>
+			AND isfirst = 1
+			</if>
+			<if test="checktype3!=null and checktype3=='totalPayUser'">
+				ifnull(SUM(rechgactor), 0) AS totalPayUser
+			FROM
+			logplat_total_regist_recharge
+			<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/>
+			</if>
+		</if>
+			GROUP BY
+			<if test="checktype1!=null and checktype1=='2'.toString()">
+				datediff(#{enddate}, statdate) DIV 7
+			</if>
+			<if test="checktype1!=null and checktype1=='3'.toString()">
+				datediff(#{enddate}, statdate) DIV 30
+			</if>	
+	</select>
+	
+	
+	<!-- 日acu,pcu -->
+	<select id="selectDailyAcuAndPcuList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		SELECT
+			statdate,
+			<if test="checktype3!=null and checktype3=='acu'">
+			ifnull(sum(tonline)/sum(counttime), 0) AS acu
+			</if>
+			<if test="checktype3!=null and checktype3=='pcu'">
+			ifnull(sum(pcu), 0) AS pcu
+			</if>
+		FROM
+			logplat_daily_rpt
+			 <include refid = "com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelectWithoutTermtypeLanguageEdition" />
+		GROUP BY
+			statdate
+		ORDER BY
+			statdate
+	</select>
+	
+	<!-- 周或者月acu,pcu -->
+	<select id="selectWeekAndMonthAcuAndPcuList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		SELECT
+		<if test="checktype1!=null and checktype1=='2'.toString()">
+			datediff(#{enddate}, statdate) DIV 7 statdate,
+			<if test="checktype3!=null and checktype3=='acu'">
+			ifnull(sum(tonline)/sum(counttime), 0) AS acu
+			</if>
+			<if test="checktype3!=null and checktype3=='pcu'">
+			ifnull(sum(pcu), 0) AS pcu
+			</if>
+		</if>
+		<if test="checktype1!=null and checktype1=='3'.toString()">
+			datediff(#{enddate}, statdate) DIV 30 statdate,
+			<if test="checktype3!=null and checktype3=='acu'">
+			ifnull(sum(tonline)/sum(counttime), 0) AS acu
+			</if>
+			<if test="checktype3!=null and checktype3=='pcu'">
+			ifnull(sum(pcu), 0) AS pcu
+			</if>
+		</if>
+		FROM
+			logplat_daily_rpt
+			 <include refid = "com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelectWithoutTermtypeLanguageEdition" />
+		GROUP BY
+			<if test="checktype1!=null and checktype1=='2'.toString()">
+				datediff(#{enddate}, statdate) DIV 7
+			</if>
+			<if test="checktype1!=null and checktype1=='3'.toString()">
+				datediff(#{enddate}, statdate) DIV 30
+			</if>
+	</select>
+	
+	
+	<!-- 日付费率 -->
+	<select id="selectDailyPayRateList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		SELECT
+			statdate,
+			IFNULL(ROUND(SUM(payact)/SUM(loginact),2),0) payRate
+		FROM
+			logplat_daily_rpt
+		 <include refid = "com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect" />
+		GROUP BY
+			statdate
+		ORDER BY
+			statdate
+	</select>
+	<!-- 周或者月付费率 -->
+	<select id="selectWeekAndMonthPayRateList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		SELECT
+			<if test="checktype1!=null and checktype1=='2'.toString()">
+			datediff(#{enddate}, statdate) DIV 7 statdate,
+			</if>
+			<if test="checktype1!=null and checktype1=='3'.toString()">
+			datediff(#{enddate}, statdate) DIV 30 statdate,
+			</if>
+			IFNULL(ROUND(SUM(payact)/SUM(loginact),2),0) payRate
+		FROM
+			logplat_daily_rpt
+		 <include refid = "com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect" />
+		GROUP BY
+			<if test="checktype1!=null and checktype1=='2'.toString()">
+				datediff(#{enddate}, statdate) DIV 7
+			</if>
+			<if test="checktype1!=null and checktype1=='3'.toString()">
+				datediff(#{enddate}, statdate) DIV 30
+			</if>
+	</select>
+	
+	<!-- 日次日留存率 -->
+	<select id="selectDailyDay1RetRateList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		<if test="checktype3!=null and checktype3=='newUser'">
+		SELECT
+			statdate,
+			ifnull(round(sum(1dayret)/sum(newact)*100,2),0) as day1Rate
+		from 
+			logplat_daily_retain
+			<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelectWithoutLanguageEdition"/>
+			and type=-1
+			group by statdate order by statdate
+		</if>
+		<if test="checktype3!=null and checktype3=='actUser'">
+		SELECT
+			statdate,
+			IFNULL(round((sum(if(nday=1,count,0))/SUM(actorcnt))*100,2),0) as day1Rate
+		FROM
+			logplat_active_retain
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/>
+		group by statdate order by statdate
+		</if>
+		<if test="checktype3!=null and checktype3=='returnUser'">
+		SELECT                    
+			statdate,
+			IFNULL(round((sum(if(nday=1,count,0))/SUM(retruncnt))*100,2),0) as day1Rate
+		FROM
+			logplat_return_retain
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect" />
+		group by statdate order by statdate
+		</if>
+	</select>
+	
+	<!-- 周或者月次日留存率 -->
+	<select id="selectWeekAndMonthDay1RetRateList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		SELECT
+			<if test="checktype1!=null and checktype1=='2'.toString()">
+				datediff(#{enddate}, statdate) DIV 7 statdate,
+				<if test="checktype3!=null and checktype3=='newUser'">
+				ifnull(round(sum(1dayret)/sum(newact)*100,2),0) as day1Rate
+				from 
+				logplat_daily_retain
+				<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelectWithoutLanguageEdition"/>
+				and type=-1
+				</if>
+				<if test="checktype3!=null and checktype3=='actUser'">
+					IFNULL(round((sum(if(nday=1,count,0))/SUM(actorcnt))*100,2),0) as day1Rate
+				FROM
+					logplat_active_retain
+				<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/>
+				</if>
+				<if test="checktype3!=null and checktype3=='returnUser'">
+					IFNULL(round((sum(if(nday=1,count,0))/SUM(retruncnt))*100,2),0) as day1Rate
+				FROM
+					logplat_return_retain
+				<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect" />
+				</if>
+			</if>
+			<if test="checktype1!=null and checktype1=='3'.toString()">
+				datediff(#{enddate}, statdate) DIV 30 statdate,
+				<if test="checktype3!=null and checktype3=='newUser'">
+				ifnull(round(sum(1dayret)/sum(newact)*100,2),0) as day1Rate
+				from 
+				logplat_daily_retain
+				<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelectWithoutLanguageEdition"/>
+				and type=-1
+				</if>
+				<if test="checktype3!=null and checktype3=='actUser'">
+					IFNULL(round((sum(if(nday=1,count,0))/SUM(actorcnt))*100,2),0) as day1Rate
+				FROM
+					logplat_active_retain
+				<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/>
+				</if>
+				<if test="checktype3!=null and checktype3=='returnUser'">
+					IFNULL(round((sum(if(nday=1,count,0))/SUM(retruncnt))*100,2),0) as day1Rate
+				FROM
+					logplat_return_retain
+				<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect" />
+				</if>
+			</if>
+			GROUP BY
+			<if test="checktype1!=null and checktype1=='2'.toString()">
+				datediff(#{enddate}, statdate) DIV 7
+			</if>
+			<if test="checktype1!=null and checktype1=='3'.toString()">
+				datediff(#{enddate}, statdate) DIV 30
+			</if>
+	</select>
+	
+	<!-- 日acu比pcu -->
+	<select id="selectDailyAcuDivPcuList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		SELECT
+			statdate,
+			ifnull(round((sum(tonline)/sum(counttime))/sum(pcu),2), 0) AS acuRate
+		FROM
+			logplat_daily_rpt
+			 <include refid = "com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelectWithoutTermtypeLanguageEdition" />
+		GROUP BY
+			statdate
+		ORDER BY
+			statdate
+	</select>
+	
+	<!-- 周acu比pcu -->
+	<select id="selectWeekAndMonthAcuDivPcuList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		SELECT
+		<if test="checktype1!=null and checktype1=='2'.toString()">
+				datediff(#{enddate}, statdate) DIV 7 statdate,
+		</if>
+		<if test="checktype1!=null and checktype1=='3'.toString()">
+				datediff(#{enddate}, statdate) DIV 30 statdate,
+		</if>
+		ifnull(round((sum(tonline)/sum(counttime))/sum(pcu),2), 0) AS acuRate	
+		FROM
+			logplat_daily_rpt
+		<include refid = "com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelectWithoutTermtypeLanguageEdition" />
+		GROUP BY
+		<if test="checktype1!=null and checktype1=='2'.toString()">
+			datediff(#{enddate}, statdate) DIV 7
+		</if>
+		<if test="checktype1!=null and checktype1=='3'.toString()">
+			datediff(#{enddate}, statdate) DIV 30
+		</if>
+	</select>
+	
+	
+</mapper>

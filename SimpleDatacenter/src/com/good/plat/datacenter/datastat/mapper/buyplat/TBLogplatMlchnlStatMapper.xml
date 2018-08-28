@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.datastat.mapper.buyplat.TBLogplatMlchnlStatMapper" >
+  <resultMap id="BaseResultMap" type="com.good.plat.datacenter.datastat.entity.buyplat.TBLogplatMlchnlStat" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="statdate" property="statdate" jdbcType="DATE" />
+    <result column="gameid" property="gameid" jdbcType="INTEGER" />
+    <result column="termtype" property="termtype" jdbcType="INTEGER" />
+    <result column="acvcount" property="acvcount" jdbcType="INTEGER" />
+    <result column="regcount" property="regcount" jdbcType="INTEGER" />
+    <result column="logcount" property="logcount" jdbcType="INTEGER" />
+    <result column="acticount" property="acticount" jdbcType="INTEGER" />
+    <result column="lvl3count" property="lvl3count" jdbcType="INTEGER" />
+    <result column="rechgcount" property="rechgcount" jdbcType="INTEGER" />
+    <result column="rechgmoney" property="rechgmoney" jdbcType="DECIMAL" />
+    <result column="oldcount" property="oldcount" jdbcType="INTEGER" />
+    <result column="adcost" property="adcost" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, statdate, gameid, termtype, acvcount, regcount, logcount, acticount, lvl3count, 
+    rechgcount, rechgmoney, oldcount, adcost
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_logplat_mlchnl_stat
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_logplat_mlchnl_stat
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.good.plat.datacenter.datastat.entity.buyplat.TBLogplatMlchnlStat" >
+    insert into tb_logplat_mlchnl_stat (id, statdate, gameid, 
+      termtype, acvcount, regcount, 
+      logcount, acticount, lvl3count, 
+      rechgcount, rechgmoney, oldcount, 
+      adcost)
+    values (#{id,jdbcType=INTEGER}, #{statdate,jdbcType=DATE}, #{gameid,jdbcType=INTEGER}, 
+      #{termtype,jdbcType=INTEGER}, #{acvcount,jdbcType=INTEGER}, #{regcount,jdbcType=INTEGER}, 
+      #{logcount,jdbcType=INTEGER}, #{acticount,jdbcType=INTEGER}, #{lvl3count,jdbcType=INTEGER}, 
+      #{rechgcount,jdbcType=INTEGER}, #{rechgmoney,jdbcType=DECIMAL}, #{oldcount,jdbcType=INTEGER}, 
+      #{adcost,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.good.plat.datacenter.datastat.entity.buyplat.TBLogplatMlchnlStat" >
+    insert into tb_logplat_mlchnl_stat
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="statdate != null" >
+        statdate,
+      </if>
+      <if test="gameid != null" >
+        gameid,
+      </if>
+      <if test="termtype != null" >
+        termtype,
+      </if>
+      <if test="acvcount != null" >
+        acvcount,
+      </if>
+      <if test="regcount != null" >
+        regcount,
+      </if>
+      <if test="logcount != null" >
+        logcount,
+      </if>
+      <if test="acticount != null" >
+        acticount,
+      </if>
+      <if test="lvl3count != null" >
+        lvl3count,
+      </if>
+      <if test="rechgcount != null" >
+        rechgcount,
+      </if>
+      <if test="rechgmoney != null" >
+        rechgmoney,
+      </if>
+      <if test="oldcount != null" >
+        oldcount,
+      </if>
+      <if test="adcost != null" >
+        adcost,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="statdate != null" >
+        #{statdate,jdbcType=DATE},
+      </if>
+      <if test="gameid != null" >
+        #{gameid,jdbcType=INTEGER},
+      </if>
+      <if test="termtype != null" >
+        #{termtype,jdbcType=INTEGER},
+      </if>
+      <if test="acvcount != null" >
+        #{acvcount,jdbcType=INTEGER},
+      </if>
+      <if test="regcount != null" >
+        #{regcount,jdbcType=INTEGER},
+      </if>
+      <if test="logcount != null" >
+        #{logcount,jdbcType=INTEGER},
+      </if>
+      <if test="acticount != null" >
+        #{acticount,jdbcType=INTEGER},
+      </if>
+      <if test="lvl3count != null" >
+        #{lvl3count,jdbcType=INTEGER},
+      </if>
+      <if test="rechgcount != null" >
+        #{rechgcount,jdbcType=INTEGER},
+      </if>
+      <if test="rechgmoney != null" >
+        #{rechgmoney,jdbcType=DECIMAL},
+      </if>
+      <if test="oldcount != null" >
+        #{oldcount,jdbcType=INTEGER},
+      </if>
+      <if test="adcost != null" >
+        #{adcost,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.good.plat.datacenter.datastat.entity.buyplat.TBLogplatMlchnlStat" >
+    update tb_logplat_mlchnl_stat
+    <set >
+      <if test="statdate != null" >
+        statdate = #{statdate,jdbcType=DATE},
+      </if>
+      <if test="gameid != null" >
+        gameid = #{gameid,jdbcType=INTEGER},
+      </if>
+      <if test="termtype != null" >
+        termtype = #{termtype,jdbcType=INTEGER},
+      </if>
+      <if test="acvcount != null" >
+        acvcount = #{acvcount,jdbcType=INTEGER},
+      </if>
+      <if test="regcount != null" >
+        regcount = #{regcount,jdbcType=INTEGER},
+      </if>
+      <if test="logcount != null" >
+        logcount = #{logcount,jdbcType=INTEGER},
+      </if>
+      <if test="acticount != null" >
+        acticount = #{acticount,jdbcType=INTEGER},
+      </if>
+      <if test="lvl3count != null" >
+        lvl3count = #{lvl3count,jdbcType=INTEGER},
+      </if>
+      <if test="rechgcount != null" >
+        rechgcount = #{rechgcount,jdbcType=INTEGER},
+      </if>
+      <if test="rechgmoney != null" >
+        rechgmoney = #{rechgmoney,jdbcType=DECIMAL},
+      </if>
+      <if test="oldcount != null" >
+        oldcount = #{oldcount,jdbcType=INTEGER},
+      </if>
+      <if test="adcost != null" >
+        adcost = #{adcost,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.good.plat.datacenter.datastat.entity.buyplat.TBLogplatMlchnlStat" >
+    update tb_logplat_mlchnl_stat
+    set statdate = #{statdate,jdbcType=DATE},
+      gameid = #{gameid,jdbcType=INTEGER},
+      termtype = #{termtype,jdbcType=INTEGER},
+      acvcount = #{acvcount,jdbcType=INTEGER},
+      regcount = #{regcount,jdbcType=INTEGER},
+      logcount = #{logcount,jdbcType=INTEGER},
+      acticount = #{acticount,jdbcType=INTEGER},
+      lvl3count = #{lvl3count,jdbcType=INTEGER},
+      rechgcount = #{rechgcount,jdbcType=INTEGER},
+      rechgmoney = #{rechgmoney,jdbcType=DECIMAL},
+      oldcount = #{oldcount,jdbcType=INTEGER},
+      adcost = #{adcost,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,72 @@
+<div class="col-xs-8 col-xs-offset-2">
+	<div class="panel panel-default panel_1">
+		<div class="panel-heading">
+			<strong>
+				{{title}}{{'权限' | translate}}
+				<!--------提示框----------->
+			</strong>
+			<!--------下载按钮----------->
+			<div class="clear"></div>
+		</div>
+		<div class="panel-body pdlf pdtb">
+			<div class="col-xs-10 col-xs-offset-1 form-horizontal">
+				<h4>{{'权限信息' | translate}}</h4>
+				<div class="form-group">					
+					<label for=""  class="col-sm-2 text-right control-label">{{'一级菜单' | translate}}：</label>
+					<!-- <select class="form-control" style="width:170px;" ng-model="permissionData.firstId" ng-options="m.id as m.name for m in firstMenuList">
+						
+					</select> -->
+					 <div class="inlineBlock" style="width:200px;">
+            			<ui-select ng-model="permissionData.firstId" theme="bootstrap">
+            				<ui-select-match placeholder="搜索菜单">{{$select.selected.name}}</ui-select-match>
+                			<ui-select-choices repeat="item.id as item in  firstMenuList | filter: $select.search">
+                				<div ng-bind="item.name | highlight: $select.search"></div>
+                		</ui-select-choices>
+            			</ui-select>
+            		</div>
+				</div>
+
+				<div class="form-group">					
+					<label for=""  class="col-sm-2 text-right control-label">{{'类型' | translate}}：</label>
+					<!-- <select class="form-control" style="width:170px;" ng-model="permissionData.menuType" ng-options="m.id as m.name for m in menuTypeList">
+						
+					</select> -->
+					<div class="inlineBlock" style="width:200px;">
+            			<ui-select ng-model="permissionData.menuType" theme="bootstrap">
+            				<ui-select-match placeholder="搜索类型">{{$select.selected.name}}</ui-select-match>
+                			<ui-select-choices repeat="item.id as item in  menuTypeList | filter: $select.search">
+                				<div ng-bind="item.name | highlight: $select.search"></div>
+                		</ui-select-choices>
+            			</ui-select>
+            		</div>	
+				</div>
+				
+				<div class="form-group">					
+					<label for=""  class="col-sm-2 text-right control-label">key：</label>
+					<input type="text" class="form-control" placeholder="" ng-model="permissionData.key">					
+				</div>
+				<div class="form-group">					
+					<label for=""  class="col-sm-2 text-right control-label">{{'权限名' | translate}}：</label>
+					<input type="text" class="form-control" placeholder="" ng-model="permissionData.name">					
+				</div>
+				<div class="form-group">					
+					<label for=""  class="col-sm-2 text-right control-label">actkey：</label>
+					<input type="text" class="form-control" placeholder="" ng-model="permissionData.actkey">					
+				</div>
+				<div class="form-group">					
+					<label for="" class="col-sm-2 text-right control-label">url：</label>
+					<input type="text" class="form-control" placeholder="" ng-model="permissionData.url">
+				</div>		
+				<div class="form-group">					
+					<label for="" class="col-sm-2 text-right control-label">{{'鉴权字串' | translate}}：</label>
+					<input type="text" class="form-control" placeholder="" ng-model="permissionData.permission">
+				</div>				
+				<div class="form-group">
+					<div class="col-xs-offset-2">
+					<button class="btn btn-default btn-sm" ng-click="postData()">{{'提交' | translate}}</button>
+					<button class="btn btn-default btn-sm" ng-click="resetData()">{{'重置' | translate}}</button>
+					</div>
+				</div>
+			</div>
+		</div>
+</div>

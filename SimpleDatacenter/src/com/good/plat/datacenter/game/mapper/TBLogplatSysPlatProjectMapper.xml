@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.game.mapper.TBLogplatSysPlatProjectMapper" >
+  <resultMap id="BaseResultMap" type="com.good.plat.datacenter.game.entity.TBLogplatSysPlatProject" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="platid" property="platid" jdbcType="INTEGER" />
+    <result column="projectid" property="projectid" jdbcType="INTEGER" />
+    <result column="state" property="state" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, platid, projectid, state
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_logplat_sys_plat_project
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_logplat_sys_plat_project
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.good.plat.datacenter.game.entity.TBLogplatSysPlatProject" >
+    insert into tb_logplat_sys_plat_project (id, platid, projectid, 
+      state)
+    values (#{id,jdbcType=INTEGER}, #{platid,jdbcType=INTEGER}, #{projectid,jdbcType=INTEGER}, 
+      #{state,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.good.plat.datacenter.game.entity.TBLogplatSysPlatProject" >
+    insert into tb_logplat_sys_plat_project
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="platid != null" >
+        platid,
+      </if>
+      <if test="projectid != null" >
+        projectid,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="platid != null" >
+        #{platid,jdbcType=INTEGER},
+      </if>
+      <if test="projectid != null" >
+        #{projectid,jdbcType=INTEGER},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.good.plat.datacenter.game.entity.TBLogplatSysPlatProject" >
+    update tb_logplat_sys_plat_project
+    <set >
+      <if test="platid != null" >
+        platid = #{platid,jdbcType=INTEGER},
+      </if>
+      <if test="projectid != null" >
+        projectid = #{projectid,jdbcType=INTEGER},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.good.plat.datacenter.game.entity.TBLogplatSysPlatProject" >
+    update tb_logplat_sys_plat_project
+    set platid = #{platid,jdbcType=INTEGER},
+      projectid = #{projectid,jdbcType=INTEGER},
+      state = #{state,jdbcType=TINYINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

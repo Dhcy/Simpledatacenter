@@ -1,0 +1,20 @@
+{
+  "conversionByChannelDaily": [
+    {
+      "data": 1.95,
+      "channel": "iOS渠道二"
+    },
+    {
+      "data": 9.05,
+      "channel": "Android渠道二"
+    },
+    {
+      "data": 2.76,
+      "channel": "机锋"
+    },
+    {
+      "data": 0.05,
+      "channel": "iOS渠道三"
+    }
+  ]
+}

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.datastat.mapper.balanceplat.DZPTChannelCompanyInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.good.plat.datacenter.datastat.entity.balanceplat.DZPTChannelCompanyInfo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="channelId" property="channelId" jdbcType="INTEGER" />
+    <result column="channelSimName" property="channelSimName" jdbcType="VARCHAR" />
+    <result column="taxId" property="taxId" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="bank" property="bank" jdbcType="VARCHAR" />
+    <result column="bankAcount" property="bankAcount" jdbcType="VARCHAR" />
+    <result column="taxType" property="taxType" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap id="ChannelResultMap" type="com.good.plat.datacenter.datastat.entity.balanceplat.DZPTChannelCompanyInfo" >
+   		<id column="channel_id" property="id" jdbcType="INTEGER" />
+		<result column="channel_channelSimName" property="channelSimName" jdbcType="VARCHAR" />
+		<result column="channel_channelName" property="channelName" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <select id="selectChannelCompanyInfoList" resultMap="BaseResultMap" parameterType="com.good.plat.datacenter.datastat.entity.balanceplat.DZPTChannelCompanyInfo">
+  	SELECT
+		a.id as id,
+		a.channel as channelId,
+		b.channelSimName as channelSimName,
+		a.taxid as taxId,
+		a.address as address,
+		a.phone as phone,
+		a.bank as bank,
+		a.bankacct as bankAcount,
+		a.taxtype as taxType
+	FROM
+		tb_logplat_channel_attr a
+	LEFT JOIN tb_logplat_channel b ON b.id = a.channel
+	WHERE
+		1 = 1
+		<if test="channelId!=-1">
+		AND a.channel=#{channelId}
+		</if>
+		<if test="taxType!=null and taxType!='-1'">
+		AND a.taxtype=#{taxType}
+		</if>
+  </select>
+  
+  <insert id="insertChannelCompanyInfo" parameterType="com.good.plat.datacenter.datastat.entity.balanceplat.DZPTChannelCompanyInfo">
+  		INSERT INTO tb_logplat_channel_attr (
+				channel,
+				taxid,
+				address,
+				phone,
+				bank,
+				bankacct,
+				taxtype
+			)
+			VALUES
+				(#{channelId,jdbcType=INTEGER}, #{taxId,jdbcType=VARCHAR},#{address,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR},#{bank,jdbcType=VARCHAR},#{bankAcount,jdbcType=VARCHAR},#{taxType,jdbcType=VARCHAR})
+  </insert>
+  
+  <update id="updateByPrimaryKey" parameterType="com.good.plat.datacenter.datastat.entity.balanceplat.DZPTChannelCompanyInfo" >
+    update tb_logplat_channel_attr
+    <set >
+      <if test="channelId != null" >
+        channel = #{channelId,jdbcType=INTEGER},
+      </if>
+        taxid = #{taxId,jdbcType=VARCHAR},
+        address = #{address,jdbcType=VARCHAR},
+        phone = #{phone,jdbcType=VARCHAR},
+        bank = #{bank,jdbcType=VARCHAR},
+        bankacct = #{bankAcount,jdbcType=VARCHAR},
+        taxtype =#{taxType,jdbcType=VARCHAR}
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+  	SELECT
+		a.id as id,
+		a.channel as channelId,
+		b.channelSimName as channelSimName,
+		a.taxid as taxId,
+		a.address as address,
+		a.phone as phone,
+		a.bank as bank,
+		a.bankacct as bankAcount,
+		a.taxtype as taxType
+	FROM
+		tb_logplat_channel_attr a
+	LEFT JOIN tb_logplat_channel b ON b.id = a.channel
+	WHERE
+		a.id=#{id,jdbcType=INTEGER}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_logplat_channel_attr
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  
+  <select id="selectCompanyByChannelId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+  	SELECT
+		a.id as id,
+		a.channel as channelId,
+		b.channelSimName as channelSimName,
+		a.taxid as taxId,
+		a.address as address,
+		a.phone as phone,
+		a.bank as bank,
+		a.bankacct as bankAcount,
+		a.taxtype as taxType
+	FROM
+		tb_logplat_channel_attr a
+	LEFT JOIN tb_logplat_channel b ON b.id = a.channel
+	WHERE
+		a.channel=#{channelId,jdbcType=INTEGER}
+  </select>
+</mapper>

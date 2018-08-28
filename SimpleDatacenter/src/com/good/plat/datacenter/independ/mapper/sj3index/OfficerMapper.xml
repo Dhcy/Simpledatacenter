@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.independ.mapper.sj3index.OfficerMapper">
+	<resultMap id="BaseResultMap" type="com.good.plat.datacenter.independ.entity.sj3index.Officer">
+		<result column="gameid" property="gameid"/>
+		<result column="gameName" property="gameName"/>
+		<result column="channelid" property="channelid"/>
+		<result column="channelName" property="channelName"/>
+		<result column="subchannelid" property="subchannelid"/>
+		<result column="areaid" property="areaid"/>
+		<result column="areaName" property="areaName"/>
+		<result column="statdate" property="statdate"/>
+		<result column="statType" property="statType"/>
+		<result column="rate" property="rate"/>
+		
+		<result column="officerName" property="officerName"/>
+		<result column="lmshCnt" property="lmshCnt"/>
+		<result column="ymzyCnt" property="ymzyCnt"/>
+		<result column="yymgCnt" property="yymgCnt"/>
+		<result column="totalCnt" property="totalCnt"/>
+		<result column="jobs" property="jobs"/>
+	</resultMap>
+	
+	<sql id="ABaseSelect">
+		where a.statdate between #{startdate} and #{enddate} 
+		and a.gameid=#{gameid}
+		<if test="channelList != null">
+			and a.channel in
+			<foreach collection="channelList" item="channel" index="index" open="(" close=")" separator=",">
+				#{channel.id}
+			</foreach>
+		</if>
+		<if test="subchannels != null">
+			and a.chnnnl in
+			<foreach collection="subchannels" item="subchannel" index="index" open="(" close=")" separator=",">
+				#{subchannel}
+			</foreach>
+		</if>
+		<if test="areas != null">
+			and a.areaid in
+			<foreach collection="areas" item="area" index="index" open="(" close=")" separator=",">
+				#{area}
+			</foreach>
+		</if>
+	</sql>
+	
+	<!--
+	官职分布(日期,渠道,职业,官职名称,黎明圣火人数,幽冥之翼人数,永夜明光人数,总势力人数)
+	-->
+	<select id="selectOfficerDistributionList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		SELECT
+			a.statdate as statdate,
+			a.channel as channel,
+			b.channelSimName as channelName,
+			a.officer as officerName,
+			a.jobs,
+			SUM(IF(a.power='星盟',cnt,0)) as lmshCnt,
+			SUM(IF(a.power='幽冥',cnt,0)) as ymzyCnt,
+			SUM(IF(a.power='赤焰',cnt,0)) as yymgCnt,
+			SUM(IF(a.power='-1',cnt,0)) totalCnt
+		FROM
+			sj3_guanzhi_stat a
+			LEFT JOIN tb_logplat_channel b ON b.id=a.channel
+		<include refid="ABaseSelect"/>
+		GROUP BY 
+		a.statdate,
+		a.channel,
+		a.officer,
+		a.jobs
+		ORDER BY
+		a.statdate,
+		a.channel
+	</select>	
+	
+	
+	
+</mapper>

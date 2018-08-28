@@ -1,0 +1,797 @@
+<style type="text/css">
+    .table th,.table td{ border:1px solid #ddd;}
+    .form-group{ margin-left: 10px; margin-top: 10px;}
+    .form-control{ display: inline-block; vertical-align: middle;}
+    .form-group .form-member{
+    float: left;
+    }
+    .form-group .member-control{
+   	margin-left: 10px;
+    }
+    .tableListTh{
+    	white-space: nowrap;
+    	text-align:center;
+    }
+    .channelTd{
+    	white-space: nowrap;
+    	text-align:center;
+    }
+     .fix-height {
+    	height: 34px;
+    	line-height: 16px;
+    }
+    
+    .fix-height span {
+    	vertical-align: middle;
+    }
+</style>
+<div>
+	 <div>
+	        <div class="form-group">
+	            <label for="">{{'查询区服' | translate}}：</label>
+	            <select ng-model="postData.areaid" class="form-control" ng-options="data.id as data.name for data in gameAreaList">
+	            </select>
+	        </div>
+			<div class="form-group">
+				<div class="form-member">
+					<label for="startDate">{{'起始日期' | translate}}: </label>
+					<input type="text" id="startDate" class="form-control" placeholder="{{o.startDate}}" uib-datepicker-popup="{{format}}" ng-model="o.startDate" is-open="o.opened1" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" ng-click="o.opened1=!o.opened1" />
+				</div>
+				<div class="form-member member-control">
+					<label for="endDate">{{'结束日期' | translate}}: </label>
+					<input type="text" id="endDate" class="form-control" placeholder="{{o.endDate}}" uib-datepicker-popup="{{format}}" ng-model="o.endDate" is-open="o.opened2" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" ng-click="o.opened2=!o.opened2" />
+				</div>
+				&nbsp;&nbsp;
+				<button class="btn btn-default" ng-click="getAllData()">{{'查询' | translate}}</button>
+			</div>
+	</div>
+	<div class="clear"></div>
+		<!--------tab选择按钮----------->
+	<div class="panel panel-default panel_1">
+			<div class="panel-heading">
+			<strong>{{'军团统计' | translate}}</strong>
+				<div class="panel_downloadBtn"  down-file down-file-url="yhJt/exportJtStatList.action" down-file-type="xlsx" down-file-name="军团统计{{mstatdate}}" savedata="" postdata="postData" ></div>
+				<div class="clear"></div>
+			</div>
+			<div class="panel-body pdlf pdtb">
+			<div class="tableList tableListAct" >
+				<ul class="tableListUl">
+					<li class="tableListLi tableListLiTh clear fix-height">
+						<span class="tableListTh" style="width:7%">
+							<strong title="">{{'日期' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:7%">
+							<strong title="">{{'区服' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:7%">
+							<strong title="">{{'军团数量' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:7%">
+							<strong title="">{{'加入军团' | translate}}<br/>{{'总人数' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:8%">
+							<strong title="">{{'加入军团' | translate}}<br/>{{'人数占比' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:8%">
+							<strong title="">{{'开启强敌入侵' | translate}}<br/>{{'的军团数量' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:8%">
+							<strong title="">{{'开启强敌入侵' | translate}}<br/>{{'军团占比' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:8%">
+							<strong title="">{{'参与采购的' | translate}}<br/>{{'军团数量' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:8%">
+							<strong title="">{{'参与采购' | translate}}<br/>{{'军团比例' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:8%">
+							<strong title="">{{'参与军团战的' | translate}}<br/>{{'军团数量' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:8%">
+							<strong title="">{{'参与军团战' | translate}}<br/>{{'军团比例' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:8%">
+							<strong title="">{{'参与军团战' | translate}}<br/>{{'人数' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:8%">
+							<strong title="">{{'参与军团战' | translate}}<br/>{{'人数占比' | translate}}</strong>
+						</span>
+					</li>
+					<li class="tableListLi clear" ng-repeat="data in panel_1.dataList_1.data | pageStartFrom : panel_1.dataList_1.limit.now*panel_1.dataList_1.limit.max | limitTo: panel_1.dataList_1.limit.max" ng-class="({'show_panel':data.show_panel})">
+						<div class="channelTr clear">
+							<span class="channelTd" style="width:7%" >
+								{{data.statdate}}
+							</span>
+							<span class="channelTd" style="width:7%">
+								{{data.areaid}}
+							</span>
+							<span class="channelTd" style="width:7%">
+								{{data.jtCnt}}
+							</span>
+							<span class="channelTd" style="width:7%">
+								{{data.joinJtActCnt}}
+							</span>
+							<span class="channelTd" style="width:8%">
+								{{data.joinJtActCntRate}}%
+							</span>
+							<span class="channelTd" style="width:8%">
+								{{data.openQdrqJtCnt}}
+							</span>
+							<span class="channelTd" style="width:8%">
+								{{data.openQdrqJtCntRate}}%
+							</span>
+							<span class="channelTd" style="width:8%">
+								{{data.joinPurchaseJtCnt}}
+							</span>
+							<span class="channelTd" style="width:8%">
+								{{data.joinPurchaseJtCntRate}}%
+							</span>
+							<span class="channelTd" style="width:8%">
+								{{data.joinJtFightJtCnt}}
+							</span>
+							<span class="channelTd" style="width:8%">
+								{{data.joinJtFightJtCntRate}}%
+							</span>
+							<span class="channelTd" style="width:8%">
+								{{data.joinJtFightActCnt}}
+							</span>
+							<span class="channelTd" style="width:8%">
+								{{data.joinJtFightActCntRate}}%
+							</span>
+						</div>
+				</li>
+				</ul>
+				<div class="tableFooter">
+						<div class="buttondiv fl" analysisdrop changei="changetype()">
+							<div class="selectlable fl">{{'每页显示' | translate}}：</div>
+							<div class="analysisdrop fl" style="width:60px;">
+								<div class="hadchoose">
+									<h6>{{val | translate}}</h6></div>
+								<ul class="dropUl">
+									<li ng-click="c('10');changetype(10)">10</li>
+									<li ng-click="c('20');changetype(20)">20</li>
+									<li ng-click="c('50');changetype(50)">50</li>
+									<li ng-click="c('100');changetype(100)">100</li>
+								</ul>
+							</div>
+							<div class="selectlable fl">&nbsp;&nbsp;{{'条记录' | translate}}</div>
+						</div>
+						<div class="dataTables_paginate fr" datatableslimit  datalimit="panel_1.dataList_1.limit"  tabledata="panel_1.dataList_1.data"  datachange="panel_1_change"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="panel panel-default panel_2">
+			<div class="panel-heading">
+			<strong>{{'军团等级分布' | translate}}</strong>
+				<div class="panel_downloadBtn"  down-file down-file-url="yhJt/exportJtLvlDistributeList.action" down-file-type="xlsx" down-file-name="军团等级分布{{mstatdate}}" savedata="" postdata="postData" ></div>
+				<div class="clear"></div>
+			</div>
+			<div class="panel-body pdlf pdtb">
+			<div class="tableList tableListAct" >
+				<ul class="tableListUl">
+					<li class="tableListLi tableListLiTh clear">
+						<span class="tableListTh" style="width:20%">
+							<strong title="">{{'日期' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:20%">
+							<strong title="">{{'区服' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:20%">
+							<strong title="">{{'军团等级' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:20%">
+							<strong title="">{{'在此等级的军团数量' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:20%">
+							<strong title="">{{'在此等级的军团占比' | translate}}</strong>
+						</span>
+					</li>
+					<li class="tableListLi clear" ng-repeat="data in panel_2.dataList_1.data | pageStartFrom : panel_2.dataList_1.limit.now*panel_2.dataList_1.limit.max | limitTo: panel_2.dataList_1.limit.max" ng-class="({'show_panel':data.show_panel})">
+						<div class="channelTr clear">
+							<span class="channelTd" style="width:20%" >
+								{{data.statdate}}
+							</span>
+							<span class="channelTd" style="width:20%">
+								{{data.areaid}}
+							</span>
+							<span class="channelTd" style="width:20%">
+								{{data.lvl}}
+							</span>
+							<span class="channelTd" style="width:20%">
+								{{data.lvlJtCnt}}
+							</span>
+							<span class="channelTd" style="width:20%">
+								{{data.lvlJtCntRate}}%
+							</span>
+						</div>
+				</li>
+				</ul>
+				<div class="tableFooter">
+						<div class="buttondiv fl" analysisdrop changei="changetype2()">
+							<div class="selectlable fl">{{'每页显示' | translate}}：</div>
+							<div class="analysisdrop fl" style="width:60px;">
+								<div class="hadchoose">
+									<h6>{{val | translate}}</h6></div>
+								<ul class="dropUl">
+									<li ng-click="c('10');changetype2(10)">10</li>
+									<li ng-click="c('20');changetype2(20)">20</li>
+									<li ng-click="c('50');changetype2(50)">50</li>
+									<li ng-click="c('100');changetype2(100)">100</li>
+								</ul>
+							</div>
+							<div class="selectlable fl">&nbsp;&nbsp;{{'条记录' | translate}}</div>
+						</div>
+						<div class="dataTables_paginate fr" datatableslimit  datalimit="panel_2.dataList_1.limit"  tabledata="panel_2.dataList_1.data"  datachange="panel_2_change"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="panel panel-default panel_3">
+			<div class="panel-heading">
+			<strong>{{'捐赠统计' | translate}}</strong>
+				<div class="panel_downloadBtn"  down-file down-file-url="yhJt/exportJtDonateStatList.action" down-file-type="xlsx" down-file-name="捐赠统计{{mstatdate}}" savedata="" postdata="postData" ></div>
+				<div class="clear"></div>
+			</div>
+			<div class="panel-body pdlf pdtb">
+			<div class="tableList tableListAct" >
+				<ul class="tableListUl">
+					<li class="tableListLi tableListLiTh clear">
+						<span class="tableListTh" style="width:11.1%">
+							<strong title="">{{'日期' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:11.1%">
+							<strong title="">{{'区服' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:11.1%">
+							<strong title="">{{'当天捐赠过的玩家' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:11.1%">
+							<strong title="">{{'捐赠玩家占比' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:11.1%">
+							<strong title="">{{'平均捐献军团资金(每人)' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:11.1%">
+							<strong title="">{{'金币捐献次数' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:11.1%">
+							<strong title="">{{'金币捐献占比' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:11.1%">
+							<strong title="">{{'氪金捐献次数' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:11.1%">
+							<strong title="">{{'氪金捐献占比' | translate}}</strong>
+						</span>
+					</li>
+					<li class="tableListLi clear" ng-repeat="data in panel_3.dataList_1.data | pageStartFrom : panel_3.dataList_1.limit.now*panel_3.dataList_1.limit.max | limitTo: panel_3.dataList_1.limit.max" ng-class="({'show_panel':data.show_panel})">
+						<div class="channelTr clear">
+							<span class="channelTd" style="width:11.1%" >
+								{{data.statdate}}
+							</span>
+							<span class="channelTd" style="width:11.1%">
+								{{data.areaid}}
+							</span>
+							<span class="channelTd" style="width:11.1%">
+								{{data.jtjxActCnt}}
+							</span>
+							<span class="channelTd" style="width:11.1%">
+								{{data.jtjxActCntRate}}%
+							</span>
+							<span class="channelTd" style="width:11.1%">
+								{{data.avgJtjzMoney}}
+							</span>
+							<span class="channelTd" style="width:11.1%">
+								{{data.jbjxcnt}}
+							</span>
+							<span class="channelTd" style="width:11.1%">
+								{{data.jbjxCntRate}}%
+							</span>
+							<span class="channelTd" style="width:11.1%">
+								{{data.kjjxcnt}}
+							</span>
+							<span class="channelTd" style="width:11.1%">
+								{{data.kjjxCntRate}}%
+							</span>
+						</div>
+				</li>
+				</ul>
+				<div class="tableFooter">
+						<div class="buttondiv fl" analysisdrop changei="changetype3()">
+							<div class="selectlable fl">{{'每页显示' | translate}}：</div>
+							<div class="analysisdrop fl" style="width:60px;">
+								<div class="hadchoose">
+									<h6>{{val | translate}}</h6></div>
+								<ul class="dropUl">
+									<li ng-click="c('10');changetype3(10)">10</li>
+									<li ng-click="c('20');changetype3(20)">20</li>
+									<li ng-click="c('50');changetype3(50)">50</li>
+									<li ng-click="c('100');changetype3(100)">100</li>
+								</ul>
+							</div>
+							<div class="selectlable fl">&nbsp;&nbsp;{{'条记录' | translate}}</div>
+						</div>
+						<div class="dataTables_paginate fr" datatableslimit  datalimit="panel_3.dataList_1.limit"  tabledata="panel_3.dataList_1.data"  datachange="panel_3_change"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="panel panel-default panel_4">
+			<div class="panel-heading">
+			<strong>{{'强敌入侵关卡统计' | translate}}</strong>
+				<div class="panel_downloadBtn"  down-file down-file-url="yhJt/exportJtQdrqStageStatList.action" down-file-type="xlsx" down-file-name="强敌入侵关卡统计{{mstatdate}}" savedata="" postdata="postData" ></div>
+				<div class="clear"></div>
+			</div>
+			<div class="panel-body pdlf pdtb">
+			<div class="tableList tableListAct" >
+				<ul class="tableListUl">
+					<li class="tableListLi tableListLiTh clear">
+						<span class="tableListTh" style="width:11%">
+							<strong title="">{{'日期' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:11%">
+							<strong title="">{{'区服' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:13%">
+							<strong title="">{{'强敌入侵关卡' | translate}}id</strong>
+						</span>
+						<span class="tableListTh" style="width:13%">
+							<strong title="">{{'开启此关卡的军团数' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:13%">
+							<strong title="">{{'挑战成功军团数' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:13%">
+							<strong title="">{{'挑战成功占比' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:13%">
+							<strong title="">{{'达成限时任务军团数' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:13%">
+							<strong title="">{{'达成限时任务占比' | translate}}</strong>
+						</span>
+					</li>
+					<li class="tableListLi clear" ng-repeat="data in panel_4.dataList_1.data | pageStartFrom : panel_4.dataList_1.limit.now*panel_4.dataList_1.limit.max | limitTo: panel_4.dataList_1.limit.max" ng-class="({'show_panel':data.show_panel})">
+						<div class="channelTr clear">
+							<span class="channelTd" style="width:11%" >
+								{{data.statdate}}
+							</span>
+							<span class="channelTd" style="width:11%">
+								{{data.areaid}}
+							</span>
+							<span class="channelTd" style="width:13%">
+								{{data.stageid}}
+							</span>
+							<span class="channelTd" style="width:13%">
+								{{data.openStageJtCnt}}
+							</span>
+							<span class="channelTd" style="width:13%">
+								{{data.successJtCnt}}
+							</span>
+							<span class="channelTd" style="width:13%">
+								{{data.successJtCntRate}}%
+							</span>
+							<span class="channelTd" style="width:13%">
+								{{data.wcxsrwJtCnt}}
+							</span>
+							<span class="channelTd" style="width:13%">
+								{{data.wcxsrwJtCntRate}}%
+							</span>
+						</div>
+				</li>
+				</ul>
+				<div class="tableFooter">
+						<div class="buttondiv fl" analysisdrop changei="changetype4()">
+							<div class="selectlable fl">{{'每页显示' | translate}}：</div>
+							<div class="analysisdrop fl" style="width:60px;">
+								<div class="hadchoose">
+									<h6>{{val | translate}}</h6></div>
+								<ul class="dropUl">
+									<li ng-click="c('10');changetype4(10)">10</li>
+									<li ng-click="c('20');changetype4(20)">20</li>
+									<li ng-click="c('50');changetype4(50)">50</li>
+									<li ng-click="c('100');changetype4(100)">100</li>
+								</ul>
+							</div>
+							<div class="selectlable fl">&nbsp;&nbsp;{{'条记录' | translate}}</div>
+						</div>
+						<div class="dataTables_paginate fr" datatableslimit  datalimit="panel_4.dataList_1.limit"  tabledata="panel_4.dataList_1.data"  datachange="panel_4_change"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="panel panel-default panel_5">
+			<div class="panel-heading">
+			<strong>{{'军团采购统计' | translate}}</strong>
+				<div class="panel_downloadBtn"  down-file down-file-url="yhJt/exportJtPurchaseList.action" down-file-type="xlsx" down-file-name="军团采购统计{{mstatdate}}" savedata="" postdata="postData" ></div>
+				<div class="clear"></div>
+			</div>
+			<div class="panel-body pdlf pdtb">
+			<div class="tableList tableListAct" >
+				<ul class="tableListUl">
+					<li class="tableListLi tableListLiTh clear">
+						<span class="tableListTh" style="width:20%">
+							<strong title="">{{'日期' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:20%">
+							<strong title="">{{'区服' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:20%">
+							<strong title="">{{'采购次数' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:20%">
+							<strong title="">{{'今日采购了此次数的军团数量' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:20%">
+							<strong title="">{{'今日采购了此次数的军团占比' | translate}}</strong>
+						</span>
+					</li>
+					<li class="tableListLi clear" ng-repeat="data in panel_5.dataList_1.data | pageStartFrom : panel_5.dataList_1.limit.now*panel_5.dataList_1.limit.max | limitTo: panel_5.dataList_1.limit.max" ng-class="({'show_panel':data.show_panel})">
+						<div class="channelTr clear">
+							<span class="channelTd" style="width:20%" >
+								{{data.statdate}}
+							</span>
+							<span class="channelTd" style="width:20%">
+								{{data.areaid}}
+							</span>
+							<span class="channelTd" style="width:20%">
+								{{data.times}}
+							</span>
+							<span class="channelTd" style="width:20%">
+								{{data.jtCnt}}
+							</span>
+							<span class="channelTd" style="width:20%">
+								{{data.jtCntRate}}%
+							</span>
+						</div>
+				</li>
+				</ul>
+				<div class="tableFooter">
+						<div class="buttondiv fl" analysisdrop changei="changetype5()">
+							<div class="selectlable fl">{{'每页显示' | translate}}：</div>
+							<div class="analysisdrop fl" style="width:60px;">
+								<div class="hadchoose">
+									<h6>{{val | translate}}</h6></div>
+								<ul class="dropUl">
+									<li ng-click="c('10');changetype5(10)">10</li>
+									<li ng-click="c('20');changetype5(20)">20</li>
+									<li ng-click="c('50');changetype5(50)">50</li>
+									<li ng-click="c('100');changetype5(100)">100</li>
+								</ul>
+							</div>
+							<div class="selectlable fl">&nbsp;&nbsp;{{'条记录' | translate}}</div>
+						</div>
+						<div class="dataTables_paginate fr" datatableslimit  datalimit="panel_5.dataList_1.limit"  tabledata="panel_5.dataList_1.data"  datachange="panel_5_change"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="panel panel-default panel_6">
+			<div class="panel-heading">
+			<strong>{{'军团采购商品统计' | translate}}</strong>
+				<div class="panel_downloadBtn"  down-file down-file-url="yhJt/exportJtPurchaseGoodList.action" down-file-type="xlsx" down-file-name="军团采购商品统计{{mstatdate}}" savedata="" postdata="postData" ></div>
+				<div class="clear"></div>
+			</div>
+			<div class="panel-body pdlf pdtb">
+			<div class="tableList tableListAct" >
+				<ul class="tableListUl">
+					<li class="tableListLi tableListLiTh clear">
+						<span class="tableListTh" style="width:20%">
+							<strong title="">{{'日期' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:20%">
+							<strong title="">{{'区服' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:20%">
+							<strong title="">{{'商品' | translate}}id</strong>
+						</span>
+						<span class="tableListTh" style="width:20%">
+							<strong title="">{{'今日购买总次数' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:20%">
+							<strong title="">{{'购买占比' | translate}}</strong>
+						</span>
+					</li>
+					<li class="tableListLi clear" ng-repeat="data in panel_6.dataList_1.data | pageStartFrom : panel_6.dataList_1.limit.now*panel_6.dataList_1.limit.max | limitTo: panel_6.dataList_1.limit.max" ng-class="({'show_panel':data.show_panel})">
+						<div class="channelTr clear">
+							<span class="channelTd" style="width:20%" >
+								{{data.statdate}}
+							</span>
+							<span class="channelTd" style="width:20%">
+								{{data.areaid}}
+							</span>
+							<span class="channelTd" style="width:20%">
+								{{data.goodsid}}
+							</span>
+							<span class="channelTd" style="width:20%">
+								{{data.bugCnt}}
+							</span>
+							<span class="channelTd" style="width:20%">
+								{{data.bugCntRate}}%
+							</span>
+						</div>
+				</li>
+				</ul>
+				<div class="tableFooter">
+						<div class="buttondiv fl" analysisdrop changei="changetype6()">
+							<div class="selectlable fl">{{'每页显示' | translate}}：</div>
+							<div class="analysisdrop fl" style="width:60px;">
+								<div class="hadchoose">
+									<h6>{{val | translate}}</h6></div>
+								<ul class="dropUl">
+									<li ng-click="c('10');changetype6(10)">10</li>
+									<li ng-click="c('20');changetype6(20)">20</li>
+									<li ng-click="c('50');changetype6(50)">50</li>
+									<li ng-click="c('100');changetype6(100)">100</li>
+								</ul>
+							</div>
+							<div class="selectlable fl">&nbsp;&nbsp;{{'条记录' | translate}}</div>
+						</div>
+						<div class="dataTables_paginate fr" datatableslimit  datalimit="panel_6.dataList_1.limit"  tabledata="panel_6.dataList_1.data"  datachange="panel_6_change"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="panel panel-default panel_7">
+			<div class="panel-heading">
+			<strong>{{'军团赞助统计（请求数据）' | translate}}</strong>
+				<div class="panel_downloadBtn"  down-file down-file-url="yhJt/exportJtfbqqDataList.action" down-file-type="xlsx" down-file-name="军团赞助统计（请求数据）{{mstatdate}}" savedata="" postdata="postData" ></div>
+				<div class="clear"></div>
+			</div>
+			<div class="panel-body pdlf pdtb">
+			<div class="tableList tableListAct" >
+				<ul class="tableListUl">
+					<li class="tableListLi tableListLiTh clear">
+						<span class="tableListTh" style="width:11%">
+							<strong title="">{{'日期' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:11%">
+							<strong title="">{{'区服' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:13%">
+							<strong title="">{{'发布请求人数' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:13%">
+							<strong title="">{{'发布请求人数占比' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:13%">
+							<strong title="">{{'发布战舰请求次数' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:13%">
+							<strong title="">{{'发布战舰请求占比' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:13%">
+							<strong title="">{{'发布装置请求次数' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:13%">
+							<strong title="">{{'发布装置请求占比' | translate}}</strong>
+						</span>
+					</li>
+					<li class="tableListLi clear" ng-repeat="data in panel_7.dataList_1.data | pageStartFrom : panel_7.dataList_1.limit.now*panel_7.dataList_1.limit.max | limitTo: panel_7.dataList_1.limit.max" ng-class="({'show_panel':data.show_panel})">
+						<div class="channelTr clear">
+							<span class="channelTd" style="width:11%" >
+								{{data.statdate}}
+							</span>
+							<span class="channelTd" style="width:11%">
+								{{data.areaid}}
+							</span>
+							<span class="channelTd" style="width:13%">
+								{{data.fbqqActCnt}}
+							</span>
+							<span class="channelTd" style="width:13%">
+								{{data.fbqqActCntRate}}%
+							</span>
+							<span class="channelTd" style="width:13%">
+								{{data.fbzjqqCnt}}
+							</span>
+							<span class="channelTd" style="width:13%">
+								{{data.fbzjqqCntRate}}%
+							</span>
+							<span class="channelTd" style="width:13%">
+								{{data.fbzzqqCnt}}
+							</span>
+							<span class="channelTd" style="width:13%">
+								{{data.fbzzqqCntRate}}%
+							</span>
+						</div>
+				</li>
+				</ul>
+				<div class="tableFooter">
+						<div class="buttondiv fl" analysisdrop changei="changetype7()">
+							<div class="selectlable fl">{{'每页显示' | translate}}：</div>
+							<div class="analysisdrop fl" style="width:60px;">
+								<div class="hadchoose">
+									<h6>{{val | translate}}</h6></div>
+								<ul class="dropUl">
+									<li ng-click="c('10');changetype7(10)">10</li>
+									<li ng-click="c('20');changetype7(20)">20</li>
+									<li ng-click="c('50');changetype7(50)">50</li>
+									<li ng-click="c('100');changetype7(100)">100</li>
+								</ul>
+							</div>
+							<div class="selectlable fl">&nbsp;&nbsp;{{'条记录' | translate}}</div>
+						</div>
+						<div class="dataTables_paginate fr" datatableslimit  datalimit="panel_7.dataList_1.limit"  tabledata="panel_7.dataList_1.data"  datachange="panel_7_change"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="panel panel-default panel_8">
+			<div class="panel-heading">
+			<strong>{{'军团赞助统计（赠送数据）' | translate}}</strong>
+				<div class="panel_downloadBtn"  down-file down-file-url="yhJt/exportJtzsDataList.action" down-file-type="xlsx" down-file-name="军团赞助统计（赠送数据）{{mstatdate}}" savedata="" postdata="postData" ></div>
+				<div class="clear"></div>
+			</div>
+			<div class="panel-body pdlf pdtb">
+			<div class="tableList tableListAct" >
+				<ul class="tableListUl">
+					<li class="tableListLi tableListLiTh clear">
+						<span class="tableListTh" style="width:11%">
+							<strong title="">{{'日期' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:11%">
+							<strong title="">{{'区服' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:13%">
+							<strong title="">{{'赠送人数' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:13%">
+							<strong title="">{{'赠送人数占比' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:13%">
+							<strong title="">{{'赠送战舰次数' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:13%">
+							<strong title="">{{'赠送战舰占比' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:13%">
+							<strong title="">{{'赠送装置次数' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:13%">
+							<strong title="">{{'赠送装置占比' | translate}}</strong>
+						</span>
+					</li>
+					<li class="tableListLi clear" ng-repeat="data in panel_8.dataList_1.data | pageStartFrom : panel_8.dataList_1.limit.now*panel_8.dataList_1.limit.max | limitTo: panel_8.dataList_1.limit.max" ng-class="({'show_panel':data.show_panel})">
+						<div class="channelTr clear">
+							<span class="channelTd" style="width:11%" >
+								{{data.statdate}}
+							</span>
+							<span class="channelTd" style="width:11%">
+								{{data.areaid}}
+							</span>
+							<span class="channelTd" style="width:13%">
+								{{data.zsActCnt}}
+							</span>
+							<span class="channelTd" style="width:13%">
+								{{data.zsActCntRate}}%
+							</span>
+							<span class="channelTd" style="width:13%">
+								{{data.zszjCnt}}
+							</span>
+							<span class="channelTd" style="width:13%">
+								{{data.zszjCntRate}}%
+							</span>
+							<span class="channelTd" style="width:13%">
+								{{data.zszzCnt}}
+							</span>
+							<span class="channelTd" style="width:13%">
+								{{data.zszzCntRate}}%
+							</span>
+						</div>
+				</li>
+				</ul>
+				<div class="tableFooter">
+						<div class="buttondiv fl" analysisdrop changei="changetype8()">
+							<div class="selectlable fl">{{'每页显示' | translate}}：</div>
+							<div class="analysisdrop fl" style="width:60px;">
+								<div class="hadchoose">
+									<h6>{{val | translate}}</h6></div>
+								<ul class="dropUl">
+									<li ng-click="c('10');changetype8(10)">10</li>
+									<li ng-click="c('20');changetype8(20)">20</li>
+									<li ng-click="c('50');changetype8(50)">50</li>
+									<li ng-click="c('100');changetype8(100)">100</li>
+								</ul>
+							</div>
+							<div class="selectlable fl">&nbsp;&nbsp;{{'条记录' | translate}}</div>
+						</div>
+						<div class="dataTables_paginate fr" datatableslimit  datalimit="panel_8.dataList_1.limit"  tabledata="panel_8.dataList_1.data"  datachange="panel_8_change"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="panel panel-default panel_9">
+			<div class="panel-heading">
+			<strong>{{'军团赞助统计（总计数据）' | translate}}</strong>
+				<div class="panel_downloadBtn"  down-file down-file-url="yhJt/exportJtTotalDataList.action" down-file-type="xlsx" down-file-name="军团赞助统计（总计数据）{{mstatdate}}" savedata="" postdata="postData" ></div>
+				<div class="clear"></div>
+			</div>
+			<div class="panel-body pdlf pdtb">
+			<div class="tableList tableListAct" >
+				<ul class="tableListUl">
+					<li class="tableListLi tableListLiTh clear">
+						<span class="tableListTh" style="width:11%">
+							<strong title="">{{'日期' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:11%">
+							<strong title="">{{'区服' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:13%">
+							<strong title="">{{'请求总数量' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:13%">
+							<strong title="">{{'已完成的请求数量' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:13%">
+							<strong title="">{{'请求完成占比' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:13%">
+							<strong title="">{{'已感谢的请求数量' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:13%">
+							<strong title="">{{'可感谢的请求数量' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:13%">
+							<strong title="">{{'已感谢占比' | translate}}</strong>
+						</span>
+					</li>
+					<li class="tableListLi clear" ng-repeat="data in panel_9.dataList_1.data | pageStartFrom : panel_9.dataList_1.limit.now*panel_9.dataList_1.limit.max | limitTo: panel_9.dataList_1.limit.max" ng-class="({'show_panel':data.show_panel})">
+						<div class="channelTr clear">
+							<span class="channelTd" style="width:11%" >
+								{{data.statdate}}
+							</span>
+							<span class="channelTd" style="width:11%">
+								{{data.areaid}}
+							</span>
+							<span class="channelTd" style="width:13%">
+								{{data.qqCnt}}
+							</span>
+							<span class="channelTd" style="width:13%">
+								{{data.ywcqqCnt}}
+							</span>
+							<span class="channelTd" style="width:13%">
+								{{data.ywcqqCntRate}}%
+							</span>
+							<span class="channelTd" style="width:13%">
+								{{data.ygxqqCnt}}
+							</span>
+							<span class="channelTd" style="width:13%">
+								{{data.kgxqqCnt}}
+							</span>
+							<span class="channelTd" style="width:13%">
+								{{data.ygxqqCntRate}}%
+							</span>
+						</div>
+				</li>
+				</ul>
+				<div class="tableFooter">
+						<div class="buttondiv fl" analysisdrop changei="changetype9()">
+							<div class="selectlable fl">{{'每页显示' | translate}}：</div>
+							<div class="analysisdrop fl" style="width:60px;">
+								<div class="hadchoose">
+									<h6>{{val | translate}}</h6></div>
+								<ul class="dropUl">
+									<li ng-click="c('10');changetype9(10)">10</li>
+									<li ng-click="c('20');changetype9(20)">20</li>
+									<li ng-click="c('50');changetype9(50)">50</li>
+									<li ng-click="c('100');changetype9(100)">100</li>
+								</ul>
+							</div>
+							<div class="selectlable fl">&nbsp;&nbsp;{{'条记录' | translate}}</div>
+						</div>
+						<div class="dataTables_paginate fr" datatableslimit  datalimit="panel_9.dataList_1.limit"  tabledata="panel_9.dataList_1.data"  datachange="panel_9_change"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+</div>

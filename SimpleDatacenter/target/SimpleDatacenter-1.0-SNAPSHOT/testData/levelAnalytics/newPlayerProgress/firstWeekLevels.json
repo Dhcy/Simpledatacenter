@@ -1,0 +1,47 @@
+{
+  "firstWeekLevels": {
+    "result": [
+      {
+        "item": "1",
+        "value": 32006
+      },
+      {
+        "item": "2",
+        "value": 9314
+      },
+      {
+        "item": "3",
+        "value": 10274
+      },
+      {
+        "item": "4",
+        "value": 6365
+      },
+      {
+        "item": "5",
+        "value": 3487
+      },
+      {
+        "item": "6",
+        "value": 1283
+      },
+      {
+        "item": "7",
+        "value": 727
+      },
+      {
+        "item": "8",
+        "value": 469
+      },
+      {
+        "item": "9",
+        "value": 676
+      },
+      {
+        "item": "10",
+        "value": 942
+      }
+    ],
+    "avg": 2
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "activeUserChannel": [
+    {
+      "channel": "Android渠道二",
+      "count": 40716,
+      "rate": 7.8
+    },
+    {
+      "channel": "iOS渠道三",
+      "count": 172820,
+      "rate": 33.2
+    },
+    {
+      "channel": "iOS渠道二",
+      "count": 284775,
+      "rate": 54.7
+    },
+    {
+      "channel": "unknow",
+      "count": 7,
+      "rate": 0.0
+    },
+    {
+      "channel": "机锋",
+      "count": 22372,
+      "rate": 4.3
+    }
+  ]
+}

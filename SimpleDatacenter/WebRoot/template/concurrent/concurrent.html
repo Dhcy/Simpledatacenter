@@ -1,0 +1,145 @@
+<div>
+	<div class="maintop">
+		<div datepicker class="col-xs-3 timeSelect" mstatdate="mstatdate">
+		</div>
+		<!--------日期选择控件----------->
+		<div selectChoose class="selectChoose">
+		</div>
+		<!--------渠道区服选择控件----------->
+		<div class="clear"></div>
+		<div class="panel-selectChoose" callbackchannelqf ng-show="iscallback">
+			<ul ng-show="ischannel" class="cl">
+				<li>{{'渠道' | translate}}：</li>
+				<li ng-repeat="channellist in callbackchannelqfdata.channellist">{{channellist}}</li>
+			</ul>
+			<ul ng-show="isqf"  class="cl">
+				<li>{{'区服' | translate}}：</li>
+				<li ng-repeat="qflist in callbackchannelqfdata.qflist">{{qflist}}</li>
+			</ul>
+		</div>
+		<!--------已选择渠道区服显示----------->
+	</div>
+	<div class="panel panel-default panel_1">
+			<div class="panel-heading">
+				<strong>
+					{{'每日在线用户' | translate}}
+					<div class="exp-box">
+						<em class="icon-exp">{{'三角图标' | translate}}</em>
+						<div class="noun-exp" style="width:300px;">
+						</div>
+					</div>
+					<!--------提示框----------->
+				</strong>
+				<div class="clear"></div>
+			</div>
+			<div class="panel-body" ng-class="{'table':panel_1.model=='table','graph':panel_1.model=='graph'}">
+			<!--------默认panel展示类型，表格tale或图表graph---------->
+				<ul class="nav nav-tabs fl cl" navtabs>
+				  <li role="presentation" class="active">
+					  <a href="javascript:void(0);">ACU</a>
+					  <div tipsmsg>{{'（Average Concurrent Users）平均同时在线玩家人数。我们每15到30分钟采集一次瞬时的在线玩家数，一日中全部采集点的平均值即ACU' | translate}}</div>
+				  </li>
+				  <li role="presentation">
+					  <a href="javascript:void(0);">PCU</a>
+					  <div tipsmsg>{{'（Peak concurrent users ）最高同时在线玩家人数。我们每15到30分钟采集一次瞬时的在线玩家数，一日中最高的一个值即PCU' | translate}}
+						</div>
+				  </li>
+				  <li role="presentation">
+				  	<a href="javascript:void(0);">ACU/PCU</a>
+				  	  <div tipsmsg>{{'通常称为在线平高比，比值越大则每日在线越平稳，玩家活跃时间更长，游戏服务器也更有效率；而极低的平高比则意味着玩家集中上线，但总体活跃性并不强。某些限时活动可能会拉低平高比，但属正常情况' | translate}}
+						</div>
+				  </li>
+				</ul>
+				<!--------选项卡----------->
+				<div class="clear"></div>
+				<div class="panel-showData">
+					<div class="dataList dataList_1">
+						<div class="dataGraph">
+							<div class="graph" data="dataList_1_1_graph"></div>
+							<!--------图表div，data为graphfun的key----------->
+							<!--------图表分页----------->
+						</div>
+					</div>
+					<div class="dataList dataList_2">
+						<div class="dataGraph">
+							<div class="graph" data="dataList_1_2_graph"></div>
+							<!--------图表div，data为graphfun的key----------->
+							<!--------图表分页----------->
+						</div>
+					</div>
+					<div class="dataList dataList_3">
+						<div class="dataGraph">
+							<div class="graph" data="dataList_1_3_graph"></div>
+							<!--------图表div，data为graphfun的key----------->
+							<!--------图表分页----------->
+						</div>
+					</div>
+				</div>
+				<div class="panel-changeData" graphtbale  graphfun="graphfun" datachange="panel_1_change"  datalimit="0" model="panel_1.model" style="display:none">
+				</div>
+				<!-------------图表表格切换，graphfun ----datachange(需要分页时删除不填)------------->
+			</div>
+	</div>
+	<div class="clear">
+		<div class="col-xs-6">
+			<div class="panel panel-default panel_2">
+					<div class="panel-heading">
+						<strong>
+							ACU
+						</strong>
+						<div class="clear"></div>
+					</div>
+					<div class="panel-body pdtb">
+						<div class="row">
+							<div class="col-xs-6 concurrentLeft">
+								MAX
+							</div>
+							<div class="col-xs-6 concurrentright">
+								{{acu_max}} | {{acu_max_date}}
+							</div>
+						</div>
+						<div class="row"><div class="line"></div></div>
+						<div class="row">
+							<div class="col-xs-6 concurrentLeft">
+								AVG
+							</div>
+							<div class="col-xs-6 concurrentright">
+								{{acu_avg}}
+							</div>
+						</div>
+						<div class="clear"></div>
+					</div>
+			</div>
+		</div>
+		<div class="col-xs-6">
+			<div class="panel panel-default panel_3">
+					<div class="panel-heading">
+						<strong>
+							PCU
+						</strong>
+						<div class="clear"></div>
+					</div>
+					<div class="panel-body pdtb">
+						<div class="row">
+							<div class="col-xs-6 concurrentLeft">
+								MAX
+							</div>
+							<div class="col-xs-6 concurrentright">
+								{{pcu_max}} | {{pcu_max_date}}
+							</div>
+						</div>
+						<div class="row"><div class="line"></div></div>
+						<div class="row">
+							<div class="col-xs-6 concurrentLeft">
+								AVG
+							</div>
+							<div class="col-xs-6 concurrentright">
+								{{pcu_avg}}
+							</div>
+						</div>
+						<div class="clear"></div>
+					</div>
+			</div>
+		</div>
+	</div>
+</div>

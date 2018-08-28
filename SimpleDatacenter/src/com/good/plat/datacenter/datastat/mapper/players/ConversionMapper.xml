@@ -1,0 +1,564 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.datastat.mapper.players.ConversionMapper">
+	<resultMap id="BaseResultMap" type="com.good.plat.datacenter.datastat.entity.players.Conversion">
+		<result column="gameid" property="gameid"/>
+		<result column="gameName" property="gameName"/>
+		<result column="channelid" property="channelid"/>
+		<result column="channelName" property="channelName"/>
+		<result column="subchannelid" property="subchannelid"/>
+		<result column="areaid" property="areaid"/>
+		<result column="areaName" property="areaName"/>
+		<result column="statdate" property="statdate"/>
+		<result column="statType" property="statType"/>
+		<result column="rate" property="rate"/>
+		<result column="accounts" property="accounts"/>
+		<result column="accountSUM" property="accountSUM"/>
+		<result column="payRate" property="payRate"/>
+		<result column="daycount" property="daycount"/>
+		<result column="cnt0To5" property="cnt0To5"/>
+		<result column="cnt5To10" property="cnt5To10"/>
+		<result column="cnt10To20" property="cnt10To20"/>
+		<result column="cnt20To30" property="cnt20To30"/>
+		<result column="cnt30To40" property="cnt30To40"/>
+		<result column="cnt40To50" property="cnt40To50"/>
+		<result column="cnt50To100" property="cnt50To100"/>
+		<result column="cntHigh100" property="cntHigh100"/>
+		<result column="cntOfLevel1To10" property="cntOfLevel1To10"/>
+		<result column="cntOfLevel11To20" property="cntOfLevel11To20"/>
+		<result column="cntOfLevel21To30" property="cntOfLevel21To30"/>
+		<result column="cntOfLevel31To40" property="cntOfLevel31To40"/>
+		<result column="cntOfLevel41To50" property="cntOfLevel41To50"/>
+		<result column="cntOfLevel51To60" property="cntOfLevel51To60"/>
+		<result column="cntOfLevel61To70" property="cntOfLevel61To70"/>
+		<result column="cntOfLevelHigh71" property="cntOfLevelHigh71"/>
+		<result column="rechargeUser" property="rechargeUser"/>
+		<result column="totalUser" property="totalUser"/>
+		<result column="newPayAccounts" property="newPayAccounts"/>
+		<result column="newPayAccountsRate" property="newPayAccountsRate"/>
+		
+		
+		
+		
+	</resultMap>
+	
+	<sql id="BaseSelect">
+		where statdate between #{startdate} and #{enddate} 
+		<if test="termtypes != null">
+			and termtype in
+			<foreach collection="termtypes" item="term" index="index" open="(" close=")" separator=",">
+				#{term}
+			</foreach>
+		</if>
+		and gameid=#{gameid}
+		<if test="areas != null">
+			and areaid in
+			<foreach collection="areas" item="area" index="index" open="(" close=")" separator=",">
+				#{area}
+			</foreach>
+		</if>
+		<if test="channelList != null">
+			and channel in
+			<foreach collection="channelList" item="channel" index="index" open="(" close=")" separator=",">
+				#{channel.id}
+			</foreach>
+		</if>
+		<if test="subchannels != null">
+			and chnnnl in
+			<foreach collection="subchannels" item="subchannel" index="index" open="(" close=")" separator=",">
+				#{subchannel}
+			</foreach>
+		</if>
+	</sql>
+	
+	<sql id="ABaseSelect">
+		a.statdate between #{startdate} and #{enddate} 
+		<if test="termtypes != null">
+			and a.termtype in
+			<foreach collection="termtypes" item="term" index="index" open="(" close=")" separator=",">
+				#{term}
+			</foreach>
+		</if>
+		and a.gameid=#{gameid}
+		<if test="areas != null">
+			and a.areaid in
+			<foreach collection="areas" item="area" index="index" open="(" close=")" separator=",">
+				#{area}
+			</foreach>
+		</if>
+		<if test="channelList != null">
+			and a.channel in
+			<foreach collection="channelList" item="channel" index="index" open="(" close=")" separator=",">
+				#{channel.id}
+			</foreach>
+		</if>
+		<if test="subchannels != null">
+			and a.chnnnl in
+			<foreach collection="subchannels" item="subchannel" index="index" open="(" close=")" separator=",">
+				#{subchannel}
+			</foreach>
+		</if>
+	</sql>
+
+	<!-- 新增付费玩家 -->
+	<select id="selectNewChargeUserNumList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		SELECT
+			a.statdate,
+			a.accounts,
+			a.newPayAccounts, 
+			IFNULL(
+				a.newPayAccounts / b.regAccounts,
+				0
+			) AS newPayAccountsRate
+		FROM
+		(
+				SELECT
+					statdate,
+					count(DISTINCT uid, actorid) AS accounts,
+					count(DISTINCT uid) newPayAccounts
+				FROM
+					logplat_actor_recharge
+				<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/> 
+				AND isfirst = 1
+				<if test="cityList!=null">
+					and city in
+					<foreach collection="cityList" item="city" index="index" open="(" close=")" separator=",">
+						#{city}
+					</foreach>
+				</if>
+				GROUP BY
+					statdate
+				ORDER BY
+					statdate
+			) a
+		LEFT JOIN (
+			SELECT
+				statdate,
+				SUM(newuser) AS regAccounts
+			FROM
+				logplat_user_reglogrechg_stat
+			<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/>
+			<choose>
+			 <when test="cityList!=null">
+	          	and city in
+				<foreach collection="cityList" item="city" index="index" open="(" close=")" separator=",">
+					#{city}
+				</foreach>
+	        </when>
+	        <otherwise>
+	          	and city='-1'
+	        </otherwise>
+	        </choose>
+			GROUP BY
+				statdate
+			ORDER BY
+				statdate
+		) b ON b.statdate = a.statdate
+	</select>
+	
+	<select id="exportNewChargeUserNumList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	
+	<!-- 累计付费玩家 -->
+	<select id="selectChargeUserNumList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select statdate,ifnull(SUM(rechgactor),0) as accounts 
+		from logplat_total_regist_recharge
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelectWithoutLanguageEdition"/> 
+			GROUP BY statdate
+	</select>
+	
+	<select id="exportChargeUserNumList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	
+	<!-- 总体付费率 -->
+	<select id="selectTotalPaidRate" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		SELECT
+			statdate,
+			IFNULL(SUM(rechgactor),0) AS accounts,
+			IFNULL(SUM(totalactor),0) AS accountSUM,
+			IFNULL(SUM(rechguser),0) as rechargeUser,
+			IFNULL(SUM(totaluser),0) as totalUser
+		FROM
+			logplat_total_regist_recharge
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelectWithoutLanguageEdition"/> 
+		GROUP BY statdate
+	</select>
+	
+	<select id="exportTotalPaidRate" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	
+	<!-- 首日付费率 -->
+	<select id="selectFirstDayChargeRate" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select a.statdate,IFNULL(b.firstcount,0) as accounts, IFNULL(a.allcount,0) as accountSUM from 
+		(
+			select statdate,SUM(newact) as allcount from logplat_daily_actor  
+			<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelectWithoutTermtypeLanguageEdition"/>
+			<if test="cityList!=null">
+					and city in
+					<foreach collection="cityList" item="city" index="index" open="(" close=")" separator=",">
+						#{city}
+					</foreach>
+			</if> 
+			GROUP BY statdate
+		
+		)  a LEFT JOIN
+		(
+			select regdate ,count(DISTINCT uid,actorid ) as firstcount from  logplat_actor_recharge 
+			<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/>
+			<if test="cityList!=null">
+					and city in
+					<foreach collection="cityList" item="city" index="index" open="(" close=")" separator=",">
+						#{city}
+					</foreach>
+			</if>  
+		 	and statdate=regdate
+			GROUP BY regdate
+		) b
+		on a.statdate=b.regdate;
+		
+		
+	</select>
+	
+	<select id="exportFirstDayChargeRate" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	
+	<!-- 首周付费率 -->
+	<select id="selectFirstWeekChargeRate" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select a.statdate,IFNULL(b.firstcount,0) as accounts, IFNULL(a.allcount,0) as accountSUM from 
+		(
+			select statdate,SUM(newact) as allcount from logplat_daily_actor  
+			<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelectWithoutTermtypeLanguageEdition"/> 
+			<if test="cityList!=null">
+					and city in
+					<foreach collection="cityList" item="city" index="index" open="(" close=")" separator=",">
+						#{city}
+					</foreach>
+			</if> 
+			GROUP BY statdate
+		
+		)  a LEFT JOIN
+		(
+			select regdate ,count(DISTINCT uid,actorid ) as firstcount from  logplat_actor_recharge 
+			<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/>
+			<if test="cityList!=null">
+					and city in
+					<foreach collection="cityList" item="city" index="index" open="(" close=")" separator=",">
+						#{city}
+					</foreach>
+			</if>  
+		 	and statdate=regdate
+		 	and statdate &lt;= DATE_ADD(regdate,INTERVAL 7 DAY)
+			GROUP BY regdate
+		) b
+		on a.statdate=b.regdate;
+		
+	</select>
+	
+	<select id="exportFirstWeekChargeRate" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	
+	<!-- 首月付费率 -->
+	<select id="selectFirstMonthChargeRate" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select a.statdate,IFNULL(b.firstcount,0) as accounts, IFNULL(a.allcount,0) as accountSUM from 
+		(
+			select statdate,SUM(newact) as allcount from logplat_daily_actor  
+			<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelectWithoutTermtypeLanguageEdition"/> 
+			<if test="cityList!=null">
+					and city in
+					<foreach collection="cityList" item="city" index="index" open="(" close=")" separator=",">
+						#{city}
+					</foreach>
+			</if> 
+			GROUP BY statdate
+		
+		)  a LEFT JOIN
+		(
+			select regdate ,count(DISTINCT uid,actorid ) as firstcount from  logplat_actor_recharge 
+			<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/>
+			<if test="cityList!=null">
+					and city in
+					<foreach collection="cityList" item="city" index="index" open="(" close=")" separator=",">
+						#{city}
+					</foreach>
+			</if>   
+		 	and statdate=regdate
+		 	and statdate &lt;= DATE_ADD(regdate,INTERVAL 30 DAY)
+			GROUP BY regdate
+		) b
+		on a.statdate=b.regdate;
+		
+	</select>
+	
+	<select id="exportFirstMonthChargeRate" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	
+	<!-- 游戏天数 -->
+	<select id="selectFirstChargeTotalDayNumList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		select count( DISTINCT actorid,uid) as accounts,datediff(statdate,regdate) as daycount 
+		from logplat_actor_recharge    
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/> 
+		and isfirst=1
+		<if test="cityList!=null">
+			and city in
+			<foreach collection="cityList" item="city" index="index" open="(" close=")" separator=",">
+				#{city}
+			</foreach>
+		</if>
+		group by daycount 
+		
+	</select>
+	
+	<select id="exportFirstChargeTotalDayNumList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	
+	<!-- 累计游戏时长 -->
+	<select id="selectFirstChargeTotalTimeList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	<select id="exportFirstChargeTotalTimeList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	
+	<!-- 玩家首付等级 -->
+	<select id="selectFirstChargeLevel" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select actorlevel as level, count(DISTINCT actorid,uid ) as accounts 
+		from logplat_actor_recharge 
+			<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/> 
+		and isfirst=1
+		<if test="cityList!=null">
+			and city in
+			<foreach collection="cityList" item="city" index="index" open="(" close=")" separator=",">
+				#{city}
+			</foreach>
+			</if>
+		GROUP BY actorlevel
+		
+	</select>
+	
+	<select id="exportFirstChargeLevel" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	
+	<!-- 玩家首付金额 -->
+	<select id="selectFirstChargeMoney" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	<select id="exportFirstChargeMoney" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	<!-- 玩家首付金额用户数-->
+	<select id="selectNumOfFirstPayMoney" resultMap="BaseResultMap"
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		SELECT
+			IFNULL(sum(IF(money &lt;= 5, 1, 0)),0)as cnt0To5,
+			IFNULL(sum(
+		
+				IF (money &gt;  5 AND money &lt;= 10, 1, 0)
+			),0) as cnt5To10,
+			IFNULL(sum(
+		
+				IF (money &gt; 10 AND money &lt;= 20, 1, 0)
+			),0) as cnt10To20,
+			IFNULL(sum(
+		
+				IF (money &gt; 20 AND money &lt;= 30, 1, 0)
+			),0) as cnt20To30,
+			IFNULL(sum(
+		
+				IF (money &gt; 30 AND money &lt;= 40, 1, 0)
+			),0) as cnt30To40,
+			IFNULL(sum(
+		
+				IF (money &gt; 40 AND money &lt;= 50, 1, 0)
+			),0) as cnt40To50,
+			IFNULL(sum(
+		
+				IF (money &gt; 50 AND money &lt;= 100, 1, 0)
+			),0) as cnt50To100,
+			IFNULL(sum(IF(money &gt; 100, 1, 0)),0) as cntHigh100
+		FROM
+			logplat_actor_recharge
+	<include refid="BaseSelect"/>
+		AND isfirst = 1
+		<if test="cityList!=null">
+			and city in
+			<foreach collection="cityList" item="city" index="index" open="(" close=")" separator=",">
+				#{city}
+			</foreach>
+		</if>
+		
+	</select>
+	
+	<!-- 玩家首付等级用户数 -->
+	<select id="selectNumOfFirstPayLevel" resultMap="BaseResultMap"
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		SELECT
+			IFNULL(
+				sum(IF(actorlevel &lt;= 10, 1, 0)),
+				0
+			) AS cntOfLevel1To10,
+			IFNULL(
+				sum(
+		
+					IF (
+						actorlevel &gt; 10 AND actorlevel &lt;= 20,
+						1,
+						0
+					)
+				),
+				0
+			) AS cntOfLevel11To20,
+			IFNULL(
+				sum(
+		
+					IF (
+						actorlevel &gt; 20
+						AND actorlevel &lt;= 30,
+						1,
+						0
+					)
+				),
+				0
+			) AS cntOfLevel21To30,
+			IFNULL(
+				sum(
+		
+					IF (
+						actorlevel &gt; 30
+						AND actorlevel &lt;= 40,
+						1,
+						0
+					)
+				),
+				0
+			) AS cntOfLevel31To40,
+			IFNULL(
+				sum(
+		
+					IF (
+						actorlevel &gt; 40
+						AND actorlevel &lt;= 50,
+						1,
+						0
+					)
+				),
+				0
+			) AS cntOfLevel41To50,
+			IFNULL(
+				sum(
+		
+					IF (
+						actorlevel &gt; 50
+						AND actorlevel &lt;= 60,
+						1,
+						0
+					)
+				),
+				0
+			) AS cntOfLevel51To60,
+			IFNULL(
+				sum(
+		
+					IF (
+						actorlevel &gt; 60
+						AND actorlevel &lt;= 70,
+						1,
+						0
+					)
+				),
+				0
+			) AS cntOfLevel61To70,
+			IFNULL(
+				sum(IF(actorlevel &gt; 70, 1, 0)),
+				0
+			) AS cntOfLevelHigh71
+	FROM
+		logplat_actor_recharge
+	<include refid="BaseSelect"/>
+		AND isfirst = 1
+		<if test="cityList!=null">
+			and city in
+			<foreach collection="cityList" item="city" index="index" open="(" close=")" separator=",">
+				#{city}
+			</foreach>
+		</if>
+	</select>
+	
+	<!-- 首付方式 -->
+	<select id="selectFirstPayWay" resultMap="BaseResultMap"
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+	SELECT
+		b.channelName AS channelName,
+		count(DISTINCT uid, actorid) AS accounts
+	FROM
+		logplat_actor_recharge a,
+		tb_logplat_paychannel b
+	WHERE a.paychannel = b.channelid
+	AND <include refid="ABaseSelect"/>
+	AND a.isfirst = 1
+	<if test="cityList!=null">
+		and a.city in
+		<foreach collection="cityList" item="city" index="index" open="(" close=")" separator=",">
+			#{city}
+		</foreach>
+	</if>
+	GROUP BY
+		b.channelName
+		
+	</select>
+	
+	
+</mapper>

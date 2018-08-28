@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.game.mapper.ProjectMapper">
+	<resultMap id="BaseResultMap" type="com.good.plat.datacenter.game.entity.Project">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="createdate" property="createdate" jdbcType="TIMESTAMP" />
+		<result column="platid" property="platformid" jdbcType="INTEGER"/>
+		<result column="platname" property="platname" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<resultMap type="com.good.plat.datacenter.game.entity.Project" id="SelectProjectGame">
+		<id column="pro_id" property="id" jdbcType="INTEGER" />
+		<result column="pro_name" property="name" jdbcType="VARCHAR" />
+		<result column="pro_date" property="createdate" jdbcType="TIMESTAMP"/>
+		<collection property="gameList" ofType="com.good.plat.datacenter.game.entity.Game">
+		 	<id column="ga_id" property="id"/>
+		 	<result column="projectid" property="projectid"/>
+		 	<result column="ga_name" property="name"/>
+		 	<result column="ga_date" property="createdate" jdbcType="TIMESTAMP"/>
+		 	<result column="billrate" property="billrate"/>
+		</collection>
+	</resultMap>
+	
+	<select id="selectProjectByUserid" resultMap="BaseResultMap">
+		select 
+			id, name 
+		from 
+			tb_logplat_project 
+		where 
+			id in(select distinct relationid 
+			from tb_logplat_user_resource 
+			where userid=#{userid,jdbcType=INTEGER} 
+			and restype='project') 
+			order by id
+	</select>
+	
+	<select id="selectProjectGameList" resultMap="SelectProjectGame">
+		SELECT 
+		project.id as pro_id, 
+		project.name as pro_name, 
+		project.createdate as pro_date, 
+		game.id as ga_id, 
+		game.projectid, 
+		game.name as ga_name, 
+		game.createdate as ga_date, 
+		game.billrate
+		FROM 
+		tb_logplat_project project LEFT JOIN
+		tb_logplat_game game ON
+		project.id = game.projectid 
+		ORDER BY project.id, game.id
+	</select>
+	
+	<sql id="Base_Column_List">
+		id, name, createdate
+	</sql>
+	
+	<sql id="Base_Column_List_4_JOIN">
+		a.id, a.name, a.createdate
+	</sql>
+	
+	<select id="selectProjectList" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List"/>
+		from tb_logplat_project 
+		order by id
+	</select>
+	
+	<select id="selectPlatProjectList" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List_4_JOIN"/>
+		,plat.platname,plat.id as platid
+		from tb_logplat_project a
+		join tb_logplat_sys_plat_project platproj on(a.id=platproj.projectid)
+		join tb_logplat_sys_plat plat on(plat.id=platproj.platid)
+		order by id
+	</select>
+	
+	<select id="selectProjectMayWithoutPlatList" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List_4_JOIN"/>
+		<!--,plat.platname,plat.id as platid-->
+		from tb_logplat_project a
+		<!--left join tb_logplat_sys_plat_project platproj on(a.id=platproj.projectid)
+		left join tb_logplat_sys_plat plat on(plat.id=platproj.platid)-->
+		order by id
+	</select>
+	
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from tb_logplat_project
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from tb_logplat_project
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	
+	<insert id="insert" parameterType="com.good.plat.datacenter.game.entity.Project">
+		insert into tb_logplat_project (id, name, createdate)
+		values (#{id,jdbcType=INTEGER}, #{name,jdbcType=CHAR},
+		#{createdate,jdbcType=TIMESTAMP})
+	</insert>
+	
+	<insert id="insertSelective" parameterType="com.good.plat.datacenter.game.entity.Project">
+		insert into tb_logplat_project
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="name != null">
+				name,
+			</if>
+			<if test="createdate != null">
+				createdate,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="name != null">
+				#{name,jdbcType=CHAR},
+			</if>
+			<if test="createdate != null">
+				#{createdate,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+	
+	<update id="updateByPrimaryKeySelective" parameterType="com.good.plat.datacenter.game.entity.Project">
+		update tb_logplat_project
+		<set>
+			<if test="name != null">
+				name = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="createdate != null">
+				createdate = #{createdate,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	
+	<update id="updateByPrimaryKey" parameterType="com.good.plat.datacenter.game.entity.Project">
+		update tb_logplat_project
+		set name = #{name,jdbcType=VARCHAR},
+		createdate = #{createdate,jdbcType=TIMESTAMP}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+</mapper>

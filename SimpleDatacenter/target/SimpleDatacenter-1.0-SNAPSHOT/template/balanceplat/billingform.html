@@ -1,0 +1,186 @@
+<style type="text/css">
+    .table th,.table td{ border:1px solid #ddd;}
+    .form-group{ margin-left: 10px; margin-top: 10px;}
+    .form-control{ display: inline-block; vertical-align: middle;}
+    .panel-heading .finace{float: right;height: 36px;margin-left: 10px;}
+    .panel-heading .finace label{line-height: 36px}
+    /*.panel .financeBtn{margin-right: 20px;}*/
+    .nosettle_style{background-color: #ffcccc !important}
+    .isOverdue_style{background-color:#e5f2ff !important}
+</style>
+<div>
+    <div>
+        <div class="form-group">
+            <div class="div_select">
+                
+            </div>
+            <div datepicker format="yyyy-MM"  minMode="month" class="col-xs-3 timeSelect" mstatdate="mstatdate" style="width:320px;"></div>
+            <label for="">{{'项目' | translate}}：</label>
+             <div class="inlineBlock" style="width:200px;">
+            			<ui-select ng-model="postData.projectid" theme="bootstrap" ng-change="getGameListByProjectId()">
+            				<ui-select-match placeholder="搜索项目">{{$select.selected.name}}</ui-select-match>
+                			<ui-select-choices repeat="item.id as item in  panel_1.projectList | filter: $select.search">
+                				<div ng-bind="item.name | highlight: $select.search"></div>
+                		</ui-select-choices>
+            			</ui-select>
+            </div>
+            
+            <label for="">{{'游戏' | translate}}：</label>
+             <div class="inlineBlock" style="width:200px;">
+            			<ui-select ng-model="postData.gameid" theme="bootstrap" ng-change="getChannelList()">
+            				<ui-select-match placeholder="搜索游戏">{{$select.selected.name}}</ui-select-match>
+                			<ui-select-choices repeat="item.id as item in  panel_1.gameList | filter: $select.search">
+                				<div ng-bind="item.name | highlight: $select.search"></div>
+                		</ui-select-choices>
+            			</ui-select>
+            </div>
+			<!--  <select ng-model="postData.gameid" class="form-control" ng-options="data.id as data.name for data in panel_1.gameList"  ng-change="getChannelList()">-->
+
+            </select>&nbsp;&nbsp;
+            <label for="">{{'渠道' | translate}}：</label>
+            <select ng-model="postData.channelid" class="form-control" ng-options="data.id as data.channelName for data in panel_1.channelList">
+
+            </select>&nbsp;&nbsp;
+            <label for="">{{'结算类型' | translate}}：</label>
+            <select ng-model="postData.billingType" class="form-control" ng-options="data.id as data.name for data in billingTypeList">
+
+            </select>&nbsp;&nbsp;
+            <label for="">{{'是否实际' | translate}}：</label>
+            <select ng-model="postData.ispayrates" class="form-control" ng-options="data.id as data.name for data in ispayratesList">
+
+            </select>&nbsp;&nbsp;
+            <label for="">{{'是否阶梯' | translate}}：</label>
+            <select ng-model="postData.isladder" class="form-control" ng-options="data.id as data.name for data in isladderList">
+
+            </select>&nbsp;&nbsp;
+            <label for="">{{'游戏所属' | translate}}：</label>
+            <select ng-model="postData.region" class="form-control" ng-options="data.id as data.name for data in gameRegionList">
+            </select>&nbsp;&nbsp;
+            
+        </div>
+        <div class="form-group">
+        	<label for="">{{'签约公司' | translate}}：</label>
+        	<selectdirective attr-code="attrCode" value="postData.signCompany" hasall="1"></selectdirective>
+           <a class="btn btn-default" ng-click="getData()" >{{'搜索' | translate}}</a>
+        </div>
+    </div>
+    <div class="panel panel-default panel_1">
+        <div class="panel-heading">
+            <strong>
+                 {{'对账报表' | translate}}
+                <!--------提示框--------- -->
+            </strong>
+            <div class="finace">
+            	<label>{{'财务导出' | translate}}</label>&nbsp;
+             	<div class="panel_downloadBtn financeBtn"  down-file down-file-url="balanceplat/exportGameAccoutingList.action" 
+				down-file-type="xlsx" down-file-name="财务报表对账{{mstatdate}}" savedata="" postdata="postData" ng-click="setDateAndAlertMsg()"></div>
+            </div>
+             <div class="finace">
+             	<label>{{'对账导出' | translate}}</label>&nbsp;
+             		<div class="panel_downloadBtn"  down-file down-file-url="balanceplat/exportBillingAccounting.action" 
+					down-file-type="xlsx" down-file-name="结算报表对账{{mstatdate}}" savedata="" postdata="postData" ng-click="setQueryDate()"></div>
+            </div>
+            <!--------下载按钮--------- -->
+            <div class="clear"></div>
+        </div>
+        <div class="panel-body pdlf pdtb">
+            <div class="tableBox">
+                <table class="table table-striped">
+                    <tr>
+                        <th class="text-center" width="5.1%">{{'日期' | translate}}</th>
+                        <th class="text-center" width="5.1%">{{'渠道名' | translate}}</th>
+                        <th class="text-center" width="5.1%">{{'项目名' | translate}}</th>
+                        <th class="text-center" width="5.1%">{{'游戏名' | translate}}</th>
+                        <th class="text-center" width="5.1%">{{'签约公司' | translate}}</th>
+                        <th class="text-center" width="5.1%">{{'合作模式' | translate}}</th>
+                        <th class="text-center" width="5.1%">{{'收入流水' | translate}}</th>
+                        <th class="text-center" width="5.1%">{{'记录货币' | translate}}</th>
+                        <th class="text-center" width="5.1%">{{'人民币流水' | translate}}</th>
+                        <th class="text-center" width="5.1%">{{'支付费率' | translate}}</th>
+                        <th class="text-center" width="5.1%">{{'实际支付费率' | translate}}</th>
+                        <th class="text-center" width="5.1%">{{'税率' | translate}}</th>
+                        <th class="text-center" width="5.1%">{{'结算金额' | translate}}</th>
+                        <th class="text-center" width="5.1%">{{'是否阶梯' | translate}}</th>
+                        <th class="text-center" width="5.1%">{{'分成比例' | translate}}</th>
+                        <th class="text-center" width="5.1%">{{'分成金额' | translate}}</th>
+                        <!-- 
+                        <th class="text-center" width="4.5%">结汇货币</th>
+                        <th class="text-center" width="4.5%">结汇汇率</th>
+                        <th class="text-center" width="4.5%">结汇金额</th>
+                         -->
+                        <th class="text-center" width="5.1%">{{'结算类型' | translate}}</th>
+                        <th class="text-center" width="8%">{{'合同期' | translate}}</th>
+                        <th class="text-center" width="5.1%">{{'操作' | translate}}</th>
+                    </tr>
+                    <tr ng-class="{'nosettle_style':data.nosettle_showcolor==true,'isOverdue_style':data.isOverdue==true&&data.nosettle_showcolor==false}" ng-repeat="data in panel_1.dataList_1.data  | orderBy: panel_1.dataList_1.orderBy.t+panel_1.dataList_1.orderBy.s | pageStartFrom : panel_1.dataList_1.limit.now*panel_1.dataList_1.limit.max | limitTo: panel_1.dataList_1.limit.max" class="text-center">
+                        <td>{{data.statdate}}</td>
+                        <td>{{data.channelName}}</td>
+                        <td>{{data.projectName}}</td>
+                        <td>{{data.gameName}}</td>
+                        <td>{{data.signCompany}}</td>
+                        <td><!-- {{data.coopmodel}}- -->{{data.coopModelName}}</td>
+                        <td>{{data.money}}</td>
+                        <td>{{getCurrencyName(data.currency)}}</td>
+                        <td>{{data.rmb}}</td>
+                        <td>
+                            <span ng-show="!data.isUpdate">{{data.payrate}}</span>
+                            <input ng-show="data.isUpdate"  style="width:65px"  type="text" class="form-control" ng-model="updateData.payrate">
+                        </td>
+                       
+                        <td><!-- {{data.finalpayrate}}- -->{{data.isFinalPayRate}}</td>
+                        <td>
+                            <span ng-show="!data.isUpdate">{{data.taxrate}}</span>
+                            <input ng-show="data.isUpdate"  style="width:65px" type="text" class="form-control" ng-model="updateData.taxrate">
+                        </td>
+                        <td>{{data.settleMoney}}</td>
+                        <td><!-- {{data.gradient}}- -->{{data.gradientName}}</td>
+                        <td>
+                            <span ng-show="!data.isUpdate">{{data.sharerate}}</span>
+                            <input ng-show="data.isUpdate"  style="width:65px"  type="text" class="form-control" ng-model="updateData.sharerate">
+                        </td>
+                        <td>
+                        	{{data.shareMoney}}
+                        </td>
+                        <!--
+                        <td>
+                            <span ng-show="!data.isUpdate">--><!-- {{data.confcurr}}- -->{{getCurrencyName(data.confcurr)}}</span><!--
+                            <select ng-show="data.isUpdate"  class="form-control" style="width:65px;" ng-model="updateData.confcurr" ng-options="m.id as m.name for m in currencyList"  >
+								
+                            </select>  
+                        </td>
+                        <td>
+                            <span ng-show="!data.isUpdate">{{data.exchrate}}</span>
+                            <input ng-show="data.isUpdate"  style="width:65px"  type="text" class="form-control" ng-model="updateData.exchrate">
+                        </td>
+                        <td>{{data.foreignMoney}}</td>-->
+                        <td><!-- {{data.settlementtype}}- -->{{data.settlementtypeName}}</td>
+                        <td>{{data.contractstartdate}}-{{data.constractenddate}}</td>
+                        <td>
+                            <a class="btn btn-default btn-sm" href="javascript:;" ng-click="changeUpdate(data)" ng-show="!data.isUpdate">{{'数据修正' | translate}}</a>
+                            <a class="btn btn-default btn-sm" href="javascript:;" ng-click="postUpdateData(data)" ng-show="data.isUpdate">{{'提交' | translate}}</a>
+                            &nbsp;&nbsp;
+                            <a class="btn btn-default btn-sm" href="javascript:;" ng-click="changeUpdate(data)" ng-show="data.isUpdate">{{'取消' | translate}}</a>
+                        </td>
+                    </tr>
+                </table>
+                <div class="tableFooter">
+                    <div class="buttondiv fl" analysisdrop changei="changetype()">
+                        <div class="selectlable fl">{{'每页显示' | translate}}：</div>
+                        <div class="analysisdrop fl" style="width:60px;">
+                            <div class="hadchoose">
+                                <h6>{{val | translate}}</h6></div>
+                            <ul class="dropUl">
+                                <li ng-click="c('10');changetype(10)">10</li>
+                                <li ng-click="c('20');changetype(20)">20</li>
+                                <li ng-click="c('50');changetype(50)">50</li>
+                                <li ng-click="c('100');changetype(100)">100</li>
+                            </ul>
+                        </div>
+                        <div class="selectlable fl">&nbsp;&nbsp;{{'条记录' | translate}}</div>
+                    </div>
+                    <div class="dataTables_paginate fr" datatableslimit  datalimit="panel_1.dataList_1.limit"  tabledata="panel_1.dataList_1.data"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

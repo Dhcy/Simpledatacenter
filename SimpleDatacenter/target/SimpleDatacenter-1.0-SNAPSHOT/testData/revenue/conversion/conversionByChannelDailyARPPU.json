@@ -1,0 +1,20 @@
+{
+  "conversionByChannelDailyARPPU": [
+    {
+      "data": 0.74,
+      "channel": "Android渠道二"
+    },
+    {
+      "data": 0.39,
+      "channel": "iOS渠道二"
+    },
+    {
+      "data": 0.92,
+      "channel": "机锋"
+    },
+    {
+      "data": 0.46,
+      "channel": "iOS渠道三"
+    }
+  ]
+}

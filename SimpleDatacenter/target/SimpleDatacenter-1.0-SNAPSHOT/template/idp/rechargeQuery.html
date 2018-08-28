@@ -1,0 +1,143 @@
+<style type="text/css">
+    .table th,.table td{ border:1px solid #ddd;}
+    .form-group{ margin-left: 10px; margin-top: 10px;}
+    .form-control{ display: inline-block; vertical-align: middle;}
+    .tableListTh{
+    	white-space: nowrap;
+    	text-align:center;
+    }
+    .channelTd{
+    	white-space: nowrap;
+    	text-align:center;
+    }
+    .maintop .btn{
+    height: 34px;
+    vertical-align: bottom;
+    }
+</style>
+<div>
+	<div class="maintop">
+		<div class="fl">
+			<form class="form-inline">
+				<div class="form-group">
+					<div datepicker format="yyyy-MM-dd" class="col-xs-3 timeSelect" mstatdate="mstatdate">
+					</div>
+				</div>
+				<div class="form-group">
+					<label>&nbsp;&nbsp;{{'角色' | translate}}:</label>
+					<input type="text" class="form-control" id="" style="width:100px;" ng-model="actorName">
+				</div>
+				<button type="button" class="btn btn-default" ng-click="getData()">{{'查询' | translate}}</button>
+			</form>
+		</div>
+		<!--------日期选择控件----------->
+		
+		<div selectChoose class="selectChoose">
+		</div>
+		<!--------渠道区服选择控件----------->
+		<div class="clear"></div>
+		<div class="panel-selectChoose" callbackchannelqf ng-show="iscallback">
+		</div>
+		<!--------已选择渠道区服显示----------->
+	</div>	
+	<div class="clear"></div>
+		<!--------tab选择按钮----------->
+	<div class="panel panel-default panel_1">
+			<div class="panel-heading">
+			<strong>{{'充值查询' | translate}}</strong>
+			<div class="panel_downloadBtn"  down-file down-file-url="summary/exportRechargeQueryList.action" down-file-type="xlsx" down-file-name="充值查询{{mstatdate}}" savedata="" postdata="postData" ></div>
+			<div class="clear"></div>
+			</div>
+			<div class="panel-body pdlf pdtb">
+			<div class="tableList tableListAct" >
+				<ul class="tableListUl">
+					<li class="tableListLi tableListLiTh clear">
+						<span class="tableListTh" style="width:12%" ng-click="changeOrderBy(panel_1.dataList_1,'statdate')">
+							<strong title="">{{'日期' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:9%" ng-click="changeOrderBy(panel_1.dataList_1,'sourceSys')">
+							<strong title="">{{'平台' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:9%" ng-click="changeOrderBy(panel_1.dataList_1,'channelName')">
+							<strong title="">{{'渠道' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:10%" ng-click="changeOrderBy(panel_1.dataList_1,'actorId')">
+							<strong title="">{{'角色' | translate}}ID</strong>
+						</span>
+						<span class="tableListTh" style="width:10%" ng-click="changeOrderBy(panel_1.dataList_1,'actorName')">
+							<strong title="">{{'角色名称' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:9%" ng-click="changeOrderBy(panel_1.dataList_1,'money')">
+							<strong title="">{{'充值金额' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:10%" ng-click="changeOrderBy(panel_1.dataList_1,'count')">
+							<strong title="">{{'充值钻石' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:9%" ng-click="changeOrderBy(panel_1.dataList_1,'actorLevel')">
+							<strong title="">{{'充值时等级' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style=width:12% ng-click="changeOrderBy(panel_1.dataList_1,'rechargeDate')">
+							<strong title="">{{'充值时间' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:10%" ng-click="changeOrderBy(panel_1.dataList_1,'orderId')">
+							<strong title="">{{'充值订单号' | translate}}</strong>
+						</span>
+					</li>
+					
+					<li class="tableListLi clear" ng-repeat="data in panel_1.dataList_1.data | orderBy: panel_1.dataList_1.orderBy.t+panel_1.dataList_1.orderBy.s | pageStartFrom : panel_1.dataList_1.limit.now*panel_1.dataList_1.limit.max | limitTo: panel_1.dataList_1.limit.max" ng-class="({'show_panel':data.show_panel})">
+						<div class="channelTr clear">
+							<span class="channelTd" style="width:12%" >
+								{{data.statdate}}
+							</span>
+							<span class="channelTd" style="width:9%">
+								{{data.sourceSys}}
+							</span>
+							<span class="channelTd" style="width:9%">
+								{{data.channelName}}
+							</span>
+							<span class="channelTd" style="width:10%">
+								{{data.actorId}}
+							</span>
+							<span class="channelTd" style="width:10%">
+								{{data.actorName}}
+							</span>
+							<span class="channelTd" style="width:9%">
+								{{data.money}}
+							</span>
+							<span class="channelTd" style="width:10%">
+								{{data.count}}
+							</span>
+							<span class="channelTd" style="width:9%">
+								{{data.actorLevel}}
+							</span>
+							<span class="channelTd" style="width:12%">
+								{{data.rechargeDate}}
+							</span>
+							<span class="channelTd" style="width:10%">
+								{{data.orderId}}
+							</span>
+						</div>
+				</li>
+				</ul>
+				<div class="tableFooter">
+						<div class="buttondiv fl" analysisdrop changei="changetype()">
+							<div class="selectlable fl">{{'每页显示' | translate}}：</div>
+							<div class="analysisdrop fl" style="width:60px;">
+								<div class="hadchoose">
+									<h6>{{val | translate}}</h6></div>
+								<ul class="dropUl">
+									<li ng-click="c('10');changetype(10)">10</li>
+									<li ng-click="c('20');changetype(20)">20</li>
+									<li ng-click="c('50');changetype(50)">50</li>
+									<li ng-click="c('100');changetype(100)">100</li>
+								</ul>
+							</div>
+							<div class="selectlable fl">&nbsp;&nbsp;{{'条记录' | translate}}</div>
+						</div>
+						<div class="dataTables_paginate fr" datatableslimit  datalimit="panel_1.dataList_1.limit"  tabledata="panel_1.dataList_1.data"  datachange="panel_1_change"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+</div>

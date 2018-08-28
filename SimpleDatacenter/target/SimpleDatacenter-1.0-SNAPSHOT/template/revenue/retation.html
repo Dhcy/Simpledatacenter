@@ -1,0 +1,150 @@
+<div>
+	<div class="maintop">
+		<div datepicker class="col-xs-3 timeSelect" mstatdate="mstatdate">
+		</div>
+		<!--------日期选择控件----------->
+		<div selectChoose class="selectChoose">
+		</div>
+		<!--------渠道区服选择控件----------->
+		<div class="clear"></div>
+		<div class="panel-selectChoose" callbackchannelqf ng-show="iscallback">
+			<ul ng-show="ischannel" class="cl">
+				<li>{{'渠道' | translate}}：</li>
+				<li ng-repeat="channellist in callbackchannelqfdata.channellist">{{channellist}}</li>
+			</ul>
+			<ul ng-show="isqf"  class="cl">
+				<li>{{'区服' | translate}}：</li>				
+				<li ng-repeat="qflist in callbackchannelqfdata.qflist">{{qflist}}</li>
+			</ul>
+		</div>
+		<!--------已选择渠道区服显示----------->
+	</div>	
+	<div class="panel panel-default panel_1">
+			<div class="panel-heading">
+				<strong>
+					{{'付费玩家留存及付费率' | translate}}
+					<div tipsmsg></div>
+					<!--------提示框----------->
+				</strong>
+				<div class="panel_downloadBtn"  down-file down-file-url="revenue/payRetention/exportRateOfRetationAndPayList.action" 
+					down-file-type="xlsx" down-file-name="付费玩家留存及付费率{{mstatdate}}" savedata="" postdata="searchData" ></div>
+				<!--------下载按钮----------->
+				<div class="clear"></div>
+			</div>
+			<div class="panel-body" ng-class="{'table':panel_1.model=='table','graph':panel_1.model=='graph'}">	
+			<!--------默认panel展示类型，表格tale或图表graph---------->
+				<ul class="nav nav-tabs fl cl" navtabs>
+				  <li role="presentation" class="active">
+				  	<a href="javascript:void(0);" >{{'付费玩家留存' | translate}}</a>
+				  	<div tipsmsg>{{'记录当天新增付费玩家数，并对其进行登陆跟踪，记录留存信息' | translate}}
+				  	</div>
+				  </li>
+				  <li role="presentation">
+				  	<a href="javascript:void(0);" >{{'后续付费率' | translate}}</a>
+				  	<div tipsmsg>{{'对指定天数的新增付费玩家的后续付费情况进行追踪，记录指定天数新增付费玩家的后续付费率' | translate}}</div>
+				  </li>
+				</ul>
+				<!--------选项卡----------->
+				<!-- <div class="fl cl info" >
+					<div class="infoact">
+					SUM ：<font><em>{{panel_1.dataList_1.SUM}}</em></font>
+					</div>
+					<div class="infoact">
+					SUM ：<font><em>{{panel_1.dataList_2.SUM}}次</em></font>
+					</div>
+					<div class="infoact">
+					SUM ：<font><em>{{panel_1.dataList_3.SUM}}</em></font>
+					</div>
+				</div> -->
+				<!--------各选项卡数据展示----------->
+				<div class="clear"></div>
+				<div class="panel-showData">
+					<div class="dataList dataList2 dataList_1">
+						<div class="dataGraph">
+							<div class="graph" data="dataList_1_1_graph"></div>	
+							<!--------图表div，data为graphfun的key----------->	
+						</div>
+						<div class="dataTable">
+							<table class="table table-bordered text-center">
+								<tr class="tableTr">
+									<th width='9%' ng-click="changeOrderBy(panel_1.dataList_1,'statdate')">{{'日期' | translate}}</th>
+									<th width='9%' ng-click="changeOrderBy(panel_1.dataList_1,'accounts')">{{'新增付费玩家数(角色)' | translate}}</th>
+									<th width='9%' ng-click="changeOrderBy(panel_1.dataList_1,'day1')">1{{'日留存率' | translate}}(%)</th>
+									<th width='9%' ng-click="changeOrderBy(panel_1.dataList_1,'day2')">2{{'日留存率' | translate}}(%)</th>
+									<th width='9%' ng-click="changeOrderBy(panel_1.dataList_1,'day3')">3{{'日留存率' | translate}}(%)</th>
+									<th width='9%' ng-click="changeOrderBy(panel_1.dataList_1,'day4')">4{{'日留存率' | translate}}(%)</th>
+									<th width='9%' ng-click="changeOrderBy(panel_1.dataList_1,'day5')">5{{'日留存率' | translate}}(%)</th>
+									<th width='9%' ng-click="changeOrderBy(panel_1.dataList_1,'day6')">6{{'日留存率' | translate}}(%)</th>
+									<th width='9%' ng-click="changeOrderBy(panel_1.dataList_1,'day7')">7{{'日留存率' | translate}}(%)</th>
+									<th width='9%' ng-click="changeOrderBy(panel_1.dataList_1,'day14')">14{{'日留存率' | translate}}(%)</th>
+									<th width='9%' ng-click="changeOrderBy(panel_1.dataList_1,'day30')">30{{'日留存率' | translate}}(%)</th>
+									<!--------表格th(数据对象，排序字段)----------->
+								</tr>
+								<tr ng-repeat="data in panel_1.dataList_1.data | orderBy: panel_1.dataList_1.orderBy.t+panel_1.dataList_1.orderBy.s | pageStartFrom : panel_1.dataList_1.limit.now*panel_1.dataList_1.limit.max | limitTo: panel_1.dataList_1.limit.max">
+									<td>{{data.statdate}}</td>
+									<td>{{data.accounts}}</td>
+									<td>{{data.day1}}%</td>
+									<td>{{data.day2}}%</td>
+									<td>{{data.day3}}%</td>
+									<td>{{data.day4}}%</td>
+									<td>{{data.day5}}%</td>
+									<td>{{data.day6}}%</td>
+									<td>{{data.day7}}%</td>
+									<td>{{data.day14}}%</td>
+									<td>{{data.day30}}%</td>
+									
+								</tr>
+							</table>
+							<div class="tableLimit" tablelimit datalimit="panel_1.dataList_1.limit"  tabledata="panel_1.dataList_1.data">							
+							</div>
+							<!--------表格分页，datalimit为分页参数，tabledata为数据----------->
+						</div>
+					</div>
+						<div class="dataList dataList2 dataList_2">
+						<div class="dataGraph">
+							<div class="graph" data="dataList_1_2_graph"></div>	
+							<!--------图表div，data为graphfun的key----------->
+							
+						</div>
+						<div class="dataTable">
+							<table class="table table-bordered text-center">
+								<tr class="tableTr">
+									<th width='9%' ng-click="changeOrderBy(panel_1.dataList_2,'statdate')">{{'日期' | translate}}</th>
+									<th width='9%' ng-click="changeOrderBy(panel_1.dataList_2,'accounts')">{{'新增付费玩家数(角色)' | translate}}</th>
+									<th width='9%' ng-click="changeOrderBy(panel_1.dataList_2,'day1')">1{{'日付费率' | translate}}(%)</th>
+									<th width='9%' ng-click="changeOrderBy(panel_1.dataList_2,'day2')">2{{'日付费率' | translate}}(%)</th>
+									<th width='9%' ng-click="changeOrderBy(panel_1.dataList_2,'day3')">3{{'日付费率' | translate}}(%)</th>
+									<th width='9%' ng-click="changeOrderBy(panel_1.dataList_2,'day4')">4{{'日付费率' | translate}}(%)</th>
+									<th width='9%' ng-click="changeOrderBy(panel_1.dataList_2,'day5')">5{{'日付费率' | translate}}(%)</th>
+									<th width='9%' ng-click="changeOrderBy(panel_1.dataList_2,'day6')">6{{'日付费率' | translate}}(%)</th>
+									<th width='9%' ng-click="changeOrderBy(panel_1.dataList_2,'day7')">7{{'日付费率' | translate}}(%)</th>
+									<th width='9%' ng-click="changeOrderBy(panel_1.dataList_2,'day14')">14{{'日付费率' | translate}}(%)</th>
+									<th width='9%' ng-click="changeOrderBy(panel_1.dataList_2,'day30')">30{{'日付费率' | translate}}(%)</th>
+									<!--------表格th(数据对象，排序字段)----------->
+								</tr>
+								<tr ng-repeat="data in panel_1.dataList_2.data | orderBy: panel_1.dataList_2.orderBy.t+panel_1.dataList_2.orderBy.s | pageStartFrom : panel_1.dataList_2.limit.now*panel_1.dataList_2.limit.max | limitTo: panel_1.dataList_2.limit.max">
+									<td>{{data.statdate}}</td>
+									<td>{{data.accounts}}</td>
+									<td>{{data.day1}}%</td>
+									<td>{{data.day2}}%</td>
+									<td>{{data.day3}}%</td>
+									<td>{{data.day4}}%</td>
+									<td>{{data.day5}}%</td>
+									<td>{{data.day6}}%</td>
+									<td>{{data.day7}}%</td>
+									<td>{{data.day14}}%</td>
+									<td>{{data.day30}}%</td>
+								</tr>
+							</table>
+							<div class="tableLimit" tablelimit datalimit="panel_1.dataList_2.limit"  tabledata="panel_1.dataList_2.data">							
+							</div>
+							<!--------表格分页，datalimit为分页参数，tabledata为数据----------->
+						</div>
+					</div>	
+				</div>
+				<div class="panel-changeData" graphtbale  graphfun="graphfun" datachange="panel_1_change"  datalimit="0" model="panel_1.model">
+				</div>
+				<!-------------图表表格切换，graphfun ----datachange(需要分页时删除不填)------------->
+			</div>
+	</div>
+</div>

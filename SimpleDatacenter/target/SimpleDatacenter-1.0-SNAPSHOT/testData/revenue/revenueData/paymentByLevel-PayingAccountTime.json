@@ -1,0 +1,44 @@
+{
+  "paymentByLevel-PayingAccountTime": [
+    {
+      "data": 1234.0,
+      "level": 1.0
+    },
+    {
+      "data": 578.0,
+      "level": 2.0
+    },
+    {
+      "data": 595.0,
+      "level": 3.0
+    },
+    {
+      "data": 363.0,
+      "level": 4.0
+    },
+    {
+      "data": 463.0,
+      "level": 5.0
+    },
+    {
+      "data": 483.0,
+      "level": 6.0
+    },
+    {
+      "data": 241.0,
+      "level": 7.0
+    },
+    {
+      "data": 241.0,
+      "level": 8.0
+    },
+    {
+      "data": 290.0,
+      "level": 9.0
+    },
+    {
+      "data": 1219.0,
+      "level": 10.0
+    }
+  ]
+}

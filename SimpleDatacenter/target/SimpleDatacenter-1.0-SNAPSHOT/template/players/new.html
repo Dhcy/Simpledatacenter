@@ -1,0 +1,261 @@
+<style>
+.scroll_menu{
+    height:430px;
+    font-size:14px;
+    overflow:auto;
+}
+</style>
+<div>
+	<div class="maintop">
+		<div class="form-group">
+			<div datepicker class="col-xs-3 timeSelect" mstatdate="mstatdate">
+			</div>
+			<!-- 区域 -->
+				<label for="" style="font-size: 14px;">{{'区域' | translate}}：</label>
+				<!-- <select multiple class="form-control" ng-model="cityArr" ng-options="data.city as data.city for data in cityData"></select> -->
+	           <div class="btn-group">
+	             <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	               {{cityText}} <span class="caret"></span>
+	             </button>
+	             <ul class="dropdown-menu " ng-class="{'scroll_menu': cityData.length>14}" data-spy="scroll" data-target="#navbar-menu">
+	             
+	               <li>
+	                  <div class="col-xs-offset-1">
+	                   <input name="city" type="checkbox" ng-click="clickAllSelect()" ng-checked="isSelectedAll()"> <label for="">{{'全部' | translate}}</label>
+	                   </div>
+	               </li>
+	               <li role="separator" class="divider"></li>
+	               <li ng-repeat="data in cityData">
+	                  <div class="col-xs-offset-1">
+	                   <input name="city" type="checkbox" ng-click="setCityList(data.city)" ng-checked="isSelected(data.id)"> <label for="">{{data.city}}</label>
+	                   </div>
+	               </li>
+	             </ul>
+	           </div>
+	           <button class="btn btn-default" ng-click="getAllData()">{{'查询' | translate}}</button>	
+           <!--  筛选-->
+           <div selectChoose class="selectChoose">
+			</div>
+			<div class="clear"></div>
+			<div class="panel-selectChoose" callbackchannelqf ng-show="iscallback">
+			</div>
+         </div>
+	</div>	
+	<div class="panel panel-default panel_1">
+			<div class="panel-heading">
+				<strong>
+					{{'新增玩家' | translate}}
+				</strong>
+				<div class="panel_downloadBtn"  down-file down-file-url="players/newPlayers/exportNewPlayerList.action" down-file-type="xlsx" down-file-name="新增玩家{{mstatdate}}" savedata="" postdata="searchData" ></div>
+				<div class="clear"></div>
+			</div>
+			<div class="panel-body" ng-class="{'table':panel_1.model=='table','graph':panel_1.model=='graph'}">	
+				<ul class="nav nav-tabs fl cl" navtabs>
+				  <li role="presentation" class="active">
+				  	<a href="javascript:void(0);">{{'新增激活和玩家' | translate}}</a>
+				  	<div tipsmsg>{{'新增激活：当日新增的激活设备量；新增玩家(账号)：当日新增的玩家账号数；新增玩家(角色)：当日新增的玩家角色数;玩家转化率：当日首次创角数与当日新增激活设备的比率' | translate}}</div>
+				  	</li>
+				  	<!--
+				  <li role="presentation">
+				  	<a href="javascript:void(0);">玩家转化</a>
+				  	<div tipsmsg>安装游戏的玩家中（即激活设备）有注册账户的玩家比例，1人多次注册，只记1次有效转化</div>
+				  	</li>
+				-->
+				</ul>
+				<div class="fl cl info" >
+					<div class="infoact">
+					SUM {{'设备 | 角色' | translate}}：<font><em>{{panel_1.dataList_1.deviceSUM}}</em> | <em>{{panel_1.dataList_1.accountSUM}}</em></font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					AVG {{'设备 | 角色' | translate}}：<font><em>{{panel_1.dataList_1.devicAVG}}</em> | <em>{{panel_1.dataList_1.accountAVG}}</em></font>  
+					</div>
+				</div>
+				<div class="clear"></div>
+				<div class="panel-showData">
+					<div class="dataList dataList_1">
+						<div class="dataGraph">
+							<div class="graph" data="dataList_1_1_graph"></div>			
+						</div>
+						<div class="dataTable">
+							<table class="table table-bordered text-center">
+								<tr class="tableTr">
+									<th width='20%' ng-click="changeOrderBy(panel_1.dataList_1,'statdate')">{{'日期' | translate}}</th>
+									<th width='16%' ng-click="changeOrderBy(panel_1.dataList_1,'devices')">{{'激活台数(台)' | translate}}</th>
+									<th width='16%' ng-click="changeOrderBy(panel_1.dataList_1,'newUser')">{{'新增玩家(账号)' | translate}}</th>
+									<th width='16%' ng-click="changeOrderBy(panel_1.dataList_1,'newPlayers')">{{'新增玩家(角色)' | translate}}</th>
+									<th width='16%' ng-click="changeOrderBy(panel_1.dataList_1,'regCnt')" ng-show="game.gameType!=1">{{'首次创角数' | translate}}</th>
+									<th width='16%' ng-click="changeOrderBy(panel_1.dataList_1,'playerConv')" ng-show="game.gameType!=1">{{'玩家转化率' | translate}}(%)</th>
+								</tr>
+								<tr ng-repeat="data in panel_1.dataList_1.data | orderBy: panel_1.dataList_1.orderBy.t+panel_1.dataList_1.orderBy.s | pageStartFrom : panel_1.dataList_1.limit.now*panel_1.dataList_1.limit.max | limitTo: panel_1.dataList_1.limit.max">
+									<td>{{data.statdate}}</td>
+									<td>{{data.devices}}</td>
+									<td>{{data.newUser}}</td>
+									<td>{{data.newPlayers}}</td>
+									<td ng-show="game.gameType!=1">{{data.regCnt}}</td>
+									<td ng-show="game.gameType!=1">{{data.playerConv}}</td>
+								</tr>
+							</table>
+							<div class="tableLimit" tablelimit datalimit="panel_1.dataList_1.limit"  tabledata="panel_1.dataList_1.data">							
+							</div>
+						</div>
+					</div>
+					<!--<div class="dataList dataList_2">
+						<div class="dataGraph">
+							<div class="graph"  data="dataList_1_2_graph"></div>
+						</div>
+						<div class="dataTable">
+							<table class="table table-bordered text-center">
+								<tr class="tableTr">
+									<th width='50%' ng-click="changeOrderBy(panel_1.dataList_2,'statdate')">日期</th>
+									<th width='50%' ng-click="changeOrderBy(panel_1.dataList_2,'playerConv')">玩家转化(%)</th>
+								</tr>
+								<tr ng-repeat="data in panel_1.dataList_2.data | orderBy: panel_1.dataList_2.orderBy.t+panel_1.dataList_2.orderBy.s  | pageStartFrom : panel_1.dataList_2.limit.now*panel_1.dataList_2.limit.max | limitTo: panel_1.dataList_2.limit.max">
+									<td>{{data.statdate}}</td>
+									<td>{{data.playerConv}}</td>
+								</tr>
+							</table>
+							<div class="tableLimit" tablelimit datalimit="panel_1.dataList_2.limit"  tabledata="panel_1.dataList_2.data">
+							</div>
+						</div>		
+					</div>
+				-->
+				</div>
+				<div class="panel-changeData" graphtbale graphtbale graphfun="graphfun" datachange="panel_1_change"  datalimit="0" model="panel_1.model">
+				</div>
+			</div>
+	</div>
+	
+		<div class="panel panel-default panel_4">
+			<div class="panel-heading">
+				<strong>
+					{{'新增玩家（按小时）' | translate}}
+				</strong>
+				<div class="panel_downloadBtn"  down-file down-file-url="players/newPlayers/exportNewPlayerOfHour.action" down-file-type="xlsx" down-file-name="新增玩家(按小时){{mstatdate}}" savedata="" postdata="searchData" ></div>
+				<div class="clear"></div>
+			</div>
+			<div class="panel-body" ng-class="{'table':panel_4.model=='table','graph':panel_4.model=='graph'}">	
+				<ul class="nav nav-tabs fl cl" navtabs>
+				  <li role="presentation" class="active">
+				  	<a href="javascript:void(0);">{{'新增激活和账户' | translate}}</a>
+				  	<div tipsmsg>{{'新增激活：当日某个时间段新增的激活设备量;新增玩家(账号)：当日某个时间段新增的玩家账号数;新增玩家(角色)：当日某个时间段新增的玩家角色数' | translate}}</div>
+				  	</li>
+				</ul>
+				<div class="clear"></div>
+				<div class="panel-showData">
+					<div class="dataList dataList_1 dataList4">
+						<div class="dataGraph">
+							<div class="graph" data="dataList_4_1_graph"></div>			
+						</div>
+						<div class="dataTable">
+							<table class="table table-bordered text-center">
+								<tr class="tableTr">
+									<th width='25%' ng-click="changeOrderBy(panel_4.dataList_1,'hourDateDesc')">{{'时间段' | translate}}</th>
+									<th width='25%' ng-click="changeOrderBy(panel_4.dataList_1,'devices')">{{'激活台数(台)' | translate}}</th>
+									<th width='25%' ng-click="changeOrderBy(panel_4.dataList_1,'newUser')">{{'新增玩家(账号)' | translate}}</th>
+									<th width='25%' ng-click="changeOrderBy(panel_4.dataList_1,'newPlayers')">{{'新增玩家(角色)' | translate}}</th>
+								<tr ng-repeat="data in panel_4.dataList_1.data | orderBy: panel_4.dataList_1.orderBy.t+panel_4.dataList_1.orderBy.s | pageStartFrom : panel_4.dataList_1.limit.now*panel_4.dataList_1.limit.max | limitTo: panel_4.dataList_1.limit.max">
+									<td>{{data.hourDateDesc}}</td>
+									<td>{{data.devices}}</td>
+									<td>{{data.newUser}}</td>
+									<td>{{data.newPlayers}}</td>
+								</tr>
+							</table>
+							<div class="tableLimit" tablelimit datalimit="panel_4.dataList_1.limit"  tabledata="panel_4.dataList_1.data">							
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="panel-changeData" graphtbale graphtbale graphfun="graphfun" datachange="panel_4_change"  datalimit="0" model="panel_4.model">
+				</div>
+			</div>
+	</div>
+	
+	<div class="clear" test>
+		<div class="col-xs-6 hidden">
+			<div class="panel panel-default panel_2">
+				<div class="panel-heading">
+					<strong>{{'单设备账户数量分析（小号分析）' | translate}}
+					<div class="exp-box">
+						<em class="icon-exp">{{'三角图标' | translate}}</em>
+						<div class="noun-exp" style="width:300px;">{{'您所选时间内激活的设备，到当前为止的注册账号数目分布情况。通过小号分析能帮助了解多少比例的设备会反复注册多个账户，多少比例至今还未进行注册，分析刷小号情况' | translate}}</div>
+					</div>
+					</strong>
+					<div class="panel_downloadBtn" ng-click="mdownloaddata('avgGameTime')"></div>
+					<div class="clear"></div>				
+				</div>
+				<div class="panel-body" ng-class="{'table':panel_2.model=='table','graph':panel_2.model=='graph'}">
+					<div class="panel-showData">
+						<div class="dataList2 dataList_1 dataListAct">
+							<div class="dataGraph">
+								<div class="graph" data="dataList_2_graph">
+
+								</div>
+								<div class="graphLimit" graphLimit datalimit="panel_2.dataList_1.graphLimit" graphdata="panel_2.dataList_1.data"  graphfun="graphfun.dataList_2_graph" model="panel_2.model" isfist="false" key="{d:'value',y:'statcount',y2:'value'}">
+								</div>
+							</div>
+							<div class="dataTable">
+								<table class="table table-bordered text-center">
+									<tr class="tableTr">
+										<th width='50%' ng-click="changeOrderBy(panel_2.dataList_1,'statcount')">{{'小号数量' | translate}}</th>
+										<th width='50%' ng-click="changeOrderBy(panel_2.dataList_1,'value')">{{'新增设备(台)' | translate}}</th>
+									</tr>
+									<tr ng-repeat="data in panel_2.dataList_1.data | orderBy: panel_2.dataList_1.orderBy.t+panel_2.dataList_1.orderBy.s  | pageStartFrom : panel_2.dataList_1.limit.now*panel_2.dataList_1.limit.max | limitTo: panel_2.dataList_1.limit.max">
+										<td>{{data.statcount}}</td>
+										<td>{{data.value}}</td>
+									</tr>
+								</table>
+								<div class="tableLimit" tablelimit datalimit="panel_2.dataList_1.limit" tabledata="panel_2.dataList_1.data">
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="panel-changeData" graphtbale graphfun="graphfun" datalimit="panel_2.dataList_1.graphLimit" model="panel_2.model">
+						
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-xs-12">
+			<div class="panel panel-default panel_3">
+				<div class="panel-heading">
+					<strong>{{'新增玩家（按渠道）' | translate}}</strong>
+					<div class="panel_downloadBtn"  down-file down-file-url="players/newPlayers/exportNewPlayerOfChannelList.action" down-file-type="xlsx" down-file-name="渠道新增玩家{{mstatdate}}" savedata="" postdata="searchData" ></div>
+					<div class="clear"></div>
+				</div>
+				<div class="panel-body" ng-class="{'table':panel_3.model=='table','graph':panel_3.model=='graph'}">
+					<div class="panel-showData">
+						<div class="dataList2 dataList_1 dataListAct">
+							<div class="dataGraph">
+								<div class="graph" data="dataList_3_graph">
+
+								</div>
+								<div class="graphLimit" graphLimit datalimit="panel_3.dataList_1.graphLimit" graphdata="panel_3.dataList_1.data"  graphfun="graphfun.dataList_3_graph" model="panel_3.model" isfist="false" key="{d:'newPlayers',y:'channelName'}">
+								</div>
+							</div>
+							<div class="dataTable">
+								<table class="table table-bordered text-center">
+									<tr class="tableTr">
+										<th width='25%' ng-click="changeOrderBy(panel_3.dataList_1,'channelName')">{{'渠道' | translate}}</th>
+										<th width='25%' ng-click="changeOrderBy(panel_3.dataList_1,'accountSUM')">{{'激活台数' | translate}}</th>
+										<th width='25%' ng-click="changeOrderBy(panel_3.dataList_1,'newUser')">{{'注册账号' | translate}}</th>
+										<th width='25%' ng-click="changeOrderBy(panel_3.dataList_1,'newPlayers')">{{'新增玩家(角色)' | translate}}</th>
+									</tr>
+									<tr ng-repeat="data in panel_3.dataList_1.data | orderBy: panel_3.dataList_1.orderBy.t+panel_3.dataList_1.orderBy.s  | pageStartFrom : panel_3.dataList_1.limit.now*panel_3.dataList_1.limit.max | limitTo: panel_3.dataList_1.limit.max">
+										<td>{{data.channelName}}</td>
+										<td>{{data.accountSUM}}</td>
+										<td>{{data.newUser}}</td>
+										<td>{{data.newPlayers}}</td>
+										
+									</tr>
+								</table>
+								<div class="tableLimit" tablelimit datalimit="panel_3.dataList_1.limit" tabledata="panel_3.dataList_1.data">
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="panel-changeData" graphtbale graphfun="graphfun" datalimit="panel_3.dataList_1.graphLimit" model="panel_3.model">
+						
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

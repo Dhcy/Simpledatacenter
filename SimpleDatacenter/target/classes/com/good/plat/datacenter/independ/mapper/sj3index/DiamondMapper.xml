@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.independ.mapper.sj3index.DiamondMapper">
+	<resultMap id="BaseResultMap" type="com.good.plat.datacenter.independ.entity.sj3index.Diamond">
+		<result column="gameid" property="gameid"/>
+		<result column="gameName" property="gameName"/>
+		<result column="channelid" property="channelid"/>
+		<result column="channelName" property="channelName"/>
+		<result column="subchannelid" property="subchannelid"/>
+		<result column="areaid" property="areaid"/>
+		<result column="areaName" property="areaName"/>
+		<result column="statdate" property="statdate"/>
+		<result column="statType" property="statType"/>
+		<result column="rate" property="rate"/>
+		
+		<result column="getCnt" property="getCnt"/>
+		<result column="comsumeCnt" property="comsumeCnt"/>
+		<result column="purpose" property="purpose"/>
+		<result column="purposeNum" property="purposeNum"/>
+		<result column="currtype" property="currtype"/>
+		<result column="currTypeText" property="currTypeText"/>
+		
+	</resultMap>
+	
+	<sql id="ABaseSelect">
+		where a.statdate between #{startdate} and #{enddate} 
+		and a.gameid=#{gameid}
+		<if test="channelList != null">
+			and a.channel in
+			<foreach collection="channelList" item="channel" index="index" open="(" close=")" separator=",">
+				#{channel.id}
+			</foreach>
+		</if>
+		<if test="subchannels != null">
+			and a.chnnnl in
+			<foreach collection="subchannels" item="subchannel" index="index" open="(" close=")" separator=",">
+				#{subchannel}
+			</foreach>
+		</if>
+		<if test="areas != null">
+			and areaid in
+			<foreach collection="areas" item="area" index="index" open="(" close=")" separator=",">
+				#{area}
+			</foreach>
+		</if>
+	</sql>
+	
+	<!--
+	钻石统计（日期,渠道,货币类型,获得总钻石，总消耗钻石）
+	-->
+	<select id="selectDiamondList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		SELECT
+			a.statdate AS statdate,
+			a.channel AS channelid,
+			b.channelSimName AS channelName,
+			a.currtype,
+			CASE a.currtype
+			WHEN 1 THEN
+				'非绑定钻石'
+			WHEN 2 THEN
+				'绑定钻石'
+			ELSE
+				'未知'
+			END currTypeText,
+			SUM(IF(a.type = 1, a.cnt, 0)) AS getCnt,
+			SUM(IF(a.type = 2, a.cnt, 0)) AS comsumeCnt
+		FROM
+			sj3_diamond_stat a
+		 LEFT JOIN tb_logplat_channel b ON b.id = a.channel
+		<include refid="ABaseSelect"/>
+		GROUP BY
+			a.statdate,
+			a.channel,
+			a.currtype
+		ORDER BY
+			a.statdate,
+			a.channel,
+			a.currtype
+	</select>
+		<!--
+	钻石统计详情（日期,渠道,用途，用途消耗数）
+	-->
+	<select id="selectDiamondDetailList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		SELECT
+			a.statdate AS statdate,
+			a.channel AS channelid,
+			b.channelSimName AS channelName,
+			CASE a.currtype
+			WHEN 1 THEN
+				'非绑定钻石'
+			WHEN 2 THEN
+				'绑定钻石'
+			ELSE
+				'未知'
+			END currTypeText,
+			a.purpose AS purpose,
+			IFNULL(SUM(a.cnt),0) as purposeNum
+		FROM
+			sj3_diamond_stat a
+		 LEFT JOIN tb_logplat_channel b ON b.id = a.channel
+		<include refid="ABaseSelect"/>
+		and a.type=#{checktype1}
+		GROUP BY
+			a.statdate,
+			a.channel,
+			a.currtype,
+			a.purpose
+		ORDER BY
+			a.statdate,
+			a.channel,
+			a.currtype;
+	</select>
+	
+</mapper>

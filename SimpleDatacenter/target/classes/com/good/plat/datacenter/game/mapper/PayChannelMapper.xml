@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.game.mapper.PayChannelMapper" >
+  <resultMap id="BaseResultMap" type="com.good.plat.datacenter.game.entity.PayChannel" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="channelid" property="channelid" jdbcType="INTEGER" />
+    <result column="channelName" property="channelName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, channelid, channelName
+  </sql>
+  
+  <select id="selectPayChannelList" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from tb_logplat_paychannel
+    order by channelid
+  </select>
+  
+  <select id="selectByChannelId" resultMap="BaseResultMap">
+  	select
+  	<include refid="Base_Column_List" />
+  	from 
+  		tb_logplat_paychannel
+  	where
+  		channelid = #{channelId,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_logplat_paychannel
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_logplat_paychannel
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.good.plat.datacenter.game.entity.PayChannel" >
+    insert into tb_logplat_paychannel (id, channelid, channelName
+      )
+    values (#{id,jdbcType=INTEGER}, #{channelid,jdbcType=INTEGER}, #{channelName,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.good.plat.datacenter.game.entity.PayChannel" >
+    insert into tb_logplat_paychannel
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="channelid != null" >
+        channelid,
+      </if>
+      <if test="channelName != null" >
+        channelName,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="channelid != null" >
+        #{channelid,jdbcType=INTEGER},
+      </if>
+      <if test="channelName != null" >
+        #{channelName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.good.plat.datacenter.game.entity.PayChannel" >
+    update tb_logplat_paychannel
+    <set >
+      <if test="channelid != null" >
+        channelid = #{channelid,jdbcType=INTEGER},
+      </if>
+      <if test="channelName != null" >
+        channelName = #{channelName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.good.plat.datacenter.game.entity.PayChannel" >
+    update tb_logplat_paychannel
+    set channelid = #{channelid,jdbcType=INTEGER},
+      channelName = #{channelName,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

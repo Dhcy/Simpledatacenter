@@ -1,0 +1,111 @@
+<div>
+	<div class="maintop">
+		<div datepicker class="col-xs-3 timeSelect" mstatdate="mstatdate">
+		</div>
+		<div selectChoose class="selectChoose">
+		</div>
+		<div class="clear"></div>
+		<div class="panel-selectChoose" callbackchannelqf ng-show="iscallback">
+			<ul ng-show="ischannel" class="cl">
+				<li>{{'渠道' | translate}}：</li>
+				<li ng-repeat="channellist in callbackchannelqfdata.channellist">{{channellist}}</li>
+			</ul>
+			<ul ng-show="isqf"  class="cl">
+				<li>{{'区服' | translate}}：</li>
+				<li ng-repeat="qflist in callbackchannelqfdata.qflist">{{qflist}}</li>
+			</ul>
+		</div>
+	</div>
+	<div class="panel panel-default panel_1">
+			<div class="panel-heading">
+				<strong>
+					{{'设备机型' | translate}}
+					<div tipsmsg>{{'所选玩家的机型分布情况' | translate}}</div>
+				</strong>
+				<div class="panel_downloadBtn"  down-file down-file-url="players/device/exportPlayerMachineModel.action" 
+					down-file-type="xlsx" down-file-name="设备机型{{mstatdate}}" savedata="" postdata="searchData" ></div>
+				<div class="clear"></div>
+			</div>
+			<div class="panel-body" ng-class="{'table':panel_1.model=='table','graph':panel_1.model=='graph'}">
+				<ul class="nav nav-tabs fl cl" navtabs>
+				  <li role="presentation" class="active"><a href="javascript:void(0);">{{'设备机型' | translate}}</a></li>
+				</ul>
+				<div class="fl cl info" >
+					<div class="infoact">
+					</div>
+				</div>
+				<div class="clear"></div>
+				<div class="panel-showData">
+					<div class="dataList dataList3 dataList_1">
+						<div class="dataGraph">
+							<div class="graph" data="dataList_1_1_graph"></div>
+						</div>
+						<div class="dataTable">
+							<table class="table table-bordered text-center">
+								<tr class="tableTr">
+									<th width='33.33%' ng-click="changeOrderBy(panel_1.dataList_1,'machineModel')">{{'机型' | translate}}</th>
+									<th width='33.33%' ng-click="changeOrderBy(panel_1.dataList_1,'count')">{{'激活设备数' | translate}}</th>
+									<th width='33.33%' ng-click="changeOrderBy(panel_1.dataList_1,'rate')">{{'占比' | translate}}(%)</th>
+								</tr>
+								<tr ng-repeat="data in panel_1.dataList_1.data | orderBy: panel_1.dataList_1.orderBy.t+panel_1.dataList_1.orderBy.s | pageStartFrom : panel_1.dataList_1.limit.now*panel_1.dataList_1.limit.max | limitTo: panel_1.dataList_1.limit.max">
+									<td>{{data.machineModel}}</td>
+									<td>{{data.count}}</td>
+									<td>{{data.rate}}</td>
+								</tr>
+							</table>
+							<div class="tableLimit" tablelimit datalimit="panel_1.dataList_1.limit"  tabledata="panel_1.dataList_1.data">
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="panel-changeData" graphtbale graphtbale graphfun="graphfun" datachange="panel_1_change"  datalimit="0" model="panel_1.model">
+				</div>
+			</div>
+	</div>
+	<div class="panel panel-default panel_2">
+			<div class="panel-heading">
+				<strong>
+					{{'操作系统' | translate}}
+					<div tipsmsg>{{'所选玩家的设备操作系统分布情况' | translate}}</div>
+				</strong>
+				<div class="panel_downloadBtn"  down-file down-file-url="players/device/exportPlayerOperationSystem.action" 
+					down-file-type="xlsx" down-file-name="操作系统{{mstatdate}}" savedata="" postdata="searchData" ></div>
+				<div class="clear"></div>
+			</div>
+			<div class="panel-body" ng-class="{'table':panel_2.model=='table','graph':panel_2.model=='graph'}">
+				<ul class="nav nav-tabs fl cl" navtabs>
+				  <li role="presentation" class="active"><a href="javascript:void(0);">{{'操作系统' | translate}}</a></li>
+				</ul>
+				<div class="fl cl info" >
+					<div class="infoact">
+					</div>
+				</div>
+				<div class="clear"></div>
+				<div class="panel-showData">
+					<div class="dataList dataList3 dataList_1">
+						<div class="dataGraph">
+							<div class="graph" data="dataList_2_1_graph"></div>
+						</div>
+						<div class="dataTable">
+							<table class="table table-bordered text-center">
+								<tr class="tableTr">
+									<th width='33.33%' ng-click="changeOrderBy(panel_2.dataList_1,'operationSystem')">{{'系统' | translate}}</th>
+									<th width='33.33%' ng-click="changeOrderBy(panel_2.dataList_1,'count')">{{'激活设备数' | translate}}</th>
+									<th width='33.33%' ng-click="changeOrderBy(panel_2.dataList_1,'rate')">{{'百分比' | translate}}(%)</th>
+								</tr>
+								<tr ng-repeat="data in panel_2.dataList_1.data | orderBy: panel_2.dataList_1.orderBy.t+panel_2.dataList_1.orderBy.s | pageStartFrom : panel_2.dataList_1.limit.now*panel_2.dataList_1.limit.max | limitTo: panel_2.dataList_1.limit.max">
+									<td>{{data.operationSystem}}</td>
+									<td>{{data.count}}</td>
+									<td>{{data.rate}}</td>
+								</tr>
+							</table>
+							<div class="tableLimit" tablelimit datalimit="panel_2.dataList_1.limit"  tabledata="panel_2.dataList_1.data">
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="panel-changeData" graphtbale graphtbale graphfun="graphfun" datachange="panel_2_change"  datalimit="0" model="panel_2.model">
+				</div>
+			</div>
+	</div>
+</div>

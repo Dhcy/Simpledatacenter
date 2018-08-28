@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.datastat.mapper.concurrent.ConcurrentMapper">
+	<resultMap id="BaseResultMap" type="com.good.plat.datacenter.datastat.entity.concurrent.ConcurrentData">
+		<result column="gameid" property="gameid"/>
+		<result column="gameName" property="gameName"/>
+		<result column="channelid" property="channelid"/>
+		<result column="channelName" property="channelName"/>
+		<result column="subchannelid" property="subchannelid"/>
+		<result column="areaid" property="areaid"/>
+		<result column="areaName" property="areaName"/>
+		<result column="statdate" property="statdate"/>
+		<result column="statType" property="statType"/>
+		<result column="rate" property="rate"/>
+		
+		<result column="acu" property="acu"/>
+		<result column="pcu" property="pcu"/>
+		<result column="description" property="description"/>
+		<result column="start_count" property="start_count"/>
+		<result column="hour" property="hour"/>
+		
+		<result column="url" property="url"/>
+		<result column="publicKey" property="key"/>
+		<result column="cmdId" property="cmdId"/>
+		<result column="hour0_acu" property="hour0_acu"/>
+		<result column="hour1_acu" property="hour1_acu"/>
+		<result column="hour2_acu" property="hour2_acu"/>
+		<result column="hour3_acu" property="hour3_acu"/>
+		<result column="hour4_acu" property="hour4_acu"/>
+		<result column="hour5_acu" property="hour5_acu"/>
+		<result column="hour6_acu" property="hour6_acu"/>
+		<result column="hour7_acu" property="hour7_acu"/>
+		<result column="hour8_acu" property="hour8_acu"/>
+		<result column="hour9_acu" property="hour9_acu"/>
+		<result column="hour10_acu" property="hour10_acu"/>
+		<result column="hour11_acu" property="hour11_acu"/>
+		<result column="hour12_acu" property="hour12_acu"/>
+		<result column="hour13_acu" property="hour13_acu"/>
+		<result column="hour14_acu" property="hour14_acu"/>
+		<result column="hour15_acu" property="hour15_acu"/>
+		<result column="hour16_acu" property="hour16_acu"/>
+		<result column="hour17_acu" property="hour17_acu"/>
+		<result column="hour18_acu" property="hour18_acu"/>
+		<result column="hour19_acu" property="hour19_acu"/>
+		<result column="hour20_acu" property="hour20_acu"/>
+		<result column="hour21_acu" property="hour21_acu"/>
+		<result column="hour22_acu" property="hour22_acu"/>
+		<result column="hour23_acu" property="hour23_acu"/>
+		
+		
+	</resultMap>
+	
+	<sql id="BaseSelect">
+		where statdate between #{startdate} and #{enddate} 
+		<if test="termtypes != null">
+			and termtype in
+			<foreach collection="termtypes" item="term" index="index" open="(" close=")" separator=",">
+				#{term}
+			</foreach>
+		</if>
+		and gameid=#{gameid}
+		<if test="areas != null ">
+			and areaid in
+			<foreach collection="areas" item="area" index="index" open="(" close=")" separator=",">
+				#{area}
+			</foreach>
+		</if>
+		<if test="channelList != null">
+			and channel in
+			<foreach collection="channelList" item="channel" index="index" open="(" close=")" separator=",">
+				#{channel.id}
+			</foreach>
+		</if>
+		<if test="subchannels != null">
+			and chnnnl in
+			<foreach collection="subchannels" item="subchannel" index="index" open="(" close=")" separator=",">
+				#{subchannel}
+			</foreach>
+		</if>
+	</sql>
+	
+	<sql id="ConcurrentSelect">
+		where statdate between #{startdate} and #{enddate} 
+		and gameid=#{gameid}
+		<if test="areas != null">
+			and areaid in
+			<foreach collection="areas" item="area" index="index" open="(" close=")" separator=",">
+				#{area}
+			</foreach>
+		</if>
+		<if test="channelList != null">
+			and channel in
+			<foreach collection="channelList" item="channel" index="index" open="(" close=")" separator=",">
+				#{channel.id}
+			</foreach>
+		</if>
+		<if test="subchannels != null">
+			and chnnnl in
+			<foreach collection="subchannels" item="subchannel" index="index" open="(" close=")" separator=",">
+				#{subchannel}
+			</foreach>
+		</if>
+	</sql>
+	
+	<sql id="compareBaseSelect">
+		and gameid=#{gameid}
+		<if test="areas != null">
+			and areaid in
+			<foreach collection="areas" item="area" index="index" open="(" close=")" separator=",">
+				#{area}
+			</foreach>
+		</if>
+		<if test="channelList != null">
+			and channel in
+			<foreach collection="channelList" item="channel" index="index" open="(" close=")" separator=",">
+				#{channel.id}
+			</foreach>
+		</if>
+		<if test="subchannels != null">
+			and chnnnl in
+			<foreach collection="subchannels" item="subchannel" index="index" open="(" close=")" separator=",">
+				#{subchannel}
+			</foreach>
+		</if>
+	</sql>
+	<sql id="BaseSelectWithoutTermtypes">
+		where statdate between #{startdate} and #{enddate} 
+		and gameid=#{gameid}
+		<if test="areas != null ">
+			and areaid in
+			<foreach collection="areas" item="area" index="index" open="(" close=")" separator=",">
+				#{area}
+			</foreach>
+		</if>
+		<if test="channelList != null">
+			and channel in
+			<foreach collection="channelList" item="channel" index="index" open="(" close=")" separator=",">
+				#{channel.id}
+			</foreach>
+		</if>
+		<if test="subchannels != null">
+			and chnnnl in
+			<foreach collection="subchannels" item="subchannel" index="index" open="(" close=")" separator=",">
+				#{subchannel}
+			</foreach>
+		</if>
+	</sql>
+	
+	<!-- acu & pcu -->
+	<select id="selectConcurrentList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select statdate,ifnull(sum(tonline)/sum(counttime),0) as acu,ifnull(sum(pcu),0) as pcu
+		from logplat_daily_rpt
+		<include refid="ConcurrentSelect"/>
+		group by statdate order by statdate
+	</select>
+	<!--
+	
+	时段分布(描述,启动人数)
+	-->
+	<select id="selectTimeDistributeList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		SELECT
+			description,
+			IFNULL(SUM(`user`),0) AS start_count
+		FROM
+			logdate_timeframe_stat
+		<include refid="BaseSelect"/>
+		GROUP BY description
+		ORDER BY duration
+	</select>
+		<!--
+	
+	间隔分布(描述,启动人数)
+	-->
+	<select id="selectDurationDistributeList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select
+		 	description,
+			ifnull(SUM(`user`),0) as start_count
+		from logdate_duration_stat 
+		<include refid="BaseSelect"/>
+		GROUP BY description
+		ORDER BY duration
+	</select>
+	
+	<!--
+	今天跟昨天的在线数据(acu)
+	-->
+	<select id="selectTodayAndYesterdayHourList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		SELECT
+			statdate,
+			HOUR as hour,
+			ifnull(sum(acu),0) as acu
+		FROM
+			logplat_online_stat
+		WHERE
+			statdate=#{currDate}
+			<include refid="compareBaseSelect"/>
+		GROUP BY
+			statdate,
+			HOUR
+		order by
+			HOUR
+	</select>
+	<!--
+	今天前30天内pcu最大值
+	-->
+	<select id="getMaxOfPcu" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		SELECT
+			max(a.pcu) as pcu
+		FROM
+			(
+				SELECT
+					statdate,
+					HOUR,
+					sum(pcu) as pcu
+				FROM
+					logplat_online_stat
+				WHERE
+					statdate >= date_add(#{currDate}, INTERVAL - 29 DAY)
+					<include refid="compareBaseSelect"/>
+				GROUP BY
+					statdate,
+					HOUR
+			) a
+	</select>
+	<!--
+	查询游戏接口基础配置(游戏id,url,publiceKey，操作码cmdid)
+	-->
+	<select id="selectBaseGameConfig" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		SELECT
+			gameid,
+			url,
+			publicKey,
+			cmdId
+		FROM
+			logplat_game_url_key
+		WHERE
+			gameid =#{gameid}
+	</select>
+	<!--  每个时间段的在线人数acu-->
+	<select id="selectDurationAcuList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		SELECT
+			statdate,
+			SUM(IF(`hour`=0,acu,0)) hour0_acu,
+			SUM(IF(`hour`=1,acu,0)) hour1_acu,
+			SUM(IF(`hour`=2,acu,0)) hour2_acu,
+			SUM(IF(`hour`=3,acu,0)) hour3_acu,
+			SUM(IF(`hour`=4,acu,0)) hour4_acu,
+			SUM(IF(`hour`=5,acu,0)) hour5_acu,
+			SUM(IF(`hour`=6,acu,0)) hour6_acu,
+			SUM(IF(`hour`=7,acu,0)) hour7_acu,
+			SUM(IF(`hour`=8,acu,0)) hour8_acu,
+			SUM(IF(`hour`=9,acu,0)) hour9_acu,
+			SUM(IF(`hour`=10,acu,0)) hour10_acu,
+			SUM(IF(`hour`=11,acu,0)) hour11_acu,
+			SUM(IF(`hour`=12,acu,0)) hour12_acu,
+			SUM(IF(`hour`=13,acu,0)) hour13_acu,
+			SUM(IF(`hour`=14,acu,0)) hour14_acu,
+			SUM(IF(`hour`=15,acu,0)) hour15_acu,
+			SUM(IF(`hour`=16,acu,0)) hour16_acu,
+			SUM(IF(`hour`=17,acu,0)) hour17_acu,
+			SUM(IF(`hour`=18,acu,0)) hour18_acu,
+			SUM(IF(`hour`=19,acu,0)) hour19_acu,
+			SUM(IF(`hour`=20,acu,0)) hour20_acu,
+			SUM(IF(`hour`=21,acu,0)) hour21_acu,
+			SUM(IF(`hour`=22,acu,0)) hour22_acu,
+			SUM(IF(`hour`=23,acu,0)) hour23_acu
+		FROM
+			logplat_online_stat
+		<include refid="BaseSelectWithoutTermtypes"/>
+		GROUP BY
+		statdate;
+	</select>
+</mapper>

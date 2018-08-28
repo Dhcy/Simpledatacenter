@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.independ.mapper.sj3index.ActiveStatMapper">
+	<resultMap id="BaseResultMap" type="com.good.plat.datacenter.independ.entity.sj3index.ActiveStat">
+		<result column="statdate" property="statdate"/>
+		<result column="areaid" property="areaid"/>
+		<result column="areaName" property="areaName"/>
+		<result column="channelid" property="channelid"/>
+		<result column="channelName" property="channelName"/>
+		<result column="country" property="country"/>
+		<result column="activeGrade" property="activeGrade"/>
+		<result column="activeCount" property="activeCount"/>
+		<result column="activeRate" property="activeRate"/>
+		<result column="times" property="times"/>
+		<result column="goodsName" property="goodsName"/>
+		<result column="costDiamond" property="costDiamond"/>
+	</resultMap>
+	
+	<sql id="ABaseSelectWithoutLanguageEditionTermtype">
+		where a.statdate between #{startdate} and #{enddate} 
+		and a.gameid=#{gameid}
+		<if test="areas != null">
+			and a.areaid in
+			<foreach collection="areas" item="area" index="index" open="(" close=")" separator=",">
+				#{area}
+			</foreach>
+		</if>
+		<if test="channelList != null">
+			and a.channel in
+			<foreach collection="channelList" item="channel" index="index" open="(" close=")" separator=",">
+				#{channel.id}
+			</foreach>
+		</if>
+		<if test="subchannels != null">
+			and a.chnnnl in
+			<foreach collection="subchannels" item="subchannel" index="index" open="(" close=")" separator=",">
+				#{subchannel}
+			</foreach>
+		</if>
+	</sql>
+	<sql id="BaseSelectWithoutLanguageEditionTermtype">
+		where statdate between #{startdate} and #{enddate} 
+		and gameid=#{gameid}
+		<if test="areas != null">
+			and a.areaid in
+			<foreach collection="areas" item="area" index="index" open="(" close=")" separator=",">
+				#{area}
+			</foreach>
+		</if>
+		<if test="channelList != null">
+			and channel in
+			<foreach collection="channelList" item="channel" index="index" open="(" close=")" separator=",">
+				#{channel.id}
+			</foreach>
+		</if>
+		<if test="subchannels != null">
+			and chnnnl in
+			<foreach collection="subchannels" item="subchannel" index="index" open="(" close=")" separator=",">
+				#{subchannel}
+			</foreach>
+		</if>
+	</sql>
+	
+	<!--
+	活跃度(日期,国家,渠道,活跃度分数，达到该分数的玩家数,人数占比)
+	-->
+	<select id="selectActiveCntAndRateList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.IndependBaseSearchData">
+		SELECT
+			a.statdate,
+			a.areaid,
+			IF(c.`name` is NULL,concat('未知区服：',a.areaid),c.`name`) as areaName,
+			a.country,
+			a.channel AS channelid,
+			IF(b.channelSimName is NULL,CONCAT('未知渠道：',a.channel),b.channelSimName) as channelName,
+			a.active AS activeGrade,
+			IFNULL(SUM(a.count), 0) AS activeCount,
+			SUM(a.count) / (
+				SELECT
+					SUM(count)
+				FROM
+					sj3_active_stat
+				<include refid="BaseSelectWithoutLanguageEditionTermtype"/>
+			) AS activeRate
+		FROM
+			sj3_active_stat a
+		LEFT JOIN tb_logplat_channel b ON b.id = a.channel
+		LEFT JOIN tb_logplat_gamearea c ON c.areaid = a.areaid
+		AND c.gameid = a.gameid
+		<include refid="ABaseSelectWithoutLanguageEditionTermtype"/>
+		GROUP BY
+			a.statdate,
+			a.areaid,
+			a.country,
+			a.channel,
+			a.active;
+	</select>
+	<!--回购物品  -->
+	<select id="selectbugBackGoodsList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.IndependBaseSearchData">
+		SELECT
+			a.statdate,
+			a.areaid,
+			IF(c.`name` is NULL,concat('未知区服：',a.areaid),c.`name`) as areaName,
+			a.country,
+			a.channel as channelid,
+			IF(b.channelSimName is NULL,CONCAT('未知渠道： ',a.channel),b.channelSimName) as channelName,
+			a.`name` as goodsName,
+			IFNULL(SUM(a.times),0) as times,
+			IFNULL(SUM(a.cost),0) as costDiamond
+		FROM
+			sj3_buy_back_stat a
+		LEFT JOIN tb_logplat_channel b ON b.id = a.channel
+		LEFT JOIN tb_logplat_gamearea c ON c.areaid=a.areaid and c.gameid=a.gameid
+		<include refid="ABaseSelectWithoutLanguageEditionTermtype"/>
+		GROUP BY
+		a.statdate,
+		a.areaid,
+		a.country,
+		a.channel,
+		a.name;
+	</select>
+	
+</mapper>

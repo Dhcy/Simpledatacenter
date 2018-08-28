@@ -1,0 +1,123 @@
+<style type="text/css">
+    .table th,.table td{ border:1px solid #ddd;}
+    .form-group{ margin-left: 10px; margin-top: 10px;}
+    .form-control{ display: inline-block; vertical-align: middle;}
+    .tableListTh{
+    	white-space: nowrap;
+    	text-align:center;
+    }
+    .channelTd{
+    	white-space: nowrap;
+    	text-align:center;
+    }
+    .form-group .form-member{
+    float: left;
+    }
+    .form-group .member-control{
+   	margin-left: 10px;
+    }
+</style>
+<div>
+	 <div>
+	        <div class="form-group">
+	            <div class="form-member">
+					<label for="startDate">{{'起始日期' | translate}}: </label>
+					<input type="text" id="startDate" class="form-control" placeholder="{{o.startDate}}" uib-datepicker-popup="{{format}}" ng-model="o.startDate" is-open="o.opened1" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" ng-click="o.opened1=!o.opened1" />
+				</div>
+				<div class="form-member member-control">
+					<label for="endDate">{{'结束日期' | translate}}: </label>
+					<input type="text" id="endDate" class="form-control" placeholder="{{o.endDate}}" uib-datepicker-popup="{{format}}" ng-model="o.endDate" is-open="o.opened2" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" ng-click="o.opened2=!o.opened2" />
+				</div>
+				&nbsp;&nbsp;
+				 <label for="">{{'查询区服' | translate}}：</label>
+	            <select ng-model="postData.areaid" class="form-control" ng-options="data.id as data.name for data in gameAreaList">
+	            </select>
+	        </div>
+			<div class="form-group">
+			 	<div class="form-member">
+					<label for="startDate">{{'最小等级' | translate}}: </label>
+					<input type="text" id="minlevel" class="form-control" placeholder="{{postData.minLevel}}" ng-model="postData.minLevel">
+				</div>
+				<div class="form-member member-control">
+					<label for="endDate">{{'最大等级' | translate}}: </label>
+					<input type="text" id="maxlevel" class="form-control" placeholder="{{postData.maxLevel}}" ng-model="postData.maxLevel">
+				</div>
+				&nbsp;&nbsp;
+				<button class="btn btn-default" ng-click="getAllData()">{{'查询' | translate}}</button>
+			</div>
+	</div>
+	<div class="clear"></div>
+		<!--------tab选择按钮----------->
+	<div class="panel panel-default panel_1">
+			<div class="panel-heading">
+			<strong>{{'打矿成功率统计' | translate}}</strong>
+				<div class="panel_downloadBtn" ng-click="exportPlaymineSucceRate('打矿成功率统计',this)"></div>
+				<div class="clear"></div>
+			</div>
+			<div class="panel-body pdlf pdtb">
+			<div class="tableList tableListAct" >
+				<ul class="tableListUl">
+					<li class="tableListLi tableListLiTh clear">
+						<span class="tableListTh" style="width:20%">
+							<strong title="">{{'守矿情况' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:16%">
+							<strong title="">{{'打矿人次' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:16%">
+							<strong title="">{{'打矿成功人次' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:16%">
+							<strong title="">{{'成功时进攻人次' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:16%">
+							<strong title="">{{'打矿失败人次' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:16%">
+							<strong title="">{{'失败时进攻人次' | translate}}</strong>
+						</span>
+					</li>
+					<li class="tableListLi clear" ng-repeat="data in panel_1.dataList_1.data | pageStartFrom : panel_1.dataList_1.limit.now*panel_1.dataList_1.limit.max | limitTo: panel_1.dataList_1.limit.max" ng-class="({'show_panel':data.show_panel})">
+						<div class="channelTr clear">
+							<span class="channelTd" style="width:20%" >
+								{{data.keeptypeStr}}
+							</span>
+							<span class="channelTd" style="width:16%">
+								{{data.count}}
+							</span>
+							<span class="channelTd" style="width:16%">
+								{{data.succnt}}
+							</span>
+							<span class="channelTd" style="width:16%">
+								{{data.suctimes}}
+							</span>
+							<span class="channelTd" style="width:16%">
+								{{data.failcnt}}
+							</span>
+							<span class="channelTd" style="width:16%">
+								{{data.failtimes}}
+							</span>
+						</div>
+				</li>
+				</ul>
+				<div class="tableFooter">
+						<div class="buttondiv fl" analysisdrop changei="changetype()">
+							<div class="selectlable fl">{{'每页显示' | translate}}：</div>
+							<div class="analysisdrop fl" style="width:60px;">
+								<div class="hadchoose">
+									<h6>{{val | translate}}</h6></div>
+								<ul class="dropUl">
+									<li ng-click="c('10');changetype(10)">10</li>
+									<li ng-click="c('20');changetype(20)">20</li>
+									<li ng-click="c('50');changetype(50)">50</li>
+									<li ng-click="c('100');changetype(100)">100</li>
+								</ul>
+							</div>
+							<div class="selectlable fl">&nbsp;&nbsp;{{'条记录' | translate}}</div>
+						</div>
+						<div class="dataTables_paginate fr" datatableslimit  datalimit="panel_1.dataList_1.limit"  tabledata="panel_1.dataList_1.data"  datachange="panel_1_change"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

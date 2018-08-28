@@ -1,0 +1,64 @@
+{
+  "numberOfPaymentWeekly": [
+    {
+      "percentage": 0.0,
+      "accounts": 0.0,
+      "title": "未付费"
+    },
+    {
+      "percentage": 49.9,
+      "accounts": 1085.0,
+      "title": "1次"
+    },
+    {
+      "percentage": 20.4,
+      "accounts": 444.0,
+      "title": "2次"
+    },
+    {
+      "percentage": 8.5,
+      "accounts": 186.0,
+      "title": "3次"
+    },
+    {
+      "percentage": 5.3,
+      "accounts": 116.0,
+      "title": "4次"
+    },
+    {
+      "percentage": 3.2,
+      "accounts": 69.0,
+      "title": "5次"
+    },
+    {
+      "percentage": 7.0,
+      "accounts": 153.0,
+      "title": "6~10次"
+    },
+    {
+      "percentage": 3.9,
+      "accounts": 84.0,
+      "title": "11~20次"
+    },
+    {
+      "percentage": 0.7,
+      "accounts": 15.0,
+      "title": "21~30次"
+    },
+    {
+      "percentage": 0.3,
+      "accounts": 7.0,
+      "title": "31~40次"
+    },
+    {
+      "percentage": 0.2,
+      "accounts": 5.0,
+      "title": "41~50次"
+    },
+    {
+      "percentage": 0.6,
+      "accounts": 12.0,
+      "title": ">50次"
+    }
+  ]
+}

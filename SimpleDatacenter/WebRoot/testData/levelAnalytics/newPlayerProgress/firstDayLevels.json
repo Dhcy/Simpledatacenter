@@ -1,0 +1,47 @@
+{
+  "firstDayLevels": {
+    "result": [
+      {
+        "item": "1",
+        "value": 34309
+      },
+      {
+        "item": "2",
+        "value": 9335
+      },
+      {
+        "item": "3",
+        "value": 9766
+      },
+      {
+        "item": "4",
+        "value": 5987
+      },
+      {
+        "item": "5",
+        "value": 3308
+      },
+      {
+        "item": "6",
+        "value": 1209
+      },
+      {
+        "item": "7",
+        "value": 674
+      },
+      {
+        "item": "8",
+        "value": 442
+      },
+      {
+        "item": "9",
+        "value": 619
+      },
+      {
+        "item": "10",
+        "value": 790
+      }
+    ],
+    "avg": 2
+  }
+}

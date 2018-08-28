@@ -1,0 +1,324 @@
+$main.controller('yhCurrencyStatController',yhCurrencyStatController)
+$main.config(function($stateProvider, $urlRouterProvider){
+	$stateProvider.state('main.indpd.yhCurrencyStat',{//货币管理
+    	url:'/yhCurrencyStat',
+    	templateUrl:'template/yh_idp/yhCurrencyStat.html?T='+Math.random(),
+    	controller:'yhCurrencyStatController'
+    })
+	
+})
+/**
+ * 货币管理
+ * @param $scope
+ * @param $http
+ * @return
+ */
+function yhCurrencyStatController($scope,$http,T){
+	
+	
+	$scope.panel_1={
+			'model':'table',
+			'dataList_1':{
+				'data':'',
+				'graphLimit':{
+					'sumLen':0,
+					'now':-1,
+					'max':10,
+					'count':0				
+				},
+				'limit':{
+					'sumLen':0,
+					'now':0,
+					'max':10,
+					'count':0
+				},
+				'dataLimit':'',
+				'orderBy':{'s':'','t':''}	
+			},
+	};
+	$scope.panel_2={
+			'model':'table',
+			'dataList_1':{
+				'data':'',
+				'graphLimit':{
+					'sumLen':0,
+					'now':-1,
+					'max':10,
+					'count':0				
+				},
+				'limit':{
+					'sumLen':0,
+					'now':0,
+					'max':10,
+					'count':0
+				},
+				'dataLimit':'',
+				'orderBy':{'s':'','t':''}	
+			},
+	};
+	$scope.panel_2={
+			'model':'table',
+			'dataList_1':{
+				'data':'',
+				'graphLimit':{
+					'sumLen':0,
+					'now':-1,
+					'max':10,
+					'count':0				
+				},
+				'limit':{
+					'sumLen':0,
+					'now':0,
+					'max':10,
+					'count':0
+				},
+				'dataLimit':'',
+				'orderBy':{'s':'','t':''}	
+			},
+	};
+	$scope.panel_3={
+			'model':'table',
+			'dataList_1':{
+				'data':'',
+				'graphLimit':{
+					'sumLen':0,
+					'now':-1,
+					'max':10,
+					'count':0				
+				},
+				'limit':{
+					'sumLen':0,
+					'now':0,
+					'max':10,
+					'count':0
+				},
+				'dataLimit':'',
+				'orderBy':{'s':'','t':''}	
+			},
+	};
+	$scope.panel_4={
+			'model':'table',
+			'dataList_1':{
+				'data':'',
+				'graphLimit':{
+					'sumLen':0,
+					'now':-1,
+					'max':10,
+					'count':0				
+				},
+				'limit':{
+					'sumLen':0,
+					'now':0,
+					'max':10,
+					'count':0
+				},
+				'dataLimit':'',
+				'orderBy':{'s':'','t':''}	
+			},
+	};
+	$scope.panel_5={
+			'model':'table',
+			'dataList_1':{
+				'data':'',
+				'totalSum':'',
+				'graphLimit':{
+					'sumLen':0,
+					'now':-1,
+					'max':10,
+					'count':0				
+				},
+				'limit':{
+					'sumLen':0,
+					'now':0,
+					'max':10,
+					'count':0
+				},
+				'dataLimit':'',
+				'orderBy':{'s':'','t':''}	
+			},
+	};
+	$scope.panel_6={
+			'model':'table',
+			'dataList_1':{
+				'data':'',
+				'totalSum':'',
+				'graphLimit':{
+					'sumLen':0,
+					'now':-1,
+					'max':10,
+					'count':0				
+				},
+				'limit':{
+					'sumLen':0,
+					'now':0,
+					'max':10,
+					'count':0
+				},
+				'dataLimit':'',
+				'orderBy':{'s':'','t':''}	
+			},
+	};
+	
+	$scope.gameAreaList=[];
+	$scope.currTypeList=[{id:-1,name:T.T("全部")},{id:1,name:T.T("氪金")},{id:2,name:T.T("金币")}];
+	$scope.panel_1_change=false;
+	$scope.panel_2_change=false;
+	$scope.panel_3_change=false;
+	$scope.panel_4_change=false;
+	$scope.panel_5_change=false;
+	$scope.panel_6_change=false;
+	$scope.changetype=function(i){
+		$scope.panel_1.dataList_1.limit.max=i;
+		$scope.panel_1.dataList_1.limit.now=0;
+		$scope.panel_1.dataList_1.limit.sumLen=($scope.panel_1.dataList_1.data).length;
+		$scope.panel_1.dataList_1.limit.count=Math.ceil($scope.panel_1.dataList_1.limit.sumLen/$scope.panel_1.dataList_1.limit.max)-1;
+	}
+	$scope.changetype2=function(i){
+		$scope.panel_2.dataList_1.limit.max=i;
+		$scope.panel_2.dataList_1.limit.now=0;
+		$scope.panel_2.dataList_1.limit.sumLen=($scope.panel_2.dataList_1.data).length;
+		$scope.panel_2.dataList_1.limit.count=Math.ceil($scope.panel_2.dataList_1.limit.sumLen/$scope.panel_2.dataList_1.limit.max)-1;
+	}
+	$scope.changetype3=function(i){
+		$scope.panel_3.dataList_1.limit.max=i;
+		$scope.panel_3.dataList_1.limit.now=0;
+		$scope.panel_3.dataList_1.limit.sumLen=($scope.panel_3.dataList_1.data).length;
+		$scope.panel_3.dataList_1.limit.count=Math.ceil($scope.panel_3.dataList_1.limit.sumLen/$scope.panel_3.dataList_1.limit.max)-1;
+	}
+	$scope.changetype4=function(i){
+		$scope.panel_4.dataList_1.limit.max=i;
+		$scope.panel_4.dataList_1.limit.now=0;
+		$scope.panel_4.dataList_1.limit.sumLen=($scope.panel_4.dataList_1.data).length;
+		$scope.panel_4.dataList_1.limit.count=Math.ceil($scope.panel_4.dataList_1.limit.sumLen/$scope.panel_4.dataList_1.limit.max)-1;
+	}
+	$scope.changetype5=function(i){
+		$scope.panel_5.dataList_1.limit.max=i;
+		$scope.panel_5.dataList_1.limit.now=0;
+		$scope.panel_5.dataList_1.limit.sumLen=($scope.panel_5.dataList_1.data).length;
+		$scope.panel_5.dataList_1.limit.count=Math.ceil($scope.panel_5.dataList_1.limit.sumLen/$scope.panel_5.dataList_1.limit.max)-1;
+	}
+	$scope.changetype6=function(i){
+		$scope.panel_6.dataList_1.limit.max=i;
+		$scope.panel_6.dataList_1.limit.now=0;
+		$scope.panel_6.dataList_1.limit.sumLen=($scope.panel_6.dataList_1.data).length;
+		$scope.panel_6.dataList_1.limit.count=Math.ceil($scope.panel_6.dataList_1.limit.sumLen/$scope.panel_6.dataList_1.limit.max)-1;
+	}
+
+	//日期
+	$scope.o={
+			startDate:(new Date( parseInt((new Date()).getTime()) - 172800000 )).format("yyyy-MM-dd"),
+			endDate:(new Date()).format("yyyy-MM-dd"),
+			opened1:false,
+			opened2:false
+		}
+	 //
+    $scope.searchData={
+    		gameid:''
+    		
+    };
+	//查询条件
+    $scope.postData={
+    		areaid:-1,
+    		startdate:'',
+    		enddate:'',
+    		gameid:'',
+    		checktype1:-1
+    }
+	
+	$scope.selectGameAreaList = function(){
+		$http.post("search/selectGameAreaList.action",$scope.searchData).success(function(data){
+			if(data== undefined||data==null){
+				data=[];
+			}
+			var dat=[{id:-1,name:T.T("全部")}];   
+			$scope.gameAreaList=dat.concat(data);;
+		})
+	}
+	$scope.selectYhPowerStatList=function(){
+		$http.post("yhSummary/selectYhPowerStatList.action",$scope.postData).success(function(data){
+			if(data== undefined||data==null){
+				data=[];
+			}
+			$scope.panel_1.dataList_1.data=data;
+			$scope.panel_1_change=true;
+		})
+	}
+	$scope.selectYhKrypGoldConsumpList=function(){
+		$http.post("yhSummary/selectYhKrypGoldConsumpList.action",$scope.postData).success(function(data){
+			if(data== undefined||data==null){
+				data=[];
+			}
+			$scope.panel_2.dataList_1.data=data;
+			$scope.panel_2_change=true;
+		})
+	}
+	$scope.selectYhKrypGoldLeftList=function(){
+		$http.post("yhSummary/selectYhKrypGoldLeftList.action",$scope.postData).success(function(data){
+			if(data== undefined||data==null){
+				data=[];
+			}
+			$scope.panel_3.dataList_1.data=data;
+			$scope.panel_3_change=true;
+		})
+	}
+	//货币消耗
+	$scope.selectCurrencyConsStatList=function(){
+		$http.post("yhSummary/selectCurrencyConsStatList.action",$scope.postData).success(function(data){
+			if(data== undefined||data==null){
+				data=[];
+			}
+			$scope.panel_4.dataList_1.data=data;
+			$scope.panel_4_change=true;
+		})
+	}
+	//货币产出消耗统计
+	$scope.selectCurOutAndConsList=function(){
+		$http.post("yhSummary/selectCurOutAndConsList.action",$scope.postData).success(function(data){
+			if(data.outConsCurrsList== undefined||data.outConsCurrsList==null){
+				data.outConsCurrsList=[];
+			}
+			if(data.totalSum== undefined||data.totalSum==null){
+				data.totalSum={};
+			}
+			$scope.panel_5.dataList_1.data=data.outConsCurrsList;
+			$scope.panel_5.dataList_1.totalSum=data.totalSum;
+			$scope.panel_5_change=true;
+		})
+	}
+	//货币消耗人数,消耗次数
+	$scope.selectCurConsUserTimesList=function(){
+		$http.post("yhSummary/selectCurConsUserTimesList.action",$scope.postData).success(function(data){
+			if(data.outConsCurrsList== undefined||data.outConsCurrsList==null){
+				data.outConsCurrsList=[];
+			}
+			if(data.totalSum== undefined||data.totalSum==null){
+				data.totalSum={};
+			}
+			$scope.panel_6.dataList_1.data=data.outConsCurrsList;
+			$scope.panel_6.dataList_1.totalSum=data.totalSum;
+			$scope.panel_6_change=true;
+		})
+	}
+	
+	$scope.getSelect=function(){
+		$scope.searchData.gameid=$scope.$Params.gameid;
+		$scope.selectGameAreaList();
+	}
+    $scope.getAllData=function(){
+    	$scope.postData.startdate=(new Date($scope.o.startDate)).format("yyyy-MM-dd");
+    	$scope.postData.enddate=(new Date($scope.o.endDate)).format("yyyy-MM-dd");
+    	$scope.postData.gameid=$scope.$Params.gameid;
+    	//
+    	$scope.selectYhPowerStatList();
+    	$scope.selectYhKrypGoldConsumpList();
+    	$scope.selectYhKrypGoldLeftList();
+    	//
+    	$scope.selectCurrencyConsStatList();
+    	$scope.selectCurOutAndConsList();
+    	$scope.selectCurConsUserTimesList();
+    }
+  //加载下拉框
+    $scope.getSelect();
+    $scope.getAllData();
+    
+}

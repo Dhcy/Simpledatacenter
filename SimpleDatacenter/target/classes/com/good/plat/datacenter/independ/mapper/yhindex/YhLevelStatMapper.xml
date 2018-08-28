@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.independ.mapper.yhindex.YhLevelStatMapper">
+	<resultMap id="BaseResultMap" type="com.good.plat.datacenter.independ.entity.yhindex.YhLevelStat">
+		<result column="statdate" property="statdate"/>
+		<result column="gameid" property="gameid"/>
+		<result column="channelid" property="channelid"/>
+		<result column="channelName" property="channelName"/>
+		<result column="lvl_1to10User" property="lvl_1to10User"/>
+		<result column="lvl_11to20User" property="lvl_11to20User"/>
+		<result column="lvl_21to30User" property="lvl_21to30User"/>
+		<result column="lvl_31to40User" property="lvl_31to40User"/>
+		<result column="lvl_41to50User" property="lvl_41to50User"/>
+		<result column="lvl_51to60User" property="lvl_51to60User"/>
+		<result column="lvl_1to10UserRate" property="lvl_1to10UserRate"/>
+		<result column="lvl_11to20UserRate" property="lvl_11to20UserRate"/>
+		<result column="lvl_21to30UserRate" property="lvl_21to30UserRate"/>
+		<result column="lvl_31to40UserRate" property="lvl_31to40UserRate"/>
+		<result column="lvl_41to50UserRate" property="lvl_41to50UserRate"/>
+		<result column="lvl_51to60UserRate" property="lvl_51to60UserRate"/>
+	</resultMap>
+		<sql id="BaseSelect">
+			where 1=1
+			<if test="startdate!=null and startdate!=''">
+			and statdate &gt;=#{startdate}
+			</if>
+			<if test="enddate!=null and enddate!=''">
+			and statdate &lt;=#{enddate}
+			</if>
+			and gameid=#{gameid}
+			<if test="channelid!=null and channelid!=-1">
+			and channel=#{channelid}
+			</if>
+			<if test="areaid!=null and areaid!=-1">
+				and areaid=#{areaid}
+			</if>
+		</sql>
+	<!--  等级分布-->
+	<select id="selectYhLevelDistributeList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.IndependBaseSearchData">
+			SELECT
+			a.statdate,
+			a.channel as channelid,
+			IF (
+							chn.channelSimName IS NULL,
+							CONCAT(
+								'未知渠道： ',
+								a.channel
+							),
+							chn.channelSimName
+						) AS channelName,
+			IFNULL(a.lvl_1to10User,0) as lvl_1to10User,
+			IFNULL(a.lvl_11to20User,0) as lvl_11to20User,
+			IFNULL(a.lvl_21to30User,0) as lvl_21to30User,
+			IFNULL(a.lvl_31to40User,0) as lvl_31to40User,
+			IFNULL(a.lvl_41to50User,0) as lvl_41to50User,
+			IFNULL(a.lvl_51to60User,0) as lvl_51to60User,
+			IF(b.count=0,0,ROUND((a.lvl_1to10User/b.count)*100,2)) as lvl_1to10UserRate,
+			IF(b.count=0,0,ROUND((a.lvl_11to20User/b.count)*100,2)) as lvl_11to20UserRate,
+			IF(b.count=0,0,ROUND((a.lvl_21to30User/b.count)*100,2)) as lvl_21to30UserRate,
+			IF(b.count=0,0,ROUND((a.lvl_31to40User/b.count)*100,2)) as lvl_31to40UserRate,
+			IF(b.count=0,0,ROUND((a.lvl_41to50User/b.count)*100,2)) as lvl_41to50UserRate,
+			IF(b.count=0,0,ROUND((a.lvl_51to60User/b.count)*100,2)) as lvl_51to60UserRate
+		FROM
+			(
+				SELECT
+					statdate,
+					gameid,
+					channel,
+					SUM(IF(section = 1, count, 0)) AS lvl_1to10User,
+					SUM(IF(section = 11, count, 0)) AS lvl_11to20User,
+					SUM(IF(section = 21, count, 0)) AS lvl_21to30User,
+					SUM(IF(section = 31, count, 0)) AS lvl_31to40User,
+					SUM(IF(section = 41, count, 0)) AS lvl_41to50User,
+					SUM(IF(section = 51, count, 0)) AS lvl_51to60User
+				FROM
+					yh_lvl_stat
+				<include refid="BaseSelect"/>
+				GROUP BY
+					statdate,
+					gameid,
+					channel
+			) a
+		LEFT JOIN (
+			SELECT
+				statdate,
+				gameid,
+				channel,
+				IFNULL(sum(`count`),0) as `count`
+			FROM
+				yh_act_count
+			<include refid="BaseSelect"/>
+			GROUP BY
+				statdate,
+				gameid,
+				channel
+		) b ON (
+			a.statdate = b.statdate
+			AND a.gameid = b.gameid
+			AND a.channel = b.channel
+		)LEFT JOIN tb_logplat_channel chn ON (chn.id = a.channel);
+	</select>
+
+</mapper>

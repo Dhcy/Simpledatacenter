@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.datastat.mapper.balanceplat.ContractFileMapper" >
+  <resultMap id="BaseResultMap" type="com.good.plat.datacenter.datastat.entity.balanceplat.ContractFile" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="uploadDate" property="uploadDate" jdbcType="TIMESTAMP"/>
+    <result column="channelId" property="channelId" jdbcType="INTEGER" />
+    <result column="filePath" property="filePath" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+     <result column="channelName" property="channelName" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <select id="selectContractFileList" resultMap="BaseResultMap" parameterType="com.good.plat.datacenter.datastat.entity.balanceplat.ContractFile">
+		SELECT
+			a.id,			
+			a.channel AS channelId,
+			b.channelName as channelName,
+			a.description AS description,
+			a.dir AS filePath,
+			a.uldate as uploadDate
+		FROM
+			fin_logplat_contract_file a
+		LEFT JOIN tb_logplat_channel b on b.id=a.channel
+		WHERE
+			1 = 1 
+			<if test="channelId!=-1">
+				and a.channel=#{channelId}
+			</if>
+  </select>
+  
+  <insert id="insertContractFile" parameterType="com.good.plat.datacenter.datastat.entity.balanceplat.ContractFile">
+  		insert into fin_logplat_contract_file 
+  		(channel,uldate,description, dir)
+			VALUES
+			(#{channelId,jdbcType=INTEGER},#{uploadDate,jdbcType=TIMESTAMP},#{description,jdbcType=VARCHAR},#{filePath,jdbcType=VARCHAR});
+  </insert>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+ 	 SELECT
+			a.id,			
+			a.channel AS channelId,
+			b.channelName as channelName,
+			a.description AS description,
+			a.dir AS filePath,
+			a.uldate as uploadDate
+		FROM
+			fin_logplat_contract_file a
+		LEFT JOIN tb_logplat_channel b on b.id=a.channel
+		WHERE
+		a.id=#{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectByFilePath" resultMap="BaseResultMap" parameterType="com.good.plat.datacenter.datastat.entity.balanceplat.ContractFile">
+ 	SELECT
+			a.id,			
+			a.channel AS channelId,
+			b.channelName as channelName,
+			a.description AS description,
+			a.dir AS filePath,
+			a.uldate as uploadDate
+		FROM
+			fin_logplat_contract_file a
+		LEFT JOIN tb_logplat_channel b on b.id=a.channel
+		WHERE
+		a.dir=#{filePath,jdbcType=VARCHAR}
+  </select>
+  <delete id="delectByPrimaryKey" parameterType="java.lang.Integer">
+ 	 DELETE from fin_logplat_contract_file WHERE id=#{id}
+  </delete>
+</mapper>

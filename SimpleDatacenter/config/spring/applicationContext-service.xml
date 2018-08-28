@@ -1,0 +1,121 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans-4.2.xsd 
+		http://www.springframework.org/schema/mvc 
+		http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd 
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context-4.2.xsd 
+		http://www.springframework.org/schema/aop 
+		http://www.springframework.org/schema/aop/spring-aop-4.2.xsd 
+		http://www.springframework.org/schema/tx 
+		http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
+		
+		<!-- 注解 --> 
+		<bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
+		<bean class="com.good.plat.datacenter.common.util.LoggerUtil">
+		<property name="resourceName">
+			<value>logOperationDesc.properties</value>
+		</property>
+		</bean>
+		<bean id="attrValueUtil" class="com.good.plat.datacenter.common.util.AttrValueUtil" scope="singleton">
+		
+		</bean>
+		<!-- 自动扫描包下的service -->
+		<!-- redisService -->
+		<context:component-scan base-package="com.good.plat.datacenter.common.redis.service.impl" />
+		
+		<!-- 静态数据 -->
+		<context:component-scan base-package="com.good.plat.datacenter.common.service.impl">
+		</context:component-scan>
+		
+		<!-- 统计数据 -->
+		<!-- 游戏概况 -->
+		<context:component-scan base-package="com.good.plat.datacenter.datastat.service.impl.index">
+		</context:component-scan>
+		
+		<!-- 游戏玩家 -->
+		<context:component-scan base-package="com.good.plat.datacenter.datastat.service.impl.players">
+		</context:component-scan>
+		
+		<!-- 等级分析 -->
+		<context:component-scan base-package="com.good.plat.datacenter.datastat.service.impl.levels">
+		</context:component-scan>
+		
+		<!-- 收入分析 -->
+		<context:component-scan base-package="com.good.plat.datacenter.datastat.service.impl.revenue">
+		</context:component-scan>
+		
+		<!-- 虚拟消费 -->
+		<context:component-scan base-package="com.good.plat.datacenter.datastat.service.impl.virtual">
+		</context:component-scan>
+		
+		<!-- 鲸鱼用户 -->
+		<context:component-scan base-package="com.good.plat.datacenter.datastat.service.impl.whales">
+		</context:component-scan>
+		
+		<!-- 推广渠道 -->
+		<context:component-scan base-package="com.good.plat.datacenter.datastat.service.impl.channels">
+		</context:component-scan>
+		<!-- 版本分析 -->
+		<context:component-scan base-package="com.good.plat.datacenter.datastat.service.impl.version">
+		</context:component-scan>
+		<!-- 礼包 -->
+		<context:component-scan base-package="com.good.plat.datacenter.datastat.service.impl.gift">
+		</context:component-scan>
+		
+		<!-- 在线分析 -->
+		<context:component-scan base-package="com.good.plat.datacenter.datastat.service.impl.concurrent">
+		</context:component-scan>
+		<!-- 预警通知 -->
+		<context:component-scan base-package="com.good.plat.datacenter.datastat.service.impl.analysis">
+		</context:component-scan>
+		
+		<!-- 游戏相关数据 -->
+		<context:component-scan base-package="com.good.plat.datacenter.game.service.impl">
+		</context:component-scan>
+		<!-- 买量后台 -->
+		<context:component-scan base-package="com.good.plat.datacenter.datastat.service.impl.buyplat">
+		</context:component-scan>
+		<!-- 对账平台 -->
+		<context:component-scan base-package="com.good.plat.datacenter.datastat.service.impl.balanceplat">
+		</context:component-scan>
+		<!-- sdk data -->
+		<context:component-scan base-package="com.good.plat.datacenter.datastat.service.impl.sdkdata">
+		</context:component-scan>
+		<!-- 登录 -->
+		<context:component-scan base-package="com.good.plat.datacenter.login.service.impl">
+		</context:component-scan>
+		
+		<!-- 用户权限 -->
+		<context:component-scan base-package="com.good.plat.datacenter.login.user.service.impl">
+		</context:component-scan>
+		
+		<!--独立游戏需求 -->
+		<context:component-scan base-package="com.good.plat.datacenter.independ.service.impl">
+		</context:component-scan>
+		<!--dau模型 -->
+		<context:component-scan base-package="com.good.plat.datacenter.datastat.service.impl.daumode">
+		</context:component-scan>
+		
+		<!--项目游戏-->
+		<context:component-scan base-package="com.good.plat.datacenter.datastat.service.impl.project">
+		</context:component-scan>
+		<!--appsflyer推送数据-->
+		<context:component-scan base-package="com.good.plat.datacenter.datastat.service.impl.appsflyer">
+		</context:component-scan>
+		<!--香港财务-->
+		<context:component-scan base-package="com.good.plat.datacenter.datastat.service.impl.xgfinance">
+		</context:component-scan>
+		<!--实时数据-->
+		<context:component-scan base-package="com.good.plat.datacenter.datastat.service.impl.realtimedata">
+		</context:component-scan>
+		<!--财务数据-->
+		<context:component-scan base-package="com.good.plat.datacenter.datastat.service.impl.financedata" />
+		
+		
+		
+		
+</beans>

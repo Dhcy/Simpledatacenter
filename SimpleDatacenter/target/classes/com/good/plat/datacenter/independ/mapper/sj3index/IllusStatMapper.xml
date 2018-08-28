@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.independ.mapper.sj3index.IllusStatMapper">
+	<resultMap id="BaseResultMap" type="com.good.plat.datacenter.independ.entity.sj3index.IllusStat">
+		<result column="statdate" property="statdate"/>
+		<result column="gameid" property="gameid"/>
+		<result column="gameName" property="gameName"/>
+		<result column="channelid" property="channelid"/>
+		<result column="channelName" property="channelName"/>
+		<result column="areaid" property="areaid"/>
+		<result column="areaName" property="areaName"/>
+		
+		<result column="district" property="district"/>
+		<result column="avgLuckCnt" property="avgLuckCnt"/>
+		<result column="sumluckcnt" property="sumluckcnt"/>
+		<result column="areamaxluckcnt" property="areamaxluckcnt"/>
+		<result column="maxluckcnt" property="maxluckcnt"/>
+	</resultMap>
+	
+	<sql id="BaseSelect">
+		where 1=1
+			<if test="startdate!=null and startdate!=''">
+			and statdate &gt;=#{startdate}
+			</if>
+			<if test="enddate!=null and enddate!=''">
+			and statdate &lt;=#{enddate}
+			</if>
+			and gameid=#{gameid}
+			<if test="areaid!=null and areaid!=-1">
+				and areaid=#{areaid}
+			</if>
+			<if test="channelid!=null and channelid!=-1">
+				and channel=#{channelid}
+			</if>
+	</sql>
+	
+	<!--
+	图鉴激活缘分
+	-->
+	<select id="selectIllusLuckNumList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.IndependBaseSearchData">
+		SELECT
+		c.statdate,
+		c.areaid,
+		c.district,
+		IF (c.sumActorCnt = 0,0,ROUND(c.sumluckcnt / c.sumActorCnt)) AS avgLuckCnt,
+		c.sumluckcnt,
+		c.sumActorCnt,
+		c.areamaxluckcnt,
+		c.maxluckcnt
+		FROM
+			(
+				SELECT
+					a.statdate,
+					a.areaid,
+					a.district,
+					IFNULL(SUM(b.sumluck), 0) AS sumluckcnt,
+					a.areamaxluckcnt,
+					IFNULL(MAX(b.maxluck), 0) AS maxluckcnt,
+					IFNULL(SUM(b.actorcnt), 0) AS sumActorCnt
+				FROM
+					(
+						SELECT
+							statdate,
+							gameid,
+							areaid,
+							district,
+							IFNULL(SUM(areamaxluck), 0) AS areamaxluckcnt
+						FROM
+							sj3_illus_stat
+						<include refid="BaseSelect"/>
+						GROUP BY
+							statdate,
+							gameid,
+							areaid,
+							district
+					) a,
+					sj3_illus_stat b
+				WHERE
+					a.statdate >= b.statdate
+				AND a.gameid = b.gameid
+				AND a.areaid = b.areaid
+				AND a.district = b.district
+				GROUP BY
+					a.statdate,
+					a.areaid,
+					a.district
+			) c
+	</select>
+</mapper>

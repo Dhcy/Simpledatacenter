@@ -1,0 +1,75 @@
+
+{
+  "itemPackagesForInitialPayment": [
+    {
+      "item": "大礼包02",
+      "accounts": 86,
+      "percentage": 5.8
+    },
+    {
+      "item": "大礼包03",
+      "accounts": 51,
+      "percentage": 3.4
+    },
+    {
+      "item": "大礼包04",
+      "accounts": 45,
+      "percentage": 3.0
+    },
+    {
+      "item": "大礼包05",
+      "accounts": 179,
+      "percentage": 12.0
+    },
+    {
+      "item": "大礼包06",
+      "accounts": 3,
+      "percentage": 0.2
+    },
+    {
+      "item": "礼包01",
+      "accounts": 32,
+      "percentage": 2.1
+    },
+    {
+      "item": "礼包01",
+      "accounts": 22,
+      "percentage": 1.5
+    },
+    {
+      "item": "礼包02",
+      "accounts": 35,
+      "percentage": 2.3
+    },
+    {
+      "item": "礼包03",
+      "accounts": 22,
+      "percentage": 1.5
+    },
+    {
+      "item": "礼包03",
+      "accounts": 5,
+      "percentage": 0.3
+    },
+    {
+      "item": "礼包03",
+      "accounts": 5,
+      "percentage": 0.3
+    },
+    {
+      "item": "礼包03",
+      "accounts": 5,
+      "percentage": 0.3
+    },
+    {
+      "item": "礼包03",
+      "accounts": 5,
+      "percentage": 0.3
+    },
+    {
+      "item": "礼包03",
+      "accounts": 5,
+      "percentage": 0.3
+    }
+  ]
+}

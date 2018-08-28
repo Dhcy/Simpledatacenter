@@ -1,0 +1,305 @@
+<div>
+	<div class="maintop">
+		<div class="fl">
+			<form class="form-inline">
+				<div class="form-group">
+					<label>&nbsp;&nbsp;{{'起始日期' | translate}}:</label>
+					<input type="text" id="startTime" class="form-control input-sm" placeholder="{{postData.startTime}}" uib-datepicker-popup="{{format}}" ng-model="postData.startTime" is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" ng-click="open1()" />
+				</div>
+				<div class="form-group">
+					<label>&nbsp;&nbsp;{{'对比日期' | translate}}:</label>
+					<input type="text" id="endTime" class="form-control input-sm" placeholder="{{postData.endTime}}" uib-datepicker-popup="{{format}}" ng-model="postData.endTime" is-open="popup2.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" ng-click="open2()" />
+				</div>
+				<div class="form-group">
+					<label>&nbsp;&nbsp;{{'对比跨度' | translate}}:</label>
+					<input type="text" class="form-control" id="" style="width:60px;" ng-model="postData.checktype2">
+				</div>
+				<div class="playerTabs" class="margin_left" playertabs tabsarr="tabsarr" style="float:none;display:inline-block;vertical-align:middle;">
+				</div>
+				<button type="button" class="btn btn-default" ng-click="getData()">{{'查询' | translate}}</button>
+			</form>
+		</div>
+		<div selectChoose class="selectChoose">
+		</div>
+		<div class="clear"></div>
+		<div class="panel-selectChoose" callbackchannelqf ng-show="iscallback">
+		</div>
+
+	</div>
+	<div class="panel panel-default panel_1">
+			<div class="panel-heading">
+				<strong>
+					{{'数据对比' | translate}}
+				</strong>
+				<div class="clear"></div>
+			</div>
+			<div class="panel-body" ng-class="{'table':panel_1.model=='table','graph':panel_1.model=='graph'}">
+				<ul class="nav nav-tabs fl cl" navtabs>
+				  <li role="presentation" class="active" ng-click="getData(0)">
+				  	<a href="javascript:void(0);">{{'新增激活和玩家' | translate}}</a>
+				  	<div tipsmsg>{{'新增激活：当日新增的激活设备量/新增玩家：当日新增的玩家角色数' | translate}}</div>
+				  	</li>
+				  <li role="presentation" ng-click="getData(1)">
+				  	<a href="javascript:void(0);">{{'活跃玩家' | translate}}</a>
+				  	<div tipsmsg>DAU:{{'当天活跃玩家角色数' | translate}}<br/>wau:{{'周活跃玩家角色数' | translate}}<br/>mau:{{'月活跃玩家角色数' | translate}}</div>
+				  	</li>
+				  <li role="presentation" ng-click="getData(2)">
+				  	<a href="javascript:void(0);">{{'付费玩家' | translate}}</a>
+				  	<div tipsmsg>{{'新增付费玩家:首次付费玩家角色数' | translate}}<br>{{'总付费玩家:累计付费玩家角色数' | translate}}</div>
+				  	</li>
+				  <li role="presentation" ng-click="getData(3)">
+				  	<a href="javascript:void(0);">{{'收入' | translate}}</a>
+				  	
+				  	</li>
+				  <li role="presentation" ng-click="getData(4)">
+				  	<a href="javascript:void(0);">{{'在线' | translate}}</a>
+				  	<div tipsmsg>acu:{{'平均同时在线角色数' | translate}}<br>pcu:{{'最高同时在线玩家角色数' | translate}}</div>
+				  	</li>
+				  <li role="presentation" ng-click="getData(5)">
+				  	<a href="javascript:void(0);">{{'付费率' | translate}}</a>
+				  	<div tipsmsg>{{'日付费率：付费玩家角色数/活跃玩家角色数' | translate}}</div>
+				  	</li>
+				  <li role="presentation" ng-click="getData(6)">
+				  	<a href="javascript:void(0);">{{'留存' | translate}}</a>
+				  	<div tipsmsg>{{'新增用户次日留存：次日留存新增玩家角色数/新增玩家角色数' | translate}}<br>
+				  	{{'活跃用户次日留存：次日留存活跃玩家角色数/活跃玩家角色数' | translate}}<br>{{'回流用户次日留存：次日留存回流玩家角色数/回流玩家角色数' | translate}}</div>
+				  	</li>
+				  <li role="presentation" ng-click="getData(7)">
+				  	<a href="javascript:void(0);">ACU/PCU</a>
+				  	<div tipsmsg>{{'平均同时在线角色数/最高同时在线玩家角色数' | translate}}</div>
+				  	</li>
+				</ul>
+				<div class="fr cl info form-inline" style="margin-top:-5px;height:34px;" >
+					<div class="infoact">
+						<div class="form-group">
+							<label>{{'对比项' | translate}}:</label>
+							<select name="" id="" class="form-control input-sm"  ng-model="panel_1.dataList_1.compareId" ng-options="cp.id as cp.name for cp in panel_1.dataList_1.comparedList" ng-change="getData()">
+							</select>
+						</div>
+					</div>
+					<div class="">
+						<div class="form-group">
+							<label>{{'对比项' | translate}}:</label>
+							<select name="" id="" class="form-control input-sm"  ng-model="panel_1.dataList_2.compareId" ng-options="cp.id as cp.name for cp in panel_1.dataList_2.comparedList" ng-change="getData()">
+							</select>
+						</div>
+					</div>
+					<div class="">
+						<div class="form-group">
+							<label>{{'对比项' | translate}}:</label>
+							<select name="" id="" class="form-control input-sm"  ng-model="panel_1.dataList_3.compareId" ng-options="cp.id as cp.name for cp in panel_1.dataList_3.comparedList" ng-change="getData()">
+							</select>
+						</div>
+					</div>
+					<div class="">
+						<div class="form-group">
+							<label>{{'对比项' | translate}}:</label>
+							<select name="" id="" class="form-control input-sm"  ng-model="panel_1.dataList_4.compareId" ng-options="cp.id as cp.name for cp in panel_1.dataList_4.comparedList" ng-change="getData()">
+							</select>
+						</div>
+					</div>
+					<div class="">
+						<div class="form-group">
+							<label>{{'对比项' | translate}}:</label>
+							<select name="" id="" class="form-control input-sm"  ng-model="panel_1.dataList_5.compareId" ng-options="cp.id as cp.name for cp in panel_1.dataList_5.comparedList" ng-change="getData()">
+							</select>
+						</div>
+					</div>
+					<div class="">
+						<div class="form-group">
+							<label>{{'对比项' | translate}}:</label>
+							<select name="" id="" class="form-control input-sm"  ng-model="panel_1.dataList_6.compareId" ng-options="cp.id as cp.name for cp in panel_1.dataList_6.comparedList" ng-change="getData()">
+							</select>
+						</div>
+					</div>
+					<div class="">
+						<div class="form-group">
+							<label>{{'对比项' | translate}}:</label>
+							<select name="" id="" class="form-control input-sm"  ng-model="panel_1.dataList_7.compareId" ng-options="cp.id as cp.name for cp in panel_1.dataList_7.comparedList" ng-change="getData()">
+							</select>
+						</div>
+					</div>
+					<div class="infoact">
+						<div class="form-group">
+							<label>{{'对比项' | translate}}:</label>
+							<select name="" id="" class="form-control input-sm"  ng-model="panel_1.dataList_8.compareId" ng-options="cp.id as cp.name for cp in panel_1.dataList_8.comparedList" ng-change="getData()">
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="clear"></div>
+				<div class="panel-showData">
+					<div class="dataList dataList_1">
+						<div class="dataGraph">
+							<div class="graph" data="dataList_1_1_graph"></div>
+						</div>
+						<div class="dataTable">
+							<table class="table table-bordered text-center">
+								<tr class="tableTr">
+									<th width='33.33%' ng-click="changeOrderBy(panel_1.dataList_1,'date')">{{'日期' | translate}}</th>
+									<th width='33.33%' ng-click="changeOrderBy(panel_1.dataList_1,'value')">{{panel_1.dataList_1.comparedList.searchByKey("id",panel_1.dataList_1.compareId).name}}</th>
+									<th width='33.33%' ng-click="changeOrderBy(panel_1.dataList_1,'new_value')">{{panel_1.dataList_1.comparedList.searchByKey("id",panel_1.dataList_1.compareId).name}}({{'对比' | translate}})</th>
+								</tr>
+								<tr ng-repeat="data in panel_1.dataList_1.data | orderBy: panel_1.dataList_1.orderBy.t+panel_1.dataList_1.orderBy.s | pageStartFrom : panel_1.dataList_1.limit.now*panel_1.dataList_1.limit.max | limitTo: panel_1.dataList_1.limit.max">
+									<td>{{data.date}} | {{data.new_date}}</td>
+									<td>{{data.value}}</td>
+									<td>{{data.new_value}}</td>
+								</tr>
+							</table>
+							<div class="tableLimit" tablelimit datalimit="panel_1.dataList_1.limit"  tabledata="panel_1.dataList_1.data">
+							</div>
+						</div>
+					</div>
+					<div class="dataList  dataList_2" >
+						<div class="dataGraph" >
+							<div class="graph"  data="dataList_1_2_graph"></div>
+						</div>
+						<div class="dataTable" >
+							<table class="table table-bordered text-center">
+								<tr class="tableTr">
+									<th width='33.33%' ng-click="changeOrderBy(panel_1.dataList_2,'date')">{{'日期' | translate}}</th>
+									<th width='33.33%' ng-click="changeOrderBy(panel_1.dataList_2,'value')">{{panel_1.dataList_2.comparedList.searchByKey("id",panel_1.dataList_2.compareId).name}}</th>
+									<th width='33.33%' ng-click="changeOrderBy(panel_1.dataList_2,'new_value')">{{panel_1.dataList_2.comparedList.searchByKey("id",panel_1.dataList_2.compareId).name}}({{'对比' | translate}})</th>
+								</tr>
+								<tr ng-repeat="data in panel_1.dataList_2.data | orderBy: panel_1.dataList_2.orderBy.t+panel_1.dataList_2.orderBy.s  | pageStartFrom : panel_1.dataList_2.limit.now*panel_1.dataList_2.limit.max | limitTo: panel_1.dataList_2.limit.max">
+									<td>{{data.date}} | {{data.new_date}}</td>
+									<td>{{data.value}}</td>
+									<td>{{data.new_value}}</td>
+								</tr>
+							</table>
+							<div class="tableLimit" tablelimit datalimit="panel_1.dataList_2.limit"  tabledata="panel_1.dataList_2.data">
+							</div>
+						</div>
+					</div>
+					<div class="dataList dataList_3">
+						<div class="dataGraph">
+							<div class="graph"  data="dataList_1_3_graph"></div>
+						</div>
+						<div class="dataTable">
+							<table class="table table-bordered text-center">
+								<tr class="tableTr">
+									<th width='33.33%' ng-click="changeOrderBy(panel_1.dataList_3,'date')">{{'日期' | translate}}</th>
+									<th width='33.33%' ng-click="changeOrderBy(panel_1.dataList_3,'value')">{{panel_1.dataList_3.comparedList.searchByKey("id",panel_1.dataList_3.compareId).name}}</th>
+									<th width='33.33%' ng-click="changeOrderBy(panel_1.dataList_3,'new_value')">{{panel_1.dataList_3.comparedList.searchByKey("id",panel_1.dataList_3.compareId).name}}({{'对比' | translate}})</th>
+								</tr>
+								<tr ng-repeat="data in panel_1.dataList_3.data | orderBy: panel_1.dataList_3.orderBy.t+panel_1.dataList_3.orderBy.s  | pageStartFrom : panel_1.dataList_3.limit.now*panel_1.dataList_3.limit.max | limitTo: panel_1.dataList_3.limit.max">
+									<td>{{data.date}} | {{data.new_date}}</td>
+									<td>{{data.value}}</td>
+									<td>{{data.new_value}}</td>
+								</tr>
+							</table>
+							<div class="tableLimit" tablelimit datalimit="panel_1.dataList_3.limit"  tabledata="panel_1.dataList_3.data">
+							</div>
+						</div>
+					</div>
+					<div class="dataList dataList_4">
+						<div class="dataGraph">
+							<div class="graph"  data="dataList_1_4_graph"></div>
+						</div>
+						<div class="dataTable">
+							<table class="table table-bordered text-center">
+								<tr class="tableTr">
+									<th width='33.33%' ng-click="changeOrderBy(panel_1.dataList_4,'date')">{{'日期' | translate}}</th>
+									<th width='33.33%' ng-click="changeOrderBy(panel_1.dataList_4,'value')">{{panel_1.dataList_4.comparedList.searchByKey("id",panel_1.dataList_4.compareId).name}}</th>
+									<th width='33.33%' ng-click="changeOrderBy(panel_1.dataList_4,'new_value')">{{panel_1.dataList_4.comparedList.searchByKey("id",panel_1.dataList_4.compareId).name}}({{'对比' | translate}})</th>
+								</tr>
+								<tr ng-repeat="data in panel_1.dataList_4.data | orderBy: panel_1.dataList_4.orderBy.t+panel_1.dataList_4.orderBy.s  | pageStartFrom : panel_1.dataList_4.limit.now*panel_1.dataList_4.limit.max | limitTo: panel_1.dataList_4.limit.max">
+									<td>{{data.date}} | {{data.new_date}}</td>
+									<td>{{data.value}}</td>
+									<td>{{data.new_value}}</td>
+								</tr>
+							</table>
+							<div class="tableLimit" tablelimit datalimit="panel_1.dataList_4.limit"  tabledata="panel_1.dataList_4.data">
+							</div>
+						</div>
+					</div>
+					<div class="dataList dataList_5">
+						<div class="dataGraph">
+							<div class="graph"  data="dataList_1_5_graph"></div>
+						</div>
+						<div class="dataTable">
+							<table class="table table-bordered text-center">
+								<tr class="tableTr">
+									<th width='33.33%' ng-click="changeOrderBy(panel_1.dataList_5,'date')">{{'日期' | translate}}</th>
+									<th width='33.33%' ng-click="changeOrderBy(panel_1.dataList_5,'value')">{{panel_1.dataList_5.comparedList.searchByKey("id",panel_1.dataList_5.compareId).name}}</th>
+									<th width='33.33%' ng-click="changeOrderBy(panel_1.dataList_5,'new_value')">{{panel_1.dataList_5.comparedList.searchByKey("id",panel_1.dataList_5.compareId).name}}({{'对比' | translate}})</th>
+								</tr>
+								<tr ng-repeat="data in panel_1.dataList_5.data | orderBy: panel_1.dataList_5.orderBy.t+panel_1.dataList_5.orderBy.s  | pageStartFrom : panel_1.dataList_5.limit.now*panel_1.dataList_5.limit.max | limitTo: panel_1.dataList_5.limit.max">
+									<td>{{data.date}} | {{data.new_date}}</td>
+									<td>{{data.value}}</td>
+									<td>{{data.new_value}}</td>
+								</tr>
+							</table>
+							<div class="tableLimit" tablelimit datalimit="panel_1.dataList_5.limit"  tabledata="panel_1.dataList_5.data">
+							</div>
+						</div>
+					</div>
+					<div class="dataList dataList_6">
+						<div class="dataGraph">
+							<div class="graph"  data="dataList_1_6_graph"></div>
+						</div>
+						<div class="dataTable">
+							<table class="table table-bordered text-center">
+								<tr class="tableTr">
+									<th width='33.33%' ng-click="changeOrderBy(panel_1.dataList_6,'date')">{{'日期' | translate}}</th>
+									<th width='33.33%' ng-click="changeOrderBy(panel_1.dataList_6,'value')">{{panel_1.dataList_6.comparedList.searchByKey("id",panel_1.dataList_6.compareId).name}}</th>
+									<th width='33.33%' ng-click="changeOrderBy(panel_1.dataList_6,'new_value')">{{panel_1.dataList_6.comparedList.searchByKey("id",panel_1.dataList_6.compareId).name}}({{'对比' | translate}})</th>
+								</tr>
+								<tr ng-repeat="data in panel_1.dataList_6.data | orderBy: panel_1.dataList_6.orderBy.t+panel_1.dataList_6.orderBy.s  | pageStartFrom : panel_1.dataList_6.limit.now*panel_1.dataList_6.limit.max | limitTo: panel_1.dataList_6.limit.max">
+									<td>{{data.date}} | {{data.new_date}}</td>
+									<td>{{data.value}}</td>
+									<td>{{data.new_value}}</td>
+								</tr>
+							</table>
+							<div class="tableLimit" tablelimit datalimit="panel_1.dataList_6.limit"  tabledata="panel_1.dataList_6.data">
+							</div>
+						</div>
+					</div>
+					<div class="dataList dataList_7">
+						<div class="dataGraph">
+							<div class="graph"  data="dataList_1_7_graph"></div>
+						</div>
+						<div class="dataTable">
+							<table class="table table-bordered text-center">
+								<tr class="tableTr">
+									<th width='33.33%' ng-click="changeOrderBy(panel_1.dataList_7,'date')">{{'日期' | translate}}</th>
+									<th width='33.33%' ng-click="changeOrderBy(panel_1.dataList_7,'value')">{{panel_1.dataList_7.comparedList.searchByKey("id",panel_1.dataList_7.compareId).name}}</th>
+									<th width='33.33%' ng-click="changeOrderBy(panel_1.dataList_7,'new_value')">{{panel_1.dataList_7.comparedList.searchByKey("id",panel_1.dataList_7.compareId).name}}({{'对比' | translate}})</th>
+								</tr>
+								<tr ng-repeat="data in panel_1.dataList_7.data | orderBy: panel_1.dataList_7.orderBy.t+panel_1.dataList_7.orderBy.s  | pageStartFrom : panel_1.dataList_7.limit.now*panel_1.dataList_7.limit.max | limitTo: panel_1.dataList_7.limit.max">
+									<td>{{data.date}} | {{data.new_date}}</td>
+									<td>{{data.value}}</td>
+									<td>{{data.new_value}}</td>
+								</tr>
+							</table>
+							<div class="tableLimit" tablelimit datalimit="panel_1.dataList_7.limit"  tabledata="panel_1.dataList_7.data">
+							</div>
+						</div>
+					</div>
+					<div class="dataList dataList_8">
+						<div class="dataGraph">
+							<div class="graph"  data="dataList_1_8_graph"></div>
+						</div>
+						<div class="dataTable">
+							<table class="table table-bordered text-center">
+								<tr class="tableTr">
+									<th width='33.33%' ng-click="changeOrderBy(panel_1.dataList_8,'date')">{{'日期' | translate}}</th>
+									<th width='33.33%' ng-click="changeOrderBy(panel_1.dataList_8,'value')">{{panel_1.dataList_8.comparedList.searchByKey("id",panel_1.dataList_8.compareId).name}}</th>
+									<th width='33.33%' ng-click="changeOrderBy(panel_1.dataList_8,'new_value')">{{panel_1.dataList_8.comparedList.searchByKey("id",panel_1.dataList_8.compareId).name}}({{'对比' | translate}})</th>
+								</tr>
+								<tr ng-repeat="data in panel_1.dataList_8.data | orderBy: panel_1.dataList_8.orderBy.t+panel_1.dataList_8.orderBy.s  | pageStartFrom : panel_1.dataList_8.limit.now*panel_1.dataList_8.limit.max | limitTo: panel_1.dataList_8.limit.max">
+									<td>{{data.date}} | {{data.new_date}}</td>
+									<td>{{data.value}}</td>
+									<td>{{data.new_value}}</td>
+								</tr>
+							</table>
+							<div class="tableLimit" tablelimit datalimit="panel_1.dataList_8.limit"  tabledata="panel_1.dataList_8.data">
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="panel-changeData" graphtbale graphtbale graphfun="graphfun" datachange="panel_1_change"  datalimit="0" model="panel_1.model">
+				</div>
+			</div>
+	</div>
+</div>

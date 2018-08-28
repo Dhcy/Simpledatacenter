@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.good.plat.datacenter.datastat.mapper.analysis.LogplatWarningNoticeMapper">
+  <resultMap id="BaseResultMap" type="com.good.plat.datacenter.datastat.entity.analysis.LogplatWarningNotice">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="warning_item_id" jdbcType="INTEGER" property="warning_item_id" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="notice_datetime" jdbcType="TIMESTAMP" property="notice_datetime" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="projectid" jdbcType="INTEGER" property="projectid" />
+    <result column="gameid" jdbcType="INTEGER" property="gameid" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.good.plat.datacenter.datastat.entity.analysis.LogplatWarningNoticeWithBLOBs">
+    <result column="content" jdbcType="LONGVARCHAR" property="content" />
+    <result column="receiver" jdbcType="LONGVARCHAR" property="receiver" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, warning_item_id, title, notice_datetime, status, projectid, gameid
+  </sql>
+  <sql id="Blob_Column_List">
+    content, receiver
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from logplat_warning_notice
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from logplat_warning_notice
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.good.plat.datacenter.datastat.entity.analysis.LogplatWarningNoticeWithBLOBs">
+    insert into logplat_warning_notice (id, warning_item_id, title, 
+      notice_datetime, status, projectid, 
+      gameid, content, receiver
+      )
+    values (#{id,jdbcType=INTEGER}, #{warning_item_id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, 
+      #{notice_datetime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}, #{projectid,jdbcType=INTEGER}, 
+      #{gameid,jdbcType=INTEGER}, #{content,jdbcType=LONGVARCHAR}, #{receiver,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.good.plat.datacenter.datastat.entity.analysis.LogplatWarningNoticeWithBLOBs">
+    insert into logplat_warning_notice
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="warning_item_id != null">
+        warning_item_id,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="notice_datetime != null">
+        notice_datetime,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="projectid != null">
+        projectid,
+      </if>
+      <if test="gameid != null">
+        gameid,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="receiver != null">
+        receiver,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="warning_item_id != null">
+        #{warning_item_id,jdbcType=INTEGER},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="notice_datetime != null">
+        #{notice_datetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="projectid != null">
+        #{projectid,jdbcType=INTEGER},
+      </if>
+      <if test="gameid != null">
+        #{gameid,jdbcType=INTEGER},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="receiver != null">
+        #{receiver,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.good.plat.datacenter.datastat.entity.analysis.LogplatWarningNoticeWithBLOBs">
+    update logplat_warning_notice
+    <set>
+      <if test="warning_item_id != null">
+        warning_item_id = #{warning_item_id,jdbcType=INTEGER},
+      </if>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="notice_datetime != null">
+        notice_datetime = #{notice_datetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="projectid != null">
+        projectid = #{projectid,jdbcType=INTEGER},
+      </if>
+      <if test="gameid != null">
+        gameid = #{gameid,jdbcType=INTEGER},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="receiver != null">
+        receiver = #{receiver,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.good.plat.datacenter.datastat.entity.analysis.LogplatWarningNoticeWithBLOBs">
+    update logplat_warning_notice
+    set warning_item_id = #{warning_item_id,jdbcType=INTEGER},
+      title = #{title,jdbcType=VARCHAR},
+      notice_datetime = #{notice_datetime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=INTEGER},
+      projectid = #{projectid,jdbcType=INTEGER},
+      gameid = #{gameid,jdbcType=INTEGER},
+      content = #{content,jdbcType=LONGVARCHAR},
+      receiver = #{receiver,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.good.plat.datacenter.datastat.entity.analysis.LogplatWarningNotice">
+    update logplat_warning_notice
+    set warning_item_id = #{warning_item_id,jdbcType=INTEGER},
+      title = #{title,jdbcType=VARCHAR},
+      notice_datetime = #{notice_datetime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=INTEGER},
+      projectid = #{projectid,jdbcType=INTEGER},
+      gameid = #{gameid,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+ 
+  
+  <select id="selectAllWarningNotice" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  	select 
+  	<include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+  	from logplat_warning_notice 
+  	where status=0
+  	order by notice_datetime desc
+  	limit #{topNum,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectWarningNotice" parameterType="com.good.plat.datacenter.common.base.WarningBaseSearchData" resultMap="ResultMapWithBLOBs">
+  	select 
+  	<include refid="Base_Column_List" /> 
+    , 
+    <include refid="Blob_Column_List" /> 
+  	from logplat_warning_notice 
+  	where status=0 and gameid=#{gameid,jdbcType=INTEGER} 
+  	order by notice_datetime desc
+  	<if test="pageLength != null">
+  		LIMIT #{pageLength,jdbcType=INTEGER}
+  	</if>
+  	<if test="pageLength == null">
+  		LIMIT 10000
+  	</if>
+  </select>
+  
+</mapper>

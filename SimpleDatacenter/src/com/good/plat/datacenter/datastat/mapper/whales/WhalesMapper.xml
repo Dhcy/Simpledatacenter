@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.datastat.mapper.whales.WhalesMapper">
+	<resultMap id="BaseResultMap" type="com.good.plat.datacenter.datastat.entity.whales.Whales">
+		<result column="gameid" property="gameid"/>
+		<result column="gameName" property="gameName"/>
+		<result column="channelid" property="channelid"/>
+		<result column="channelName" property="channelName"/>
+		<result column="subchannelid" property="subchannelid"/>
+		<result column="areaid" property="areaid"/>
+		<result column="areaName" property="areaName"/>
+		<result column="statdate" property="statdate"/>
+		<result column="statType" property="statType"/>
+		<result column="rate" property="rate"/>
+		<result column="ranking" property="ranking"/>
+		<result column="account" property="account"/>
+		<result column="sumOfPayment" property="sumOfPayment"/>
+		<result column="currencyPurchased" property="currencyPurchased"/>
+		<result column="sumOfExpense" property="sumOfExpense"/>
+		<result column="firstLogin" property="firstLogin"/>
+		<result column="currentLevel" property="currentLevel"/>
+		<result column="accountID" property="accountID"/>
+		<result column="accountName" property="accountName"/>
+		<result column="channelName" property="channelName"/>
+		<result column="address" property="address"/>
+		<result column="device" property="device"/>
+		<result column="latestLogin" property="latestLogin"/>
+		<result column="firstPay" property="firstPay"/>
+		<result column="currencyBalance" property="currencyBalance"/>
+		<result column="payChannel" property="payChannel"/>
+		<result column="payChannelName" property="payChannelName"/>
+		<result column="itemID" property="itemID"/>
+		<result column="itemName" property="itemName"/>
+		<result column="numberOfExpense" property="numberOfExpense"/>
+		<result column="currencyspent" property="currencyspent"/>
+		<result column="actorName" property="actorName"/>
+		<result column="termType" property="termType"/>
+		<result column="gameAreaName" property="gameAreaName"/>
+		<result column="leftCount" property="leftCount"/>
+		<result column="firstRechargeDate" property="firstRechargeDate"/>
+		<result column="lastRechargeDate" property="lastRechargeDate"/>
+		<result column="leftBindCountStr" property="leftBindCountStr"/>
+		
+		
+	</resultMap>
+	
+	<sql id="BaseSelect">
+		where statdate between #{startdate} and #{enddate} 
+		<if test="termtypes != null">
+			and termtype in
+			<foreach collection="termtypes" item="term" index="index" open="(" close=")" separator=",">
+				#{term}
+			</foreach>
+		</if>
+		and gameid=#{gameid}
+		<if test="areas != null">
+			and areaid in
+			<foreach collection="areas" item="area" index="index" open="(" close=")" separator=",">
+				#{area}
+			</foreach>
+		</if>
+		<if test="channelList != null">
+			and channel in
+			<foreach collection="channelList" item="channel" index="index" open="(" close=")" separator=",">
+				#{channel.id}
+			</foreach>
+		</if>
+		<if test="subchannels != null">
+			and chnnnl in
+			<foreach collection="subchannels" item="subchannel" index="index" open="(" close=")" separator=",">
+				#{subchannel}
+			</foreach>
+		</if>
+	</sql>
+	
+
+	<!-- 充值玩家 -->
+	<select id="selectWhaleUserList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select
+			a.uid AS account,
+			max(a.actorlevel) AS currentLevel,
+			min(a.regdate) AS firstLogin,
+			sum(a.money) AS sumOfPayment,
+			sum(a.count) AS currencyPurchased,
+			a.actorname AS actorName,
+			a.termtype AS termType,
+			if(b.`name` is null,concat('未知区服：',a.areaid),b.name) AS gameAreaName,
+			max(a.leftcount) AS leftCount,
+			max(a.leftbindcount) AS leftBindCountStr,
+			min(logdate) AS firstRechargeDate,
+			max(logdate) AS lastRechargeDate
+		from
+			logplat_actor_recharge a
+		left join tb_logplat_gamearea b ON b.areaid = a.areaid and b.gameid=a.gameid
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.ABaseSelect"/>
+		group by uid,actorid order by sumOfPayment desc,firstLogin desc limit 0,500
+		
+	</select>
+	
+	<select id="exportWhaleUserList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select
+			a.uid AS account,
+			max(a.actorlevel) AS currentLevel,
+			min(a.regdate) AS firstLogin,
+			sum(a.money) AS sumOfPayment,
+			sum(a.count) AS currencyPurchased,
+			a.actorname AS actorName,
+			a.termtype AS termType,
+			b.`name` AS gameAreaName,
+			max(a.leftcount) AS leftCount,
+			max(a.leftbindcount) AS leftBindCountStr,
+			min(logdate) AS firstRechargeDate,
+			max(logdate) AS lastRechargeDate
+		from
+			logplat_actor_recharge a
+		left join tb_logplat_gamearea b ON b.areaid = a.areaid and b.gameid=a.gameid
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.ABaseSelect"/>
+		group by uid,actorid order by sumOfPayment desc,firstLogin desc limit 0,65535
+	</select>
+	
+	<!-- 鲸鱼用户详细信息 -->
+	<select id="selectChargeUserList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	
+	<!-- 鲸鱼用户充值记录 -->
+	<select id="selectChargeInfoList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+</mapper>

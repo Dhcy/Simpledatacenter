@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.independ.mapper.sj3index.MwSummaryMapper">
+	<resultMap id="BaseResultMap" type="com.good.plat.datacenter.independ.entity.sj3index.MwSummary">
+		<result column="gameid" property="gameid"/>
+		<result column="gameName" property="gameName"/>
+		<result column="channelid" property="channelid"/>
+		<result column="channelName" property="channelName"/>
+		<result column="subchannelid" property="subchannelid"/>
+		<result column="areaid" property="areaid"/>
+		<result column="areaName" property="areaName"/>
+		<result column="statdate" property="statdate"/>
+		<result column="statType" property="statType"/>
+		<result column="rate" property="rate"/>
+		
+		<result column="mwName" property="mwName"/>
+		<result column="totalActor" property="totalActor"/>
+		<result column="userCnt" property="userCnt"/>
+		<result column="unUserCnt" property="unUserCnt"/>
+		
+		
+	</resultMap>
+	<sql id="BaseSelect">
+		where statdate between #{startdate} and #{enddate} 
+		and gameid=#{gameid}
+		<if test="areas != null">
+			and areaid in
+			<foreach collection="areas" item="area" index="index" open="(" close=")" separator=",">
+				#{area}
+			</foreach>
+		</if>
+		<if test="channelList != null">
+			and channel in
+			<foreach collection="channelList" item="channel" index="index" open="(" close=")" separator=",">
+				#{channel.id}
+			</foreach>
+		</if>
+		<if test="subchannels != null">
+			and chnnnl in
+			<foreach collection="subchannels" item="subchannel" index="index" open="(" close=")" separator=",">
+				#{subchannel}
+			</foreach>
+		</if>
+	</sql>
+	
+	<sql id="BBaseSelectWithoutTime">
+		and b.gameid=#{gameid}
+		<if test="areas != null">
+			and b.areaid in
+			<foreach collection="areas" item="area" index="index" open="(" close=")" separator=",">
+				#{area}
+			</foreach>
+		</if>
+		<if test="channelList != null">
+			and b.channel in
+			<foreach collection="channelList" item="channel" index="index" open="(" close=")" separator=",">
+				#{channel.id}
+			</foreach>
+		</if>
+		<if test="subchannels != null">
+			and b.chnnnl in
+			<foreach collection="subchannels" item="subchannel" index="index" open="(" close=")" separator=",">
+				#{subchannel}
+			</foreach>
+		</if>
+	</sql>
+	
+	<!--
+	魔物激活分布（日期,渠道,魔物名称,总玩家数,激活玩家数(从开服)）
+	-->
+	<select id="selectMwActList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		SELECT
+			a.`statdate`,
+			a.channel as channelid,
+			c.channelSimName as channelName,
+			b.`mw` as mwName,
+			IFNULL(MAX(a.`totalactor`),0) as totalActor,
+			SUM(IF(b.type=1,b.usercnt,0)) as userCnt,
+			SUM(IF(b.type=0,b.usercnt,0)) as unUserCnt
+		FROM
+			(
+				SELECT
+					statdate,
+					channel,
+					SUM(totalactor) totalactor
+				FROM
+					logplat_total_regist_recharge
+				<include refid="BaseSelect"/>
+				GROUP BY
+					statdate,
+					channel
+			) a LEFT JOIN tb_logplat_channel c on c.id=a.channel ,
+			`sj3_mwjh_stat` b
+		WHERE
+			b.`statdate` &lt;= a.`statdate`
+		AND a.channel = b.channel
+		<include refid="BBaseSelectWithoutTime"/>
+		GROUP BY
+			a.`statdate`,
+			a.channel,
+			b.`mw`;
+	</select>
+	
+</mapper>

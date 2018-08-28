@@ -1,0 +1,584 @@
+<style type="text/css">
+    .table th,.table td{ border:1px solid #ddd;}
+    .form-group{ margin-left: 10px; margin-top: 10px;}
+    .form-control{ display: inline-block; vertical-align: middle;}
+    .tableListTh{
+    	white-space: nowrap;
+    	text-align:center;
+    }
+    .channelTd{
+    	white-space: nowrap;
+    	text-align:center;
+    }
+     .tableListPower{
+    line-height:1;
+   	width:6.66%;
+    vertical-align:middle;
+    }
+    .channelTdPower{
+    	width:6.66%;
+    }
+    .form-group .form-member{
+    float: left;
+    }
+    .form-group .member-control{
+   	margin-left: 10px;
+    }
+</style>
+<div>
+	 <div>
+	        <div class="form-group">
+	            <label for="">{{'查询区服' | translate}}：</label>
+	            <select ng-model="postData.areaid" class="form-control" ng-options="data.id as data.name for data in gameAreaList">
+	            </select>
+	             <label for="">{{'货币类型' | translate}}：</label>
+	            <select ng-model="postData.checktype1" class="form-control" ng-options="data.id as data.name for data in currTypeList">
+	            </select>
+	            
+	        </div>
+			<div class="form-group">
+				<div class="form-member">
+					<label for="startDate">{{'起始日期' | translate}}: </label>
+					<input type="text" id="startDate" class="form-control" placeholder="{{o.startDate}}" uib-datepicker-popup="{{format}}" ng-model="o.startDate" is-open="o.opened1" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" ng-click="o.opened1=!o.opened1" />
+				</div>
+				<div class="form-member member-control">
+					<label for="endDate">{{'结束日期' | translate}}: </label>
+					<input type="text" id="endDate" class="form-control" placeholder="{{o.endDate}}" uib-datepicker-popup="{{format}}" ng-model="o.endDate" is-open="o.opened2" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" ng-click="o.opened2=!o.opened2" />
+				</div>
+				&nbsp;&nbsp;
+				<button class="btn btn-default" ng-click="getAllData()">{{'查询' | translate}}</button>
+			</div>
+	</div>
+	<div class="clear"></div>
+		<!--------tab选择按钮----------->
+	<div class="panel panel-default panel_1">
+			<div class="panel-heading">
+			<strong>{{'体力统计' | translate}}</strong>
+				<div class="panel_downloadBtn"  down-file down-file-url="yhSummary/exportYhPowerStatList.action" down-file-type="xlsx" down-file-name="体力统计{{mstatdate}}" savedata="" postdata="postData" ></div>
+				<div class="clear"></div>
+			</div>
+			<div class="panel-body pdlf pdtb">
+			<div class="tableList tableListAct" >
+				<ul class="tableListUl">
+					<li class="tableListLi tableListLiTh clear">
+						<span class="tableListTh tableListPower">
+							<strong title="">{{'日期' | translate}}</strong>
+						</span>
+						<span class="tableListTh tableListPower">
+							<strong title="">{{'渠道' | translate}}</strong>
+						</span>
+						<span class="tableListTh tableListPower">
+							<strong title="">{{'平均消耗体力值' | translate}}</strong>
+						</span>
+						<span class="tableListTh tableListPower">
+							<strong title="">0{{'次' | translate}}<br/>{{'用户数量' | translate}}</strong>
+						</span>
+						<span class="tableListTh tableListPower">
+							<strong title="">0{{'次' | translate}}<br/>{{'占比' | translate}}</strong>
+						</span>
+						<span class="tableListTh tableListPower">
+							<strong title="">1{{'次' | translate}}<br/>{{'用户数量' | translate}}</strong>
+						</span>
+						<span class="tableListTh tableListPower">
+							<strong title="">1{{'次' | translate}}<br/>{{'占比' | translate}}</strong>
+						</span>
+						<span class="tableListTh tableListPower">
+							<strong title="">2{{'次' | translate}}<br/>{{'用户数量' | translate}}</strong>
+						</span>
+						<span class="tableListTh tableListPower">
+							<strong title="">2{{'次' | translate}}<br/>{{'占比' | translate}}</strong>
+						</span>
+						<span class="tableListTh tableListPower">
+							<strong title="">3{{'次' | translate}}<br/>{{'用户数量' | translate}}</strong>
+						</span>
+						<span class="tableListTh tableListPower">
+							<strong title="">3{{'次' | translate}}<br/>{{'占比' | translate}}</strong>
+						</span>
+						<span class="tableListTh tableListPower">
+							<strong title="">4{{'次' | translate}}<br/>{{'用户数量' | translate}}</strong>
+						</span>
+						<span class="tableListTh tableListPower">
+							<strong title="">4{{'次' | translate}}<br/>{{'占比' | translate}}</strong>
+						</span>
+						<span class="tableListTh tableListPower">
+							<strong title="">5{{'次以上' | translate}}<br/>{{'用户数量' | translate}}</strong>
+						</span>
+						<span class="tableListTh tableListPower">
+							<strong title="">5{{'次以上' | translate}}<br/>{{'占比' | translate}}</strong>
+						</span>
+					</li>
+					<li class="tableListLi clear" ng-repeat="data in panel_1.dataList_1.data | pageStartFrom : panel_1.dataList_1.limit.now*panel_1.dataList_1.limit.max | limitTo: panel_1.dataList_1.limit.max" ng-class="({'show_panel':data.show_panel})">
+						<div class="channelTr clear">
+							<span class="channelTd channelTdPower">
+								{{data.statdate}}
+							</span>
+							<span class="channelTd channelTdPower">
+								{{data.channelName}}
+							</span>
+							<span class="channelTd channelTdPower">
+								{{data.avgPowerValue}}
+							</span>
+							<span class="channelTd channelTdPower">
+								{{data.buyPower0TimesActUser}}
+							</span>
+							<span class="channelTd channelTdPower">
+								{{data.buyPower0TimesActUserRate}}%
+							</span>
+							<span class="channelTd channelTdPower">
+								{{data.buyPower1TimesActUser}}
+							</span>
+							<span class="channelTd channelTdPower">
+								{{data.buyPower1TimesActUserRate}}%
+							</span>
+							<span class="channelTd channelTdPower">
+								{{data.buyPower2TimesActUser}}
+							</span>
+							<span class="channelTd channelTdPower">
+								{{data.buyPower2TimesActUserRate}}%
+							</span>
+							<span class="channelTd channelTdPower">
+								{{data.buyPower3TimesActUser}}
+							</span>
+							<span class="channelTd channelTdPower">
+								{{data.buyPower3TimesActUserRate}}%
+							</span>
+							<span class="channelTd channelTdPower">
+								{{data.buyPower4TimesActUser}}
+							</span>
+							<span class="channelTd channelTdPower">
+								{{data.buyPower4TimesActUserRate}}%
+							</span>
+							<span class="channelTd channelTdPower">
+								{{data.buyPowerHigh5TimesActUser}}
+							</span>
+							<span class="channelTd channelTdPower">
+								{{data.buyPowerHigh5TimesActUserRate}}%
+							</span>
+						</div>
+				</li>
+				</ul>
+				<div class="tableFooter">
+						<div class="buttondiv fl" analysisdrop changei="changetype()">
+							<div class="selectlable fl">{{'每页显示' | translate}}：</div>
+							<div class="analysisdrop fl" style="width:60px;">
+								<div class="hadchoose">
+									<h6>{{val | translate}}</h6></div>
+								<ul class="dropUl">
+									<li ng-click="c('10');changetype(10)">10</li>
+									<li ng-click="c('20');changetype(20)">20</li>
+									<li ng-click="c('50');changetype(50)">50</li>
+									<li ng-click="c('100');changetype(100)">100</li>
+								</ul>
+							</div>
+							<div class="selectlable fl">&nbsp;&nbsp;{{'条记录' | translate}}</div>
+						</div>
+						<div class="dataTables_paginate fr" datatableslimit  datalimit="panel_1.dataList_1.limit"  tabledata="panel_1.dataList_1.data"  datachange="panel_1_change"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="panel panel-default panel_2">
+			<div class="panel-heading">
+			<strong>{{'氪金消耗' | translate}}</strong>
+				<div class="panel_downloadBtn"  down-file down-file-url="yhSummary/exportYhKrypGoldConsumpList.action" down-file-type="xlsx" down-file-name="氪金消耗{{mstatdate}}" savedata="" postdata="postData" ></div>
+				<div class="clear"></div>
+			</div>
+			<div class="panel-body pdlf pdtb">
+			<div class="tableList tableListAct" >
+				<ul class="tableListUl">
+					<li class="tableListLi tableListLiTh clear">
+						<span class="tableListTh" style="width:25%">
+							<strong title="">{{'日期' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:25%">
+							<strong title="">{{'渠道' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:25%">
+							<strong title="">{{'消耗氪金总值' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:25%">
+							<strong title="">{{'人均消耗氪金值' | translate}}</strong>
+						</span>
+						
+					</li>
+					<li class="tableListLi clear" ng-repeat="data in panel_2.dataList_1.data | pageStartFrom : panel_2.dataList_1.limit.now*panel_2.dataList_1.limit.max | limitTo: panel_2.dataList_1.limit.max" ng-class="({'show_panel':data.show_panel})">
+						<div class="channelTr clear">
+							<span class="channelTd" style="width:25%" >
+								{{data.statdate}}
+							</span>
+							<span class="channelTd" style="width:25%">
+								{{data.channelName}}
+							</span>
+							<span class="channelTd" style="width:25%">
+								{{data.count}}
+							</span>
+							<span class="channelTd" style="width:25%">
+								{{data.avgConsumRate}}
+							</span>
+						</div>
+				</li>
+				</ul>
+				<div class="tableFooter">
+						<div class="buttondiv fl" analysisdrop changei="changetype2()">
+							<div class="selectlable fl">{{'每页显示' | translate}}：</div>
+							<div class="analysisdrop fl" style="width:60px;">
+								<div class="hadchoose">
+									<h6>{{val | translate}}</h6></div>
+								<ul class="dropUl">
+									<li ng-click="c('10');changetype2(10)">10</li>
+									<li ng-click="c('20');changetype2(20)">20</li>
+									<li ng-click="c('50');changetype2(50)">50</li>
+									<li ng-click="c('100');changetype2(100)">100</li>
+								</ul>
+							</div>
+							<div class="selectlable fl">&nbsp;&nbsp;{{'条记录' | translate}}</div>
+						</div>
+						<div class="dataTables_paginate fr" datatableslimit  datalimit="panel_2.dataList_1.limit"  tabledata="panel_2.dataList_1.data"  datachange="panel_2_change"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="panel panel-default panel_3">
+			<div class="panel-heading">
+			<strong>{{'氪金存量' | translate}}</strong>
+				<div class="panel_downloadBtn"  down-file down-file-url="yhSummary/exportYhKrypGoldLeftList.action" down-file-type="xlsx" down-file-name="氪金存量{{mstatdate}}" savedata="" postdata="postData" ></div>
+				<div class="clear"></div>
+			</div>
+			<div class="panel-body pdlf pdtb">
+			<div class="tableList tableListAct" >
+				<ul class="tableListUl">
+					<li class="tableListLi tableListLiTh clear">
+						<span class="tableListTh" style="width:16%">
+							<strong title="">{{'日期' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:12%">
+							<strong title="">{{'渠道' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:12%">
+							<strong title="">{{'等级段' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:12%">
+							<strong title="">0-100{{'氪金占比' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:12%">
+							<strong title="">101-1000{{'氪金占比' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:12%">
+							<strong title="">1001-3000{{'氪金占比' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:12%">
+							<strong title="">3001-10000{{'氪金占比' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:12%">
+							<strong title="">10001{{'氪金以上占比' | translate}}</strong>
+						</span>
+					</li>
+					<li class="tableListLi clear" ng-repeat="data in panel_3.dataList_1.data | pageStartFrom : panel_3.dataList_1.limit.now*panel_3.dataList_1.limit.max | limitTo: panel_3.dataList_1.limit.max" ng-class="({'show_panel':data.show_panel})">
+						<div class="channelTr clear">
+							<span class="channelTd" style="width:16%" >
+								{{data.statdate}}
+							</span>
+							<span class="channelTd" style="width:12%">
+								{{data.channelName}}
+							</span>
+							<span class="channelTd" style="width:12%">
+								{{data.lvlSectionStr}}
+							</span>
+							<span class="channelTd" style="width:12%">
+								{{data.sect0CoutRate}}%
+							</span>
+							<span class="channelTd" style="width:12%">
+								{{data.sect101CoutRate}}%
+							</span>
+							<span class="channelTd" style="width:12%">
+								{{data.sect1001CoutRate}}%
+							</span>
+							<span class="channelTd" style="width:12%">
+								{{data.sect3001CoutRate}}%
+							</span>
+							<span class="channelTd" style="width:12%">
+								{{data.sect10001CoutRate}}%
+							</span>
+						</div>
+				</li>
+				</ul>
+				<div class="tableFooter">
+						<div class="buttondiv fl" analysisdrop changei="changetype3()">
+							<div class="selectlable fl">{{'每页显示' | translate}}：</div>
+							<div class="analysisdrop fl" style="width:60px;">
+								<div class="hadchoose">
+									<h6>{{val | translate}}</h6></div>
+								<ul class="dropUl">
+									<li ng-click="c('10');changetype3(10)">10</li>
+									<li ng-click="c('20');changetype3(20)">20</li>
+									<li ng-click="c('50');changetype3(50)">50</li>
+									<li ng-click="c('100');changetype3(100)">100</li>
+								</ul>
+							</div>
+							<div class="selectlable fl">&nbsp;&nbsp;{{'条记录' | translate}}</div>
+						</div>
+						<div class="dataTables_paginate fr" datatableslimit  datalimit="panel_3.dataList_1.limit"  tabledata="panel_3.dataList_1.data"  datachange="panel_3_change"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="panel panel-default panel_4">
+			<div class="panel-heading">
+			<strong>{{'货币消耗统计' | translate}}</strong>
+				<div class="panel_downloadBtn"  down-file down-file-url="yhSummary/exportCurrencyConsStatList.action" down-file-type="xlsx" down-file-name="货币消耗统计{{mstatdate}}" savedata="" postdata="postData" ></div>
+				<div class="clear"></div>
+			</div>
+			<div class="panel-body pdlf pdtb">
+			<div class="tableList tableListAct" >
+				<ul class="tableListUl">
+					<li class="tableListLi tableListLiTh clear">
+						<span class="tableListTh" style="width:12%">
+							<strong title="">{{'货币种类' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:16%">
+							<strong title="">{{'消耗方式' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:12%">
+							<strong title="">{{'消耗次数' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:12%">
+							<strong title="">{{'合计货币' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:12%">
+							<strong title="">{{'平均每次消耗' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:12%">
+							<strong title="">{{'使用人数' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:12%">
+							<strong title="">{{'人均次数' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:12%">
+							<strong title="">{{'人均消耗' | translate}}</strong>
+						</span>
+					</li>
+					<li class="tableListLi clear" ng-repeat="data in panel_4.dataList_1.data | pageStartFrom : panel_4.dataList_1.limit.now*panel_4.dataList_1.limit.max | limitTo: panel_4.dataList_1.limit.max" ng-class="({'show_panel':data.show_panel})">
+						<div class="channelTr clear">
+							<span class="channelTd" style="width:12%" >
+								{{data.currencyType}}
+							</span>
+							<span class="channelTd" style="width:16%" >
+								{{data.consumeType}}
+							</span>
+							<span class="channelTd" style="width:12%">
+								{{data.consumeCnt}}
+							</span>
+							<span class="channelTd" style="width:12%">
+								{{data.currencyCount}}
+							</span>
+							<span class="channelTd" style="width:12%">
+								{{data.avgPerTimeCount}}
+							</span>
+							<span class="channelTd" style="width:12%">
+								{{data.actUser}}
+							</span>
+							<span class="channelTd" style="width:12%">
+								{{data.avgPerUserConsumeCnt}}
+							</span>
+							<span class="channelTd" style="width:12%">
+								{{data.avgPerUserCount}}
+							</span>
+						</div>
+				</li>
+				</ul>
+				<div class="tableFooter">
+						<div class="buttondiv fl" analysisdrop changei="changetype4()">
+							<div class="selectlable fl">{{'每页显示' | translate}}：</div>
+							<div class="analysisdrop fl" style="width:60px;">
+								<div class="hadchoose">
+									<h6>{{val | translate}}</h6></div>
+								<ul class="dropUl">
+									<li ng-click="c('10');changetype4(10)">10</li>
+									<li ng-click="c('20');changetype4(20)">20</li>
+									<li ng-click="c('50');changetype4(50)">50</li>
+									<li ng-click="c('100');changetype4(100)">100</li>
+								</ul>
+							</div>
+							<div class="selectlable fl">&nbsp;&nbsp;{{'条记录' | translate}}</div>
+						</div>
+						<div class="dataTables_paginate fr" datatableslimit  datalimit="panel_4.dataList_1.limit"  tabledata="panel_4.dataList_1.data"  datachange="panel_4_change"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="panel panel-default panel_5">
+			<div class="panel-heading">
+			<strong>{{'货币产出与消耗统计' | translate}}</strong>
+				<div class="panel_downloadBtn"  down-file down-file-url="yhSummary/exportCurOutAndConsList.action" down-file-type="xlsx" down-file-name="货币产出与消耗统计{{mstatdate}}" savedata="" postdata="postData" ></div>
+				<div class="clear"></div>
+			</div>
+			<div class="panel-body pdlf pdtb">
+			<div class="tableList tableListAct" >
+				<ul class="tableListUl">
+					<li class="tableListLi tableListLiTh clear">
+						<span class="tableListTh" style="width:20%">
+							<strong title="">{{'日期' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:20%">
+							<strong title="">{{'货币类型' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:20%">
+							<strong title="">{{'产出' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:20%">
+							<strong title="">{{'消耗' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:20%">
+							<strong title="">{{'结余' | translate}}</strong>
+						</span>
+					</li>
+					<li class="tableListLi clear" ng-repeat="data in panel_5.dataList_1.data | pageStartFrom : panel_5.dataList_1.limit.now*panel_5.dataList_1.limit.max | limitTo: panel_5.dataList_1.limit.max" ng-class="({'show_panel':data.show_panel})">
+						<div class="channelTr clear">
+							<span class="channelTd" style="width:20%" >
+								{{data.statdate}}
+							</span>
+							<span class="channelTd" style="width:20%">
+								{{data.consumeType}}
+							</span>
+							<span class="channelTd" style="width:20%">
+								{{data.gainCnt}}
+							</span>
+							<span class="channelTd" style="width:20%">
+								{{data.consumeCnt}}
+							</span>
+							<span class="channelTd" style="width:20%">
+								{{data.leftCount}}
+							</span>
+						</div>
+					</li>
+					<li class="tableListLi clear" ng-show="panel_5.dataList_1.data">
+						<div class="channelTr clear">
+							<span class="channelTd" style="width:20%" >
+								{{'总计' | translate}}
+							</span>
+							<span class="channelTd" style="width:20%">
+								
+							</span>
+							<span class="channelTd" style="width:20%">
+								{{panel_5.dataList_1.totalSum.outCurrSum}}
+							</span>
+							<span class="channelTd" style="width:20%">
+								{{panel_5.dataList_1.totalSum.consCurrSum}}
+							</span>
+							<span class="channelTd" style="width:20%">
+								{{panel_5.dataList_1.totalSum.leftCurrSum}}
+							</span>
+						</div>
+					</li>
+				</ul>
+				<div class="tableFooter">
+						<div class="buttondiv fl" analysisdrop changei="changetype5()">
+							<div class="selectlable fl">{{'每页显示' | translate}}：</div>
+							<div class="analysisdrop fl" style="width:60px;">
+								<div class="hadchoose">
+									<h6>{{val | translate}}</h6></div>
+								<ul class="dropUl">
+									<li ng-click="c('10');changetype5(10)">10</li>
+									<li ng-click="c('20');changetype5(20)">20</li>
+									<li ng-click="c('50');changetype5(50)">50</li>
+									<li ng-click="c('100');changetype5(100)">100</li>
+								</ul>
+							</div>
+							<div class="selectlable fl">&nbsp;&nbsp;{{'条记录' | translate}}</div>
+						</div>
+						<div class="dataTables_paginate fr" datatableslimit  datalimit="panel_5.dataList_1.limit"  tabledata="panel_5.dataList_1.data"  datachange="panel_5_change"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="panel panel-default panel_6">
+			<div class="panel-heading">
+			<strong>{{'货币消费人数和次数' | translate}}</strong>
+				<div class="panel_downloadBtn"  down-file down-file-url="yhSummary/exportCurConsUserTimesList.action" down-file-type="xlsx" down-file-name="货币消费人数和次数{{mstatdate}}" savedata="" postdata="postData" ></div>
+				<div class="clear"></div>
+			</div>
+			<div class="panel-body pdlf pdtb">
+			<div class="tableList tableListAct" >
+				<ul class="tableListUl">
+					<li class="tableListLi tableListLiTh clear">
+						<span class="tableListTh" style="width:20%">
+							<strong title="">{{'日期' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:20%">
+							<strong title="">{{'货币类型' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:20%">
+							<strong title="">{{'消耗人数' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:20%">
+							<strong title="">{{'消耗次数' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:20%">
+							<strong title="">{{'人均消耗次数' | translate}}</strong>
+						</span>
+					</li>
+					<li class="tableListLi clear" ng-repeat="data in panel_6.dataList_1.data | pageStartFrom : panel_6.dataList_1.limit.now*panel_6.dataList_1.limit.max | limitTo: panel_6.dataList_1.limit.max" ng-class="({'show_panel':data.show_panel})">
+						<div class="channelTr clear">
+							<span class="channelTd" style="width:20%" >
+								{{data.statdate}}
+							</span>
+							<span class="channelTd" style="width:20%">
+								{{data.consumeType}}
+							</span>
+							<span class="channelTd" style="width:20%">
+								{{data.actUser}}
+							</span>
+							<span class="channelTd" style="width:20%">
+								{{data.consumeCnt}}
+							</span>
+							<span class="channelTd" style="width:20%">
+								{{data.avgPerUserConsumeCnt}}
+							</span>
+						</div>
+					</li>
+					<li class="tableListLi clear" ng-show="panel_6.dataList_1.data">
+						<div class="channelTr clear">
+							<span class="channelTd" style="width:20%" >
+								总计{{'' | translate}}
+							</span>
+							<span class="channelTd" style="width:20%">
+								
+							</span>
+							<span class="channelTd" style="width:20%">
+								{{panel_6.dataList_1.totalSum.actUserSum}}
+							</span>
+							<span class="channelTd" style="width:20%">
+								{{panel_6.dataList_1.totalSum.consumeCntSum}}
+							</span>
+							<span class="channelTd" style="width:20%">
+								{{panel_6.dataList_1.totalSum.avgPerUserConsumeSum}}
+							</span>
+						</div>
+					</li>
+				</ul>
+				<div class="tableFooter">
+						<div class="buttondiv fl" analysisdrop changei="changetype6()">
+							<div class="selectlable fl">{{'每页显示' | translate}}：</div>
+							<div class="analysisdrop fl" style="width:60px;">
+								<div class="hadchoose">
+									<h6>{{val | translate}}</h6></div>
+								<ul class="dropUl">
+									<li ng-click="c('10');changetype6(10)">10</li>
+									<li ng-click="c('20');changetype6(20)">20</li>
+									<li ng-click="c('50');changetype6(50)">50</li>
+									<li ng-click="c('100');changetype6(100)">100</li>
+								</ul>
+							</div>
+							<div class="selectlable fl">&nbsp;&nbsp;{{'条记录' | translate}}</div>
+						</div>
+						<div class="dataTables_paginate fr" datatableslimit  datalimit="panel_6.dataList_1.limit"  tabledata="panel_6.dataList_1.data"  datachange="panel_6_change"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

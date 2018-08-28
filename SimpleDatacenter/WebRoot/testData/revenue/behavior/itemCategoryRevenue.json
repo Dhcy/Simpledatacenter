@@ -1,0 +1,114 @@
+{
+  "itemCategoryRevenue": [
+    {
+      "percentage": 0.0,
+      "accounts": 0.0,
+      "title": "限时礼包03"
+    },
+    {
+      "percentage": 15.2,
+      "accounts": 137.6,
+      "title": "青铜宝箱"
+    },
+    {
+      "percentage": 2.0,
+      "accounts": 18.4,
+      "title": "礼包02"
+    },
+    {
+      "percentage": 9.3,
+      "accounts": 84.48,
+      "title": "钻石260"
+    },
+    {
+      "percentage": 4.8,
+      "accounts": 43.52,
+      "title": "钻石160"
+    },
+    {
+      "percentage": 6.7,
+      "accounts": 61.12,
+      "title": "钻石200"
+    },
+    {
+      "percentage": 4.8,
+      "accounts": 43.84,
+      "title": "钻石100"
+    },
+    {
+      "percentage": 3.8,
+      "accounts": 34.24,
+      "title": "钻石60"
+    },
+    {
+      "percentage": 0.7,
+      "accounts": 5.92,
+      "title": "礼包03"
+    },
+    {
+      "percentage": 2.1,
+      "accounts": 18.72,
+      "title": "礼包01"
+    },
+    {
+      "percentage": 0.2,
+      "accounts": 1.44,
+      "title": "黄金宝箱"
+    },
+    {
+      "percentage": 3.7,
+      "accounts": 33.76,
+      "title": "礼包06"
+    },
+    {
+      "percentage": 25.7,
+      "accounts": 233.28,
+      "title": "大礼包05"
+    },
+    {
+      "percentage": 2.5,
+      "accounts": 22.72,
+      "title": "大礼包03"
+    },
+    {
+      "percentage": 2.9,
+      "accounts": 26.24,
+      "title": "大礼包02"
+    },
+    {
+      "percentage": 4.2,
+      "accounts": 38.08,
+      "title": "青铜宝箱"
+    },
+    {
+      "percentage": 2.2,
+      "accounts": 19.84,
+      "title": "大礼包04"
+    },
+    {
+      "percentage": 2.9,
+      "accounts": 25.92,
+      "title": "礼包01"
+    },
+    {
+      "percentage": 6.1,
+      "accounts": 55.2,
+      "title": "礼包04"
+    },
+    {
+      "percentage": 0.1,
+      "accounts": 0.96,
+      "title": "礼包03"
+    },
+    {
+      "percentage": 0.2,
+      "accounts": 1.44,
+      "title": "大礼包06"
+    },
+    {
+      "percentage": 0.2,
+      "accounts": 1.44,
+      "title": "礼包05"
+    }
+  ]
+}

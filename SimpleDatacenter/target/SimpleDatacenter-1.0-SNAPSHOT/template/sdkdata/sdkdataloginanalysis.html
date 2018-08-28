@@ -1,0 +1,162 @@
+<style type="text/css">
+    .table th,.table td{ border:1px solid #ddd;}
+    .form-group{ margin-left: 10px; margin-top: 10px;}
+    .form-control{ display: inline-block; vertical-align: middle;}
+    .tableListTh{
+    	width: 10%;
+    	white-space: nowrap;
+    	vertical-align: middle;
+    }
+    .channelTd{
+    	width: 10%;
+    	white-space: nowrap;
+    }
+      .tableListTh strong{
+  	   line-height:16px;
+  	   text-align: center;
+	}
+</style>
+<div>
+    <div>
+        <div class="form-group">
+            <div class="div_select">
+                
+            </div>
+            <div datepicker format="yyyy-MM-dd"  class="col-xs-3 timeSelect" mstatdate="mstatdate" style="width:350px;"></div>
+            <!--
+            <div datepicker format="yyyy-MM-dd" minMode="month" class="col-xs-3 timeSelect" mstatdate="mstatdate" style="width:350px;"></div>
+            -->
+            <!-- <label for="">游戏：</label>
+            <select ng-model="postData.gameid" class="form-control" ng-options="data.id as data.name for data in panel_1.gameList"  ng-change="getChannelList()">
+			</select>
+			<label for="">系统：</label>
+            <select ng-model="postData.systemid" class="form-control" ng-options="data.id as data.name for data in panel_1.systemList">
+            </select>&nbsp;&nbsp; -->
+            
+            <a class="btn btn-default" ng-click="getData()" >{{'查询' | translate}}</a>
+        </div>
+    </div>
+    <div class="panel panel-default panel_1">
+		<div class="panel-heading">
+			<strong class="fl">
+				{{'渠道数据' | translate}}
+				<div tipsmsg></div>
+				<!--------提示框----------->
+			</strong>
+		<!--------tab选择按钮----------->
+			<div class="panel_downloadBtn"  down-file down-file-url="sdkdata/exportSDKLoginAnalysis.action" 
+					down-file-type="xlsx" down-file-name="登录分析{{mstatdate}}" savedata="" postdata="postData" ></div>
+			<!--------下载按钮----------->
+			<div class="clear"></div>
+		</div>
+		<div class="panel-body pdlf pdtb">
+			<div class="tableList tableListAct" >
+				<ul class="tableListUl">
+					<li class="tableListLi tableListLiTh clear">
+						<span class="tableListTh">
+							<strong title="">{{'日期' | translate}}</strong>
+							<div tipsmsg></div>
+						</span>
+						<span class="tableListTh">
+							<strong title="">{{'账号' | translate}}<br/>{{'登录方式' | translate}}</strong>
+							<div tipsmsg></div>
+						</span>
+						<span class="tableListTh">
+							<strong title="">{{'新增' | translate}}<br/>{{'注册' | translate}}</strong>
+							<div tipsmsg></div>
+						</span>
+						<span class="tableListTh">
+							<strong title="">{{'新增' | translate}}<br/>{{'充值人数' | translate}}</strong>
+							<div tipsmsg></div>
+						</span>
+						<span class="tableListTh">
+							<strong title="">{{'新增' | translate}}<br/>{{'充值金额' | translate}}</strong>
+							<div tipsmsg></div>
+						</span>
+						<span class="tableListTh">
+							<strong title="">{{'总活跃' | translate}}<br/>{{'用户' | translate}}</strong>
+							<div tipsmsg></div>
+						</span>
+						<span class="tableListTh">
+							<strong title="">{{'总充值' | translate}}<br/>{{'人数' | translate}}</strong>
+							<div tipsmsg></div>
+						</span>
+						<span class="tableListTh">
+							<strong title="">{{'总充值' | translate}}<br/>{{'金额' | translate}}</strong>
+							<div tipsmsg></div>
+						</span>
+						<span class="tableListTh">
+							<strong title="">{{'总流失' | translate}}<br/>{{'用户' | translate}}</strong>
+							<div tipsmsg></div>
+						</span>
+						<span class="tableListTh">
+							<strong title="">{{'总回流' | translate}}<br/>{{'用户' | translate}}</strong>
+							<div tipsmsg></div>
+						</span><!-- 
+						<span class="tableListTh">
+							<strong ng-click="expandDetail()">详情</strong>
+							<div tipsmsg></div>
+						</span> -->
+					</li>
+					
+					<li class="tableListLi clear" ng-repeat="data in panel_1.dataList_1.data | pageStartFrom : panel_1.dataList_1.limit.now*panel_1.dataList_1.limit.max | limitTo: panel_1.dataList_1.limit.max" ng-class="({'show_panel':data.show_panel})">
+						<div class="channelTr clear">
+							<span class="channelTd">
+								{{data.statdate}}
+							</span>
+							<span class="channelTd">
+								{{data.way}}
+							</span>
+							<span class="channelTd">
+								{{data.regsit}}
+							</span>
+							<span class="channelTd">
+								{{data.new_recharge}}
+							</span>
+							<span class="channelTd">
+								{{data.new_money}}
+							</span>
+							<span class="channelTd">
+								{{data.total_login}}
+							</span>
+							<span class="channelTd">
+								{{data.total_recharge}}
+							</span>
+							<span class="channelTd">
+								{{data.total_money}}
+							</span>
+							<span class="channelTd">
+								{{data.total_lost}}
+							</span>
+							<span class="channelTd">
+								{{data.total_return}}
+							</span>
+							<!-- 
+							<span class="channelTd show_panel_btn">
+								<p ng-click="showPanel(data)" ng-show="!data.show_panel">详情</p>
+								<p ng-click="data.show_panel=false;" ng-show="data.show_panel">收起</p>
+							</span> -->
+						</div>
+				</li>
+				</ul>							
+				<div class="tableFooter">
+					<div class="buttondiv fl" analysisdrop changei="changetype()">
+						<div class="selectlable fl">{{'每页显示' | translate}}：</div>
+						<div class="analysisdrop fl" style="width:60px;">
+							<div class="hadchoose">
+								<h6>{{val | translate}}</h6></div>
+							<ul class="dropUl">
+								<li ng-click="c('10');changetype(10)">10</li>
+								<li ng-click="c('20');changetype(20)">20</li>
+								<li ng-click="c('50');changetype(50)">50</li>
+								<li ng-click="c('100');changetype(100)">100</li>
+							</ul>
+						</div>
+						<div class="selectlable fl">&nbsp;&nbsp;{{'条记录' | translate}}</div>
+					</div>
+					<div class="dataTables_paginate fr" datatableslimit  datalimit="panel_1.dataList_1.limit"  tabledata="panel_1.dataList_1.data"  datachange="panel_1_change"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

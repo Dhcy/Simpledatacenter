@@ -1,0 +1,36 @@
+{
+  "dataNumberOfPaidAccount": [
+    {
+      "statdate": "2014-08-24",
+      "data": 264.0
+    },
+    {
+      "statdate": "2014-08-25",
+      "data": 247.0
+    },
+    {
+      "statdate": "2014-08-26",
+      "data": 246.0
+    },
+    {
+      "statdate": "2014-08-27",
+      "data": 258.0
+    },
+    {
+      "statdate": "2014-08-28",
+      "data": 212.0
+    },
+    {
+      "statdate": "2014-08-29",
+      "data": 234.0
+    },
+    {
+      "statdate": "2014-08-30",
+      "data": 251.0
+    },
+    {
+      "statdate": "2014-08-31",
+      "data": 224.0
+    }
+  ]
+}

@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.game.mapper.GameAreaMapper" >
+  <resultMap id="BaseResultMap" type="com.good.plat.datacenter.game.entity.GameArea" >
+    <id column="area_id" property="id" jdbcType="INTEGER" />
+    <result column="area_gameid" property="gameid" jdbcType="INTEGER" />
+    <result column="area_areaid" property="areaid" jdbcType="INTEGER" />
+    <result column="area_name" property="name" jdbcType="VARCHAR" />
+    <result column="area_date" property="createdate" jdbcType="TIMESTAMP" />
+    <result column="area_game_name" property="gameName" />
+  </resultMap>
+  
+  <resultMap id="GameAreaList" type="com.good.plat.datacenter.game.entity.GameArea" >
+  	<id column="area_id" property="id" jdbcType="INTEGER" />
+    <result column="area_gameid" property="gameid" jdbcType="INTEGER" />
+    <result column="area_areaid" property="areaid" jdbcType="INTEGER" />
+    <result column="area_name" property="name" jdbcType="VARCHAR" />
+    <result column="area_date" property="createdate" jdbcType="TIMESTAMP" />
+    <result column="area_game_name" property="gameName" />
+    <association property="game" javaType="com.good.plat.datacenter.game.entity.Game">
+    	<id column="game_id" property="id"/>
+    	<result column="game_name" property="name"/>
+    	<result column="game_projectid" property="projectid"/>
+    	<result column="game_date" property="createdate"/>
+    </association>
+  </resultMap>
+  
+  <sql id="select_sql">
+  	select
+  		area.id as area_id,
+    	area.gameid as area_gameid,
+    	game.name as area_game_name,
+    	area.areaid as area_areaid,
+    	area.name as area_name,
+    	area.createdate	as area_date
+  	from 
+    	tb_logplat_gamearea area
+    	left join tb_logplat_game game 
+    	on area.gameid=game.id
+  </sql>
+  
+  <select id="selectAreaList" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+  	<include refid="select_sql"></include>
+    where 
+    	1=1
+    	<if test="gameid != -1 and gameid != null">
+    		and area.gameid = #{gameid,jdbcType=INTEGER}
+    	</if>
+    order by area.areaid
+  </select>
+  
+  <select id="selectGameAreaList" resultMap="GameAreaList" parameterType="java.lang.Integer">
+  	select
+  		area.areaid as area_id,
+    	area.gameid as area_gameid,
+    	game.name as area_game_name,
+    	area.areaid as area_areaid,
+    	area.name as area_name,
+    	area.createdate	as area_date,
+    	game.id as game_id,
+    	game.name as game_name,
+    	game.projectid as game_projectid,
+    	game.createdate as game_date
+  	from 
+    	tb_logplat_gamearea area
+    	join tb_logplat_game game 
+    	on area.gameid=game.id
+    where 
+    	1=1
+    	<if test="gameid != -1 and gameid != null">
+    		and area.gameid = #{gameid,jdbcType=INTEGER}
+    	</if>
+    order by area.areaid
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    <include refid="select_sql"></include>
+    where 
+    	area.id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectByAreaId" resultMap="BaseResultMap" parameterType="com.good.plat.datacenter.game.entity.GameArea" >
+  	<include refid="select_sql"></include>
+    where
+    	area.gameid = #{gameid,jdbcType=INTEGER}
+    	and area.areaid = #{areaid,jdbcType=INTEGER}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_logplat_gamearea
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.good.plat.datacenter.game.entity.GameArea" >
+    insert into tb_logplat_gamearea (id, gameid, areaid, 
+      name, createdate)
+    values (#{id,jdbcType=INTEGER}, #{gameid,jdbcType=INTEGER}, #{areaid,jdbcType=INTEGER}, 
+      #{name,jdbcType=CHAR}, #{createdate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.good.plat.datacenter.game.entity.GameArea" >
+    insert into tb_logplat_gamearea
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="gameid != null" >
+        gameid,
+      </if>
+      <if test="areaid != null" >
+        areaid,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="createdate != null" >
+        createdate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="gameid != null" >
+        #{gameid,jdbcType=INTEGER},
+      </if>
+      <if test="areaid != null" >
+        #{areaid,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=CHAR},
+      </if>
+      <if test="createdate != null" >
+        #{createdate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.good.plat.datacenter.game.entity.GameArea" >
+    update tb_logplat_gamearea
+    <set >
+      <if test="gameid != null" >
+        gameid = #{gameid,jdbcType=INTEGER},
+      </if>
+      <if test="areaid != null" >
+        areaid = #{areaid,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=CHAR},
+      </if>
+      <if test="createdate != null" >
+        createdate = #{createdate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.good.plat.datacenter.game.entity.GameArea" >
+    update tb_logplat_gamearea
+    set gameid = #{gameid,jdbcType=INTEGER},
+      areaid = #{areaid,jdbcType=INTEGER},
+      name = #{name,jdbcType=CHAR},
+      createdate = #{createdate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+   <delete id="deleteGameArea" parameterType="com.good.plat.datacenter.game.entity.GameArea" >
+    delete from tb_logplat_gamearea where gameid=#{gameid,jdbcType=INTEGER} and areaid=#{areaid,jdbcType=INTEGER}
+  </delete>
+</mapper>

@@ -1,0 +1,54 @@
+{
+  "currencySpendingByStage": [
+    {
+      "percentage": 15.9,
+      "stages": "关卡03",
+      "currencyExpense": 1325350.0
+    },
+    {
+      "percentage": 14.6,
+      "stages": "关卡04",
+      "currencyExpense": 1213850.0
+    },
+    {
+      "percentage": 27.8,
+      "stages": "关卡01",
+      "currencyExpense": 2311400.0
+    },
+    {
+      "percentage": 20.3,
+      "stages": "关卡02",
+      "currencyExpense": 1691350.0
+    },
+    {
+      "percentage": 2.3,
+      "stages": "关卡07",
+      "currencyExpense": 194286.0
+    },
+    {
+      "percentage": 4.4,
+      "stages": "关卡08",
+      "currencyExpense": 366918.0
+    },
+    {
+      "percentage": 2.2,
+      "stages": "关卡09",
+      "currencyExpense": 179008.0
+    },
+    {
+      "percentage": 3.6,
+      "stages": "关卡10",
+      "currencyExpense": 297756.0
+    },
+    {
+      "percentage": 4.1,
+      "stages": "关卡06",
+      "currencyExpense": 341484.0
+    },
+    {
+      "percentage": 4.7,
+      "stages": "关卡05",
+      "currencyExpense": 391898.0
+    }
+  ]
+}

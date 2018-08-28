@@ -1,0 +1,36 @@
+{
+  "dailyReturningAllPlayers30Days": [
+    {
+      "statdate": "2014-08-24",
+      "accounts": 1791.0
+    },
+    {
+      "statdate": "2014-08-25",
+      "accounts": 1830.0
+    },
+    {
+      "statdate": "2014-08-26",
+      "accounts": 1890.0
+    },
+    {
+      "statdate": "2014-08-27",
+      "accounts": 2005.0
+    },
+    {
+      "statdate": "2014-08-28",
+      "accounts": 1463.0
+    },
+    {
+      "statdate": "2014-08-29",
+      "accounts": 1633.0
+    },
+    {
+      "statdate": "2014-08-30",
+      "accounts": 1343.0
+    },
+    {
+      "statdate": "2014-08-31",
+      "accounts": 839.0
+    }
+  ]
+}

@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.datastat.mapper.sdkdata.SdkLoginStatMapper" >
+  <resultMap id="BaseResultMap" type="com.good.plat.datacenter.datastat.entity.sdkdata.SdkLoginStat" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="gameid" property="gameid" jdbcType="INTEGER" />
+    <result column="statdate" property="statdate" jdbcType="DATE" />
+    <result column="way" property="way" jdbcType="VARCHAR" />
+    <result column="regsit" property="regsit" jdbcType="INTEGER" />
+    <result column="new_recharge" property="new_recharge" jdbcType="INTEGER" />
+    <result column="new_money" property="new_money" jdbcType="DECIMAL" />
+    <result column="total_login" property="total_login" jdbcType="INTEGER" />
+    <result column="total_money" property="total_money" jdbcType="DECIMAL" />
+    <result column="total_lost" property="total_lost" jdbcType="INTEGER" />
+    <result column="total_return" property="total_return" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, gameid, statdate, way, regsit, new_recharge, new_money, total_login, total_money, 
+    total_lost, total_return
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from sdk_login_stat
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from sdk_login_stat
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.good.plat.datacenter.datastat.entity.sdkdata.SdkLoginStat" >
+    insert into sdk_login_stat (id, gameid, statdate, 
+      way, regsit, new_recharge, 
+      new_money, total_login, total_money, 
+      total_lost, total_return)
+    values (#{id,jdbcType=INTEGER}, #{gameid,jdbcType=INTEGER}, #{statdate,jdbcType=DATE}, 
+      #{way,jdbcType=VARCHAR}, #{regsit,jdbcType=INTEGER}, #{new_recharge,jdbcType=INTEGER}, 
+      #{new_money,jdbcType=DECIMAL}, #{total_login,jdbcType=INTEGER}, #{total_money,jdbcType=DECIMAL}, 
+      #{total_lost,jdbcType=INTEGER}, #{total_return,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.good.plat.datacenter.datastat.entity.sdkdata.SdkLoginStat" >
+    insert into sdk_login_stat
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="gameid != null" >
+        gameid,
+      </if>
+      <if test="statdate != null" >
+        statdate,
+      </if>
+      <if test="way != null" >
+        way,
+      </if>
+      <if test="regsit != null" >
+        regsit,
+      </if>
+      <if test="new_recharge != null" >
+        new_recharge,
+      </if>
+      <if test="new_money != null" >
+        new_money,
+      </if>
+      <if test="total_login != null" >
+        total_login,
+      </if>
+      <if test="total_money != null" >
+        total_money,
+      </if>
+      <if test="total_lost != null" >
+        total_lost,
+      </if>
+      <if test="total_return != null" >
+        total_return,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="gameid != null" >
+        #{gameid,jdbcType=INTEGER},
+      </if>
+      <if test="statdate != null" >
+        #{statdate,jdbcType=DATE},
+      </if>
+      <if test="way != null" >
+        #{way,jdbcType=VARCHAR},
+      </if>
+      <if test="regsit != null" >
+        #{regsit,jdbcType=INTEGER},
+      </if>
+      <if test="new_recharge != null" >
+        #{new_recharge,jdbcType=INTEGER},
+      </if>
+      <if test="new_money != null" >
+        #{new_money,jdbcType=DECIMAL},
+      </if>
+      <if test="total_login != null" >
+        #{total_login,jdbcType=INTEGER},
+      </if>
+      <if test="total_money != null" >
+        #{total_money,jdbcType=DECIMAL},
+      </if>
+      <if test="total_lost != null" >
+        #{total_lost,jdbcType=INTEGER},
+      </if>
+      <if test="total_return != null" >
+        #{total_return,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.good.plat.datacenter.datastat.entity.sdkdata.SdkLoginStat" >
+    update sdk_login_stat
+    <set >
+      <if test="gameid != null" >
+        gameid = #{gameid,jdbcType=INTEGER},
+      </if>
+      <if test="statdate != null" >
+        statdate = #{statdate,jdbcType=DATE},
+      </if>
+      <if test="way != null" >
+        way = #{way,jdbcType=VARCHAR},
+      </if>
+      <if test="regsit != null" >
+        regsit = #{regsit,jdbcType=INTEGER},
+      </if>
+      <if test="new_recharge != null" >
+        new_recharge = #{new_recharge,jdbcType=INTEGER},
+      </if>
+      <if test="new_money != null" >
+        new_money = #{new_money,jdbcType=DECIMAL},
+      </if>
+      <if test="total_login != null" >
+        total_login = #{total_login,jdbcType=INTEGER},
+      </if>
+      <if test="total_money != null" >
+        total_money = #{total_money,jdbcType=DECIMAL},
+      </if>
+      <if test="total_lost != null" >
+        total_lost = #{total_lost,jdbcType=INTEGER},
+      </if>
+      <if test="total_return != null" >
+        total_return = #{total_return,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.good.plat.datacenter.datastat.entity.sdkdata.SdkLoginStat" >
+    update sdk_login_stat
+    set gameid = #{gameid,jdbcType=INTEGER},
+      statdate = #{statdate,jdbcType=DATE},
+      way = #{way,jdbcType=VARCHAR},
+      regsit = #{regsit,jdbcType=INTEGER},
+      new_recharge = #{new_recharge,jdbcType=INTEGER},
+      new_money = #{new_money,jdbcType=DECIMAL},
+      total_login = #{total_login,jdbcType=INTEGER},
+      total_money = #{total_money,jdbcType=DECIMAL},
+      total_lost = #{total_lost,jdbcType=INTEGER},
+      total_return = #{total_return,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

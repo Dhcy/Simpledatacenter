@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.datastat.mapper.index.SummaryDataMapper">
+	<resultMap id="BaseResultMap" type="com.good.plat.datacenter.datastat.entity.index.SummaryData">
+		<result column="gameid" property="gameid"/>
+		<result column="gameName" property="gameName"/>
+		<result column="channelid" property="channelid"/>
+		<result column="channelName" property="channelName"/>
+		<result column="subchannelid" property="subchannelid"/>
+		<result column="areaid" property="areaid"/>
+		<result column="areaName" property="areaName"/>
+		<result column="statdate" property="statdate"/>
+		<result column="statType" property="statType"/>
+		<result column="rate" property="rate"/>
+		<result column="deviceActivation" property="deviceActivation"/>
+		<result column="newUser" property="newUser"/>
+		<result column="payUser" property="payUser"/>
+		<result column="income" property="income"/>
+		<result column="deviceSUM" property="deviceSUM"/>
+		<result column="accountSUM" property="accountSUM"/>
+		<result column="devicAVG" property="devicAVG"/>
+		<result column="accountAVG" property="accountAVG"/>
+		<result column="deviceCount" property="deviceCount"/>
+		<result column="userCount" property="userCount"/>
+		<result column="newActiveUser" property="newActiveUser"/>
+		<result column="oldActiveUser" property="oldActiveUser"/>
+		<result column="activeUserSUM" property="activeUserSUM"/>
+		<result column="activeUserAVG" property="activeUserAVG"/>
+		<result column="newPayUser" property="newPayUser"/>
+		<result column="oldPayUser" property="oldPayUser"/>
+		<result column="payUserSUM" property="payUserSUM"/>
+		<result column="payUserAVG" property="payUserAVG"/>
+		<result column="incomeSUM" property="incomeSUM"/>
+		<result column="incomeAVG" property="incomeAVG"/>
+		<result column="payRate" property="payRate"/>
+		<result column="payAVG" property="payAVG"/>
+		<result column="dayARPU" property="dayARPU"/>
+		<result column="dayARPPU" property="dayARPPU"/>
+		<result column="userDay2" property="userDay2"/>
+		<result column="userDay7" property="userDay7"/>
+		<result column="userDay30" property="userDay30"/>
+		<result column="day2AVG" property="day2AVG"/>
+		<result column="day7AVG" property="day7AVG"/>
+		<result column="day30AVG" property="day30AVG"/>
+		<result column="deviceDay2" property="deviceDay2"/>
+		<result column="deviceDay7" property="deviceDay7"/>
+		<result column="deviceDay30" property="deviceDay30"/>
+		<result column="gameCounts" property="gameCounts"/>
+		<result column="gameTimes" property="gameTimes"/>
+		<result column="timesAVG" property="timesAVG"/>
+	</resultMap>
+	
+	<sql id="BaseSelectWithoutLanguageEdition">
+		where statdate between #{startdate} and #{enddate} 
+		<if test="termtypes != null">
+			and termtype in
+			<foreach collection="termtypes" item="term" index="index" open="(" close=")" separator=",">
+				#{term}
+			</foreach>
+		</if>
+		and gameid=#{gameid}
+		<if test="areas != null">
+			and areaid in
+			<foreach collection="areas" item="area" index="index" open="(" close=")" separator=",">
+				#{area}
+			</foreach>
+		</if>
+		<if test="channelList != null">
+			and channel in
+			<foreach collection="channelList" item="channel" index="index" open="(" close=")" separator=",">
+				#{channel.id}
+			</foreach>
+		</if>
+		<if test="subchannels != null">
+			and chnnnl in
+			<foreach collection="subchannels" item="subchannel" index="index" open="(" close=")" separator=",">
+				#{subchannel}
+			</foreach>
+		</if>
+	</sql>
+	<!-- 概况 -->
+	<select id="selectSummaryData" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select 
+			sum(actvcount) as deviceActivation, 
+			sum(newact) as newUser, 
+			sum(payact) as payUser, 
+			sum(income) as income 
+		from 
+			logplat_daily_rpt 
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect" />
+	</select>
+	
+	<!-- 新增玩家 -->
+	<select id="selectNewPlayerList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select 
+			statdate, 
+			sum(actvcount) as deviceCount, 
+			sum(newact) as userCount
+		from 
+			logplat_daily_rpt 
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/>
+		group by statdate order by statdate
+	</select>
+	
+	<select id="exportNewPlayerList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	
+	<!-- 活跃玩家 : sum(loginact)-sum(newact) as oldActiveUser 这个减法有问题呀-->
+	<!-- <select id="selectActivePlayerList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select 
+			statdate, 
+			sum(newact) as newActiveUser, 
+			sum(loginact)-sum(newact) as oldActiveUser,
+			sum(loginact) as activeUserSUM 
+		from
+			logplat_daily_rpt 
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect" />
+		group by statdate order by statdate
+	</select> -->
+	<select id="selectActivePlayerList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select 
+			statdate, 
+			sum(newdau) as newActiveUser, 
+			sum(olddau) as oldActiveUser, 
+			sum(newdau+olddau) as activeUserSUM 
+		from 
+			logplat_active_user 
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect" />	
+		group by statdate order by statdate
+	</select>
+	
+	<select id="exportActivePlayerList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	
+	<!-- 付费玩家 -->
+	<select id="selectPaidPlayerList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select 
+			a.statdate, 
+			a.payUserSUM as payUserSUM, 
+			ifnull(b.newPU,0) as newPayUser,
+			a.payUserSUM-ifnull(b.newPU,0) as oldPayUser
+		from 
+			(select statdate, count(distinct uid,actorid) as payUserSUM 
+				from logplat_actor_recharge 
+				<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect" />
+				group by statdate) a
+			left join 
+			(select statdate, count(distinct uid,actorid) as newPU 
+				from logplat_actor_recharge  
+				<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect" />
+				and regdate=statdate
+				group by statdate) b 
+				on( a.statdate=b.statdate)
+				order by a.statdate
+	</select>
+	
+	<select id="exportPaidPlayerList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	<!-- 收入 -->
+	<select id="selectIncomeNumList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select
+			statdate,
+			round(sum(income), 2) as income
+		from
+			logplat_daily_rpt 
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect" />
+		group by statdate order by statdate
+	</select>
+	
+	<select id="exportIncomeNumList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	<!-- 日付费率 -->
+	<select id="selectDailyRateOfPay" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select
+			statdate,
+			round(sum(payact)/sum(loginact)*100,2) as payRate
+		from
+			logplat_daily_rpt 
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect" />
+		group by statdate order by statdate
+	</select>
+	
+	<select id="exportDailyRateOfPay" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	<!-- 日ARPU -->
+	<select id="selectDailyARPU" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select
+			statdate,
+			round(sum(income)/sum(loginact), 2) as dayARPU
+		from
+			logplat_daily_rpt 
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect" />
+		group by statdate order by statdate
+		
+	</select>
+	
+	<select id="exportDailyARPU" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	<!-- 日ARPPU -->
+	<select id="selectDailyARPPU" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select
+			statdate,
+			round(sum(income)/sum(payact), 2) as dayARPPU
+		from
+			logplat_daily_rpt 
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect" />
+		group by statdate order by statdate
+		
+	</select>
+	
+	<select id="exportDailyARPPU" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	
+	<!-- 新增账户留存 -->
+	<select id="selectNewUserRetention" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select 
+			statdate, 
+			round(sum(1dayret)/sum(newact)*100,2) as userDay2, 
+			round(sum(7dayret)/sum(newact)*100,2) as userDay7,
+			round(sum(30dayret)/sum(newact)*100,2) as userDay30 
+		from 
+			logplat_daily_retain 
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelectWithoutLanguageEdition" />
+		and type=-1
+		group by statdate order by statdate
+	</select>
+	
+	
+	<!-- 设备留存 -->
+	<select id="selectDeviceRetention" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+	</select>
+	
+	<select id="exportDeviceRetention" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	<!-- 平均游戏时长与次数 -->
+	<select id="selectAvgGameTimesList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select
+			statdate,
+			round(avg(gamecount), 2) as gameCounts,
+			round(avg(gametime), 2) as gameTimes
+		from
+			logplat_daily_rpt
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect" />
+		group by statdate order by statdate
+	</select>
+	
+	<select id="exportAvgGameTimesList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	
+</mapper>

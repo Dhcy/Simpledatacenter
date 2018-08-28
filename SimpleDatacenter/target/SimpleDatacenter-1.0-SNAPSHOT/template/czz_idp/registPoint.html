@@ -1,0 +1,98 @@
+<style>
+ .form-group{ margin-left: 10px; margin-top: 10px;}
+   .form-control{ display: inline-block; vertical-align: middle;}
+   .form-group .form-member{
+    float: left;
+    }
+    .form-group .member-control{
+   	margin-left: 10px;
+    }
+.panel-showData .table_scroll{
+overflow-x:auto;
+height:100%;
+}
+.panel-showData .table_style{
+width:1642px;
+}
+.toggle-btn {
+	font-size: 14px;
+	color: #63666d;
+	margin-left: 10px;
+	cursor: pointer;
+}
+</style>
+<div>
+	<div>
+	        <div class="form-group">
+	            <label for="">{{'渠道' | translate}}：</label>
+	            <select ng-model="postData.channelid" class="form-control" ng-options="data.id as data.channelSimName for data in channelList" >
+	            </select>
+	            &nbsp;&nbsp;&nbsp;&nbsp;
+	            <label for="">{{'服务器' | translate}}：</label>
+	            <select ng-model="postData.areaid" class="form-control" ng-options="data.id as data.name for data in gameAreaList">
+	            </select>
+	        </div>
+			<div class="form-group">
+				<div class="form-member">
+					<label for="startDate">{{'起始日期' | translate}}: </label>
+					<input type="text" id="startDate" class="form-control" placeholder="{{o.startDate}}" uib-datepicker-popup="{{format}}" ng-model="o.startDate" is-open="o.opened1" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" ng-click="o.opened1=!o.opened1" />
+				</div>
+				<div class="form-member member-control">
+					<label for="endDate">{{'结束日期' | translate}}: </label>
+					<input type="text" id="endDate" class="form-control" placeholder="{{o.endDate}}" uib-datepicker-popup="{{format}}" ng-model="o.endDate" is-open="o.opened2" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" ng-click="o.opened2=!o.opened2" />
+				</div>
+				&nbsp;&nbsp;
+				<button class="btn btn-default" ng-click="getAllData()">{{'查询' | translate}}</button>
+			</div>
+	</div>
+	<div class="clear"></div>
+		<!--------tab选择按钮----------->
+
+<div class="panel panel-default panel_1">
+			<div class="panel-heading">
+				<strong>
+					{{'注册打点统计' | translate}}
+				</strong>
+				<!--------下载按钮----------->
+				<div class="clear"></div>
+			</div>
+			<div class="panel-body" ng-class="{'table':panel_1.model=='table','graph':panel_1.model=='graph'}">
+				<div class="clear"></div>
+				<div class="panel-showData">
+					<div class="dataList dataList2 dataList_1 dataListAct">
+						<div class="dataGraph">
+						</div>
+						<div class="dataTable">
+							<table class="table table-bordered text-center">
+								<tr class="tableTr">
+									<th width='16.6%'>{{'启动游戏' | translate}}</th>
+									<th width='16.6%'>{{'获取资源更新地址' | translate}}</th>
+									<th width='16.6%'>{{'检查资源更新' | translate}}</th>
+									<th width='16.6%'>{{'注册账号' | translate}}</th>
+									<th width='16.6%'>{{'开始游戏' | translate}}</th>
+									<th width='16.6%'>{{'进入游戏界面' | translate}}</th>
+									<!--------表格th(数据对象，排序字段)----------->
+								</tr>
+								<tr ng-repeat="data in panel_1.dataList_1.data | orderBy: panel_1.dataList_1.orderBy.t+panel_1.dataList_1.orderBy.s | pageStartFrom : panel_1.dataList_1.limit.now*panel_1.dataList_1.limit.max | limitTo: panel_1.dataList_1.limit.max">
+									<td>{{data.gamestart}}</td>
+									<td>{{data.getaddress}}</td>
+									<td>{{data.updatecheck}}</td>
+									<td>{{data.regist}}</td>
+									<td>{{data.startgame}}</td>
+									<td>{{data.entergame}}</td>
+								</tr>
+							</table>
+							<div class="tableLimit" tablelimit datalimit="panel_1.dataList_1.limit"  tabledata="panel_1.dataList_1.data">
+							</div>
+							<!--------表格分页，datalimit为分页参数，tabledata为数据----------->
+						</div>
+					</div>
+				</div>
+			</div>
+	</div>
+	
+</div>
+
+
+
+

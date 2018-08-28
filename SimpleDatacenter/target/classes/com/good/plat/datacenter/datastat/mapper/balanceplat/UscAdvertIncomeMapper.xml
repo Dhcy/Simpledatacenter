@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper
+	namespace="com.good.plat.datacenter.datastat.mapper.balanceplat.UscAdvertIncomeMapper">
+	<sql id="Base_Column_List_A">
+		a.id, a.gameid, a.statdate, a.name, a.money
+	</sql>
+	<sql id="BASE_WHERE">
+		where 1=1
+		<if test="gameid != null and gameid > 0">
+			and gameid = #{gameid,jdbcType=INTEGER}
+		</if>
+		<if test="startdate != null">
+			and statdate >= #{startdate,jdbcType=TIMESTAMP}
+		</if>
+		<if test="enddate != null">
+		<![CDATA[
+			and statdate <= #{enddate,jdbcType=TIMESTAMP}
+		]]>
+		</if>
+	</sql>
+	
+	<!-- 广告商收入map -->
+	<resultMap id="baseResultMap"
+		type="com.good.plat.datacenter.datastat.entity.balanceplat.UscAdvertIncome">
+		<result column="id" property="id" jdbcType="INTEGER" />
+		<result column="statdate" property="statdate" jdbcType="DATE" />
+		<result column="gameid" property="gameid" jdbcType="INTEGER" />
+		<result column="gameName" property="gameName" jdbcType="VARCHAR" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="money" property="money" jdbcType="DECIMAL" />
+		<result column="signCompany" property="signCompany" jdbcType="VARCHAR" />
+		<result column="createdate" property="createdate" jdbcType="TIMESTAMP" />
+	</resultMap>
+	<!--  广告商收入-->
+	<select id="selectUscAdvertIncomeList" parameterType="com.good.plat.datacenter.common.base.BaseSearchData"
+		resultMap="baseResultMap">
+		select
+		<include refid="Base_Column_List_A" />
+		,game.name as gameName
+		from usc_video_advertiser_income_stat a
+		LEFT JOIN tb_logplat_game game
+		on(a.gameid=game.id)
+		<include refid="BASE_WHERE" />
+		<if test="projectid != null and projectid  > 0">
+		<![CDATA[
+		and game.projectid=#{projectid,jdbcType=INTEGER}
+		]]>
+		</if>
+		<choose>
+			<when test="checktype1 !=null and checktype1==1">
+				and game.projectid not in(1,2)
+			</when>
+			<otherwise>
+				<!--  世界,江湖-->
+				and game.projectid in(1,2)
+			</otherwise>
+		</choose>
+		group by a.statdate,a.gameid,a.name
+	</select>
+	<!-- 插入广告商收入 -->
+	<insert  id="insert" parameterType="com.good.plat.datacenter.datastat.entity.balanceplat.UscAdvertIncome">
+	insert into usc_video_advertiser_income_stat(gameid,statdate,name,money)VALUES
+	(#{gameid,jdbcType=INTEGER},#{statdate,jdbcType=DATE},#{name,jdbcType=VARCHAR},#{money,jdbcType=DECIMAL})
+	ON DUPLICATE KEY UPDATE gameid=#{gameid,jdbcType=INTEGER},statdate=#{statdate,jdbcType=DATE},name=#{name,jdbcType=VARCHAR},money=#{money,jdbcType=DECIMAL}
+	</insert>
+	<!--  渠道列表-->
+	<select id="selectUscAdvertChannelList" parameterType="com.good.plat.datacenter.common.base.BaseSearchData"
+		resultMap="baseResultMap">
+		SELECT
+			DISTINCT a.name
+		FROM
+			usc_video_advertiser_income_stat a
+		LEFT JOIN tb_logplat_game game ON (a.gameid = game.id)
+		<include refid="BASE_WHERE" />
+		<if test="projectid != null and projectid  > 0">
+		<![CDATA[
+		and game.projectid=#{projectid,jdbcType=INTEGER}
+		]]>
+		</if>
+		<choose>
+			<when test="checktype1 !=null and checktype1==1">
+				and game.projectid not in(1,2)
+			</when>
+			<otherwise>
+				<!--  世界,江湖-->
+				and game.projectid in(1,2)
+			</otherwise>
+		</choose>
+	</select>
+	<!--  视频广告商列表-->
+	<select id="selectUscVideoAdvertiserList" parameterType="com.good.plat.datacenter.common.base.BaseSearchData"
+		resultMap="baseResultMap">
+		select a.id,a.name,a.signCompany,a.createdate from usc_video_advertiser_stat a
+	</select>
+	<!-- 添加视频广告商 -->
+	<insert  id="insertUscVideoAdvertiser" parameterType="com.good.plat.datacenter.datastat.entity.balanceplat.UscAdvertIncome">
+	insert into usc_video_advertiser_stat(name,signCompany,createdate)VALUES
+	(#{name,jdbcType=VARCHAR},#{signCompany,jdbcType=VARCHAR},<![CDATA[date_format(NOW(),'%Y-%m-%d %H:%i:%S') ]]>)
+	</insert>
+	<!--  获取视频广告商-->
+	<select id="getUscVideoAdvertiser" parameterType="com.good.plat.datacenter.datastat.entity.balanceplat.UscAdvertIncome"
+		resultMap="baseResultMap">
+		select a.id,a.name,a.signCompany,a.createdate from usc_video_advertiser_stat a WHERE a.NAME =#{name,jdbcType=VARCHAR} AND a.signCompany =#{signCompany,jdbcType=VARCHAR}
+	</select>
+	<!--修改视频广告商 -->
+	 <update id="updateByPrimaryKeySelective" parameterType="com.good.plat.datacenter.datastat.entity.balanceplat.UscAdvertIncome" >
+		    update usc_video_advertiser_stat
+		    set 
+		    name = #{name,jdbcType=VARCHAR},
+		    signCompany = #{signCompany,jdbcType=VARCHAR},
+		    createdate = #{createdate,jdbcType=TIMESTAMP}
+		    where id = #{id,jdbcType=INTEGER}
+	  </update>
+	  <!-- 删除 -->
+	 <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+	    delete from usc_video_advertiser_stat
+	    where id = #{id,jdbcType=INTEGER}
+  	</delete>
+  	<!--  获取视频广告商-->
+  	<select id="getAdvertiserByPrimaryKey" parameterType="java.lang.Integer"
+		resultMap="baseResultMap">
+		select a.id,a.name,a.signCompany,a.createdate from usc_video_advertiser_stat a where a.id = #{id,jdbcType=INTEGER}
+	</select>
+	<!-- 查找广告商名称列表 -->
+	<select id="selectAdvertiserNameList" parameterType="com.good.plat.datacenter.common.base.BaseSearchData"
+		 resultType="string">
+		select DISTINCT `name` from usc_video_advertiser_stat where 1=1
+		<if test="checktype2 != null and checktype2 !='-1'">
+			and signCompany = #{checktype2,jdbcType=VARCHAR}
+		</if>
+	</select>
+</mapper>

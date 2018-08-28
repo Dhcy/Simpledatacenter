@@ -1,0 +1,44 @@
+{
+  "dailyChumPaidPlayers7Days": [
+    {
+      "statdate": "2014-08-24",
+      "accounts": 168.0,
+      "rate": 25.7
+    },
+    {
+      "statdate": "2014-08-25",
+      "accounts": 211.0,
+      "rate": 28.7
+    },
+    {
+      "statdate": "2014-08-26",
+      "accounts": 208.0,
+      "rate": 27.1
+    },
+    {
+      "statdate": "2014-08-27",
+      "accounts": 216.0,
+      "rate": 28.0
+    },
+    {
+      "statdate": "2014-08-28",
+      "accounts": 181.0,
+      "rate": 25.4
+    },
+    {
+      "statdate": "2014-08-29",
+      "accounts": 221.0,
+      "rate": 28.1
+    },
+    {
+      "statdate": "2014-08-30",
+      "accounts": 236.0,
+      "rate": 28.7
+    },
+    {
+      "statdate": "2014-08-31",
+      "accounts": 231.0,
+      "rate": 29.5
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+<div>
+	<div>
+		<div class="form-group">
+			<label for="">游戏:</label>
+			<!-- <select ng-model="gameid" class="form-control" ng-options="abc.id as abc.name for abc in panel_1.select_1">
+            </select> -->
+            <div class="inlineBlock" style="width:200px;">
+            			<ui-select ng-model="postData.gameid" theme="bootstrap">
+            				<ui-select-match placeholder="搜索游戏">{{$select.selected.name}}</ui-select-match>
+                			<ui-select-choices repeat="item.id as item in  panel_1.select_1 | filter: $select.search">
+                				<div ng-bind="item.name | highlight: $select.search"></div>
+                		</ui-select-choices>
+            			</ui-select>
+            </div>
+			<button class="btn btn-default" ng-click="serchAllData()">{{'搜索' | translate}}</button>
+			<a class="btn btn-default" ui-sref="main.config.gameareaModif">{{'添加区服' | translate}}</a>
+		</div>
+	</div>
+	<div class="panel panel-default panel_1">
+		<div class="panel-heading">
+			<strong>
+				{{'区服列表' | translate}}
+				<!--------提示框----------->
+			</strong>
+			<!-- <div class="panel_downloadBtn" ng-click="mdownloaddata('avgGameTime')"></div> -->
+			<!--------下载按钮----------->
+			<div class="clear"></div>
+		</div>
+		<div class="<panel-bo></panel-bo>dy pdlf pdtb">
+			<div class="tableBox">
+				<table class="table table-striped table-hover">
+					<tr>
+						<th class="text-center" width="20%">ID</th>
+						<th class="text-center" width="20%">{{'游戏' | translate}}</th>
+						<th class="text-center" width="20%">{{'区服名称' | translate}}</th>
+						<th class="text-center" width="20%">{{'创建时间' | translate}}</th>
+						<th class="text-center" width="20%">{{'操作' | translate}}</th>
+					</tr>
+					<tr ng-repeat="data in panel_1.dataList_1.data  | orderBy: panel_1.dataList_1.orderBy.t+panel_1.dataList_1.orderBy.s | pageStartFrom : panel_1.dataList_1.limit.now*panel_1.dataList_1.limit.max | limitTo: panel_1.dataList_1.limit.max" class="text-center">
+						<td>{{data.id}}</td>
+						<td>{{data.gameName}}</td>
+						<td>{{data.name}}</td>
+						<td>{{data.createdate}}</td>
+						<td>
+							<!-- <a href="javascript:;" ui-sref="main.config.clothingModif({'id':123})">修改</a> -->
+							<a href="javascript:;" ng-click="delGamearea(data.id, data.name,data.gameid)">{{'删除' | translate}}</a>
+						</td>
+					</tr>
+				</table>
+				<div class="tableFooter">
+					<div class="buttondiv fl" analysisdrop changei="changetype()">
+						<div class="selectlable fl">{{'每页显示' | translate}}：</div>
+						<div class="analysisdrop fl" style="width:60px;">
+							<div class="hadchoose">
+								<h6>{{val | translate}}</h6></div>
+							<ul class="dropUl">
+								<li ng-click="c('10');changetype(10)">10</li>
+								<li ng-click="c('20');changetype(20)">20</li>
+								<li ng-click="c('50');changetype(50)">50</li>
+								<li ng-click="c('100');changetype(100)">100</li>
+							</ul>
+						</div>
+						<div class="selectlable fl">&nbsp;&nbsp;{{'条记录' | translate}}</div>
+					</div>
+					<div class="dataTables_paginate fr" datatableslimit  datalimit="panel_1.dataList_1.limit"  tabledata="panel_1.dataList_1.data"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

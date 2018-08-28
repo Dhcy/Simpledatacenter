@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>SDK{{'管理平台-用户信息' | translate}}</title>
+	<link rel="stylesheet" href="dist/public/css/public.css">
+	<link rel="stylesheet" href="dist/bootstrap/css/bootstrap.css">
+	<link rel="stylesheet" href="dist/bootstrap/css/bootstrap-theme.min.css">
+	<script src="dist/public/js/jquery-1.10.2.min.js"></script>
+	<script src="dist/bootstrap/js/bootstrap.min.js"></script>
+	<script src="dist/public/js/public.class.js"></script>
+	<style>
+		#login{width: 100%;height: 1000px;padding-top: 100px;background-image: url(dist/images/loginBg2.jpg);background-position: top center;}
+		#loginDialog{margin: 0 auto; width: 490px;height: 800px;border-radius: 5px;overflow: hidden;background-color: #fff;box-shadow: 0px 0px 10px #282828;}
+		.loginTitle{width: 100%;height: 85px;text-align: center; background-color: #282828;box-shadow: 0px 0px 5px #282828;}
+		.loginTitle h3{margin: 0 auto;color: #fff;line-height: 85px;}
+		.loginForm{padding: 50px 0;}
+		.loginForm input{width: 100%;}
+		.loginBtn{width: 100%;background-color: #27a9e3;font-size: 16px;color: #fff;border-radius: 4px;}
+		.loginBtn:hover{background-color: #32b0e8;color: #fff;}
+		.form-group{margin-bottom: 0}
+		.form-group label{margin-bottom: 5px}
+		.form-group input{margin-bottom: 15px;color:#282828; }
+		.form-group .reset{border: none;background-color: transparent;color:#32b0e8;margin-bottom: 10px;outline: none;}
+		.form-group .reset:hover{text-decoration: underline;}
+		.modyfyBtn{width: 30%; background-color: #27a9e3;font-size: 16px;color: #fff;border-radius: 4px;}
+		.modyfyBtn:hover{background-color: #32b0e8;color: #fff;}
+		.backBtn{width: 30%;background-color: #bcbcbc;font-size: 16px;color: #fff;border-radius: 4px;}
+		.backBtn:hover{background-color: #c7c7c7;color: #fff;}
+		.btn{color: #fff;}
+		.btn:hover{color: #fff;text-decoration: none;}
+	</style>
+</head>
+<body>
+<!--
+<div class="modal fade" id="loginDialog" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="exampleModalLabel">New message</h4>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="recipient-name" class="control-label">用户名:</label>
+            <input type="text" class="form-control" id="recipient-name">
+          </div>
+          <div class="form-group">
+            <label for="message-text" class="control-label">密码:</label>
+            <input type="password" class="form-control" id="recipient-psw">
+          </div>
+        </form>
+      </div
+    </div>
+  </div>
+-->
+<div id="login">
+  <div id="loginDialog">
+  	<div class="loginTitle">
+  		<h3>{{'数据平台-用户信息' | translate}}</h3>
+  	</div>
+  	<div class="loginForm">
+  		<form action="index.html">
+  			<div class="form-group col-sm-8 col-sm-offset-2">
+  				<label for="">{{'账号' | translate}}</label>
+  			</div>
+  			<div class="form-group col-sm-8 col-sm-offset-2">
+  				<p class="form-control-static hide">han1088</p>
+ 				<input type="text" class="form-control" value="han1088" onfocus="this.blur()" required>  <!--input 用户名 (不可修改)-->	
+  			</div>
+  			<div class="form-group col-sm-8 col-sm-offset-2">
+  				<label for="">{{'邮箱' | translate}}</label>
+  			</div>
+  			<div class="form-group col-sm-8 col-sm-offset-2">
+  				<input type="email" class="form-control" required>  <!--input 邮箱-->				
+  			</div>
+  			<div class="form-group col-sm-8 col-sm-offset-2">
+  				<label for="">{{'用户名称' | translate}}</label>
+  			</div>
+  			<div class="form-group col-sm-8 col-sm-offset-2">
+  				<input type="text" class="form-control" required value="程小寒">  		<!--input 用户名称-->		
+  			</div>
+  			<div class="form-group col-sm-8 col-sm-offset-2">
+  				<label for="">{{'手机号码' | translate}}</label>
+  			</div>
+  			<div class="form-group col-sm-8 col-sm-offset-2">
+  				<input type="text" class="form-control" required value="13760745357">  	<!--input 手机号-->
+  			</div>
+  			<div class="form-group col-sm-8 col-sm-offset-2">
+  				<label for="">QQ</label>
+  			</div>
+  			<div class="form-group col-sm-8 col-sm-offset-2">
+  				<input type="text" class="form-control" required value="1610470074">  	<!--input QQ-->			
+  			</div>
+  			<div class="form-group col-sm-8 col-sm-offset-2">
+  				<label for="">{{'公司名称' | translate}}</label>
+  			</div>
+  			<div class="form-group col-sm-8 col-sm-offset-2">
+  				<input type="text" class="form-control" required value="">  	<!--input 公司名称-->
+  			</div>
+  			<div class="form-group col-sm-8 col-sm-offset-2">
+  				<label for="">{{'密码' | translate}}</label>
+  			</div>
+  			<div class="form-group col-sm-8 col-sm-offset-2">
+  				<input type="password" class="form-control" required value="">  	<!--input 密码-->
+  			</div>
+  			<div class="form-group col-sm-8 col-sm-offset-2 text-center">
+				<a href="index.html" class="btn backBtn">{{'返回' | translate}}</a>
+  				<button class="modyfyBtn btn" type="submit">{{'修改' | translate}}</button>  				
+  			</div>
+  		</form>
+  	</div>
+  </div>
+</div>  
+</body>
+<script>	  
+	  //$("#loginDialog").modal('show');
+	  </script>
+</html>

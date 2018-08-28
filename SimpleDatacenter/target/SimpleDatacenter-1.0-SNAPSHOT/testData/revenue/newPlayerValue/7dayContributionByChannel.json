@@ -1,0 +1,19 @@
+{
+  "7dayContributionByChannel": [
+    {
+      "percentage": 66.7,
+      "data": 0.08,
+      "channel": "Android渠道二"
+    },
+    {
+      "percentage": 16.7,
+      "data": 0.02,
+      "channel": "iOS渠道二"
+    },
+    {
+      "percentage": 16.7,
+      "data": 0.02,
+      "channel": "机锋"
+    }
+  ]
+}

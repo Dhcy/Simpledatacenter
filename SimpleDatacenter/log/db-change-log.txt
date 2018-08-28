@@ -1,0 +1,23 @@
+#20160808
+alter table tb_logplat_second_menu modify secondKey varchar(32);
+#20160901
+alter table dzpt_channel_accounting modify coopmodel tinyint comment '合作模式:0-CPS,1-联运';
+alter table dzpt_channel_accounting modify settlementtype tinyint comment '结算类型:0-我方,1-对方,-1-不结算,2-汉正结算';
+alter table tb_logplat_mlchnl_advertisers modify adType tinyint comment '广告类型:1-CPA,2-CPT,3-CPC,4-CPD,5-CPS';
+alter table tb_logplat_mlchnl_advertisers modify pricingType tinyint comment '计价方式: 1-点击,2-下载,3-注册,4-激活,5-天,6-CPS';
+alter table tb_logplat_mlchnl_buckle modify cooperationType tinyint comment '合作方式:1-CPA,2-CPT,3-CPC,4-CPD,:5-CPS';
+#20160926
+alter table dzpt_channel_accounting add isvalid int comment '是否有效，1/0,1表示有效，0无效';
+alter table dzpt_channel_accounting add contract_status int comment '0:终止合约(合作),1:正常';
+
+#20161115
+alter table tb_logplat_mlchnl_adchannel add company_name varchar(100) comment '公司名称';
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,57 @@
+
+{
+  "gamePlaytittle": [
+    {
+      "title": "首日",
+      "accounts": 1074,
+      "percentage": 71.8
+    },
+    {
+      "title": "2~3日",
+      "accounts": 124,
+      "percentage": 8.3
+    },
+    {
+      "title": "4~7日",
+      "accounts": 95,
+      "percentage": 6.4
+    },
+    {
+      "title": "2周",
+      "accounts": 62,
+      "percentage": 4.1
+    },
+    {
+      "title": "3周",
+      "accounts": 28,
+      "percentage": 1.9
+    },
+    {
+      "title": "4周",
+      "accounts": 20,
+      "percentage": 1.3
+    },
+    {
+      "title": "5周",
+      "accounts": 43,
+      "percentage": 2.9
+    },
+    {
+      "title": "6周",
+      "accounts": 43,
+      "percentage": 2.9
+    },
+    {
+      "title": "7周",
+      "accounts": 6,
+      "percentage": 0.4
+    },
+    {
+      "title": "8周",
+      "accounts": 0,
+      "percentage": 0.0
+    }
+  ],
+  "AVG": "4day",
+  "MD": "首日"
+}

@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.sys.mapper.log.SysAccessLogMapper" >
+  <resultMap id="BaseResultMap" type="com.good.plat.datacenter.sys.entity.log.SysAccessLog" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="user_id" property="user_id" jdbcType="VARCHAR" />
+    <result column="op_time" property="op_time" jdbcType="BIGINT" />
+    <result column="op_desc" property="op_desc" jdbcType="VARCHAR" />
+    <result column="operator_ip" property="operator_ip" jdbcType="VARCHAR" />
+    <result column="request_url" property="request_url" jdbcType="VARCHAR" />
+    <result column="process_method" property="process_method" jdbcType="VARCHAR" />
+    <result column="return_time" property="return_time" jdbcType="BIGINT" />
+    <result column="ctime" property="ctime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.good.plat.datacenter.sys.entity.log.SysAccessLog" extends="BaseResultMap" >
+    <result column="process_method_params" property="process_method_params" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_id, op_time, op_desc, operator_ip, request_url, process_method, return_time, 
+    ctime
+  </sql>
+  <sql id="Blob_Column_List" >
+    process_method_params
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from tb_sys_access_log
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from tb_sys_access_log
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.good.plat.datacenter.sys.entity.log.SysAccessLog" >
+    insert into tb_sys_access_log (id, user_id, op_time, 
+      op_desc, operator_ip, request_url, 
+      process_method, return_time, ctime, 
+      process_method_params)
+    values (#{id,jdbcType=BIGINT}, #{user_id,jdbcType=VARCHAR}, #{op_time,jdbcType=BIGINT}, 
+      #{op_desc,jdbcType=VARCHAR}, #{operator_ip,jdbcType=VARCHAR}, #{request_url,jdbcType=VARCHAR}, 
+      #{process_method,jdbcType=VARCHAR}, #{return_time,jdbcType=BIGINT}, #{ctime,jdbcType=TIMESTAMP}, 
+      #{process_method_params,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.good.plat.datacenter.sys.entity.log.SysAccessLog" >
+    insert into tb_sys_access_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="user_id != null" >
+        user_id,
+      </if>
+      <if test="op_time != null" >
+        op_time,
+      </if>
+      <if test="op_desc != null" >
+        op_desc,
+      </if>
+      <if test="operator_ip != null" >
+        operator_ip,
+      </if>
+      <if test="request_url != null" >
+        request_url,
+      </if>
+      <if test="process_method != null" >
+        process_method,
+      </if>
+      <if test="return_time != null" >
+        return_time,
+      </if>
+      <if test="ctime != null" >
+        ctime,
+      </if>
+      <if test="process_method_params != null" >
+        process_method_params,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="user_id != null" >
+        #{user_id,jdbcType=VARCHAR},
+      </if>
+      <if test="op_time != null" >
+        #{op_time,jdbcType=BIGINT},
+      </if>
+      <if test="op_desc != null" >
+        #{op_desc,jdbcType=VARCHAR},
+      </if>
+      <if test="operator_ip != null" >
+        #{operator_ip,jdbcType=VARCHAR},
+      </if>
+      <if test="request_url != null" >
+        #{request_url,jdbcType=VARCHAR},
+      </if>
+      <if test="process_method != null" >
+        #{process_method,jdbcType=VARCHAR},
+      </if>
+      <if test="return_time != null" >
+        #{return_time,jdbcType=BIGINT},
+      </if>
+      <if test="ctime != null" >
+        #{ctime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="process_method_params != null" >
+        #{process_method_params,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.good.plat.datacenter.sys.entity.log.SysAccessLog" >
+    update tb_sys_access_log
+    <set >
+      <if test="user_id != null" >
+        user_id = #{user_id,jdbcType=VARCHAR},
+      </if>
+      <if test="op_time != null" >
+        op_time = #{op_time,jdbcType=BIGINT},
+      </if>
+      <if test="op_desc != null" >
+        op_desc = #{op_desc,jdbcType=VARCHAR},
+      </if>
+      <if test="operator_ip != null" >
+        operator_ip = #{operator_ip,jdbcType=VARCHAR},
+      </if>
+      <if test="request_url != null" >
+        request_url = #{request_url,jdbcType=VARCHAR},
+      </if>
+      <if test="process_method != null" >
+        process_method = #{process_method,jdbcType=VARCHAR},
+      </if>
+      <if test="return_time != null" >
+        return_time = #{return_time,jdbcType=BIGINT},
+      </if>
+      <if test="ctime != null" >
+        ctime = #{ctime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="process_method_params != null" >
+        process_method_params = #{process_method_params,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.good.plat.datacenter.sys.entity.log.SysAccessLog" >
+    update tb_sys_access_log
+    set user_id = #{user_id,jdbcType=VARCHAR},
+      op_time = #{op_time,jdbcType=BIGINT},
+      op_desc = #{op_desc,jdbcType=VARCHAR},
+      operator_ip = #{operator_ip,jdbcType=VARCHAR},
+      request_url = #{request_url,jdbcType=VARCHAR},
+      process_method = #{process_method,jdbcType=VARCHAR},
+      return_time = #{return_time,jdbcType=BIGINT},
+      ctime = #{ctime,jdbcType=TIMESTAMP},
+      process_method_params = #{process_method_params,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.good.plat.datacenter.sys.entity.log.SysAccessLog" >
+    update tb_sys_access_log
+    set user_id = #{user_id,jdbcType=VARCHAR},
+      op_time = #{op_time,jdbcType=BIGINT},
+      op_desc = #{op_desc,jdbcType=VARCHAR},
+      operator_ip = #{operator_ip,jdbcType=VARCHAR},
+      request_url = #{request_url,jdbcType=VARCHAR},
+      process_method = #{process_method,jdbcType=VARCHAR},
+      return_time = #{return_time,jdbcType=BIGINT},
+      ctime = #{ctime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

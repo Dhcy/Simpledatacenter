@@ -1,0 +1,74 @@
+{
+  "revenue": [
+    {
+      "rate": 19.9,
+      "incomes": 180.64,
+      "payChannelName": "微信"
+    },
+    {
+      "rate": 1.2,
+      "incomes": 10.88,
+      "payChannelName": "快用"
+    },
+    {
+      "rate": 7.9,
+      "incomes": 71.36,
+      "payChannelName": "PP助手"
+    },
+    {
+      "rate": 20.4,
+      "incomes": 184.96,
+      "payChannelName": "91助手"
+    },
+    {
+      "rate": 50.7,
+      "incomes": 460.32,
+      "payChannelName": "支付宝"
+    },
+    {
+      "rate": 50.7,
+      "incomes": 460.32,
+      "payChannelName": "支付宝"
+    },
+    {
+      "rate": 50.7,
+      "incomes": 460.32,
+      "payChannelName": "支付宝"
+    },
+    {
+      "rate": 50.7,
+      "incomes": 460.32,
+      "payChannelName": "支付宝"
+    },
+    {
+      "rate": 50.7,
+      "incomes": 460.32,
+      "payChannelName": "支付宝"
+    },
+    {
+      "rate": 50.7,
+      "incomes": 460.32,
+      "payChannelName": "支付宝"
+    },
+    {
+      "rate": 50.7,
+      "incomes": 460.32,
+      "payChannelName": "支付宝"
+    },
+    {
+      "rate": 50.7,
+      "incomes": 460.32,
+      "payChannelName": "支付宝"
+    },
+    {
+      "rate": 50.7,
+      "incomes": 460.32,
+      "payChannelName": "支付宝"
+    },
+    {
+      "rate": 50.7,
+      "incomes": 460.32,
+      "payChannelName": "支付宝"
+    }
+  ]
+}

@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.game.mapper.TBLogplatGameChannelMapper" >
+  <resultMap id="BaseResultMap" type="com.good.plat.datacenter.game.entity.TBLogplatGameChannel" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="gameid" property="gameid" jdbcType="INTEGER" />
+    <result column="channelid" property="channelid" jdbcType="INTEGER" />
+    <result column="servertype" property="servertype" jdbcType="VARCHAR" />
+    <result column="joinserver" property="joinserver" jdbcType="VARCHAR" />
+    <result column="sdkname" property="sdkname" jdbcType="VARCHAR" />
+    <result column="sdkversion" property="sdkversion" jdbcType="VARCHAR" />
+    <result column="sdkdownloadaddr" property="sdkdownloadaddr" jdbcType="VARCHAR" />
+    <result column="clientplattype" property="clientplattype" jdbcType="VARCHAR" />
+    <result column="icon" property="icon" jdbcType="VARCHAR" />
+    <result column="launchvideo" property="launchvideo" jdbcType="VARCHAR" />
+    <result column="packagename" property="packagename" jdbcType="VARCHAR" />
+    <result column="clientpacktype" property="clientpacktype" jdbcType="VARCHAR" />
+    <result column="updateaddr" property="updateaddr" jdbcType="VARCHAR" />
+    <result column="access_options" property="access_options" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, gameid, channelid, servertype, joinserver, sdkname, sdkversion, sdkdownloadaddr, 
+    clientplattype, icon, launchvideo, packagename, clientpacktype, updateaddr, access_options, 
+    remark
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_logplat_game_channel
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_logplat_game_channel
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.good.plat.datacenter.game.entity.TBLogplatGameChannel" >
+    insert into tb_logplat_game_channel (id, gameid, channelid, 
+      servertype, joinserver, sdkname, 
+      sdkversion, sdkdownloadaddr, clientplattype, 
+      icon, launchvideo, packagename, 
+      clientpacktype, updateaddr, access_options, 
+      remark)
+    values (#{id,jdbcType=INTEGER}, #{gameid,jdbcType=INTEGER}, #{channelid,jdbcType=INTEGER}, 
+      #{servertype,jdbcType=VARCHAR}, #{joinserver,jdbcType=VARCHAR}, #{sdkname,jdbcType=VARCHAR}, 
+      #{sdkversion,jdbcType=VARCHAR}, #{sdkdownloadaddr,jdbcType=VARCHAR}, #{clientplattype,jdbcType=VARCHAR}, 
+      #{icon,jdbcType=VARCHAR}, #{launchvideo,jdbcType=VARCHAR}, #{packagename,jdbcType=VARCHAR}, 
+      #{clientpacktype,jdbcType=VARCHAR}, #{updateaddr,jdbcType=VARCHAR}, #{access_options,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.good.plat.datacenter.game.entity.TBLogplatGameChannel" >
+    insert into tb_logplat_game_channel
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="gameid != null" >
+        gameid,
+      </if>
+      <if test="channelid != null" >
+        channelid,
+      </if>
+      <if test="servertype != null" >
+        servertype,
+      </if>
+      <if test="joinserver != null" >
+        joinserver,
+      </if>
+      <if test="sdkname != null" >
+        sdkname,
+      </if>
+      <if test="sdkversion != null" >
+        sdkversion,
+      </if>
+      <if test="sdkdownloadaddr != null" >
+        sdkdownloadaddr,
+      </if>
+      <if test="clientplattype != null" >
+        clientplattype,
+      </if>
+      <if test="icon != null" >
+        icon,
+      </if>
+      <if test="launchvideo != null" >
+        launchvideo,
+      </if>
+      <if test="packagename != null" >
+        packagename,
+      </if>
+      <if test="clientpacktype != null" >
+        clientpacktype,
+      </if>
+      <if test="updateaddr != null" >
+        updateaddr,
+      </if>
+      <if test="access_options != null" >
+        access_options,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="gameid != null" >
+        #{gameid,jdbcType=INTEGER},
+      </if>
+      <if test="channelid != null" >
+        #{channelid,jdbcType=INTEGER},
+      </if>
+      <if test="servertype != null" >
+        #{servertype,jdbcType=VARCHAR},
+      </if>
+      <if test="joinserver != null" >
+        #{joinserver,jdbcType=VARCHAR},
+      </if>
+      <if test="sdkname != null" >
+        #{sdkname,jdbcType=VARCHAR},
+      </if>
+      <if test="sdkversion != null" >
+        #{sdkversion,jdbcType=VARCHAR},
+      </if>
+      <if test="sdkdownloadaddr != null" >
+        #{sdkdownloadaddr,jdbcType=VARCHAR},
+      </if>
+      <if test="clientplattype != null" >
+        #{clientplattype,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null" >
+        #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="launchvideo != null" >
+        #{launchvideo,jdbcType=VARCHAR},
+      </if>
+      <if test="packagename != null" >
+        #{packagename,jdbcType=VARCHAR},
+      </if>
+      <if test="clientpacktype != null" >
+        #{clientpacktype,jdbcType=VARCHAR},
+      </if>
+      <if test="updateaddr != null" >
+        #{updateaddr,jdbcType=VARCHAR},
+      </if>
+      <if test="access_options != null" >
+        #{access_options,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.good.plat.datacenter.game.entity.TBLogplatGameChannel" >
+    update tb_logplat_game_channel
+    <set >
+      <if test="gameid != null" >
+        gameid = #{gameid,jdbcType=INTEGER},
+      </if>
+      <if test="channelid != null" >
+        channelid = #{channelid,jdbcType=INTEGER},
+      </if>
+      <if test="servertype != null" >
+        servertype = #{servertype,jdbcType=VARCHAR},
+      </if>
+      <if test="joinserver != null" >
+        joinserver = #{joinserver,jdbcType=VARCHAR},
+      </if>
+      <if test="sdkname != null" >
+        sdkname = #{sdkname,jdbcType=VARCHAR},
+      </if>
+      <if test="sdkversion != null" >
+        sdkversion = #{sdkversion,jdbcType=VARCHAR},
+      </if>
+      <if test="sdkdownloadaddr != null" >
+        sdkdownloadaddr = #{sdkdownloadaddr,jdbcType=VARCHAR},
+      </if>
+      <if test="clientplattype != null" >
+        clientplattype = #{clientplattype,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null" >
+        icon = #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="launchvideo != null" >
+        launchvideo = #{launchvideo,jdbcType=VARCHAR},
+      </if>
+      <if test="packagename != null" >
+        packagename = #{packagename,jdbcType=VARCHAR},
+      </if>
+      <if test="clientpacktype != null" >
+        clientpacktype = #{clientpacktype,jdbcType=VARCHAR},
+      </if>
+      <if test="updateaddr != null" >
+        updateaddr = #{updateaddr,jdbcType=VARCHAR},
+      </if>
+      <if test="access_options != null" >
+        access_options = #{access_options,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.good.plat.datacenter.game.entity.TBLogplatGameChannel" >
+    update tb_logplat_game_channel
+    set gameid = #{gameid,jdbcType=INTEGER},
+      channelid = #{channelid,jdbcType=INTEGER},
+      servertype = #{servertype,jdbcType=VARCHAR},
+      joinserver = #{joinserver,jdbcType=VARCHAR},
+      sdkname = #{sdkname,jdbcType=VARCHAR},
+      sdkversion = #{sdkversion,jdbcType=VARCHAR},
+      sdkdownloadaddr = #{sdkdownloadaddr,jdbcType=VARCHAR},
+      clientplattype = #{clientplattype,jdbcType=VARCHAR},
+      icon = #{icon,jdbcType=VARCHAR},
+      launchvideo = #{launchvideo,jdbcType=VARCHAR},
+      packagename = #{packagename,jdbcType=VARCHAR},
+      clientpacktype = #{clientpacktype,jdbcType=VARCHAR},
+      updateaddr = #{updateaddr,jdbcType=VARCHAR},
+      access_options = #{access_options,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

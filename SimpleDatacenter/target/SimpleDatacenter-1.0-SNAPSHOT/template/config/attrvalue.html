@@ -1,0 +1,99 @@
+<div>
+	<div>
+		<div class="form-group">
+			<label for="attrCode">{{'静态编码' | translate}}：</label>
+			<input type="text" id="attrCode" placeholder="请输入静态编码" class="form-control"  ng-model="postData.checktype1"/>
+			<button class="btn btn-default" ng-click="selectAttrData()">{{'搜索' | translate}}</button>
+			<button class="btn btn-default" ng-click="refreshAttrData()">{{'刷新静态值' | translate}}</button>
+		</div>
+	</div>
+	<div class="panel panel-default panel_1">
+		<div class="panel-heading">
+			<strong>
+				{{'静态值' | translate}}
+			</strong>
+			<div class="clear"></div>
+		</div>
+		<div class="panel-body pdlf pdtb">
+			<div class="tableBox">
+				<table class="table table-striped table-hover">
+					<tr>
+						<th class="text-center" width="33.3%">{{'静态编码' | translate}}</th>
+						<th class="text-center" width="33.3%" ng-click="changeOrderBy(panel_1.dataList_1,'attr_value')">{{'静态值' | translate}}ID</th>
+						<th class="text-center" width="33.3%" ng-click="changeOrderBy(panel_1.dataList_1,'attr_desc')">{{'静态值' | translate}}</th>
+					</tr>
+					<tr ng-repeat="data in panel_1.dataList_1.data  | orderBy: panel_1.dataList_1.orderBy.t+panel_1.dataList_1.orderBy.s | pageStartFrom : panel_1.dataList_1.limit.now*panel_1.dataList_1.limit.max | limitTo: panel_1.dataList_1.limit.max" class="text-center">
+						<td>{{data.attr_code}}</td>
+						<td>{{data.attr_value}}</td>
+						<td>{{data.attr_desc}}</td>
+					</tr>
+				</table>
+				<div class="tableFooter">
+					<div class="buttondiv fl" analysisdrop changei="changetype()">
+						<div class="selectlable fl">{{'每页显示' | translate}}：</div>
+						<div class="analysisdrop fl" style="width:60px;">
+							<div class="hadchoose">
+								<h6>{{val | translate}}</h6></div>
+							<ul class="dropUl">
+								<li ng-click="c('10');changetype(10)">10</li>
+								<li ng-click="c('20');changetype(20)">20</li>
+								<li ng-click="c('50');changetype(50)">50</li>
+								<li ng-click="c('100');changetype(100)">100</li>
+							</ul>
+						</div>
+						<div class="selectlable fl">&nbsp;&nbsp;{{'条记录' | translate}}</div>
+					</div>
+					<div class="dataTables_paginate fr" datatableslimit  datalimit="panel_1.dataList_1.limit"  tabledata="panel_1.dataList_1.data"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--刷新配置文件 -->
+	<div>
+		<div class="form-group">
+			<label for="attrCode">{{'属性名' | translate}}：</label>
+			<input type="text" id="attrName" placeholder="请输入属性名" class="form-control"  ng-model="postData.checktype2"/>
+			<button class="btn btn-default" ng-click="selectValueByAttr()">{{'搜索' | translate}}</button>
+			<button class="btn btn-default" ng-click="refreshConfigData()">{{'刷新配置文件' | translate}}</button>
+		</div>
+	</div>
+	<div class="panel panel-default panel_1">
+		<div class="panel-heading">
+			<strong>
+				{{'配置文件' | translate}}
+			</strong>
+			<div class="clear"></div>
+		</div>
+		<div class="panel-body pdlf pdtb">
+			<div class="tableBox">
+				<table class="table table-striped table-hover">
+					<tr>
+						<th class="text-center" width="50%" ng-click="changeOrderBy(panel_2.dataList_1,'attr_code')">{{'属性名' | translate}}</th>
+						<th class="text-center" width="50%" ng-click="changeOrderBy(panel_2.dataList_1,'attr_value')">{{'属性值' | translate}}</th>
+					</tr>
+					<tr ng-repeat="data in panel_2.dataList_1.data  | orderBy: panel_2.dataList_1.orderBy.t+panel_2.dataList_1.orderBy.s | pageStartFrom : panel_2.dataList_1.limit.now*panel_2.dataList_1.limit.max | limitTo: panel_2.dataList_1.limit.max" class="text-center">
+						<td>{{data.attr_code}}</td>
+						<td>{{data.attr_value}}</td>
+					</tr>
+				</table>
+				<div class="tableFooter">
+					<div class="buttondiv fl" analysisdrop changei="changetype2()">
+						<div class="selectlable fl">{{'每页显示' | translate}}：</div>
+						<div class="analysisdrop fl" style="width:60px;">
+							<div class="hadchoose">
+								<h6>{{val | translate}}</h6></div>
+							<ul class="dropUl">
+								<li ng-click="c('10');changetype2(10)">10</li>
+								<li ng-click="c('20');changetype2(20)">20</li>
+								<li ng-click="c('50');changetype2(50)">50</li>
+								<li ng-click="c('100');changetype2(100)">100</li>
+							</ul>
+						</div>
+						<div class="selectlable fl">&nbsp;&nbsp;{{'条记录' | translate}}</div>
+					</div>
+					<div class="dataTables_paginate fr" datatableslimit  datalimit="panel_2.dataList_1.limit"  tabledata="panel_2.dataList_1.data"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

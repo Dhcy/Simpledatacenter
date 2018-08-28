@@ -1,0 +1,219 @@
+<style type="text/css">
+    .table th,.table td{ border:1px solid #ddd;}
+    .form-group{ margin-left: 10px; margin-top: 10px;}
+    .form-control{ display: inline-block; vertical-align: middle;}
+    .panel-heading .finace{float: right;height: 36px;margin-left: 10px;}
+    .panel-heading .finace label{line-height: 36px}
+    .scroll_menu{
+    height:430px;
+    font-size:14px;
+    overflow:auto;
+	}
+	.rightAlign{
+    float: right;
+    margin-right: 5px;
+    display: block;
+	}
+</style>
+<div>
+    <div>
+        <div class="form-group">
+            <div class="div_select">
+                
+            </div>
+             <div datepicker format="yyyy-MM"  minMode="month" class="col-xs-3 timeSelect" mstatdate="mstatdate" style="width:320px;"></div>
+              <label for="">{{'项目类型' | translate}}：</label>
+           <select ng-model="postData.checktype1" class="form-control" ng-options="data.id as data.name for data in projectTypeList" ng-change="getProjectList()"></select>
+            &nbsp;&nbsp;
+            <label for="">{{'项目' | translate}}：</label>
+           <select ng-model="postData.projectid" class="form-control" ng-options="data.id as data.name for data in panel_1.projectList" ng-change="getGameListByProjectId()"></select>
+            &nbsp;&nbsp;
+            <label for="">{{'游戏' | translate}}：</label>
+            <div class="inlineBlock" style="width:200px;">
+            			<ui-select ng-model="postData.gameid" theme="bootstrap">
+            				<ui-select-match placeholder="搜索游戏">{{$select.selected.name | translate}}</ui-select-match>
+                			<ui-select-choices repeat="item.id as item in  panel_1.gameList | filter: $select.search">
+                				<div ng-bind="item.name | translate | highlight: $select.search"></div>
+                		</ui-select-choices>
+            			</ui-select>
+            </div>
+           &nbsp;&nbsp;
+            <label for="">{{'签约公司' | translate}}：</label>
+            <selectdirective attr-code="attrCode" value="postData.checktype2" hasall="1"></selectdirective>
+            <a class="btn btn-default" ng-click="getData()" >{{'搜索' | translate}}</a>
+        </div>
+    </div>
+    <div class="panel panel-default panel_1">
+        <div class="panel-heading">
+            <strong>
+                {{'渠道对账信息' | translate}}
+                <!--------提示框--------- -->
+            </strong>
+            <div class="finace">
+            	<div class="panel_downloadBtn"  ng-click="exportPayChannelAccounting('支付渠道对账')"></div>
+            	<label for="" class="rightAlign">{{'导出全部' | translate}}</label>
+            </div>
+            <div class="inlineBlock">
+            	&nbsp;&nbsp;&nbsp;&nbsp;
+        	 	<label for="" style="font-size: 14px;">{{'支付渠道' | translate}}：</label>
+	           <div class="btn-group">
+	             <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	               {{channelText}} <span class="caret"></span>
+	             </button>
+	             <ul class="dropdown-menu " ng-class="{'scroll_menu': payChannelList.length>10}" data-spy="scroll" data-target="#navbar-menu">
+	             
+	               <li>
+	                  <div class="col-xs-offset-1">
+	                   <input name="city" type="checkbox" ng-click="clickAllSelect()" ng-checked="isSelectedAll()"/> <label for="">{{'全部' | translate}}</label>
+	                   </div>
+	               </li>
+	               <li role="separator" class="divider"></li>
+	               <li ng-repeat="data in payChannelList">
+	                  <div class="col-xs-offset-1">
+	                   <input name="payChannel" type="checkbox" ng-click="setChannelList(data.channelName)" ng-checked="isSelected(data.id)"> <label for="">{{data.channelName}}</label>
+	                   </div>
+	               </li>
+	             </ul>
+	           </div>
+       		 </div>
+            <!--------下载按钮--------- -->
+            <div class="clear"></div>
+        </div>
+        
+        <div class="panel-body pdlf pdtb">
+            <div class="tableBox">
+                <table class="table table-striped">
+                    <tr>
+                        <th class="text-center" width="8%">{{'日期' | translate}}</th>
+                        <th class="text-center" width="8%">{{'游戏名' | translate}}</th>
+                        <th class="text-center" width="8%">{{'总收入' | translate}}</th>
+                        <!-- <th class="text-center" width="8%">货币</th> -->
+                        <th ng-show="data.isShow" class="text-center" width="8%" ng-repeat="data in panel_1.dataList_1.data[0].payChannelIncomes">{{data.channelName}}</th>
+					
+                    </tr>
+                    <tr ng-repeat="data in panel_1.dataList_1.data  | orderBy: panel_1.dataList_1.orderBy.t+panel_1.dataList_1.orderBy.s | pageStartFrom : panel_1.dataList_1.limit.now*panel_1.dataList_1.limit.max | limitTo: panel_1.dataList_1.limit.max" class="text-center">
+                        <td>{{data.statdate1}}</td>
+                        <td>{{data.gameName}}</td>
+                        <td>{{data.money}}</td>
+                        <!-- <td>{{data.currency}}</td> -->
+                        <td ng-show="incomes.isShow" ng-repeat="incomes in data.payChannelIncomes">{{incomes.money}}</td>
+                    </tr>
+                    <tr ng-show="panel_1.dataList_1.data.length!=0" class="text-center">
+						 <td>{{panel_1.sumPayIncome.statdate1}}</td>
+						 <td></td>
+	                     <td>{{panel_1.sumPayIncome.money}}</td>
+                    	 <td ng-show="sumIncome.isShow" ng-repeat="sumIncome in panel_1.sumPayIncome.payChannelIncomes">
+                    	 {{sumIncome.money}}
+                    	 </td>
+					</tr>
+                </table>
+                <div class="tableFooter">
+                    <div class="buttondiv fl" analysisdrop changei="changetype()">
+                        <div class="selectlable fl">{{'每页显示' | translate}}：</div>
+                        <div class="analysisdrop fl" style="width:60px;">
+                            <div class="hadchoose">
+                                <h6>{{val | translate}}</h6></div>
+                            <ul class="dropUl">
+                                <li ng-click="c('10');changetype(10)">10</li>
+                                <li ng-click="c('20');changetype(20)">20</li>
+                                <li ng-click="c('50');changetype(50)">50</li>
+                                <li ng-click="c('100');changetype(100)">100</li>
+                            </ul>
+                        </div>
+                        <div class="selectlable fl">&nbsp;&nbsp;{{'条记录' | translate}}</div>
+                    </div>
+                    <div class="dataTables_paginate fr" datatableslimit  datalimit="panel_1.dataList_1.limit"  tabledata="panel_1.dataList_1.data"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default panel_2">
+        <div class="panel-heading">
+            <strong>
+                	{{'视频收入' | translate}}
+                <!--------提示框--------- -->
+            </strong>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+             <div class="inlineBlock">
+            	<label for="" style="font-size: 14px;">{{'视频广告商' | translate}}：</label>
+	           <div class="btn-group">
+	             <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	               {{videoChannelText}} <span class="caret"></span>
+	             </button>
+	             <ul class="dropdown-menu " ng-class="{'scroll_menu': videoChannelList.length>10}" data-spy="scroll" data-target="#navbar-menu">
+	               <li>
+	                  <div class="col-xs-offset-1">
+	                   <input name="allChannel" type="checkbox" ng-click="clickAllSelectForVideo()" ng-checked="isSelectedAllForVideo()"/> <label for="">{{'全部' | translate}}</label>
+	                   </div>
+	               </li>
+	               <li role="separator" class="divider"></li>
+	               <li ng-repeat="data in videoChannelList">
+	                  <div class="col-xs-offset-1">
+	                   <input name="videoChannel" type="checkbox" ng-click="setChannelListForVideo(data.name)" ng-checked="isSelectedForVideo(data.name)"> <label for="">{{data.name}}</label>
+	                   </div>
+	               </li>
+	             </ul>
+	           </div>
+       	   </div>
+              <div class="finace" ng_show="false">
+            	<label>{{'视频收入导出' | translate}}</label>&nbsp;
+             	<div class="panel_downloadBtn"  ng-click="exportUscAdvertIncomeList('视频收入')"></div>
+            </div>
+            <div class="finace">
+            	<label>{{'录入模板导出' | translate}}</label>&nbsp;
+             	<div class="panel_downloadBtn"  ng-click="exportVideoEntryTemplate('视频录入')"></div>
+            </div>
+              <div class="finace">
+            	  <button class="btn btn-default" type="file" ngf-select="fileChange($file, $invalidFiles)"
+         	 accept="*">
+                  <span ng-show="uploadData.file=='' || uploadData.file==null ">{{'请选择模板文件' | translate}}</span>
+                  <span ng-show="uploadData!=''">{{uploadData.file.name}}</span>
+              </button>
+            <input type="button" class="btn btn-default" ng-click="uploadVideoIncome(this)" value="上传"/>
+        	</div>
+        	 <div class="finace">
+        	 <span style="font-size: 14px;font-weight: bolder;">{{'上传tip：日期，游戏，视频广告商,相同时会覆盖已存在的数据' | translate}}</span>
+        	</div>
+          
+            <!--------下载按钮--------- -->
+            <div class="clear"></div>
+        </div>
+        
+        <div class="panel-body pdlf pdtb">
+            <div class="tableBox">
+                <table class="table table-striped">
+                    <tr>
+                        <th class="text-center" width="8%">{{'日期' | translate}}</th>
+                        <th class="text-center" width="8%">{{'游戏' | translate}}</th>
+                        <th class="text-center" width="8%">{{'视频广告商' | translate}}</th>
+                        <th class="text-center" width="8%">{{'收入' | translate}}</th> 
+                    </tr>
+                    <tr ng-show="data.isShow" ng-repeat="data in panel_2.dataList_1.data  | orderBy: panel_2.dataList_1.orderBy.t+panel_2.dataList_1.orderBy.s | pageStartFrom : panel_2.dataList_1.limit.now*panel_2.dataList_1.limit.max | limitTo: panel_2.dataList_1.limit.max" class="text-center">
+                        <td>{{data.date}}</td>
+                        <td>{{data.gameName}}</td>
+                        <td>{{data.name}}</td> 
+                        <td>{{data.money}}</td>
+                    </tr>
+                </table>
+                <div class="tableFooter">
+                    <div class="buttondiv fl" analysisdrop changei="changetype2()">
+                        <div class="selectlable fl">{{'每页显示' | translate}}：</div>
+                        <div class="analysisdrop fl" style="width:60px;">
+                            <div class="hadchoose">
+                                <h6>{{val | translate}}</h6></div>
+                            <ul class="dropUl">
+                                <li ng-click="c('10');changetype2(10)">10</li>
+                                <li ng-click="c('20');changetype2(20)">20</li>
+                                <li ng-click="c('50');changetype2(50)">50</li>
+                                <li ng-click="c('100');changetype2(100)">100</li>
+                            </ul>
+                        </div>
+                        <div class="selectlable fl">&nbsp;&nbsp;{{'条记录' | translate}}</div>
+                    </div>
+                    <div class="dataTables_paginate fr" datatableslimit  datalimit="panel_2.dataList_1.limit"  tabledata="panel_2.dataList_1.data"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>

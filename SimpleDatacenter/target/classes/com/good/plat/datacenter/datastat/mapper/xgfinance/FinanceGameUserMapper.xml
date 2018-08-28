@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.datastat.mapper.xgfinance.FinanceGameUserMapper">
+	<resultMap id="BaseResultMap" type="com.good.plat.datacenter.datastat.entity.xgfinance.FinanceGameUser">
+		<result column="statdate" property="statdate"/>
+		<result column="gameName" property="gameName"/>
+		<result column="newUser" property="newUser"/>
+		
+		
+	</resultMap>
+	<sql id="BaseSelect">
+		where statdate between #{startdate} and #{enddate} 
+		<if test="gameName != null and gameName!='全部'">
+			and game=#{gameName}
+	</if>
+	</sql>
+	<!-- 游戏用户数 -->
+	<select id="selectGameUserList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.XgFinanceBaseSearchData">
+		SELECT
+			statdate,
+			game AS gameName,
+			newuser AS newUser
+		FROM
+			xgf_gameuser
+		<include refid="BaseSelect"/>
+		Order by
+			statdate,
+			game
+	</select>
+</mapper>

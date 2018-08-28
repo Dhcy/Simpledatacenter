@@ -1,0 +1,444 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper
+	namespace="com.good.plat.datacenter.datastat.mapper.balanceplat.DZPTChannelAccountingMapper2">
+	<sql id="Base_Column_List_A">
+		a.id, a.gameid, a.channel, a.coopmodel, a.payrate, a.ispayrate,
+		a.taxrate, a.currency, a.sharingrate,
+		a.gradient, a.settlementtype, a.contractstartdate,
+		a.constractenddate,a.isvalid,a.contract_status,a.msg,a.signCompany
+	</sql>
+	<sql id="BASE_WHERE">
+		where 1=1
+		<if test="gameid != null and gameid > 0">
+			and gameid = #{gameid,jdbcType=INTEGER}
+		</if>
+		<if test="startdate != null and enddate != null">
+			and (
+			(contractstartdate between #{startdate,jdbcType=TIMESTAMP} and
+			#{enddate,jdbcType=TIMESTAMP})
+			or
+			(constractenddate between #{startdate,jdbcType=TIMESTAMP} and
+			#{enddate,jdbcType=TIMESTAMP})
+			or
+			(contractstartdate &lt;= #{startdate,jdbcType=TIMESTAMP} and constractenddate >=
+			#{enddate,jdbcType=TIMESTAMP})
+			or
+			(constractenddate &lt;= #{startdate,jdbcType=TIMESTAMP} and contractstartdate >=
+			#{enddate,jdbcType=TIMESTAMP})
+			)
+		</if><!-- <if test="startdate != null"> and contractstartdate #{startdate,jdbcType=TIMESTAMP} 
+			</if> <if test="enddate != null"> <![CDATA[ and contractstartdate <= #{enddate,jdbcType=TIMESTAMP} 
+			]]> </if> -->
+		<if test="channelid != null and channelid > 0">
+			and channel = #{channelid,jdbcType=INTEGER}
+		</if>
+	</sql>
+	<sql id="BASE_WHERE_2">
+		where 1=1
+		<if test="gameid != null and gameid > 0">
+			and gameid = #{gameid,jdbcType=INTEGER}
+		</if>
+		<if test="startdate != null">
+			and statdate >= #{startdate,jdbcType=TIMESTAMP}
+		</if>
+		<if test="enddate != null">
+		<![CDATA[
+			and statdate <= #{enddate,jdbcType=TIMESTAMP}
+		]]>
+		</if>
+		<if test="channelid != null and channelid > 0">
+			and channel = #{channelid,jdbcType=INTEGER}
+		</if>
+	</sql>
+	<sql id="BASE_WHERE_3">
+		where 1=1
+		<if test="gameid != null and gameid > 0">
+			and gameid = #{gameid,jdbcType=INTEGER}
+		</if>
+		<if test="startdate != null">
+			and logdate >= #{startdate,jdbcType=TIMESTAMP}
+		</if>
+		<if test="enddate != null">
+		<![CDATA[
+			and logdate <= #{enddate,jdbcType=TIMESTAMP}
+		]]>
+		</if>
+		<if test="channelid != null and channelid > 0">
+			and channel = #{channelid,jdbcType=INTEGER}
+		</if>
+	</sql>
+	<sql id="ABASE_WHERE_2">
+		where 1=1
+		<if test="gameid != null and gameid > 0">
+			and a.gameid = #{gameid,jdbcType=INTEGER}
+		</if>
+		<if test="startdate != null">
+			and a.statdate >= #{startdate,jdbcType=TIMESTAMP}
+		</if>
+		<if test="enddate != null">
+		<![CDATA[
+			and a.statdate <= #{enddate,jdbcType=TIMESTAMP}
+		]]>
+		</if>
+		<if test="channelid != null and channelid > 0">
+			and a.channel = #{channelid,jdbcType=INTEGER}
+		</if>
+	</sql>
+	<select id="selectChannelAccountingList" parameterType="com.good.plat.datacenter.common.base.BaseSearchData"
+		resultMap="com.good.plat.datacenter.datastat.mapper.balanceplat.DZPTChannelAccountingMapper.BaseResultMap">
+		select
+		<include refid="Base_Column_List_A" />
+		,c.channelSimName as channelName
+		,g.name as gameName,
+		p.`name` as projectName
+		from dzpt_channel_accounting a
+		join tb_logplat_game g on(a.gameid=g.id)
+		LEFT JOIN tb_logplat_project p on(p.id=g.projectid)
+		join tb_logplat_channel c on(c.id=a.channel)
+		<include refid="BASE_WHERE" />
+		<if test="projectid != null and projectid > 0">
+			and g.projectid=#{projectid,jdbcType=INTEGER}
+		</if>
+		<if test="checktype1 != null and checktype1 !='-1'">
+			and a.signCompany = #{checktype1,jdbcType=VARCHAR}
+		</if>
+	</select>
+
+	<!-- 日期 游戏名 总收入 渠道1 渠道2 渠道3 ... 其它渠道 -->
+	<select id="selectPayChannelAccountingList" parameterType="com.good.plat.datacenter.common.base.BaseSearchData"
+		resultMap="PayChannelAccountingMap">
+		SELECT
+			a.statdate as statdate,
+			a.gameid as gameid,
+			game.`name` as gameName,
+			a.currency,
+			game.projectid as projectid,
+			sum(if(a.channelname='支付宝',a.money,0)) as alipayMoney,
+			sum(if(a.channelname='卡充值',a.money,0)) as cardPayMoney,
+			sum(if(a.channelname='银行汇款',a.money,0)) as BankPayMoney,
+			sum(if(a.channelname='mo9支付',a.money,0)) as mo9PayMoney,
+			sum(if(a.channelname='19pay',a.money,0)) as pay19Money,
+			sum(if(a.channelname='银联TCL',a.money,0)) as unionPayMoney,
+			sum(if(a.channelname='PP钱包',a.money,0)) as ppWalletPayMoney,
+			sum(if(a.channelname='PP钱包SDK版',a.money,0)) as ppSdkPayMoney,
+			sum(if(a.channelname='微信支付',a.money,0))  as wechatPayMoney,
+			sum(if(a.channelname='微软支付',a.money,0)) as microsoftPayMoney ,
+			sum(if(a.channelname='小额支付',a.money,0)) as microPayMoney,
+			sum(if(a.channelname='其他卡',a.money,0)) otherCarPayMoney,
+			sum(if(a.channelname='MO9',a.money,0)) as MO9Money,
+			sum(if(a.channelname='新支付宝充值',money,0)) as newAlipayMoney,
+			sum(if(a.channelname='googlepay',money,0)) as googlePayMoney,
+			sum(if(a.channelname='appstore',money,0)) as appstorePayMoney,
+			sum(if(a.channelname='Facebook',money,0)) as facebookPayMoney,
+			sum(if(a.channelname='steam',money,0)) as steamPayMoney,
+			sum(if(a.channelname='windows',money,0)) as windowsPayMoney,
+			SUM(IFNULL(a.money,0)) as money
+		FROM
+			usc_paychannel_stat a
+		LEFT JOIN tb_logplat_game game
+		on(a.gameid=game.id)
+		where 1=1
+		<if test="gameid != null and gameid > 0">
+			and a.gameid = #{gameid,jdbcType=INTEGER}
+		</if>
+		<if test="startdate != null">
+			and a.statdate >= #{startdate,jdbcType=TIMESTAMP}
+		</if>
+		<if test="enddate != null">
+		<![CDATA[
+			and a.statdate <= #{enddate,jdbcType=TIMESTAMP}
+		]]>
+		</if>
+		<if test="projectid != null and projectid  > 0">
+		<![CDATA[
+		and game.projectid=#{projectid,jdbcType=INTEGER}
+		]]>
+		</if>
+		<choose>
+			<when test="checktype1 !=null and checktype1==1">
+				and game.projectid not in(1,2)
+			</when>
+			<otherwise>
+				<!--  世界,江湖-->
+				and game.projectid in(1,2)
+			</otherwise>
+		</choose>
+		GROUP BY a.statdate,a.gameid,game.name,a.currency;
+	</select>
+	<!-- 支付渠道map -->
+	<resultMap id="PayChannelAccountingMap"
+		type="com.good.plat.datacenter.datastat.entity.balanceplat.PayChannelAccounting">
+		<result column="statdate" property="statdate" jdbcType="DATE" />
+		<result column="gameid" property="gameid" jdbcType="INTEGER" />
+		<result column="gameName" property="gameName" jdbcType="VARCHAR" />
+		<result column="currency" property="currency" jdbcType="INTEGER" />
+		<result column="projectid" property="projectid" jdbcType="INTEGER" />
+		<result column="alipayMoney" property="alipayMoney" jdbcType="DECIMAL" />
+		<result column="cardPayMoney" property="cardPayMoney" jdbcType="DECIMAL" />
+		<result column="BankPayMoney" property="BankPayMoney" jdbcType="DECIMAL" />
+		<result column="mo9PayMoney" property="mo9PayMoney" jdbcType="DECIMAL" />
+		<result column="pay19Money" property="pay19Money" jdbcType="DECIMAL" />
+		<result column="unionPayMoney" property="unionPayMoney" jdbcType="DECIMAL" />
+		<result column="ppWalletPayMoney" property="ppWalletPayMoney" jdbcType="DECIMAL" />
+		<result column="ppSdkPayMoney" property="ppSdkPayMoney" jdbcType="DECIMAL" />
+		<result column="wechatPayMoney" property="wechatPayMoney" jdbcType="DECIMAL" />
+		<result column="microsoftPayMoney" property="microsoftPayMoney" jdbcType="DECIMAL" />
+		
+		<result column="microPayMoney" property="microPayMoney" jdbcType="DECIMAL" />
+		<result column="otherCarPayMoney" property="otherCarPayMoney" jdbcType="DECIMAL" />
+		<result column="MO9Money" property="MO9Money" jdbcType="DECIMAL" />
+		<result column="newAlipayMoney" property="newAlipayMoney" jdbcType="DECIMAL" />
+		<result column="money" property="money" jdbcType="DECIMAL" />
+		<result column="googlePayMoney" property="googlePayMoney" jdbcType="DECIMAL" />
+		<result column="appstorePayMoney" property="appstorePayMoney" jdbcType="DECIMAL" />
+		<result column="facebookPayMoney" property="facebookPayMoney" jdbcType="DECIMAL" />
+		<result column="steamPayMoney" property="steamPayMoney" jdbcType="DECIMAL" />
+		<result column="windowsPayMoney" property="windowsPayMoney" jdbcType="DECIMAL" />
+	</resultMap>
+	
+	<resultMap id="ChannelAccountingMap"
+		type="com.good.plat.datacenter.datastat.entity.balanceplat.ChannelAccounting">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="gameid" property="gameid" jdbcType="INTEGER" />
+		<result column="channel" property="channel" jdbcType="INTEGER" />
+		<result column="statdate" property="statdate" jdbcType="DATE" />
+		<result column="currency" property="currency" jdbcType="INTEGER" />
+		<result column="money" property="money" jdbcType="DECIMAL" />
+		<result column="payrate" property="payrate" jdbcType="DECIMAL" />
+		<result column="taxrate" property="taxrate" jdbcType="DECIMAL" />
+		<result column="sharerate" property="sharerate" jdbcType="DECIMAL" />
+		<result column="confcurr" property="confcurr" jdbcType="INTEGER" />
+		<result column="exchrate" property="exchrate" jdbcType="DECIMAL" />
+		<result column="coopmodel" property="coopmodel" jdbcType="TINYINT" />
+		<result column="settlementtype" property="settlementtype"
+			jdbcType="TINYINT" />
+
+		<result column="finalpayrate" property="finalpayrate" jdbcType="DECIMAL" />
+		<result column="exchangerate" property="exchangerate" jdbcType="DECIMAL" />
+		<result column="sharingrate" property="sharingrate" jdbcType="DECIMAL" />
+		<result column="gradient" property="gradient" jdbcType="TINYINT" />
+
+		<result column="contractstartdate" property="contractstartdate"
+			jdbcType="DATE" />
+		<result column="constractenddate" property="constractenddate"
+			jdbcType="DATE" />
+		<result column="ispayrate" property="ispayrate" jdbcType="TINYINT" />
+		<result column="gameName" property="gameName" jdbcType="VARCHAR" />
+		<result column="channelName" property="channelName" jdbcType="VARCHAR" />
+		<result column="rmb" property="rmb" jdbcType="DECIMAL" />
+		<result column="foreignMoney" property="foreignMoney" jdbcType="DECIMAL" />
+		<result column="settleMoney" property="settleMoney" jdbcType="DECIMAL" />
+		<result column="projectName" property="projectName" jdbcType="VARCHAR" />
+		<result column="signCompany" property="signCompany" jdbcType="VARCHAR" />
+		
+
+	</resultMap>
+	
+	<!-- 财务导出结算 -->
+	<resultMap id="ChannelAccountMap"
+		type="com.good.plat.datacenter.datastat.entity.balanceplat.ChannelAccounting">
+		<result column="channelId" property="channelId" jdbcType="INTEGER" />
+		<result column="gameName" property="gameName" jdbcType="VARCHAR" />
+		<result column="channelSimName" property="channelSimName" jdbcType="VARCHAR" />
+		<result column="channelName" property="channelName" jdbcType="VARCHAR" />
+		<result column="currency" property="currency" jdbcType="INTEGER" />
+		<result column="money" property="money" jdbcType="DECIMAL" />
+		<result column="payrate" property="payrate" jdbcType="DECIMAL" />
+		<result column="taxrate" property="taxrate" jdbcType="DECIMAL" />
+		<result column="sharerate" property="sharerate" jdbcType="DECIMAL" />
+		<result column="confcurr" property="confcurr" jdbcType="INTEGER" />
+		<result column="exchrate" property="exchrate" jdbcType="DECIMAL" />
+		<result column="rmbrate" property="rmbrate" jdbcType="DECIMAL" />
+	</resultMap>
+	
+	<!-- 日期 渠道名 项目名 游戏名  签约公司 合作模式 收入流水 记录货币 人民币流水 支付费率 实际支付费率 税率 结算金额 结汇货币 结汇汇率 结汇金额 
+		是否阶梯 分成比例 分成金额 结算金额 结算类型 合同期 -->
+	<select id="selectAccountingList" parameterType="com.good.plat.datacenter.common.base.BaseSearchData"
+		resultMap="ChannelAccountingMap">
+		select
+		a.*
+		,a.money * a.rmbrate as rmb
+		,a.money * a.exchrate as foreignMoney
+		,a.money *(1 - a.payrate - a.taxrate) as settleMoney
+		,a.money *(1 - a.payrate - a.taxrate)*a.sharerate as shareMoney
+		,b.coopmodel,b.finalpayrate,b.gradient,b.settlementtype,b.contractstartdate,b.constractenddate,b.ispayrate,b.signCompany
+		,c.channelSimName as channelName
+		,g.name as gameName
+		,p.`name` as projectName
+		from 
+		usc_finacial_statement_monthly a
+		left join dzpt_channel_accounting b on(a.gameid=b.gameid
+		and a.channel=b.channel 
+		)
+		join tb_logplat_game g on(a.gameid=g.id)
+		LEFT JOIN tb_logplat_project p on(p.id=g.projectid)
+		join tb_logplat_channel c on(c.id=a.channel)
+		<include refid="ABASE_WHERE_2"/>
+		<if test="projectid != null and projectid > 0">
+			and g.projectid=#{projectid,jdbcType=INTEGER}
+		</if>
+		<if test="checktype1 != null">
+			and b.settlementtype = #{checktype1,jdbcType=TINYINT}
+		</if>
+		<if test="checktype2 != null">
+			and b.ispayrate = #{checktype2,jdbcType=TINYINT}
+		</if>
+		<if test="checktype3 != null">
+			and b.gradient = #{checktype3,jdbcType=TINYINT}
+		</if>
+		<if test="checktype4!= null and checktype4!=-1">
+			and g.region = #{checktype4,jdbcType=TINYINT}
+		</if>
+		<if test="checktype5!= null and checktype5!='-1'">
+			and b.signCompany=#{checktype5,jdbcType=VARCHAR} 
+		</if>
+		</select>
+
+	<select id="selectWeeklyAccountingList" parameterType="com.good.plat.datacenter.common.base.BaseSearchData"
+		resultMap="ChannelAccountingMap">
+		select
+		a.*
+		,a.money * a.rmbrate as rmb
+		,a.money * a.exchrate as foreignMoney
+		,a.money *(1 - a.payrate - a.taxrate) as settleMoney
+		,a.money *(1 - a.payrate - a.taxrate)*a.sharerate as shareMoney
+		,b.coopmodel,b.finalpayrate,b.gradient,b.settlementtype,b.contractstartdate,b.constractenddate,b.ispayrate
+		,c.channelSimName as channelName
+		,g.name as gameName
+		from (
+		select
+		<include
+			refid="com.good.plat.datacenter.datastat.mapper.balanceplat.UscFinacialStatementWeeklyMapper.Base_Column_List" />
+		from usc_finacial_statement_weekly
+		<include refid="BASE_WHERE_2" />
+		) a
+		left join dzpt_channel_accounting b on(b.isvalid = 1 and a.gameid=b.gameid
+		and a.channel=b.channel and a.statdate between b.contractstartdate and
+		b.constractenddate
+		<if test="checktype1 != null">
+			and b.settlementtype = #{checktype1,jdbcType=INTEGER}
+		</if>
+		<if test="checktype2 != null">
+			and b.ispayrate = #{checktype2,jdbcType=TINYINT}
+		</if>
+		<if test="checktype3 != null">
+			and b.gradient = #{checktype3,jdbcType=TINYINT}
+		</if>
+		)
+		join tb_logplat_game g on(a.gameid=g.id)
+		join tb_logplat_channel c on(c.id=a.channel)
+	</select>
+
+	<select id="selectSDKRechargeBillList" parameterType="com.good.plat.datacenter.common.base.BaseSearchData"
+		resultMap="com.good.plat.datacenter.datastat.mapper.balanceplat.UscActorRechargeMapper.BaseResultMap">
+		select
+		<include
+			refid="com.good.plat.datacenter.datastat.mapper.balanceplat.UscActorRechargeMapper.Base_Column_List" />
+		from usc_actor_recharge
+		<include refid="BASE_WHERE_3" />
+	</select>
+	<update id="updateChannelAccountingBySelective" parameterType="com.good.plat.datacenter.datastat.entity.balanceplat.DZPTChannelAccounting">
+		update dzpt_channel_accounting
+		<set>
+			<if test="payrate != null">
+				payrate = #{payrate,jdbcType=DECIMAL},
+			</if>
+			<if test="finalpayrate != null">
+				finalpayrate = #{finalpayrate,jdbcType=DECIMAL},
+			</if>
+			<if test="taxrate != null">
+				taxrate = #{taxrate,jdbcType=DECIMAL},
+			</if>
+			<if test="sharingrate != null">
+				sharingrate = #{sharingrate,jdbcType=DECIMAL},
+			</if>
+			<if test="contractstartdate != null">
+				contractstartdate = #{contractstartdate,jdbcType=DATE},
+			</if>
+			<if test="constractenddate != null">
+				constractenddate = #{constractenddate,jdbcType=DATE},
+			</if>
+			<if test="ispayrate != null">
+				ispayrate = #{ispayrate,jdbcType=TINYINT},
+			</if>
+			<if test="currency != null">
+				currency = #{currency,jdbcType=INTEGER},
+			</if>
+			<if test="isvalid != null">
+				isvalid = #{isvalid,jdbcType=INTEGER},
+			</if>
+			<if test="contract_status != null">
+				contract_status = #{contract_status,jdbcType=INTEGER},
+			</if>
+		</set>
+		<!-- WHERE CLAUSE -->
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+		<if test="id != null">
+			AND id = #{id,jdbcType=INTEGER}
+		</if>
+		<if test="gameid != null">
+			AND gameid = #{gameid,jdbcType=INTEGER}
+		</if>
+		<if test="channel != null">
+			AND channel = #{channel,jdbcType=INTEGER}
+		</if>
+		<if test="coopmodel != null">
+			AND coopmodel = #{coopmodel,jdbcType=TINYINT}
+		</if>
+		<if test="gradient != null">
+			AND gradient = #{gradient,jdbcType=TINYINT}
+		</if>
+		<if test="settlementtype != null">
+			AND settlementtype = #{settlementtype,jdbcType=TINYINT}
+		</if>
+		</trim>
+	</update>
+	<!--  渠道下所有游戏的结算-->
+	<select id="selectChannelGameAccountingList" parameterType="com.good.plat.datacenter.common.base.BaseSearchData" resultMap="ChannelAccountMap">
+		SELECT
+			b.id as channelId,
+			c. NAME as gameName,
+			b.channelsimname AS channelSimName,
+			b.channelname AS channelName,
+			a.currency,
+			a.money,
+			a.payrate,
+			a.taxrate,
+			ifnull(a.sharerate, 1) sharerate,
+			a.confcurr,
+			a.exchrate,
+			a.rmbrate 
+		FROM
+			usc_finacial_statement_monthly a,
+			tb_logplat_channel b,
+			tb_logplat_game c,
+			dzpt_channel_accounting d 
+		WHERE
+			a.channel = b.id
+		AND a.gameid = c.id
+		AND a.gameid = d.gameid
+		AND d.channel = a.channel 
+		AND a.statdate =#{startdate}
+		AND d.coopmodel = 0
+		AND d.isvalid = 1 
+		ORDER BY
+			b.id
+	</select>
+	<!--  提前一个月（前30）发通知的合同-->
+	<select id="selectWarningNoticeContractList" parameterType="com.good.plat.datacenter.common.base.BaseSearchData"
+		resultMap="com.good.plat.datacenter.datastat.mapper.balanceplat.DZPTChannelAccountingMapper.BaseResultMap">
+		select
+		<include refid="Base_Column_List_A" />
+		,c.channelSimName as channelName
+		,g.name as gameName
+		from dzpt_channel_accounting a
+		join tb_logplat_game g on(a.gameid=g.id)
+		join tb_logplat_channel c on(c.id=a.channel)
+		<include refid="BASE_WHERE" />
+		AND DATEDIFF(
+		a.constractenddate,
+		CURDATE()
+	)=30
+	</select>
+</mapper>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.independ.mapper.sj3index.GoodsMaterialsMapper">
+	<resultMap id="BaseResultMap" type="com.good.plat.datacenter.independ.entity.sj3index.GoodsMaterials">
+		<result column="statdate" property="statdate"/>
+		<result column="areaid" property="areaid"/>
+		<result column="areaName" property="areaName"/>
+		<result column="channelid" property="channelid"/>
+		<result column="channelName" property="channelName"/>
+		<result column="limitTimeDiscountTotalNum" property="limitTimeDiscountTotalNum"/>
+		<result column="dailySuppTotalNum" property="dailySuppTotalNum"/>
+		<result column="campSuppTotalNum" property="campSuppTotalNum"/>
+		<result column="shopName" property="shopName"/>
+		<result column="population" property="population"/>
+		<result column="purchases" property="purchases"/>
+		<result column="cost" property="cost"/>
+	</resultMap>
+		<sql id="ABaseSelect">
+			where a.statdate between #{startdate} and #{enddate} 
+			and a.gameid=#{gameid}
+			<if test="areas != null">
+				and a.areaid in
+				<foreach collection="areas" item="area" index="index" open="(" close=")" separator=",">
+					#{area}
+				</foreach>
+			</if>
+			<if test="channelList != null">
+				and a.channel in
+				<foreach collection="channelList" item="channel" index="index" open="(" close=")" separator=",">
+					#{channel.id}
+				</foreach>
+			</if>
+			<if test="subchannels != null">
+				and a.chnnnl in
+				<foreach collection="subchannels" item="subchannel" index="index" open="(" close=")" separator=",">
+					#{subchannel}
+				</foreach>
+			</if>
+		</sql>
+	
+	<!--
+	物资总览(日期,渠道,区服,限时折扣购买总人数，每日物资购买总人数,阵营物资购买总人数)
+	-->
+	<select id="selectGoodsSummaryList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.IndependBaseSearchData">
+		SELECT
+			a.statdate,
+			a.channel as channelid,
+			IF(b.channelSimName is NULL,CONCAT('未知渠道： ',a.channel),b.channelSimName) as channelName,
+			a.areaid,
+			IF(c.`name` IS NULL,CONCAT('未知区服: ',a.areaid),c.`name`) as areaName,
+			SUM(IF(a.buymethod=1,a.population,0)) as limitTimeDiscountTotalNum,
+			SUM(IF(a.buymethod=2,a.population,0)) as dailySuppTotalNum,
+			SUM(IF(a.buymethod=3,a.population,0)) as campSuppTotalNum
+		FROM
+			sj3_buy_wz_stat a
+		LEFT JOIN tb_logplat_channel b ON b.id = a.channel
+		LEFT JOIN tb_logplat_gamearea c ON c.areaid = a.areaid
+		AND c.gameid = a.gameid
+		<include refid="ABaseSelect"/>
+		AND a.shop=1
+		GROUP BY
+		a.statdate,
+		a.channel,
+		a.areaid;
+	</select>
+	<!-- 不同购买方式的物资列表(日期,渠道,区服,物品名称,购买人数，购买数量,总钻石 -->
+	<select id="selectBugMethodGoodsDetailList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.IndependBaseSearchData">
+		SELECT
+			a.statdate,
+			a.channel as channelid,
+			IF(b.channelSimName is NULL,CONCAT('未知渠道： ',a.channel),b.channelSimName) as channelName,
+			a.areaid,
+			IF(c.`name` IS NULL,CONCAT('未知区服: ',a.areaid),c.`name`) as areaName,
+			a.shopping as shopName,
+			IFNULL(SUM(a.population),0) as population,
+			IFNULL(SUM(a.purchases),0) as purchases,
+			IFNULL(SUM(a.cost),0) as cost
+		FROM
+			sj3_buy_wz_stat a
+		LEFT JOIN tb_logplat_channel b ON b.id = a.channel
+		LEFT JOIN tb_logplat_gamearea c ON c.areaid = a.areaid
+		AND c.gameid = a.gameid
+		where a.statdate between #{startdate} and #{enddate} 
+			and a.gameid=#{gameid}
+			and a.channel=#{channelid}
+			and a.areaid=#{areaid}
+		<!--checktype4=1:限时折扣,checktype4=2:每日物资,checktype4=3:阵营物资   -->
+		AND a.buymethod=#{checktype4}
+		AND a.shop=1
+		GROUP BY
+		a.statdate,
+		a.channel,
+		a.areaid,
+		a.shopping;
+	</select>
+	
+</mapper>

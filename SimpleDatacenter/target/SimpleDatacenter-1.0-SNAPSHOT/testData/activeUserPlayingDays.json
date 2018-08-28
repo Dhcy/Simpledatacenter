@@ -1,0 +1,49 @@
+﻿{
+  "activeUserPlayingDays": [
+    {
+      "playingDays": "新用户",
+      "count": 81407,
+      "rate": "37.3%"
+    },
+    {
+      "playingDays": "2~3日",
+      "count": 15616,
+      "rate": "7.2%"
+    },
+    {
+      "playingDays": "4~7日",
+      "count": 16259,
+      "rate": "7.5%"
+    },
+    {
+      "playingDays": "8~14日",
+      "count": 12307,
+      "rate": "5.6%"
+    },
+    {
+      "playingDays": "15~30日",
+      "count": 32714,
+      "rate": "15.0%"
+    },
+    {
+      "playingDays": "31~90日",
+      "count": 59766,
+      "rate": "27.4%"
+    },
+    {
+      "playingDays": "91~180日",
+      "count": 1,
+      "rate": "0.0%"
+    },
+    {
+      "playingDays": "181~365日",
+      "count": 0,
+      "rate": "0.0%"
+    },
+    {
+      "playingDays": "1年+",
+      "count": 0,
+      "rate": "0.0%"
+    }
+  ]
+}

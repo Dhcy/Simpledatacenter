@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.game.mapper.SubChannelMapper" >
+  <resultMap id="BaseResultMap" type="com.good.plat.datacenter.game.entity.SubChannel" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="gameid" property="gameid" jdbcType="INTEGER" />
+    <result column="channelId" property="channelId" jdbcType="INTEGER" />
+    <result column="subchannelId" property="subchannelId" jdbcType="VARCHAR" />
+    <result column="subId" property="subId" jdbcType="VARCHAR" />
+    <result column="channelName" property="channelName" />
+    <result column="gameName" property="gameName" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, gameid, channelId, subchannelId, subId
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_logplat_subchannel
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectBySubChannel" resultMap="BaseResultMap" 
+  	parameterType="com.good.plat.datacenter.game.entity.SubChannel" >
+  	select 
+    <include refid="Base_Column_List" />
+    from 
+    	tb_logplat_subchannel
+    where 1=1
+    <if test="gameid != null and gameid != -1" >
+    	and gameid=#{gameid}
+    </if>
+     <if test="channelId != null and channelId != -1" >
+    	and channelId=#{channelId}
+    </if>
+    <if test="subchannelId != null and subchannelId != ''" >
+    	and subchannelId=#{subchannelId}
+    </if>
+  </select>
+  
+  <select id="selectSubChannelList" resultMap="BaseResultMap" 
+  	parameterType="com.good.plat.datacenter.game.entity.SubChannel" >
+  	select 
+    	sub.*, channel.channelSimName as channelName,g.name as gameName
+    from 
+    	tb_logplat_subchannel sub,
+    	tb_logplat_channel channel,
+    	tb_logplat_game g,
+    	tb_logplat_game_channel gc
+    where 
+    	1=1 and sub.channelId = channel.id and g.id=sub.gameid and g.id=gc.gameid and channel.id=gc.channelid
+    <if test="gameid != null and gameid != -1" >
+    	and sub.gameid=#{gameid}
+    </if>
+    <if test="channelId != null and channelId != -1" >
+    	and sub.channelId=#{channelId}
+    </if>
+    order by sub.subId
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_logplat_subchannel
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insert" parameterType="com.good.plat.datacenter.game.entity.SubChannel" >
+    insert into tb_logplat_subchannel (id, gameid, channelId, 
+      subchannelId, subId)
+    values (#{id,jdbcType=INTEGER}, #{gameid,jdbcType=INTEGER}, #{channelId,jdbcType=INTEGER}, 
+      #{subchannelId,jdbcType=VARCHAR}, #{subId,jdbcType=VARCHAR})
+  </insert>
+  
+  <insert id="insertSelective" parameterType="com.good.plat.datacenter.game.entity.SubChannel" >
+    insert into tb_logplat_subchannel
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="gameid != null" >
+        gameid,
+      </if>
+      <if test="channelId != null" >
+        channelId,
+      </if>
+      <if test="subchannelId != null" >
+        subchannelId,
+      </if>
+      <if test="subId != null" >
+        subId,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="gameid != null" >
+        #{gameid,jdbcType=INTEGER},
+      </if>
+      <if test="channelId != null" >
+        #{channelId,jdbcType=INTEGER},
+      </if>
+      <if test="subchannelId != null" >
+        #{subchannelId,jdbcType=VARCHAR},
+      </if>
+      <if test="subId != null" >
+        #{subId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.good.plat.datacenter.game.entity.SubChannel" >
+    update tb_logplat_subchannel
+    <set >
+      <if test="gameid != null" >
+        gameid = #{gameid,jdbcType=INTEGER},
+      </if>
+      <if test="channelId != null" >
+        channelId = #{channelId,jdbcType=INTEGER},
+      </if>
+      <if test="subchannelId != null" >
+        subchannelId = #{subchannelId,jdbcType=VARCHAR},
+      </if>
+      <if test="subId != null" >
+        subId = #{subId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateByPrimaryKey" parameterType="com.good.plat.datacenter.game.entity.SubChannel" >
+    update tb_logplat_subchannel
+    set gameid = #{gameid,jdbcType=INTEGER},
+      channelId = #{channelId,jdbcType=INTEGER},
+      subchannelId = #{subchannelId,jdbcType=VARCHAR},
+      subId = #{subId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

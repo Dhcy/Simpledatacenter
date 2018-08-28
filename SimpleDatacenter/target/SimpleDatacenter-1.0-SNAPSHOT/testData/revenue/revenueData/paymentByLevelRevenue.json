@@ -1,0 +1,44 @@
+{
+  "paymentByLevelRevenue": [
+    {
+      "data": 196.16,
+      "level": 1.0
+    },
+    {
+      "data": 92.0,
+      "level": 2.0
+    },
+    {
+      "data": 95.04,
+      "level": 3.0
+    },
+    {
+      "data": 57.76,
+      "level": 4.0
+    },
+    {
+      "data": 73.44,
+      "level": 5.0
+    },
+    {
+      "data": 76.48,
+      "level": 6.0
+    },
+    {
+      "data": 38.08,
+      "level": 7.0
+    },
+    {
+      "data": 38.4,
+      "level": 8.0
+    },
+    {
+      "data": 46.24,
+      "level": 9.0
+    },
+    {
+      "data": 194.56,
+      "level": 10.0
+    }
+  ]
+}

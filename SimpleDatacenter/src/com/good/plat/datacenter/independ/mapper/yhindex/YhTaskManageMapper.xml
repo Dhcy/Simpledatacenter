@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.independ.mapper.yhindex.YhTaskManageMapper">
+	<resultMap id="BaseResultMap" type="com.good.plat.datacenter.independ.entity.yhindex.YhTaskManage">
+		<result column="statdate" property="statdate"/>
+		<result column="gameid" property="gameid"/>
+		<result column="channelid" property="channelid"/>
+		<result column="channelName" property="channelName"/>
+		<result column="courseid" property="courseid"/>
+		<result column="count" property="count"/>
+		<result column="rate" property="rate"/>
+		<result column="sysname" property="sysname"/>
+		<result column="joinUser" property="joinUser"/>
+		<result column="joinUserRate" property="joinUserRate"/>
+		<result column="avgJoinTimes" property="avgJoinTimes"/>
+		<result column="avgFirstJoinLvl" property="avgFirstJoinLvl"/>
+	</resultMap>
+		<sql id="BaseSelect">
+			where 1=1
+			<if test="startdate!=null and startdate!=''">
+			and statdate &gt;=#{startdate}
+			</if>
+			<if test="enddate!=null and enddate!=''">
+			and statdate &lt;=#{enddate}
+			</if>
+			and gameid=#{gameid}
+			<if test="channelid!=null and channelid!=-1">
+			and channel=#{channelid}
+			</if>
+			<if test="areaid!=null and areaid!=-1">
+				and areaid=#{areaid}
+			</if>
+		</sql>
+	<!--  课程统计（日期,渠道,课程ID，课程停留人数，停留人数占比）-->
+	<select id="selectYhCourseStatList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.IndependBaseSearchData">
+			SELECT
+			a.statdate,
+			a.channel AS channelid,
+		IF (
+			chn.channelSimName IS NULL,
+			CONCAT(
+				'未知渠道： ',
+				a.channel
+			),
+			chn.channelSimName
+		) AS channelName,
+		 a.courseid,
+		 a.count,
+		IF (
+			b.acticount = 0,
+			0,
+			ROUND((a.count / b.acticount)*100,2)
+		) AS rate
+		FROM
+			(
+				SELECT
+					statdate,
+					gameid,
+					channel,
+					courseid,
+					IFNULL(SUM(count), 0) AS count
+				FROM
+					yh_course_stat
+				<include refid="BaseSelect"/>
+				GROUP BY
+					statdate,
+					gameid,
+					channel,
+					courseid
+			) a
+		LEFT JOIN (
+			SELECT
+				statdate,
+				gameid,
+				channel,
+				IFNULL(sum(acticount), 0) AS `acticount`
+			FROM
+				yh_act_count
+			<include refid="BaseSelect"/>
+			GROUP BY
+				statdate,
+				gameid,
+				channel
+		) b ON (
+			a.statdate = b.statdate
+			AND a.gameid = b.gameid
+			AND a.channel = b.channel
+		)
+		LEFT JOIN tb_logplat_channel chn ON (chn.id = a.channel);
+	</select>
+	<!--系统参与度  -->
+	<select id="selectYhSystemJoinList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.IndependBaseSearchData">
+			SELECT
+			a.statdate,
+			a.channel AS channelid,
+			IF (
+					chn.channelSimName IS NULL,
+					CONCAT(
+						'未知渠道： ',
+						a.channel
+					),
+					chn.channelSimName
+				) AS channelName,
+			a.sysname as sysname,
+			a.count as joinUser,
+			IF(b.acticount=0,0,ROUND((a.count/b.acticount)*100,2)) as joinUserRate,
+			IF(a.count=0,0,ROUND(a.times/a.count)) as avgJoinTimes,
+			IF(a.firstcnt=0,0,ROUND(a.firstlvl/a.firstcnt)) as avgFirstJoinLvl
+		FROM
+			(
+				SELECT
+					statdate,
+					gameid,
+					channel,
+					sysname,
+					IFNULL(SUM(count), 0) as count,
+					IFNULL(SUM(times), 0) as times,
+					IFNULL(SUM(firstlvl), 0) as firstlvl,
+					IFNULL(SUM(firstcnt), 0) as firstcnt
+				FROM
+					yh_ysy_stat
+				<include refid="BaseSelect"/>
+				GROUP BY
+					statdate,
+					gameid,
+					channel,
+					sysname
+			) a
+		LEFT JOIN (
+			SELECT
+				statdate,
+				gameid,
+				channel,
+				IFNULL(sum(`acticount`), 0) AS `acticount`
+			FROM
+				yh_act_count
+			<include refid="BaseSelect"/>
+			GROUP BY
+				statdate,
+				gameid,
+				channel
+		) b ON (
+			a.statdate = b.statdate
+			AND a.gameid = b.gameid
+			AND a.channel = b.channel
+		)
+		LEFT JOIN tb_logplat_channel chn ON (chn.id = a.channel);
+		</select>
+		
+	<!--  教程步数排重（日期,渠道,教程ID，教程停留人数，停留人数占比）-->
+	<select id="selectYhCourseDisStatList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.IndependBaseSearchData">
+			SELECT
+			a.statdate,
+			a.channel AS channelid,
+		IF (
+			chn.channelSimName IS NULL,
+			CONCAT(
+				'未知渠道： ',
+				a.channel
+			),
+			chn.channelSimName
+		) AS channelName,
+		 a.courseid,
+		 a.count,
+		IF (
+			b.acticount = 0,
+			0,
+			ROUND((a.count / b.acticount)*100,2)
+		) AS rate
+		FROM
+			(
+				SELECT
+					statdate,
+					gameid,
+					channel,
+					courseid,
+					IFNULL(SUM(count), 0) AS count
+				FROM
+					yh_dis_course_stat
+				<include refid="BaseSelect"/>
+				GROUP BY
+					statdate,
+					gameid,
+					channel,
+					courseid
+			) a
+		LEFT JOIN (
+			SELECT
+				statdate,
+				gameid,
+				channel,
+				IFNULL(sum(acticount), 0) AS `acticount`
+			FROM
+				yh_act_count
+			<include refid="BaseSelect"/>
+			GROUP BY
+				statdate,
+				gameid,
+				channel
+		) b ON (
+			a.statdate = b.statdate
+			AND a.gameid = b.gameid
+			AND a.channel = b.channel
+		)
+		LEFT JOIN tb_logplat_channel chn ON (chn.id = a.channel);
+	</select>
+</mapper>

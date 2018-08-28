@@ -1,0 +1,29 @@
+<div id="timeSelect">
+    <div class="input-group" ng-click="show()">
+    	<input type="text" class="form-control input-md" ng-model="inputValue"/>
+		<span class="input-group-addon">
+			<span class="glyphicon glyphicon-calendar"></span>
+		</span>
+	</div>
+	<div class="timeDialog">
+		<div class="timeTitle">
+			<span ng-click="selectTime(0)">{{'今日' | translate}}</span><span>|</span>
+			<span ng-click="selectTime(-1)">{{'昨天' | translate}}</span><span>|</span>
+			<span ng-click="selectTime(7)">{{'近7日' | translate}}</span><span>|</span>
+			<span ng-click="selectTime(30)">{{'近30日' | translate}}</span><span>|</span>
+			<span>{{'全部' | translate}}</span>
+		</div>
+		<div class="timeCon" id="datetimepicker">
+			<span>{{'从' | translate}}：</span>
+<!--			<input type="text" id="startTime" class="form-control input-sm" ng-model="startTime" placeholder="" >-->
+			<input type="text" id="startTime" class="form-control input-sm" placeholder="{{startTime}}" uib-datepicker-popup="{{format}}" ng-model="startTime" is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats"  ng-click="open1()"/>
+			<span>{{'到' | translate}}：</span>
+<!--			<input type="text" id="endTime" class="form-control input-sm" ng-model="endTime" placeholder="">-->
+			<input type="text" id="endTime" class="form-control input-sm" placeholder="{{endTime}}" uib-datepicker-popup="{{format}}" ng-model="endTime" is-open="popup2.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats"  ng-click="open2()"/>
+		</div>
+		<div class="timeFooter">
+			<div class="dialogBtn timeBtnQd dialogBtnQd" ng-click="qd($event)">{{'确定' | translate}}</div>
+			<div class="dialogBtn timeBtnQx dialogBtnQx" ng-click="hide($event)">{{'取消' | translate}}</div>
+		</div>
+	</div>
+</div>

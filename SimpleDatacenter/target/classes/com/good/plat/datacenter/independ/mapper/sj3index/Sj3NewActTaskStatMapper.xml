@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.independ.mapper.sj3index.Sj3NewActTaskStatMapper">
+	<resultMap id="BaseResultMap" type="com.good.plat.datacenter.independ.entity.sj3index.Sj3NewActTaskStat">
+		<result column="statdate" property="statdate"/>
+		<result column="gameid" property="gameid"/>
+		<result column="gameName" property="gameName"/>
+		<result column="channelid" property="channelid"/>
+		<result column="channelName" property="channelName"/>
+		<result column="areaid" property="areaid"/>
+		<result column="areaName" property="areaName"/>
+		
+		<result column="missionid" property="missionid"/>
+		<result column="mission" property="mission"/>
+		<result column="usercnt" property="usercnt"/>
+		<result column="finish_rate" property="finish_rate"/>
+		<result column="missioncount" property="missioncount"/>
+		<result column="avgMissionCount" property="avgMissionCount"/>
+	</resultMap>
+	
+	<sql id="BaseSelect">
+		where 1=1
+			<if test="startdate!=null and startdate!=''">
+			and statdate &gt;=#{startdate}
+			</if>
+			<if test="enddate!=null and enddate!=''">
+			and statdate &lt;=#{enddate}
+			</if>
+			and gameid=#{gameid}
+			<if test="areaid!=null and areaid!=-1">
+				and areaid=#{areaid}
+			</if>
+			<if test="channelid!=null and channelid!=-1">
+				and channel=#{channelid}
+			</if>
+	</sql>
+	<!--新手任务-->
+	<select id="selectNewActTaskList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.IndependBaseSearchData">
+		SELECT
+			a.statdate AS statdate,
+			a.areaid AS areaid,
+			a.channel AS channelid,
+			IF(c.channelSimName is NULL,CONCAT('未知渠道： ',a.channel),c.channelSimName) as channelName,
+			a.missionid AS missionid,
+			a.mission AS mission,
+			IFNULL(a.usercnt, 0) AS usercnt,
+			IF(b.loginact=0,0,ROUND(a.usercnt / b.loginact*100,2)) AS finish_rate
+		FROM
+			(
+				SELECT
+					statdate,
+					areaid,
+					channel,
+					missionid,
+					mission,
+					SUM(IF(usercnt is null,0,usercnt)) as usercnt
+				FROM
+					sj3_newact_task_stat a
+				<include refid="BaseSelect"/>
+				AND missionid <![CDATA[<>]]>-1
+				GROUP BY
+					statdate,
+					areaid,
+					channel,
+					missionid,
+					mission
+			) a LEFT JOIN tb_logplat_channel c ON c.id = a.channel,
+			(
+				SELECT
+					SUM(IF(loginact is null,0,loginact)) as loginact
+				FROM
+					logplat_daily_rpt
+				<include refid="BaseSelect"/>
+			) b;
+	</select>
+	<!--  总的完成次数-->
+	<select id="selectNewActTotalFinishCountList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.IndependBaseSearchData">
+		SELECT
+			statdate,
+			areaid,
+			channel as channelid,
+			IF(b.channelSimName is NULL,CONCAT('未知渠道： ',a.channel),b.channelSimName) as channelName,
+			SUM(IF(missioncount is null,0,missioncount)) as missioncount,
+			SUM(IF(usercnt is null,0,usercnt)) as usercnt
+		FROM
+			sj3_newact_task_stat a
+			LEFT JOIN tb_logplat_channel b ON b.id = a.channel
+		<include refid="BaseSelect"/>
+		AND missionid =-1
+		GROUP BY
+			statdate,
+			areaid,
+			channel
+	</select>
+	
+</mapper>

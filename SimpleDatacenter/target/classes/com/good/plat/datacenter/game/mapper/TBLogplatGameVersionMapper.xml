@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.game.mapper.TBLogplatGameVersionMapper" >
+  <resultMap id="BaseResultMap" type="com.good.plat.datacenter.game.entity.TBLogplatGameVersion" >
+    <id column="version_id" property="version_id" jdbcType="INTEGER" />
+    <result column="gameid" property="gameid" jdbcType="INTEGER" />
+    <result column="version_name" property="version_name" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    version_id, gameid, version_name
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_logplat_game_version
+    where version_id = #{version_id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_logplat_game_version
+    where version_id = #{version_id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.good.plat.datacenter.game.entity.TBLogplatGameVersion" >
+    insert into tb_logplat_game_version (version_id, gameid, version_name
+      )
+    values (#{version_id,jdbcType=INTEGER}, #{gameid,jdbcType=INTEGER}, #{version_name,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.good.plat.datacenter.game.entity.TBLogplatGameVersion" >
+    insert into tb_logplat_game_version
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="version_id != null" >
+        version_id,
+      </if>
+      <if test="gameid != null" >
+        gameid,
+      </if>
+      <if test="version_name != null" >
+        version_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="version_id != null" >
+        #{version_id,jdbcType=INTEGER},
+      </if>
+      <if test="gameid != null" >
+        #{gameid,jdbcType=INTEGER},
+      </if>
+      <if test="version_name != null" >
+        #{version_name,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.good.plat.datacenter.game.entity.TBLogplatGameVersion" >
+    update tb_logplat_game_version
+    <set >
+      <if test="gameid != null" >
+        gameid = #{gameid,jdbcType=INTEGER},
+      </if>
+      <if test="version_name != null" >
+        version_name = #{version_name,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where version_id = #{version_id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.good.plat.datacenter.game.entity.TBLogplatGameVersion" >
+    update tb_logplat_game_version
+    set gameid = #{gameid,jdbcType=INTEGER},
+      version_name = #{version_name,jdbcType=VARCHAR}
+    where version_id = #{version_id,jdbcType=INTEGER}
+  </update>
+</mapper>

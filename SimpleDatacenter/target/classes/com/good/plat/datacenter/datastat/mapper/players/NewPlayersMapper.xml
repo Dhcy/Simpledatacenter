@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.datastat.mapper.players.NewPlayersMapper">
+	<resultMap id="BaseResultMap" type="com.good.plat.datacenter.datastat.entity.players.NewPlayers">
+		<result column="gameid" property="gameid"/>
+		<result column="gameName" property="gameName"/>
+		<result column="channelid" property="channelid"/>
+		<result column="channelName" property="channelName"/>
+		<result column="subchannelid" property="subchannelid"/>
+		<result column="areaid" property="areaid"/>
+		<result column="areaName" property="areaName"/>
+		<result column="statdate" property="statdate"/>
+		<result column="statType" property="statType"/>
+		<result column="rate" property="rate"/>
+		<result column="devices" property="devices"/>
+		<result column="newPlayers" property="newPlayers"/>
+		<result column="deviceSUM" property="deviceSUM"/>
+		<result column="accountSUM" property="accountSUM"/>
+		<result column="deviceAVG" property="deviceAVG"/>
+		<result column="accountAVG" property="accountAVG"/>
+		<result column="playerConv" property="playerConv"/>
+		<result column="newDevice" property="newDevice"/>
+		<result column="rate" property="rate"/>
+		<result column="regCnt" property="regCnt"/>
+		<result column="city" property="city"/>
+		<result column="newUser" property="newUser"/>
+		<result column="hourdate" property="hourdate"/>
+
+	</resultMap>
+	
+	<sql id="BaseSelect">
+		where statdate between #{startdate} and #{enddate} 
+		<if test="termtypes != null">
+			and termtype in
+			<foreach collection="termtypes" item="term" index="index" open="(" close=")" separator=",">
+				#{term}
+			</foreach>
+		</if>
+		and gameid=#{gameid}
+		<if test="areas != null">
+			and areaid in
+			<foreach collection="areas" item="area" index="index" open="(" close=")" separator=",">
+				#{area}
+			</foreach>
+		</if>
+		<if test="channelList != null">
+			and channel in
+			<foreach collection="channelList" item="channel" index="index" open="(" close=")" separator=",">
+				#{channel.id}
+			</foreach>
+		</if>
+		<if test="subchannels != null">
+			and chnnnl in
+			<foreach collection="subchannels" item="subchannel" index="index" open="(" close=")" separator=",">
+				#{subchannel}
+			</foreach>
+		</if>
+	</sql>
+	
+	<sql id="BaseUnionSelect">
+		where rpt.statdate between #{startdate} and #{enddate} 
+		<if test="termtypes != null">
+			and rpt.termtype in
+			<foreach collection="termtypes" item="term" index="index" open="(" close=")" separator=",">
+				#{term}
+			</foreach>
+		</if>
+		and rpt.gameid=#{gameid}
+		<if test="areas != null">
+			and rpt.areaid in
+			<foreach collection="areas" item="area" index="index" open="(" close=")" separator=",">
+				#{area}
+			</foreach>
+		</if>
+		<if test="channelList != null">
+			and rpt.channel in
+			<foreach collection="channelList" item="channel" index="index" open="(" close=")" separator=",">
+				#{channel.id}
+			</foreach>
+		</if>
+		<if test="subchannels != null">
+			and rpt.chnnnl in
+			<foreach collection="subchannels" item="subchannel" index="index" open="(" close=")" separator=",">
+				#{subchannel}
+			</foreach>
+		</if>
+	</sql>
+	
+	<sql id="BaseSelectNoWithTermtypeLanguageEdition">
+		where statdate between #{startdate} and #{enddate} 
+		and gameid=#{gameid}
+		<if test="areas != null">
+			and areaid in
+			<foreach collection="areas" item="area" index="index" open="(" close=")" separator=",">
+				#{area}
+			</foreach>
+		</if>
+		<if test="channelList != null">
+			and channel in
+			<foreach collection="channelList" item="channel" index="index" open="(" close=")" separator=",">
+				#{channel.id}
+			</foreach>
+		</if>
+		<if test="subchannels != null">
+			and chnnnl in
+			<foreach collection="subchannels" item="subchannel" index="index" open="(" close=")" separator=",">
+				#{subchannel}
+			</foreach>
+		</if>
+	</sql>
+	
+	<!-- 新增激活和账户 -->
+	<select id="selectNewPlayerList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select c.statdate,c.devices,c.newPlayers,c.regCnt,c.playerConv,d.newUser 
+		from (SELECT
+			a.statdate,
+			IFNULL(a.devices, 0) AS devices,
+			IFNULL(a.newPlayers, 0) AS newPlayers,
+			IFNULL(b.regCnt, 0) AS regCnt,
+			ifnull(
+				round(
+					(ifnull(b.regCnt, 0) / a.devices)* 100,
+					2
+				),
+				0
+			) AS playerConv
+		FROM
+			(
+				SELECT
+					statdate,
+					IFNULL(sum(actvcount), 0) AS devices,
+					IFNULL(sum(newact), 0) AS newPlayers
+				FROM
+					logplat_daily_rpt
+				<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect" />
+				GROUP BY
+					statdate
+				ORDER BY
+					statdate
+			) a
+		LEFT JOIN (
+			SELECT
+				statdate,
+				IFNULL(SUM(regcnt), 0) AS regCnt
+			FROM
+				logplat_across_stat
+			<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelectWithoutLanguageEdition" />
+			GROUP BY
+				statdate
+			ORDER BY
+				statdate
+		) b ON a.statdate = b.statdate)c LEFT JOIN 
+		(SELECT statdate,IFNULL(SUM(newuser),0) as newUser from logplat_user_reglogrechg_stat 
+			<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect" />
+			and city='-1'
+				GROUP BY 
+				statdate
+		) d on d.statdate=c.statdate;
+	</select>
+	
+	<!-- 新增玩家(按小时)-->
+	<select id="selectNewPlayerListOfHour" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+			SELECT
+				hourdate,
+				IFNULL(SUM(actvcount), 0) AS devices,
+				IFNULL(SUM(newuser), 0) AS newUser,
+				IFNULL(SUM(newact), 0) AS newPlayers
+			FROM
+				logplat_hour_act
+			<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect" />
+			GROUP BY
+				hourdate
+			ORDER BY
+			hourdate;
+	</select>
+	
+	<select id="exportNewPlayerList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	
+	<!-- 玩家转化 -->
+	<select id="selectConversionList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select 
+			a.statdate,
+			ifnull(round(ifnull(b.regCnt,0)/a.devices*100,2),0) as playerConv
+			 from 
+			(SELECT
+				statdate,
+				IFNULL(sum(actvcount),0) AS devices,
+				IFNULL(sum(newact),0) AS newPlayers
+			FROM
+				logplat_daily_rpt
+			<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect" />
+		group by statdate order by statdate)a
+			LEFT JOIN
+			(select 
+			statdate,
+			IFNULL(SUM(regcnt),0) as regCnt
+			from logplat_across_stat 
+			<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelectWithoutLanguageEdition" />
+		group by statdate order by statdate)b
+			on a.statdate=b.statdate
+	</select>
+	
+	<select id="exportConversionList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	
+	<!-- 地区新增玩家 -->
+	<select id="selectNewPlayerOfCityList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	<select id="exportNewPlayerOfCityList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	
+	
+	<!-- 渠道新增玩家 -->
+	<sql id="B2">
+		<if test="cityList !=null and cityList!=''">
+		and city in
+			<foreach collection="cityList" item="city" index="index" open="(" close=")" separator=",">
+				#{city}
+			</foreach>
+		</if>
+	</sql>
+	
+	<select id="selectNewPlayerOfChannelList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+					SELECT
+					b.channel,
+					if(cha.channelName is NULL,CONCAT('未知渠道 '+b.channel),cha.channelName) channelName,
+					b.accountSUM,
+					lu.newuser AS newUser,
+					b.newPlayers
+					FROM
+					(
+					SELECT
+					a.channel,
+					sum(a.newact) AS newPlayers,
+					sum(a.actvcount) accountSUM
+					FROM
+					logplat_daily_rpt a
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.ABaseSelect"/>
+					GROUP BY
+					a.channel
+					ORDER BY
+					a.channel
+					) b LEFT JOIN tb_logplat_channel cha on(b.channel=cha.id)
+					LEFT JOIN (
+					SELECT
+					channel,
+					sum(newuser) newuser
+					FROM
+					logplat_user_reglogrechg_stat
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/>
+					GROUP BY
+					channel
+					) lu ON b.channel = lu.channel
+	</select>
+	<select id="exportNewPlayerOfChannelList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+
+	<!-- 单设备账号小号 -->
+	<select id="selectNewPlayerOfSubsidiaryList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	<select id="exportNewPlayerOfSubsidiaryList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+		<!-- 区域列表 -->
+	<select id="selectNewPlayerCityList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select DISTINCT city from logplat_daily_actor<include refid="BaseSelectNoWithTermtypeLanguageEdition" />
+	</select>
+	<!-- 城市的新增玩家（新增玩家数,首次创角数） -->
+	<select id="selectNewPlayerListOfCity" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		SELECT
+			a.statdate,
+			a.newPlayers,
+			a.regCnt,
+			b.newUser
+		FROM
+			(
+				SELECT
+					SUM(newact) AS newPlayers,
+					SUM(firstact) AS regCnt,
+					statdate AS statdate,
+					city AS city
+				FROM
+					logplat_daily_actor
+				<include refid="BaseSelectNoWithTermtypeLanguageEdition" />
+				<if test="cityList != null">
+					AND city in
+					<foreach collection="cityList" item="city" index="index" open="(" close=")" separator=",">
+						#{city}
+					</foreach>
+				</if>
+				GROUP BY
+					statdate
+				ORDER BY
+					statdate
+			) a LEFT JOIN
+		(SELECT statdate,IFNULL(SUM(newuser),0) as newUser from logplat_user_reglogrechg_stat 
+			<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect" />
+				AND gameid =75
+				<if test="cityList != null">
+					AND city in
+					<foreach collection="cityList" item="city" index="index" open="(" close=")" separator=",">
+						#{city}
+					</foreach>
+				</if>
+				GROUP BY 
+				statdate
+		) b on b.statdate=a.statdate;
+	</select>
+	
+	
+</mapper>

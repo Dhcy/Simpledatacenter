@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.datastat.mapper.virtual.VirtualCurrencyMapper">
+	<resultMap id="BaseResultMap" type="com.good.plat.datacenter.datastat.entity.virtual.VirtualCurrency">
+		<result column="gameid" property="gameid"/>
+		<result column="gameName" property="gameName"/>
+		<result column="channelid" property="channelid"/>
+		<result column="channelName" property="channelName"/>
+		<result column="subchannelid" property="subchannelid"/>
+		<result column="areaid" property="areaid"/>
+		<result column="areaName" property="areaName"/>
+		<result column="statdate" property="statdate"/>
+		<result column="statType" property="statType"/>
+		<result column="rate" property="rate"/>
+		<result column="purchase" property="purchase"/>
+		<result column="reward" property="reward"/>
+		<result column="expense" property="expense"/>
+		<result column="purchaseSUM" property="purchaseSUM"/>
+		<result column="rewardSUM" property="rewardSUM"/>
+		<result column="expenseSUM" property="expenseSUM"/>
+		<result column="spendingTimes" property="spendingTimes"/>
+		<result column="spendingAccounts" property="spendingAccounts"/>
+		<result column="currencyBalance" property="currencyBalance"/>
+		<result column="actorlevel" property="actorlevel"/>
+	</resultMap>
+	
+	<sql id="BaseSelect">
+		where statdate between #{startdate} and #{enddate} 
+		<if test="termtypes != null">
+			and termtype in
+			<foreach collection="termtypes" item="term" index="index" open="(" close=")" separator=",">
+				#{term}
+			</foreach>
+		</if>
+		and gameid=#{gameid}
+		<if test="areas != null">
+			and areaid in
+			<foreach collection="areas" item="area" index="index" open="(" close=")" separator=",">
+				#{area}
+			</foreach>
+		</if>
+		<if test="channelList != null">
+			and channel in
+			<foreach collection="channelList" item="channel" index="index" open="(" close=")" separator=",">
+				#{channel.id}
+			</foreach>
+		</if>
+		<if test="subchannels != null">
+			and chnnnl in
+			<foreach collection="subchannels" item="subchannel" index="index" open="(" close=")" separator=",">
+				#{subchannel}
+			</foreach>
+		</if>
+	</sql>
+	
+	<sql id="BaseSelect2">
+		where statdate between #{startdate} and #{enddate} 
+		and gameid=#{gameid}
+		<if test="areas != null">
+			and areaid in
+			<foreach collection="areas" item="area" index="index" open="(" close=")" separator=",">
+				#{area}
+			</foreach>
+		</if>
+	</sql>
+
+	<!-- 虚拟币产出和消耗 -->
+	<select id="selectVcPurchase" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select statdate, sum(purchcnt) as purchaseSUM,sum(givecnt) as rewardSUM
+			,sum(conscnt) as expenseSUM
+		from logplat_curr_gc_stat
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/>
+		group by statdate order by statdate
+	</select>
+	
+	<select id="exportVcPurchase" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+	</select>
+	
+	
+	<!-- 消耗次数 -->
+	<select id="selectVcConsumeTimes" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select statdate, sum(constime) as spendingTimes
+		from logplat_curr_gc_stat
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/>
+		group by statdate order by statdate
+	</select>
+	
+	<select id="exportVcConsumeTimes" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	
+	<!-- 消耗人数 -->
+	<select id="selectVcConsumeNumOfPeople" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select statdate, sum(cnosact) as spendingAccounts
+		from logplat_curr_gc_stat
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/>
+		group by statdate order by statdate
+		
+	</select>
+	
+	<select id="exportVcConsumeNumOfPeople" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	
+	<!-- 累计留存虚拟币 -->
+	<select id="selectTotalRetentionVc" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select statdate, sum(count) as currencyBalance
+		from logplat_remain_curr_stat
+		<include refid="BaseSelect2"/> and type=1
+		group by statdate order by statdate
+	</select>
+	
+	
+	<select id="exportTotalRetentionVc" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	
+	<!-- 虚拟币消耗-等级 -->
+	<select id="selectVcLevelConsume" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select actorlevel, sum(conscnt) as expenseSUM
+		from logplat_curr_gc_level_stat
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/>
+		group by actorlevel order by actorlevel
+	</select>
+		
+	<select id="exportVcLevelConsume" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	<!-- 消耗次数-等级 -->
+	<select id="selectVcLevelConsumeTimes" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select actorlevel, sum(constime) as spendingTimes
+		from logplat_curr_gc_level_stat
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/>
+		group by actorlevel order by actorlevel
+	</select>
+	
+	<!-- 消耗人数-等级 -->
+	<select id="selectVcLevelConsumeNumOfPeople" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select actorlevel, sum(cnosact) as spendingAccounts
+		from logplat_curr_gc_level_stat
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/>
+		group by actorlevel order by actorlevel
+	</select>
+	
+	<select id="exportVcLevelConsumeNumOfPeople" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+</mapper>

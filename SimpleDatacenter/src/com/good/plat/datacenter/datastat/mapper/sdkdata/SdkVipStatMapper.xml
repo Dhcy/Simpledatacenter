@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.datastat.mapper.sdkdata.SdkVipStatMapper" >
+  <resultMap id="BaseResultMap" type="com.good.plat.datacenter.datastat.entity.sdkdata.SdkVipStat" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="statdate" property="statdate" jdbcType="DATE" />
+    <result column="os" property="os" jdbcType="VARCHAR" />
+    <result column="vip_level" property="vip_level" jdbcType="INTEGER" />
+    <result column="total_vip" property="total_vip" jdbcType="INTEGER" />
+    <result column="total_vip_money" property="total_vip_money" jdbcType="DECIMAL" />
+    <result column="new_vip" property="new_vip" jdbcType="INTEGER" />
+    <result column="new_vip_money" property="new_vip_money" jdbcType="DECIMAL" />
+    <result column="vip_recharge" property="vip_recharge" jdbcType="INTEGER" />
+    <result column="vip_money" property="vip_money" jdbcType="DECIMAL" />
+    <result column="vip_lost" property="vip_lost" jdbcType="INTEGER" />
+    <result column="vip_return" property="vip_return" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, statdate, os, vip_level, total_vip, total_vip_money, new_vip, new_vip_money, 
+    vip_recharge, vip_money, vip_lost, vip_return
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from sdk_vip_stat
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from sdk_vip_stat
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.good.plat.datacenter.datastat.entity.sdkdata.SdkVipStat" >
+    insert into sdk_vip_stat (id, statdate, os, 
+      vip_level, total_vip, total_vip_money, 
+      new_vip, new_vip_money, vip_recharge, 
+      vip_money, vip_lost, vip_return
+      )
+    values (#{id,jdbcType=INTEGER}, #{statdate,jdbcType=DATE}, #{os,jdbcType=VARCHAR}, 
+      #{vip_level,jdbcType=INTEGER}, #{total_vip,jdbcType=INTEGER}, #{total_vip_money,jdbcType=DECIMAL}, 
+      #{new_vip,jdbcType=INTEGER}, #{new_vip_money,jdbcType=DECIMAL}, #{vip_recharge,jdbcType=INTEGER}, 
+      #{vip_money,jdbcType=DECIMAL}, #{vip_lost,jdbcType=INTEGER}, #{vip_return,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.good.plat.datacenter.datastat.entity.sdkdata.SdkVipStat" >
+    insert into sdk_vip_stat
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="statdate != null" >
+        statdate,
+      </if>
+      <if test="os != null" >
+        os,
+      </if>
+      <if test="vip_level != null" >
+        vip_level,
+      </if>
+      <if test="total_vip != null" >
+        total_vip,
+      </if>
+      <if test="total_vip_money != null" >
+        total_vip_money,
+      </if>
+      <if test="new_vip != null" >
+        new_vip,
+      </if>
+      <if test="new_vip_money != null" >
+        new_vip_money,
+      </if>
+      <if test="vip_recharge != null" >
+        vip_recharge,
+      </if>
+      <if test="vip_money != null" >
+        vip_money,
+      </if>
+      <if test="vip_lost != null" >
+        vip_lost,
+      </if>
+      <if test="vip_return != null" >
+        vip_return,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="statdate != null" >
+        #{statdate,jdbcType=DATE},
+      </if>
+      <if test="os != null" >
+        #{os,jdbcType=VARCHAR},
+      </if>
+      <if test="vip_level != null" >
+        #{vip_level,jdbcType=INTEGER},
+      </if>
+      <if test="total_vip != null" >
+        #{total_vip,jdbcType=INTEGER},
+      </if>
+      <if test="total_vip_money != null" >
+        #{total_vip_money,jdbcType=DECIMAL},
+      </if>
+      <if test="new_vip != null" >
+        #{new_vip,jdbcType=INTEGER},
+      </if>
+      <if test="new_vip_money != null" >
+        #{new_vip_money,jdbcType=DECIMAL},
+      </if>
+      <if test="vip_recharge != null" >
+        #{vip_recharge,jdbcType=INTEGER},
+      </if>
+      <if test="vip_money != null" >
+        #{vip_money,jdbcType=DECIMAL},
+      </if>
+      <if test="vip_lost != null" >
+        #{vip_lost,jdbcType=INTEGER},
+      </if>
+      <if test="vip_return != null" >
+        #{vip_return,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.good.plat.datacenter.datastat.entity.sdkdata.SdkVipStat" >
+    update sdk_vip_stat
+    <set >
+      <if test="statdate != null" >
+        statdate = #{statdate,jdbcType=DATE},
+      </if>
+      <if test="os != null" >
+        os = #{os,jdbcType=VARCHAR},
+      </if>
+      <if test="vip_level != null" >
+        vip_level = #{vip_level,jdbcType=INTEGER},
+      </if>
+      <if test="total_vip != null" >
+        total_vip = #{total_vip,jdbcType=INTEGER},
+      </if>
+      <if test="total_vip_money != null" >
+        total_vip_money = #{total_vip_money,jdbcType=DECIMAL},
+      </if>
+      <if test="new_vip != null" >
+        new_vip = #{new_vip,jdbcType=INTEGER},
+      </if>
+      <if test="new_vip_money != null" >
+        new_vip_money = #{new_vip_money,jdbcType=DECIMAL},
+      </if>
+      <if test="vip_recharge != null" >
+        vip_recharge = #{vip_recharge,jdbcType=INTEGER},
+      </if>
+      <if test="vip_money != null" >
+        vip_money = #{vip_money,jdbcType=DECIMAL},
+      </if>
+      <if test="vip_lost != null" >
+        vip_lost = #{vip_lost,jdbcType=INTEGER},
+      </if>
+      <if test="vip_return != null" >
+        vip_return = #{vip_return,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.good.plat.datacenter.datastat.entity.sdkdata.SdkVipStat" >
+    update sdk_vip_stat
+    set statdate = #{statdate,jdbcType=DATE},
+      os = #{os,jdbcType=VARCHAR},
+      vip_level = #{vip_level,jdbcType=INTEGER},
+      total_vip = #{total_vip,jdbcType=INTEGER},
+      total_vip_money = #{total_vip_money,jdbcType=DECIMAL},
+      new_vip = #{new_vip,jdbcType=INTEGER},
+      new_vip_money = #{new_vip_money,jdbcType=DECIMAL},
+      vip_recharge = #{vip_recharge,jdbcType=INTEGER},
+      vip_money = #{vip_money,jdbcType=DECIMAL},
+      vip_lost = #{vip_lost,jdbcType=INTEGER},
+      vip_return = #{vip_return,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

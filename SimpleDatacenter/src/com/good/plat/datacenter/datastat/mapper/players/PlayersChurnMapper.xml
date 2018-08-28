@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.datastat.mapper.players.PlayersChurnMapper">
+	<resultMap id="BaseResultMap" type="com.good.plat.datacenter.datastat.entity.players.PlayersChurn">
+		<result column="gameid" property="gameid"/>
+		<result column="gameName" property="gameName"/>
+		<result column="channelid" property="channelid"/>
+		<result column="channelName" property="channelName"/>
+		<result column="subchannelid" property="subchannelid"/>
+		<result column="areaid" property="areaid"/>
+		<result column="areaName" property="areaName"/>
+		<result column="statdate" property="statdate"/>
+		<result column="statType" property="statType"/>
+		<result column="rate" property="rate"/>
+		<result column="accounts" property="accounts"/>
+		<result column="sumactvcnt" property="sumactvcnt"/>
+		<result column="subtype" property="subtype"/>
+	</resultMap>
+	
+	<sql id="BaseSelect">
+		where statdate between #{startdate} and #{enddate} 
+		<if test="termtypes != null">
+			and termtype in
+			<foreach collection="termtypes" item="term" index="index" open="(" close=")" separator=",">
+				#{term}
+			</foreach>
+		</if>
+		and gameid=#{gameid}
+		<if test="areas != null">
+			and areaid in
+			<foreach collection="areas" item="area" index="index" open="(" close=")" separator=",">
+				#{area}
+			</foreach>
+		</if>
+		<if test="channelList != null">
+			and channel in
+			<foreach collection="channelList" item="channel" index="index" open="(" close=")" separator=",">
+				#{channel.id}
+			</foreach>
+		</if>
+		<if test="subchannels != null">
+			and chnnnl in
+			<foreach collection="subchannels" item="subchannel" index="index" open="(" close=")" separator=",">
+				#{subchannel}
+			</foreach>
+		</if>
+	</sql>
+
+	<!-- 每日流失 -->
+	<select id="selectPerDayLostNumAndRate" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select statdate,SUM(lostcnt) as accounts,SUM(actvcnt ) as sumactvcnt 
+		from logplat_daily_lost 
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/> 
+		
+		and nday=#{checktype1}
+		<if test="checktype2!=-1">
+		and recharge_type in(#{checktype2})
+		</if>
+		and type=-1
+		group by statdate
+	</select>
+	
+	<select id="exportPerDayLostNumAndRate" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	
+	<!-- 每日回流 -->
+	<select id="selectPerDayReturnNumList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select statdate,SUM(returncnt ) as accounts 
+		from  logplat_daily_return 
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/> 
+		
+		and nday=#{checktype1}
+		<if test="checktype2==-1">
+			and type=1
+		</if>
+		<if test="checktype2==1"><!--付费玩家回流-->
+			and type=2
+		</if>
+		<if test="checktype2==0"><!--非付费玩家回流-->
+			and type=3
+		</if>
+		group by statdate
+	</select>
+	
+	<select id="exportPerDayReturnNumList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	
+	<!-- 流失用户分析 -->
+	<select id="selectLostUserAnalysNumList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select subtype as subtype,SUM(lostcnt) as accounts,SUM(actvcnt ) as sumactvcnt 
+		from logplat_daily_lost 
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/>
+		<if test="checktype2!=-1">
+		and recharge_type in(#{checktype2})
+		</if>
+		and type =#{checktype3} and nday=#{checktype1}
+		group by subtype
+		order by subtype
+	</select>
+	
+	<select id="exportLostUserAnalysNumList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	
+</mapper>

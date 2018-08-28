@@ -1,0 +1,185 @@
+<style type="text/css"><!--
+    .table th,.table td{ border:1px solid #ddd;}
+    .form-group{ margin-left: 10px; margin-top: 10px;}
+    .form-control{ display: inline-block; vertical-align: middle;}
+    .tableListTh{
+    	white-space: nowrap;
+    	text-align:center;
+    }
+    .channelTd{
+    	white-space: nowrap;
+    	text-align:center;
+    }
+   /*.panel_downloadBtn1{float: right;width: 25px;height: 25px;margin-top:6px; margin-right: 0px; border:1px solid #9FA3A8;border-radius:3px;background:url(../../images/dow.png) no-repeat center center; padding-left:13px; text-indent: -9999em; display: block;cursor: pointer;}
+	.panel_downloadBtn1:hover{background:#d0d4d8 url(../../images/dow.png) no-repeat center center; }*/
+</style>
+<div>
+	<div class="maintop">
+		<div datepicker format="yyyy-MM-dd" class="col-xs-3 timeSelect" mstatdate="mstatdate">
+		</div>
+		<!--------日期选择控件----------->
+		
+		<div selectChoose class="selectChoose">
+		</div>
+		<!--------渠道区服选择控件----------->
+		<div class="clear"></div>
+		<div class="panel-selectChoose" callbackchannelqf ng-show="iscallback">
+		</div>
+		<!--------已选择渠道区服显示----------->
+	</div>	
+	<div class="clear"></div>
+		<!--------tab选择按钮----------->
+	<div class="panel panel-default panel_1">
+			<div class="panel-heading">
+			<strong>{{'钻石统计' | translate}}</strong>
+				<div class="panel_downloadBtn"  down-file down-file-url="summary/exportDiamondList.action" down-file-type="xlsx" down-file-name="钻石统计{{mstatdate}}" savedata="" postdata="searchData" ></div>
+				<div class="clear"></div>
+			</div>
+			<div class="panel-body pdlf pdtb">
+			<div class="tableList tableListAct" >
+				<ul class="tableListUl">
+					<li class="tableListLi tableListLiTh clear">
+						<span class="tableListTh" style="width:20%" ng-click="changeOrderBy(panel_1.dataList_1,'statdate')">
+							<strong title="">{{'日期' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:20%" ng-click="changeOrderBy(panel_1.dataList_1,'channelName')">
+							<strong title="">{{'渠道' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:20%" ng-click="changeOrderBy(panel_1.dataList_1,'channelName')">
+							<strong title="">{{'钻石类型' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:20%" ng-click="changeOrderBy(panel_1.dataList_1,'getCnt')">
+							<strong title="">{{'获得总钻石' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:20%" ng-click="changeOrderBy(panel_1.dataList_1,'comsumeCnt')">
+							<strong title="">{{'消耗总钻石' | translate}}</strong>
+						</span>
+					</li>
+					
+					<li class="tableListLi clear" ng-repeat="data in panel_1.dataList_1.data | orderBy: panel_1.dataList_1.orderBy.t+panel_1.dataList_1.orderBy.s | pageStartFrom : panel_1.dataList_1.limit.now*panel_1.dataList_1.limit.max | limitTo: panel_1.dataList_1.limit.max" ng-class="({'show_panel':data.show_panel})">
+						<div class="channelTr clear">
+							<span class="channelTd" style="width:20%" >
+								{{data.statdate}}
+							</span>
+							<span class="channelTd" style="width:20%">
+								{{data.channelName}}
+							</span>
+							<span class="channelTd" style="width:20%">
+								{{data.currTypeText}}
+							</span>
+							<span class="channelTd" style="width:20%">
+								{{data.getCnt}}
+							</span>
+							<span class="channelTd" style="width:20%">
+								{{data.comsumeCnt}}
+							</span>
+						</div>
+				</li>
+				</ul>
+				<div class="tableFooter">
+						<div class="buttondiv fl" analysisdrop changei="changetype()">
+							<div class="selectlable fl">{{'每页显示' | translate}}：</div>
+							<div class="analysisdrop fl" style="width:60px;">
+								<div class="hadchoose">
+									<h6>{{val | translate}}</h6></div>
+								<ul class="dropUl">
+									<li ng-click="c('10');changetype(10)">10</li>
+									<li ng-click="c('20');changetype(20)">20</li>
+									<li ng-click="c('50');changetype(50)">50</li>
+									<li ng-click="c('100');changetype(100)">100</li>
+								</ul>
+							</div>
+							<div class="selectlable fl">&nbsp;&nbsp;{{'条记录' | translate}}</div>
+						</div>
+						<div class="dataTables_paginate fr" datatableslimit  datalimit="panel_1.dataList_1.limit"  tabledata="panel_1.dataList_1.data"  datachange="panel_1_change"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="panel panel-default panel_2">
+			<div class="panel-heading">
+				<strong>{{'钻石统计细分' | translate}}</strong>
+				<div class="panel_downloadBtn" down-file down-file-url="summary/exportDiamondDetailList.action" down-file-type="xlsx" down-file-name="钻石统计{{mstatdate}}" savedata="" postdata="searchData" ></div>
+				<div class="buttondiv fr"  style="margin-right:15px">
+					<div class="analysisdrop" style="width:80px;">
+						<div class="hadchoose" ng-click="changeDataShow=changeDataShow==0?1:0;">
+							<h6>{{panel_2.typeArr[type]}}</h6>
+						</div>
+						<ul class="dropUl" ng-if="changeDataShow==1" style="display:block">
+							<li ng-click="changeData(1)">{{'获得' | translate}}</li>
+							<li ng-click="changeData(2)">{{'消耗' | translate}}</li>
+						</ul>
+					</div>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="panel-body pdlf pdtb">
+			<div class="tableList tableListAct" >
+				<ul class="tableListUl">
+					<li class="tableListLi tableListLiTh clear">
+						<span class="tableListTh" style="width:20%" ng-click="changeOrderBy(panel_2.dataList_1,'statdate')">
+							<strong title="">{{'日期' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:16%" ng-click="changeOrderBy(panel_2.dataList_1,'channelName')">
+							<strong title="">{{'渠道' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:16%" ng-click="changeOrderBy(panel_2.dataList_1,'purpose')">
+							<strong title="">{{'钻石类型' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:16%" ng-click="changeOrderBy(panel_2.dataList_1,'purpose')">
+							<strong title="">{{'用途' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:16%" ng-click="changeOrderBy(panel_2.dataList_1,'purposeNum')">
+							<strong title="">{{panel_2.typeArr[type]}}{{'钻石数量' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:16%" ng-click="changeOrderBy(panel_2.dataList_1,'rate')">
+							<strong title="">{{'占比' | translate}}</strong>
+						</span>
+					</li>
+					
+					<li class="tableListLi clear" ng-repeat="data in panel_2.dataList_1.data | orderBy: panel_2.dataList_1.orderBy.t+panel_2.dataList_1.orderBy.s | pageStartFrom : panel_2.dataList_1.limit.now*panel_2.dataList_1.limit.max | limitTo: panel_2.dataList_1.limit.max" ng-class="({'show_panel':data.show_panel})">
+						<div class="channelTr clear">
+							<span class="channelTd" style="width:20%" >
+								{{data.statdate}}
+							</span>
+							<span class="channelTd" style="width:16%">
+								{{data.channelName}}
+							</span>
+							<span class="channelTd" style="width:16%">
+								{{data.currTypeText}}
+							</span>
+							<span class="channelTd" style="width:16%">
+								{{data.purpose}}
+							</span>
+							<span class="channelTd" style="width:16%">
+								{{data.purposeNum}}
+							</span>
+							<span class="channelTd" style="width:16%">
+								{{data.rate}}%
+							</span>
+						</div>
+				</li>
+				</ul>
+				<div class="tableFooter">
+						<div class="buttondiv fl" analysisdrop changei="changetype2()">
+							<div class="selectlable fl">{{'每页显示' | translate}}：</div>
+							<div class="analysisdrop fl" style="width:60px;">
+								<div class="hadchoose">
+									<h6>{{val | translate}}</h6></div>
+								<ul class="dropUl">
+									<li ng-click="c('10');changetype2(10)">10</li>
+									<li ng-click="c('20');changetype2(20)">20</li>
+									<li ng-click="c('50');changetype2(50)">50</li>
+									<li ng-click="c('100');changetype2(100)">100</li>
+								</ul>
+							</div>
+							<div class="selectlable fl">&nbsp;&nbsp;{{'条记录' | translate}}</div>
+						</div>
+						<div class="dataTables_paginate fr" datatableslimit  datalimit="panel_2.dataList_1.limit"  tabledata="panel_2.dataList_1.data"  datachange="panel_2_change"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+</div>

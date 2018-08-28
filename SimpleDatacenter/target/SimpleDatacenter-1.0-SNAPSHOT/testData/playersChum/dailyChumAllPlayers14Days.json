@@ -1,0 +1,44 @@
+{
+  "dailyChumAllPlayers14Days": [
+    {
+      "statdate": "2014-08-24",
+      "accounts": 10329,
+      "rate": 36
+    },
+    {
+      "statdate": "2014-08-25",
+      "accounts": 11027,
+      "rate": 37.1
+    },
+    {
+      "statdate": "2014-08-26",
+      "accounts": 12313,
+      "rate": 38
+    },
+    {
+      "statdate": "2014-08-27",
+      "accounts": 12451,
+      "rate": 38.6
+    },
+    {
+      "statdate": "2014-08-28",
+      "accounts": 9803,
+      "rate": 35.7
+    },
+    {
+      "statdate": "2014-08-29",
+      "accounts": 9642,
+      "rate": 35.6
+    },
+    {
+      "statdate": "2014-08-30",
+      "accounts": 9618,
+      "rate": 35.8
+    },
+    {
+      "statdate": "2014-08-31",
+      "accounts": 9879,
+      "rate": 36.5
+    }
+  ]
+}

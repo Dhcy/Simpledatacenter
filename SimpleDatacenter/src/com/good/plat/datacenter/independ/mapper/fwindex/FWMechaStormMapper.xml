@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.independ.mapper.fwindex.FWMechaStormMapper">
+	<resultMap id="BaseResultMap" type="com.good.plat.datacenter.independ.entity.fwindex.FWMechaStorm">
+		<result column="statdate" property="statdate"/>
+		<result column="gameid" property="gameid"/>
+		<result column="areaid" property="areaid"/>
+		<result column="areaName" property="areaName"/>
+		<result column="stageId" property="stageId"/>
+		<result column="stageName" property="stageName"/>
+		<result column="finishCnt" property="finishCnt"/>
+		<result column="inCnt" property="inCnt"/>
+		
+	</resultMap>
+	
+	<sql id="ABaseSelect">
+		where a.statdate between #{startdate} and #{enddate} 
+		and a.gameid=#{gameid}
+		<if test="channelid!=null and channelid!=-1">
+			and a.channel=#{channelid}
+		</if>
+		<if test="areaid!=null and areaid!=-1">
+			and a.areaid=#{areaid}
+		</if>
+	</sql>
+	
+	<!--
+	机甲风暴统计
+	-->
+	<select id="selectMechaStormList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+	SELECT
+		a.statdate as statdate,
+		a.gameid as gameid,
+		a.areaid as areaid,
+		b.`name` as areaName,
+		a.stageid as stageId,
+		a.stage as stageName,
+		IFNULL(SUM(a.finishcnt),0) as finishCnt,
+		IFNULL(SUM(a.incnt),0) as inCnt
+	FROM
+		ftw_logplat_mecha_storm_stat a
+	LEFT JOIN tb_logplat_gamearea b
+	ON b.areaid=a.areaid
+	and b.gameid=a.gameid
+	<include refid="ABaseSelect"/>
+	GROUP BY
+	a.statdate,
+	a.areaid,
+	a.stageid,
+	a.stage
+	</select>
+	
+</mapper>

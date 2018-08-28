@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.independ.mapper.ccz.index.CzzOperateDataMapper">
+
+<sql id="BaseSelect">
+	where 1=1
+	<if test="gameid !=-1 ">
+	and gameid=#{gameid}
+	</if>
+	<if test="channelid !=-1 ">
+	and channel=#{channelid}
+	</if>
+	<if test="areaid!=-1">
+	and areaid=#{areaid}
+	</if>
+	<if test="startdate !=null and startdate!='' and enddate==''">
+	and statdate&gt;=#{startdate}
+	</if>
+	<if test="startdate !=null and startdate!='' and enddate!=null and enddate!=''">
+	and statdate&gt;=#{startdate} and statdate &lt;=#{enddate}
+	</if>
+	<if test="startdate =='' and enddate!=null and enddate!=''">
+	and statdate&lt;=#{enddate}
+	</if>
+	
+	</sql>
+	<sql id="BaseSelect1">
+	where 1=1
+	<if test="gameid !=-1 ">
+	and a.gameid=#{gameid}
+	</if>
+	<if test="channelid !=-1 ">
+	and a.channel=#{channelid}
+	</if>
+	<if test="areaid!=-1">
+	and a.areaid=#{areaid}
+	</if>
+	<if test="startdate !=null and startdate!='' and enddate==''">
+	and a.statdate&gt;=#{startdate}
+	</if>
+	<if test="startdate !=null and startdate!='' and enddate!=null and enddate!=''">
+	and a.statdate&gt;=#{startdate} and a.statdate &lt;=#{enddate}
+	</if>
+	<if test="startdate =='' and enddate!=null and enddate!=''">
+	and a.statdate&lt;=#{enddate}
+	</if>
+	</sql>
+<!-- 任务打点 -->
+	<resultMap id="TaskResultMap" type="com.good.plat.datacenter.independ.entity.hie.index.HieTaskStat">
+		<result column="taskid" property="taskid"/>
+		<result column="tasktype" property="tasktype"/>
+		<result column="taskname" property="taskname"/>
+		<result column="tasklevel" property="tasklevel"/>
+		<result column="accepttotal" property="accepttotal"/>
+		<result column="completetotal" property="completetotal"/>
+		<result column="avgtime" property="avgtime"/>
+        <result column="completerate" property="completerate"/>
+	</resultMap>
+	<sql id="C1">
+	<if test="checktype1 !='' and  checktype1 !=null" >
+	and tasktype=#{checktype1}
+	</if>
+	</sql>
+	
+	
+	<select id="queryTaskStatList" resultMap="TaskResultMap" 
+		parameterType="com.good.plat.datacenter.independ.entity.hie.index.HieTaskStat">
+		SELECT
+			taskid,
+			CASE
+		WHEN tasktype = 1 THEN
+			'主线'
+		WHEN tasktype = 2 THEN
+			'支线'
+		ELSE
+			'未知'
+		END AS tasktype,
+ 		taskname,
+ 		tasklevel,
+ IFNULL(sum(acceptnum), 0) accepttotal,
+ IFNULL(sum(completenum), 0) completetotal,
+ round(IFNULL(sum(times) / completenum, 0),2)avgtime,
+ round(IFNULL(sum(completenum) / sum(acceptnum),0)*100,2) completerate
+		FROM
+			czz_task_stat
+		<include refid="BaseSelect"/>
+		<include refid="C1"/>
+			GROUP BY
+			taskid,
+			tasklevel,
+			tasktype,
+			taskname	
+		</select>
+		
+<!-- 注册打点 -->
+	<resultMap id="RegistResultMap" type="com.good.plat.datacenter.independ.entity.czz.index.CzzRegistStat">
+		<result column="gamestart" property="gamestart"/>
+		<result column="getaddress" property="getaddress"/>
+		<result column="updatecheck" property="updatecheck"/>
+		<result column="regist" property="regist"/>
+		<result column="startgame" property="startgame"/>
+		<result column="entergame" property="entergame"/>
+	</resultMap>
+		<select id="queryRegistStatList" resultMap="RegistResultMap" 
+		parameterType="com.good.plat.datacenter.independ.entity.czz.index.CzzRegistStat">
+				SELECT
+				SUM(IF(type = 1, count, 0)) AS gamestart,
+				SUM(IF(type = 2, count, 0)) AS getaddress,
+				SUM(IF(type = 3, count, 0)) AS updatecheck,
+				SUM(IF(type = 4, count, 0)) AS regist,
+				SUM(IF(type = 5, count, 0)) AS startgame,
+				SUM(IF(type = 6, count, 0)) AS entergame
+				FROM
+				czz_regist_stat
+			<include refid="BaseSelect"/>
+		</select>
+		
+<!-- 首充等级 -->
+	<resultMap id="FirstRechargeResultMap" type="com.good.plat.datacenter.independ.entity.hie.index.HieActorRecharge">
+		<result column="actorlevel" property="actorlevel"/>
+		<result column="persons" property="persons"/>
+		<result column="six" property="six"/>
+		<result column="twelve" property="twelve"/>
+		<result column="thirty" property="thirty"/>
+		<result column="se" property="se"/>
+		<result column="ote" property="ote"/>
+		<result column="tte" property="tte"/>
+        <result column="ste" property="ste"/>
+	</resultMap>
+	
+	<select id="queryFirstRechargeStatList" resultMap="FirstRechargeResultMap" 
+		parameterType="com.good.plat.datacenter.independ.entity.hie.index.HieActorRecharge">
+				SELECT
+			b.actorlevel,sum(b.count) persons,
+			sum(IF(b.money = 6, count, 0)) AS six,
+			sum(IF(b.money = 12, count, 0)) AS twelve,
+			sum(IF(b.money = 30, count, 0)) AS thirty,
+			sum(IF(b.money = 68, count, 0)) AS se,
+			sum(IF(b.money = 128, count, 0)) AS ote,
+			sum(IF(b.money = 328, count, 0)) AS tte,
+			sum(IF(b.money = 648, count, 0)) AS ste
+		FROM
+			(
+				SELECT
+					actorlevel,
+					money,
+					count(DISTINCT uid, actorid) count
+				FROM
+					logplat_actor_recharge
+					<include refid="BaseSelect"/>
+				and isfirst = 1
+				AND money IN (6, 12, 30, 68, 128, 328, 648)
+				
+				GROUP BY
+					actorlevel,
+					money
+			) b
+			
+		GROUP BY
+			b.actorlevel
+		
+		</select>
+		
+		<!-- 单笔充值 -->
+	<resultMap id="SingleRechargeResultMap" type="com.good.plat.datacenter.independ.entity.hie.index.HieSingleRecharge">
+		<result column="money" property="money"/>
+		<result column="persons" property="persons"/>
+		<result column="personsaf" property="personsaf"/>
+		<result column="rechargeCount" property="rechargeCount"/>
+		<result column="countaf" property="countaf"/>
+	</resultMap>
+		<select id="querySingleRechargeList" resultMap="SingleRechargeResultMap" 
+		parameterType="com.good.plat.datacenter.independ.entity.hie.index.HieSingleRecharge">
+			SELECT
+				a.money,
+				count(DISTINCT a.uid, a.actorid) persons,
+				c.count1,
+				round(count(DISTINCT a.uid, a.actorid) / c.count1*100,2) personsaf,
+				count(*) rechargeCount,
+				d.count2,
+				round(count(*) / d.count2*100,2) countaf
+			FROM
+				logplat_actor_recharge a,
+				(
+					SELECT
+						sum(b.count) count1
+					FROM
+						(
+							SELECT
+								count(DISTINCT uid, actorid) count
+							FROM
+								logplat_actor_recharge 
+								<include refid="BaseSelect"/>
+							GROUP BY
+								money
+						) b
+				) c,
+				(
+					SELECT
+						count(*) count2
+					FROM
+						logplat_actor_recharge
+					<include refid="BaseSelect"/>
+						) d
+					<include refid="BaseSelect1"/>
+							GROUP BY
+							a.money
+		</select>
+		
+	
+	<!-- 按时充值 -->
+	<resultMap id="OntimeRechargeResultMap" type="com.good.plat.datacenter.independ.entity.hie.index.HieOnTimeRecharge">
+		<result column="date" property="date"/>
+		<result column="persons" property="persons"/>
+		<result column="personsaf" property="personsaf"/>
+		<result column="money" property="money"/>
+		<result column="moneyaf" property="moneyaf"/>
+	</resultMap>
+	
+
+	
+		<select id="queryOnTimeRechargeList" resultMap="OntimeRechargeResultMap" 
+		parameterType="com.good.plat.datacenter.independ.entity.hie.index.HieOnTimeRecharge">
+		SELECT
+	a.statdate,
+	SUBSTR(
+		date_format(a.logdate, '%Y%m%d%H'),
+		9,
+		10
+	) date,
+	count(DISTINCT a.uid, a.actorid) persons,
+	round(count(DISTINCT a.uid, a.actorid) / b.count1*100,2) personsaf,
+	sum(a.money) money,
+	round(sum(a.money) / c.count2*100,2) moneyaf
+FROM
+	logplat_actor_recharge a,
+	(
+	select 
+	sum(c.count1) count1 
+	from (
+		SELECT
+			count(DISTINCT uid, actorid) count1
+		FROM
+			logplat_actor_recharge
+		<include refid="BaseSelect"/>
+		group by 
+		SUBSTR(
+		date_format(logdate, '%Y%m%d%H'),
+		9,
+		10
+	)
+		)c
+		
+	) b,
+	(
+		SELECT
+			sum(money) count2
+		FROM
+			logplat_actor_recharge
+		<include refid="BaseSelect"/>
+	) c
+		<include refid="BaseSelect1"/>
+GROUP BY
+	SUBSTR(
+		date_format(logdate, '%Y%m%d%H'),
+		9,
+		10
+	)
+		</select>
+		
+		
+		
+		
+	
+</mapper>

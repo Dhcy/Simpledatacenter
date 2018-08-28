@@ -1,0 +1,265 @@
+<div>
+	<div class="maintop">
+		<div datepicker class="col-xs-3 timeSelect" mstatdate="mstatdate" show-prev-day="true">
+		</div>
+		<!--------日期选择控件----------->
+		<div selectChoose class="selectChoose">
+		</div>
+		<!--------渠道区服选择控件----------->
+		<div class="clear"></div>
+		<div class="panel-selectChoose" callbackchannelqf ng-show="iscallback">
+			<ul ng-show="ischannel" class="cl">
+				<li>{{'渠道' | translate}}：</li>
+				<li ng-repeat="channellist in callbackchannelqfdata.channellist">{{channellist}}</li>
+			</ul>
+			<ul ng-show="isqf"  class="cl">
+				<li>{{'区服' | translate}}：</li>				
+				<li ng-repeat="qflist in callbackchannelqfdata.qflist">{{qflist}}</li>
+			</ul>
+		</div>
+		<!--------已选择渠道区服显示----------->
+	</div>
+	<div class="panel panel-default panel_1">
+		<div class="panel-heading">
+			<strong class="fl">
+				{{'等级详情' | translate}}
+			</strong>
+			<div class="panel_downloadBtn"  down-file down-file-url="level/exportLevelStageData.action" 
+					down-file-type="xlsx" down-file-name="等级详情{{mstatdate}}" savedata="" postdata="searchData" ></div>
+			<!--------下载按钮----------->
+			<div class="clear"></div>
+		</div>
+		<div class="panel-body pdlf pdtb">
+			<div class="tableList tableListAct">
+				<ul class="tableListUl">
+					<li class="tableListLi tableListLiTh clear">
+						<span class="tableListTh">
+							<strong>{{'等级' | translate}}</strong>
+						</span>
+						<span class="tableListTh">
+							<strong>{{'平均升级时长' | translate}}</strong>
+							<div tipsmsg>{{'从上个等级到这个等级玩家在游戏中所消耗的平均时间' | translate}}
+							<br>{{'计算方式（日期区间内）：等级总时长/等级总人数' | translate}}</div>
+						</span>
+						<span class="tableListTh">
+							<strong>{{'等级停滞人数' | translate}}</strong>
+							<div tipsmsg>{{'查询区间内该等级的总的停滞人数（全量）' | translate}}</div>
+						</span>
+						<span class="tableListTh" title="等级停滞率=等级停滞玩家数/总玩家数">
+							<strong>{{'等级停滞率' | translate}}(%)</strong>
+							<div tipsmsg>{{'当一个玩家在某个等级超过3个自然日没有任何等级提升' | translate}}<br/>，{{'会记为这个等级的一次停滞。而停滞数占此等级活跃' | translate}}<br/>{{'玩家的比例为停滞率' | translate}} 
+							<br>{{'计算（全量）：等级停滞人数/大于等于这个等级总的停滞人数' | translate}}
+							</div>
+						</span>
+						<span class="tableListTh">
+							<strong>{{'付费次数' | translate}}</strong>
+						</span>
+						<span class="tableListTh">
+							<strong>{{'付费金额' | translate}}</strong>
+						</span>
+						<span class="tableListTh">
+							<strong>{{'详情' | translate}}</strong>
+						</span>
+					</li>
+					<li class="tableListLi clear" ng-repeat="data in levelDetail | orderBy: panel_leveldateil.dataList_1.orderBy.t+panel_leveldateil.dataList_1.orderBy.s | pageStartFrom : panel_leveldateil.dataList_1.limit.now*panel_leveldateil.dataList_1.limit.max | limitTo: panel_leveldateil.dataList_1.limit.max" ng-class="({'show_panel':data.show_panel})">
+						<div class="channelTr clear">
+							<span class="channelTd">
+								{{data.statType}}
+							</span>
+							<span class="channelTd">
+								{{data.timesDesc}}<!-- -{{data.times}} -->
+							</span>
+							<span class="channelTd">
+								{{data.stallcnt}}
+							</span>
+							<span class="channelTd">
+								{{data.rate}}%
+							</span>
+							<span class="channelTd">
+								{{data.payCount}}
+							</span>
+							<span class="channelTd">	
+								{{data.payMoney}}
+							</span>
+						<span class="channelTd">
+								<p class="show_panel_btn" ng-click="showPanel(data,$event,'upgradeDuration')" ng-show="data.showtype!='upgradeDuration'">{{'升级时长' | translate}}</p>
+								<p class="show_panel_btn" ng-click="data.show_panel=false;data.showtype='';" ng-show="data.showtype=='upgradeDuration' &&  data.show_panel == true">{{'收起' | translate}}</p>
+								<p class="show_panel_btn" ng-click="showPanel(data,$event,'dailyTrend')" ng-show="data.showtype!='dailyTrend' ">{{'按日趋势' | translate}}</p>
+								<p class="show_panel_btn" ng-click="data.show_panel=false;data.showtype='';" ng-show="data.showtype=='dailyTrend' &&  data.show_panel == true">{{'收起' | translate}}</p>
+							</span>
+					</div>
+			<div class="bgw  midepanel cl">
+				<div class="panel panel-default " ng-class="({'panel-act':data.showtype=='upgradeDuration' &&  data.show_panel == true})"  ng-show="data.showtype=='upgradeDuration' &&  data.show_panel == true"	>
+						<div class="panel-heading">
+							<strong>
+								{{data.statType}}
+							</strong>
+						</div>
+							<div class="clear"></div>
+					<div class="panel-body" ng-class="{'table':data.data.model=='table','graph':data.data.model=='graph'}">
+						<ul class="nav nav-tabs fl cl" navtabs>
+						  <li role="presentation" class="active"><a href="javascript:void(0);">{{'升级时长' | translate}}</a></li>
+						</ul>
+						<div class="clear"></div>
+						<div class="panel-showData" data-type="data">
+							<div class="dataList dataList2 dataList_1 dataListAct">
+								<div class="dataGraph">
+									<div class="graph" data="dataList_graph2" data-index="{{$index}}" data-data="levelDetail" data-list="1" name="升级时长"></div>
+									<div class="graphLimit" graphLimit datalimit="data.data.dataList_1.graphLimit" graphdata="data.data.dataList_1.data" graphfun="graphfun.dataList_graph2" model="data.data.model" name="升级时长" hastarget="true" isfist="false" key="{d:'rate',y:'statType'}">
+									</div>
+								</div>
+								<div class="dataTable">
+									<table class="table table-bordered text-center">
+										<tr class="tableTr">
+											<th width='50%' ng-click="changeOrderBy(data.data.dataList_1,'statType')">{{'升级时长' | translate}}</th>
+											<th width='50%' ng-click="changeOrderBy(data.data.dataList_1,'rate')">{{'百分比' | translate}}(%)</th>
+										</tr>
+										<tr ng-repeat="value in data.data.dataList_1.data | orderBy: data.data.dataList_1.orderBy.t+data.data.dataList_1.orderBy.s | pageStartFrom : data.data.dataList_1.limit.now*data.data.dataList_1.limit.max | limitTo: data.data.dataList_1.limit.max">
+											<td>{{value.statType}}</td>
+											<td>{{value.rate}}%</td>
+										</tr>
+									</table>
+									<div class="tableLimit" tablelimit datalimit="data.data.dataList_1.limit" index="0" tabledata="data.data.dataList_1.data">
+									</div>	
+								</div>
+							</div>
+						</div>
+						<div class="panel-changeData" graphtbale graphfun="graphfun" datachange="panel_change" datalimit="data.data.dataList_1.limit"  model="data.data.model" >
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="bgw  midepanel cl">
+				<div class="panel panel-default "  ng-class="({'panel-act':data.showtype=='dailyTrend' &&  data.show_panel == true})"  ng-show="data.showtype=='dailyTrend' &&  data.show_panel == true"	>
+						<div class="panel-heading">
+							<strong>
+								{{data.statType}}-{{'升级时长分布' | translate}}
+							</strong>
+						</div>
+							<div class="clear"></div>
+					<div class="panel-body" ng-class="{'table':data.dailyTrend.model=='table','graph':data.dailyTrend.model=='graph'}">
+						<ul class="nav nav-tabs fl cl" navtabs>
+						  <li role="presentation" class="active"><a href="javascript:void(0);">{{'平均升级时长' | translate}}</a></li>
+						  <li role="presentation" class=""><a href="javascript:void(0);">{{'等级停滞率' | translate}}(%)</a></li>
+						  <li role="presentation" class=""><a href="javascript:void(0);">{{'付费次数' | translate}}</a></li>
+						  <li role="presentation" class=""><a href="javascript:void(0);">{{'付费金额' | translate}}</a></li>
+						</ul>
+						<div class="clear"></div>
+						<div class="panel-showData" data-type="dailyTrend">
+							<div class="dataList dataList2 dataList_1 dataListAct">
+								<div class="dataGraph">
+									<div class="graph" data="dataList_graph" data-index="{{$index}}" data-data="levelDetail" data-list="1" name="升级时长"></div>
+									<div class="graphLimit" graphLimit datalimit="data.dailyTrend.dataList_1.graphLimit" graphdata="data.dailyTrend.dataList_1.data" graphfun="graphfun.dataList_graph" model="data.dailyTrend.model" name="升级时长" hastarget="true" isfist="false" key="{d:'times',y:'statdate'}">
+									</div>
+								</div>
+								<div class="dataTable">
+									<table class="table table-bordered text-center">
+										<tr class="tableTr">
+											<th width='50%' ng-click="changeOrderBy(data.dailyTrend.dataList_1,'statdate')">{{'日期' | translate}}</th>
+											<th width='50%' ng-click="changeOrderBy(data.dailyTrend.dataList_1,'times')">{{'平均升级时长' | translate}}</th>
+										</tr>
+										<tr ng-repeat="value in data.dailyTrend.dataList_1.data | orderBy: data.dailyTrend.dataList_1.orderBy.t+data.dailyTrend.dataList_1.orderBy.s | pageStartFrom : data.dailyTrend.dataList_1.limit.now*data.dailyTrend.dataList_1.limit.max | limitTo: data.dailyTrend.dataList_1.limit.max">
+											<td>{{value.statdate}}</td>
+											<td>{{value.timesDesc}}<!-- {{value.times}} --></td>
+										</tr>
+									</table>
+									<div class="tableLimit" tablelimit datalimit="data.dailyTrend.dataList_1.limit" index="0" tabledata="data.dailyTrend.dataList_1.data">
+									</div>
+								</div>
+							</div>
+							<div class="dataList dataList2 dataList_2">
+								<div class="dataGraph">
+									<div class="graph" data="dataList_graph" data-index="{{$index}}" data-data="levelDetail" data-list="2" name="等级停滞率"></div>
+									<div class="graphLimit" graphLimit datalimit="data.dailyTrend.dataList_2.graphLimit" graphdata="data.dailyTrend.dataList_2.data" graphfun="graphfun.dataList_graph" model="data.dailyTrend.model" name="等级停滞率" hastarget="true" isfist="false" key="{d:'rate',y:'statType'}">
+									</div>
+								</div>
+								<div class="dataTable">
+									<table class="table table-bordered text-center">
+										<tr class="tableTr">
+											<th width='33.3%' ng-click="changeOrderBy(data.dailyTrend.dataList_2,'statdate')">{{'日期' | translate}}</th>
+											<th width='33.3%' ng-click="changeOrderBy(data.dailyTrend.dataList_2,'stallcnt')">{{'等级停滞数' | translate}}</th>
+											<th width='33.3%' ng-click="changeOrderBy(data.dailyTrend.dataList_2,'rate')">{{'等级停滞率' | translate}}(%)</th>
+										</tr>
+										<tr ng-repeat="value in data.dailyTrend.dataList_2.data | orderBy: data.dailyTrend.dataList_2.orderBy.t+data.dailyTrend.dataList_2.orderBy.s | pageStartFrom : data.dailyTrend.dataList_2.limit.now*data.dailyTrend.dataList_2.limit.max | limitTo: data.dailyTrend.dataList_2.limit.max">
+											<td>{{value.statdate}}</td>
+											<td>{{value.stallcnt}}</td>
+											<td>{{value.rate}}</td>
+										</tr>
+									</table>
+									<div class="tableLimit" tablelimit datalimit="data.dailyTrend.dataList_2.limit" index="1"  tabledata="data.dailyTrend.dataList_2.data">
+									</div>
+								</div>
+							</div>
+							<div class="dataList dataList2 dataList_3">
+								<div class="dataGraph">
+									<div class="graph" data="dataList_graph" data-index="{{$index}}" data-data="levelDetail" data-list="3" name="付费次数"></div>
+									<div class="graphLimit" graphLimit datalimit="data.dailyTrend.dataList_3.graphLimit" graphdata="data.dailyTrend.dataList_3.data" graphfun="graphfun.dataList_graph" model="data.dailyTrend.model" name="付费次数" hastarget="true" isfist="false" key="{d:'payCount',y:'statType'}">
+									</div>
+								</div>
+								<div class="dataTable">
+									<table class="table table-bordered text-center">
+										<tr class="tableTr">
+											<th width='50%' ng-click="changeOrderBy(data.dailyTrend.dataList_3,'statdate')">{{'日期' | translate}}</th>
+											<th width='50%' ng-click="changeOrderBy(data.dailyTrend.dataList_3,'payCount')">{{'付费次数' | translate}}</th>
+										</tr>
+										<tr ng-repeat="value in data.dailyTrend.dataList_3.data | orderBy: data.dailyTrend.dataList_3.orderBy.t+data.dailyTrend.dataList_3.orderBy.s | pageStartFrom : data.dailyTrend.dataList_3.limit.now*data.dailyTrend.dataList_3.limit.max | limitTo: data.dailyTrend.dataList_3.limit.max">
+											<td>{{value.statdate}}</td>
+											<td>{{value.payCount}}</td>
+										</tr>
+									</table>
+									<div class="tableLimit" tablelimit datalimit="data.dailyTrend.dataList_3.limit" index="2"  tabledata="data.dailyTrend.dataList_3.data">
+									</div>
+								</div>
+							</div>
+							<div class="dataList dataList2 dataList_4">
+								<div class="dataGraph">
+									<div class="graph" data="dataList_graph" data-index="{{$index}}" data-data="levelDetail" data-list="4" name="付费金额"></div>
+									<div class="graphLimit" graphLimit datalimit="data.dailyTrend.dataList_4.graphLimit" graphdata="data.dailyTrend.dataList_4.data" graphfun="graphfun.dataList_graph" model="data.dailyTrend.model" name="付费金额" hastarget="true" isfist="false" key="{d:'payMoney',y:'statType'}">
+									</div>
+								</div>
+								<div class="dataTable">
+									<table class="table table-bordered text-center">
+										<tr class="tableTr">
+											<th width='50%' ng-click="changeOrderBy(data.dailyTrend.dataList_4,'statdate')">{{'日期' | translate}}</th>
+											<th width='50%' ng-click="changeOrderBy(data.dailyTrend.dataList_4,'payMoney')">{{'付费金额' | translate}}</th>
+										</tr>
+										<tr ng-repeat="value in data.dailyTrend.dataList_4.data | orderBy: data.dailyTrend.dataList_4.orderBy.t+data.dailyTrend.dataList_4.orderBy.s | pageStartFrom : data.dailyTrend.dataList_4.limit.now*data.dailyTrend.dataList_4.limit.max | limitTo: data.dailyTrend.dataList_4.limit.max">
+											<td>{{value.statdate}}</td>
+											<td>{{value.payMoney}}</td>
+										</tr>
+									</table>
+									<div class="tableLimit" tablelimit datalimit="data.dailyTrend.dataList_4.limit" index="3"  tabledata="data.dailyTrend.dataList_4.data">
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="panel-changeData" graphtbale graphfun="graphfun" datachange="panel_change" datalimit="data.dailyTrend.dataList_1.limit"  model="data.dailyTrend.model">
+						</div>
+					</div>
+				</div>
+			</div>
+			</li>
+				</ul>
+				<div class="tableFooter">
+					<div class="buttondiv fl" analysisdrop changei="changetype()">
+						<div class="selectlable fl">{{'每页显示' | translate}}：</div>
+						<div class="analysisdrop fl" style="width:60px;">
+							<div class="hadchoose">
+								<h6>{{val | translate}}</h6></div>
+							<ul class="dropUl">
+								<li ng-click="c('10');changetype(levelDetail,panel_leveldateil.dataList_1.limit,10)">10</li>
+								<li ng-click="c('20');changetype(levelDetail,panel_leveldateil.dataList_1.limit,20)">20</li>
+								<li ng-click="c('50');changetype(levelDetail,panel_leveldateil.dataList_1.limit,50)">50</li>
+								<li ng-click="c('100');changetype(levelDetail,panel_leveldateil.dataList_1.limit,100)">100</li>
+							</ul>
+						</div>
+						<div class="selectlable fl">&nbsp;&nbsp;{{'条记录' | translate}}</div>
+					</div>
+					<div class="dataTables_paginate fr" datatableslimit  datalimit="panel_leveldateil.dataList_1.limit"  tabledata="levelDetail"></div>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,279 @@
+<style type="text/css">
+    .table th,.table td{ border:1px solid #ddd;}
+    .form-group{ margin-left: 10px; margin-top: 10px;}
+    .form-control{ display: inline-block; vertical-align: middle;}
+    .tableListTh{
+    	width: 7%;
+    }
+    .channelTd{
+    	width: 7%;
+    }
+</style>
+<div>
+    <div>
+        <div class="form-group">
+            <div class="div_select">
+                
+            </div>
+            <div datepicker format="yyyy-MM-dd" minMode="month" class="col-xs-3 timeSelect" mstatdate="mstatdate" style="width:350px;"></div>
+            <label for="">{{'游戏' | translate}}：</label>
+            <select ng-model="postData.gameid" class="form-control" ng-options="data.id as data.name for data in panel_1.gameList"  ng-change="getChannelList()">
+			</select>
+			<label for="">{{'系统' | translate}}：</label>
+            <select ng-model="postData.systemid" class="form-control" ng-options="data.id as data.name for data in panel_1.systemList">
+            </select>&nbsp;&nbsp;
+            
+            <a class="btn btn-default" ng-click="getData()" >{{'查询' | translate}}</a>
+        </div>
+    </div>
+    <div class="panel panel-default panel_1 hidden">
+        <div class="panel-heading">
+            <strong>
+                 	
+                <!--------提示框--------- -->
+            </strong>
+            <div class="panel_downloadBtn"  down-file down-file-url="balanceplat/exportAppleAutoBalance.action" 
+					down-file-type="xlsx" down-file-name="苹果-谷得对账{{mstatdate}}" savedata="" postdata="postData" ></div>
+            <!--------下载按钮--------- -->
+            <div class="clear"></div>
+        </div>
+        
+        <div class="panel-body pdlf pdtb">
+            <div class="tableBox">
+                <table class="table table-striped">
+                    <tr>
+                    	<th class="text-center" width="10.28%">{{'日期' | translate}}	
+                    	<th class="text-center" width="10.28%">{{'系统' | translate}}	
+                    	<th class="text-center" width="10.28%">{{'总注册用户' | translate}}	
+                    	<th class="text-center" width="10.28%">{{'总活跃用户' | translate}}
+                    	<th class="text-center" width="10.28%">{{'总充值金额' | translate}}	
+                    	<th class="text-center" width="10.28%">{{'总充值人数' | translate}}	
+                    	<th class="text-center" width="10.28%">{{'总充值次数' | translate}}	
+                    	<th class="text-center" width="10.28%">总arpu	总arpu	总付费率	累积付费玩家	总流失用户	总回流用户
+                    	
+                    	<th class="text-center" width="10.28%">{{'游戏' | translate}}</th>
+                        <th class="text-center" width="10.28%">{{'财年' | translate}}</th>
+                        <th class="text-center" width="10.28%">{{'财月' | translate}}</th>
+                        <th class="text-center" width="10.28%">{{'产品' | translate}}Id</th>
+                        <th class="text-center" width="10.28%">{{'苹果数量' | translate}}</th>
+                        <th class="text-center" width="10.28%">{{'谷得数量' | translate}}</th>
+                        <th class="text-center" width="10.28%">{{'差额' | translate}}</th>
+                        <th class="text-center" width="10.28%">{{'日期' | translate}}</th>
+                    </tr>
+                    <tr ng-repeat="data in panel_1.dataList_1.data  | orderBy: panel_1.dataList_1.orderBy.t+panel_1.dataList_1.orderBy.s | pageStartFrom : panel_1.dataList_1.limit.now*panel_1.dataList_1.limit.max | limitTo: panel_1.dataList_1.limit.max" class="text-center">
+                        <td>{{data.gameName}}</td>
+                        <td>{{data.fyear}}</td>
+                        <td>{{data.fperiod}}</td>
+                        <td>{{data.productid}}</td>
+                        <td>{{data.appleCount}}</td>
+                        <td>{{data.goodCount}}</td>
+                        <td>{{data.diffCount}}</td>
+                        <td>{{data.start}}~{{data.end}}</td>
+                </table>
+                <div class="tableFooter">
+                    <div class="buttondiv fl" analysisdrop changei="changetype()">
+                        <div class="selectlable fl">{{'每页显示' | translate}}：</div>
+                        <div class="analysisdrop fl" style="width:60px;">
+                            <div class="hadchoose">
+                                <h6>{{val | translate}}</h6></div>
+                            <ul class="dropUl">
+                                <li ng-click="c('10');changetype(10)">10</li>
+                                <li ng-click="c('20');changetype(20)">20</li>
+                                <li ng-click="c('50');changetype(50)">50</li>
+                                <li ng-click="c('100');changetype(100)">100</li>
+                            </ul>
+                        </div>
+                        <div class="selectlable fl">&nbsp;&nbsp;{{'条记录' | translate}}</div>
+                    </div>
+                    <div class="dataTables_paginate fr" datatableslimit  datalimit="panel_1.dataList_1.limit"  tabledata="panel_1.dataList_1.data"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+	<div class="panel panel-default panel_1">
+		<div class="panel-heading">
+			<strong class="fl">
+				{{'渠道数据' | translate}}
+				<div tipsmsg></div>
+				<!--------提示框----------->
+			</strong>
+		<!--------tab选择按钮----------->
+			<div class="panel_downloadBtn"  down-file down-file-url="sdkdata/exportSDKDataSummary.action" 
+					down-file-type="xlsx" down-file-name="数据总览{{mstatdate}}" savedata="" postdata="postData" ></div>
+			<!--------下载按钮----------->
+			<div class="clear"></div>
+		</div>
+		<div class="panel-body pdlf pdtb">
+			<div class="tableList tableListAct" >
+				<ul class="tableListUl">
+					<li class="tableListLi tableListLiTh clear">
+						<span class="tableListTh">
+							<strong title="">{{'日期' | translate}}</strong>
+							<div tipsmsg></div>
+						</span>
+						<span class="tableListTh">
+							<strong title="">{{'系统' | translate}}</strong>
+							<div tipsmsg></div>
+						</span>
+						<span class="tableListTh">
+							<strong title="">{{'总注册用户' | translate}}</strong>
+							<div tipsmsg></div>
+						</span>
+						<span class="tableListTh">
+							<strong title="">{{'总活跃用户' | translate}}</strong>
+							<div tipsmsg></div>
+						</span>
+						<span class="tableListTh">
+							<strong title="">{{'总充值金额' | translate}}</strong>
+							<div tipsmsg></div>
+						</span>
+						<span class="tableListTh">
+							<strong title="">{{'总充值人数' | translate}}</strong>
+							<div tipsmsg></div>
+						</span>
+						<span class="tableListTh">
+							<strong title="">{{'总充值次数' | translate}}</strong>
+							<div tipsmsg></div>
+						</span>
+						<span class="tableListTh">
+							<strong title="">{{'总' | translate}}arpu</strong>
+							<div tipsmsg></div>
+						</span>
+						<span class="tableListTh">
+							<strong title="">{{'总' | translate}}arpu</strong>
+							<div tipsmsg></div>
+						</span>
+						<span class="tableListTh">
+							<strong title="">{{'总付费率' | translate}}</strong>
+							<div tipsmsg></div>
+						</span>
+						<span class="tableListTh">
+							<strong title="">{{'累积付费玩家' | translate}}</strong>
+							<div tipsmsg></div>
+						</span>
+						<span class="tableListTh">
+							<strong title="">{{'总流失用户' | translate}}</strong>
+							<div tipsmsg></div>
+						</span>	
+						<span class="tableListTh">
+							<strong title="">{{'总回流用户' | translate}}</strong>
+							<div tipsmsg></div>
+						</span>
+						<span class="tableListTh">
+							<strong ng-click="expandDetail()">{{'详情' | translate}}</strong>
+							<div tipsmsg></div>
+						</span>
+					</li>
+					
+					<li class="tableListLi clear" ng-repeat="data in panel_1.dataList_1.data" ng-class="({'show_panel':data.show_panel})">
+						<div class="channelTr clear">
+							<span class="channelTd">
+								{{data.statdate}}
+							</span>
+							<span class="channelTd">
+								{{data.os}}
+							</span>
+							<span class="channelTd">
+								{{data.all_regist}}
+							</span>
+							<span class="channelTd">
+								{{data.login}}
+							</span>
+							<span class="channelTd">
+								{{data.all_money}}
+							</span>
+							<!-- 日期	系统	总注册用户	总活跃用户	总充值金额	总充值人数	总充值次数	总arrpu	总arpu	总付费率	累积付费玩家	 总流失用户	总回流用户-->
+							<span class="channelTd">
+								{{data.all_rechg}}
+							</span>
+							<span class="channelTd">
+								{{data.rechg_time}}
+							</span>
+							<span class="channelTd">
+								{{data.arrpu}}
+							</span>
+							<span class="channelTd">
+								{{data.arpu}}
+							</span>
+							<span class="channelTd">
+								{{data.payrate}}
+							</span>
+							<span class="channelTd">
+								{{data.total_recharge}}
+							</span>
+							<span class="channelTd">
+								{{data.lost}}
+							</span>
+							<span class="channelTd">
+								{{data.lost_return}}
+							</span>
+							<!-- <span class="channelTd">
+								<div class="ProgressBar rela"><span style="width:{{data.rate}}%"></span><font>{{data.rate}}%</font></div>
+						</span> -->
+							<span class="channelTd show_panel_btn">
+								<p ng-click="showPanel(data)" ng-show="!data.show_panel">{{'详情' | translate}}</p>
+								<p ng-click="data.show_panel=false;" ng-show="data.show_panel">{{'收起' | translate}}</p>
+							</span>
+						</div>
+					<div class="showData">
+					<div class="panel-body table" >
+					<div class="panel-showData">
+						<div class="dataList dataList2 dataList_1 dataListAct">
+							<div class="dataGraph">
+							</div>
+							<div class="dataTable">
+								<table class="table table-bordered text-center">
+									<tr class="tableTr">
+										<th width='8%' ng-click="changeOrderBy(panel_1.dataList_1,'statdate')">{{'日期' | translate}}</th>
+										<th width='6%' ng-click="changeOrderBy(panel_1.dataList_1,'statdate')">{{'系统' | translate}}</th>
+										<th width='6%' ng-click="changeOrderBy(panel_1.dataList_1,'statdate')">{{'来源名称' | translate}}</th>
+										<th width='6%' ng-click="changeOrderBy(panel_1.dataList_1,'statdate')">{{'对应' | translate}}ID</th>
+										<th width='6%' ng-click="changeOrderBy(panel_1.dataList_1,'statdate')">{{'总注册用户' | translate}}</th>
+										<th width='6%' ng-click="changeOrderBy(panel_1.dataList_1,'statdate')">{{'总活跃用户' | translate}}</th>
+										<th width='6%' ng-click="changeOrderBy(panel_1.dataList_1,'statdate')">{{'总充值金额' | translate}}</th>
+										<th width='6%' ng-click="changeOrderBy(panel_1.dataList_1,'statdate')">{{'总充值人数' | translate}}</th>
+										<th width='6%' ng-click="changeOrderBy(panel_1.dataList_1,'statdate')">{{'充值次数' | translate}}</th>
+										<th width='6%' ng-click="changeOrderBy(panel_1.dataList_1,'statdate')">arrpu</th>
+										<th width='6%' ng-click="changeOrderBy(panel_1.dataList_1,'statdate')">arpu</th>
+										<th width='6%' ng-click="changeOrderBy(panel_1.dataList_1,'statdate')">{{'总付费率' | translate}}</th>
+										<th width='6%' ng-click="changeOrderBy(panel_1.dataList_1,'statdate')">{{'累积付费玩家' | translate}}</th>
+										<th width='6%' ng-click="changeOrderBy(panel_1.dataList_1,'statdate')">{{'流失用户' | translate}}</th>
+										<th width='6%' ng-click="changeOrderBy(panel_1.dataList_1,'statdate')">{{'回流用户' | translate}}</th>
+										<!-- <th width='50%' ng-click="changeOrderBy(panel_1.dataList_1,'devices')">设备激活(台)</th> -->
+									</tr>
+									<tr ng-repeat="value in data.details | orderBy: panel_1.dataList_1.orderBy.t+panel_1.dataList_1.orderBy.s | pageStartFrom : panel_1.dataList_1.limit.now*panel_1.dataList_1.limit.max | limitTo: panel_1.dataList_1.limit.max">
+										<td>{{value.statdate}}</td>
+										<td>{{value.os}}</td>
+										<td>{{value.source}}</td>
+										<td>{{value.sourceid}}</td>
+										<td>{{value.all_regist}}</td>
+										<td>{{value.login}}</td>
+										<td>{{value.all_money}}</td>
+										<td>{{value.all_rechg}}</td>
+										<td>{{value.rechg_time}}</td>
+										<td>{{value.arrpu}}</td>
+										<td>{{value.arpu}}</td>
+										<td>{{value.payrate}}</td>
+										<td>{{value.total_recharge}}</td>
+										<td>{{value.lost}}</td>
+										<td>{{value.lost_return}}</td>
+										
+									</tr>
+								</table>
+								<div class="tableLimit" tablelimit datalimit="panel_1.dataList_1.limit"  index="0" tabledata="data.trend.devices">
+								</div>
+							</div>
+						</div>
+                        <!-- <div class="panel-changeData" graphtbale graphfun="graphfun" datachange="panel_change" datalimit="panel_1.dataList_1.limit" model="data.model">
+                        </div> -->
+					<!-------------图表表格切换，graphfun ----datachange(需要分页时删除不填)------------->
+                    </div>
+					</div>
+					</div>
+				</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>

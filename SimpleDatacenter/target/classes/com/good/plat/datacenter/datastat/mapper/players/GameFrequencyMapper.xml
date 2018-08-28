@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.datastat.mapper.players.GameFrequencyMapper">
+	<resultMap id="BaseResultMap" type="com.good.plat.datacenter.datastat.entity.players.GameFrequency">
+		<result column="gameid" property="gameid"/>
+		<result column="gameName" property="gameName"/>
+		<result column="channelid" property="channelid"/>
+		<result column="channelName" property="channelName"/>
+		<result column="subchannelid" property="subchannelid"/>
+		<result column="areaid" property="areaid"/>
+		<result column="areaName" property="areaName"/>
+		<result column="statdate" property="statdate"/>
+		<result column="statType" property="statType"/>
+		<result column="rate" property="rate"/>
+		<result column="frequency" property="frequency"/>
+		<result column="accounts" property="accounts"/>
+		
+		<result column="timezone" property="timezone"/>
+		
+	</resultMap>
+	
+	<sql id="BaseSelect">
+		where statdate between #{startdate} and #{enddate} 
+		<if test="termtypes != null">
+			and termtype in
+			<foreach collection="termtypes" item="term" index="index" open="(" close=")" separator=",">
+				#{term}
+			</foreach>
+		</if>
+		and gameid=#{gameid}
+		<if test="areas != null">
+			and areaid in
+			<foreach collection="areas" item="area" index="index" open="(" close=")" separator=",">
+				#{area}
+			</foreach>
+		</if>
+		<if test="channelList != null">
+			and channel in
+			<foreach collection="channelList" item="channel" index="index" open="(" close=")" separator=",">
+				#{channel.id}
+			</foreach>
+		</if>
+		<if test="subchannels != null">
+			and chnnnl in
+			<foreach collection="subchannels" item="subchannel" index="index" open="(" close=")" separator=",">
+				#{subchannel}
+			</foreach>
+		</if>
+		<if test="checktype1 != null">
+			and type = #{checktype1}
+		</if>
+	</sql>
+	
+	<!-- 日游戏次数 -->
+	<select id="selectDailyGameCounts" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select frequency,sum(count) as accounts
+		from logplat_gamefrq_daily 
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/> and type=1 and tctype=2
+		group by frequency order by frequency
+	</select>
+	
+	<!-- 周游戏次数 -->
+	<select id="selectWeeklyGameCounts" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select frequency,sum(count) as accounts
+		from logplat_gamefrq_weekly
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/> and type=1 and tctype=2
+		group by frequency order by frequency
+	</select>
+	
+	<!-- 周游戏天数 -->
+	<select id="selectWeeklyGameDays" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select frequency , sum(count) as accounts
+		from logplat_gamefrq_weekly
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/> and type=1 and tctype=1
+		group by frequency order by frequency
+	</select>
+	
+	<!-- 月游戏天数 -->
+	<select id="selectMonthlyGameDays" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select frequency , sum(count) as accounts
+		from logplat_gamefrq_monthly
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/> and type=1 and tctype=1
+		group by frequency order by frequency
+	</select>
+	
+	<!-- 玩家游戏时段 -->
+	<select id="selectPlayerHoursList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select statdate,timezone , sum(count) as accounts
+		from logplat_game_timezone
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/> and type=#{checktype1,jdbcType=INTEGER}
+		group by statdate,timezone order by statdate,timezone
+	</select>
+	
+</mapper>

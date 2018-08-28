@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.datastat.mapper.revenue.RevenueBehaviorMapper">
+	<resultMap id="BaseResultMap" type="com.good.plat.datacenter.datastat.entity.revenue.Behavior">
+		<result column="gameid" property="gameid"/>
+		<result column="gameName" property="gameName"/>
+		<result column="channelid" property="channelid"/>
+		<result column="channelName" property="channelName"/>
+		<result column="subchannelid" property="subchannelid"/>
+		<result column="areaid" property="areaid"/>
+		<result column="areaName" property="areaName"/>
+		<result column="statdate" property="statdate"/>
+		<result column="statType" property="statType"/>
+		<result column="rate" property="rate"/>
+		<result column="payChannel" property="payChannel"/>
+		<result column="payChannelName" property="payChannelName"/>
+		<result column="incomes" property="incomes"/>
+		<result column="payUser" property="payUser"/>
+
+	</resultMap>
+	
+	<sql id="BaseSelect">
+		where statdate between #{startdate} and #{enddate} 
+		<if test="termtypes != null">
+			and termtype in
+			<foreach collection="termtypes" item="term" index="index" open="(" close=")" separator=",">
+				#{term}
+			</foreach>
+		</if>
+		and gameid=#{gameid}
+		<if test="areas != null">
+			and areaid in
+			<foreach collection="areas" item="area" index="index" open="(" close=")" separator=",">
+				#{area}
+			</foreach>
+		</if>
+		<if test="channelList != null">
+			and channel in
+			<foreach collection="channelList" item="channel" index="index" open="(" close=")" separator=",">
+				#{channel.id}
+			</foreach>
+		</if>
+		<if test="subchannels != null">
+			and chnnnl in
+			<foreach collection="subchannels" item="subchannel" index="index" open="(" close=")" separator=",">
+				#{subchannel}
+			</foreach>
+		</if>
+	</sql>
+	
+	<sql id="UnionSelect">
+		where a.statdate between #{startdate} and #{enddate} 
+		<if test="termtypes != null">
+			and a.termtype in
+			<foreach collection="termtypes" item="term" index="index" open="(" close=")" separator=",">
+				#{term}
+			</foreach>
+		</if>
+		and a.gameid=#{gameid}
+		<if test="areas != null">
+			and a.areaid in
+			<foreach collection="areas" item="area" index="index" open="(" close=")" separator=",">
+				#{area}
+			</foreach>
+		</if>
+		<if test="channelList != null">
+			and a.channel in
+			<foreach collection="channelList" item="channel" index="index" open="(" close=")" separator=",">
+				#{channel.id}
+			</foreach>
+		</if>
+		<if test="subchannels != null">
+			and a.chnnnl in
+			<foreach collection="subchannels" item="subchannel" index="index" open="(" close=")" separator=",">
+				#{subchannel}
+			</foreach>
+		</if>
+	</sql>
+
+	<!-- 充值方式收入金额 -->
+	<select id="selectChargeWayOfAmount" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select 
+			b.channelName as payChannelName, 
+			round(sum(a.money),2) as incomes, 
+			round(sum(a.money)/(select sum(money) 
+			from logplat_actor_recharge <include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/>)*100,2) as rate
+		from 
+			logplat_actor_recharge a left join tb_logplat_paychannel b 
+			on a.paychannel=b.channelid 
+			<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.ABaseSelect"/>
+		group by b.channelName order by b.channelName
+		
+	</select>
+	
+	<select id="exportChargeWayOfAmount" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	
+	<!-- 充值方式-充值人次 -->
+	<select id="selectChargeWayOfNum" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select 
+			b.channelName as payChannelName, 
+			count(a.money) as payUser, 
+			round(count(a.money)/(select count(money) 
+			from logplat_actor_recharge <include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/>)*100,2) as rate
+		from 
+			logplat_actor_recharge a left join tb_logplat_paychannel b 
+			on a.paychannel=b.channelid 
+			<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.ABaseSelect"/>
+		group by b.channelName order by b.channelName
+		
+	</select>
+	
+	<select id="exportChargeWayOfNum" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+			
+	</select>
+	
+	
+	<!-- 消费包类型-收入金额 -->
+	<select id="selectConsumePackgeAmount" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select packname,sum(money) as incomes 
+		from logplat_actor_recharge 
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/>
+		 group by packname
+	</select>
+	
+	<select id="exportConsumePackgeAmount" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+			
+	</select>
+	
+	
+	<!-- 消费包类型-充值人次 -->
+	<select id="selectConsumePackgeNum" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	<select id="exportConsumePackgeNum" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	
+	<!-- 充值次数分布 -->
+	<select id="selectChargeNumDis" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	<select id="exportChargeNumDis" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	
+	<!-- 充值额度分布 -->
+	<select id="selectChargeAmountDis" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	<select id="exportChargeAmountDis" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	
+	<!-- 充值间隔 -->
+	<select id="selectChargeInterval" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	<select id="exportChargeInterval" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+</mapper>

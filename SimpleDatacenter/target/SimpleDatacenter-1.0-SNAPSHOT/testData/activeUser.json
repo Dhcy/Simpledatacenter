@@ -1,0 +1,172 @@
+{
+  "activeUser": {
+    "DAU": {
+      "AVG": 27151,
+      "MD": 26643,
+      "data": [
+        {
+          "statdate": "2014-08-24",
+          "newUser": 7745,
+          "oldUser": 19550,
+          "count": 27295
+        },
+        {
+          "statdate": "2014-08-25",
+          "newUser": 8043,
+          "oldUser": 19505,
+          "count": 27548
+        },
+        {
+          "statdate": "2014-08-26",
+          "newUser": 8741,
+          "oldUser": 20587,
+          "count": 29328
+        },
+        {
+          "statdate": "2014-08-27",
+          "newUser": 8614,
+          "oldUser": 21332,
+          "count": 29946
+        },
+        {
+          "statdate": "2014-08-28",
+          "newUser": 7896,
+          "oldUser": 18094,
+          "count": 25990
+        },
+        {
+          "statdate": "2014-08-29",
+          "newUser": 7323,
+          "oldUser": 18481,
+          "count": 25804
+        },
+        {
+          "statdate": "2014-08-30",
+          "newUser": 8130,
+          "oldUser": 17613,
+          "count": 25743
+        },
+        {
+          "statdate": "2014-08-31",
+          "newUser": 9051,
+          "oldUser": 16503,
+          "count": 25554
+        }
+      ]
+    },
+    "WAU": {
+      "AVG": 123587,
+      "MD": 123479,
+      "data": [
+        {
+          "statdate": "2014-08-24",
+          "wauAccount": 127443
+        },
+        {
+          "statdate": "2014-08-25",
+          "wauAccount": 126901
+        },
+        {
+          "statdate": "2014-08-26",
+          "wauAccount": 126324
+        },
+        {
+          "statdate": "2014-08-27",
+          "wauAccount": 124153
+        },
+        {
+          "statdate": "2014-08-28",
+          "wauAccount": 122804
+        },
+        {
+          "statdate": "2014-08-29",
+          "wauAccount": 121694
+        },
+        {
+          "statdate": "2014-08-30",
+          "wauAccount": 120157
+        },
+        {
+          "statdate": "2014-08-31",
+          "wauAccount": 119216
+        }
+      ]
+    },
+    "MAU": {
+      "AVG": 373056,
+      "MD": 374015,
+      "data": [
+        {
+          "statdate": "2014-08-24",
+          "mauAccount": 384522
+        },
+        {
+          "statdate": "2014-08-25",
+          "mauAccount": 381620
+        },
+        {
+          "statdate": "2014-08-26",
+          "mauAccount": 379478
+        },
+        {
+          "statdate": "2014-08-27",
+          "mauAccount": 376845
+        },
+        {
+          "statdate": "2014-08-28",
+          "mauAccount": 371184
+        },
+        {
+          "statdate": "2014-08-29",
+          "mauAccount": 366101
+        },
+        {
+          "statdate": "2014-08-30",
+          "mauAccount": 363608
+        },
+        {
+          "statdate": "2014-08-31",
+          "mauAccount": 361091
+        }
+      ]
+    },
+    "DAU/MAU": {
+      "AVG": 0,
+      "MD": 0,
+      "data": [
+        {
+          "statdate": "2014-08-24",
+          "mauAccount": 0.07
+        },
+        {
+          "statdate": "2014-08-25",
+          "mauAccount": 0.07
+        },
+        {
+          "statdate": "2014-08-26",
+          "mauAccount": 0.08
+        },
+        {
+          "statdate": "2014-08-27",
+          "mauAccount": 0.08
+        },
+        {
+          "statdate": "2014-08-28",
+          "mauAccount": 0.07
+        },
+        {
+          "statdate": "2014-08-29",
+          "mauAccount": 0.07
+        },
+        {
+          "statdate": "2014-08-30",
+          "mauAccount": 0.07
+        },
+        {
+          "statdate": "2014-08-31",
+          "mauAccount": 0.07
+        }
+      ]
+    }
+  }
+}

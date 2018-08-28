@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.independ.mapper.sj3index.Sj3VowStatMapper">
+	<resultMap id="BaseResultMap" type="com.good.plat.datacenter.independ.entity.sj3index.Sj3VowStat">
+		<result column="statdate" property="statdate"/>
+		<result column="gameid" property="gameid"/>
+		<result column="gameName" property="gameName"/>
+		<result column="channelid" property="channelid"/>
+		<result column="channelName" property="channelName"/>
+		<result column="areaid" property="areaid"/>
+		<result column="areaName" property="areaName"/>
+		
+		<result column="resource" property="resource"/>
+		<result column="actorcnt" property="actorcnt"/>
+		<result column="rate" property="rate"/>
+	</resultMap>
+	
+	<sql id="BaseSelect">
+		where 1=1
+			<if test="startdate!=null and startdate!=''">
+			and statdate &gt;=#{startdate}
+			</if>
+			<if test="enddate!=null and enddate!=''">
+			and statdate &lt;=#{enddate}
+			</if>
+			and gameid=#{gameid}
+			<if test="areaid!=null and areaid!=-1">
+				and areaid=#{areaid}
+			</if>
+			<if test="channelid!=null and channelid!=-1">
+				and channel=#{channelid}
+			</if>
+	</sql>
+	<!--
+	许愿统计
+	-->
+	<select id="selectVowStatList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.IndependBaseSearchData">
+		SELECT
+		a.statdate,
+		a.areaid,
+		a.resource,
+		IFNULL(a.actorcnt, 0) AS actorcnt,
+		IF (b.actorcnt IS NULL,0,ROUND(a.actorcnt / b.actorcnt * 100,2)) as rate
+		FROM
+			(
+				SELECT
+					statdate,
+					gameid,
+					areaid,
+					resource,
+					SUM(IF (actorcnt IS NULL, 0, actorcnt)) AS actorcnt
+				FROM
+					sj3_vow_stat
+				<include refid="BaseSelect"/>
+				GROUP BY
+					statdate,
+					gameid,
+					areaid,
+					resource
+			) a
+		LEFT JOIN (
+			SELECT
+				statdate,
+				gameid,
+				areaid,
+				SUM(IF (actorcnt IS NULL, 0, actorcnt)) AS actorcnt
+			FROM
+				sj3_vow_stat
+			<include refid="BaseSelect"/>
+			GROUP BY
+				statdate,
+				gameid,
+				areaid
+		) b ON (
+			a.statdate = b.statdate
+			AND a.gameid = b.gameid
+			AND a.areaid = b.areaid
+		)
+	</select>
+	
+</mapper>

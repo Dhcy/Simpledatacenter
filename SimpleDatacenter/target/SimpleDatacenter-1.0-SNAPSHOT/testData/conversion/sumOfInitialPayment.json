@@ -1,0 +1,40 @@
+
+{
+  "sumOfInitialPayment": [
+    {
+      "amount": "<$2",
+      "accounts": 5,
+      "percentage": 0.5
+    },
+    {
+      "amount": ">$200",
+      "accounts": 4,
+      "percentage": 0.4
+    },
+    {
+      "amount": "$40~100",
+      "accounts": 3,
+      "percentage": 0.3
+    },
+    {
+      "amount": "$2~10",
+      "accounts": 5,
+      "percentage": 0.5
+    },
+    {
+      "amount": "$20~40",
+      "accounts": 1,
+      "percentage": 0.1
+    },
+    {
+      "amount": "$10~20",
+      "accounts": 3,
+      "percentage": 0.3
+    },
+    {
+      "amount": "$100~200",
+      "accounts": 7,
+      "percentage": 0.7
+    }
+  ]
+}

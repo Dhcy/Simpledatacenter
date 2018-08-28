@@ -1,0 +1,2 @@
+alert();
+function playersController($scope){}

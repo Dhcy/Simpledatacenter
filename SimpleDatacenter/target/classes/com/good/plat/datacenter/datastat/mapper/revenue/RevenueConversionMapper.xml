@@ -1,0 +1,453 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.datastat.mapper.revenue.RevenueConversionMapper">
+	<resultMap id="BaseResultMap" type="com.good.plat.datacenter.datastat.entity.revenue.Conversion">
+		<result column="gameid" property="gameid"/>
+		<result column="gameName" property="gameName"/>
+		<result column="channelid" property="channelid"/>
+		<result column="channelName" property="channelName"/>
+		<result column="subchannelid" property="subchannelid"/>
+		<result column="areaid" property="areaid"/>
+		<result column="areaName" property="areaName"/>
+		<result column="statdate" property="statdate"/>
+		<result column="statType" property="statType"/>
+		<result column="rate" property="rate"/>
+		<result column="dailyPayRate" property="dailyPayRate"/>
+		<result column="weeklyPayRate" property="weeklyPayRate"/>
+		<result column="monthPayRate" property="monthPayRate"/>
+		<result column="AVG" property="AVG"/>
+		<result column="dailyARPU" property="dailyARPU"/>
+		<result column="monthARPU" property="monthARPU"/>
+		<result column="dailyARPPU" property="dailyARPPU"/>
+		<result column="monthARPPU" property="monthARPPU"/>
+		<result column="actorLevel" property="actorLevel"/>
+		<result column="money" property="money"/>
+		<result column="quantity" property="quantity"/>
+		<result column="city" property="city"/>
+	</resultMap>
+	
+	<sql id="BaseSelect">
+		where statdate between #{startdate} and #{enddate} 
+		<if test="termtypes != null">
+			and termtype in
+			<foreach collection="termtypes" item="term" index="index" open="(" close=")" separator=",">
+				#{term}
+			</foreach>
+		</if>
+		and gameid=#{gameid}
+		<if test="areas != null">
+			and areaid in
+			<foreach collection="areas" item="area" index="index" open="(" close=")" separator=",">
+				#{area}
+			</foreach>
+		</if>
+		<if test="channelList != null">
+			and channel in
+			<foreach collection="channelList" item="channel" index="index" open="(" close=")" separator=",">
+				#{channel.id}
+			</foreach>
+		</if>
+		<if test="subchannels != null">
+			and chnnnl in
+			<foreach collection="subchannels" item="subchannel" index="index" open="(" close=")" separator=",">
+				#{subchannel}
+			</foreach>
+		</if>
+	</sql>
+	
+	
+	<sql id="JoinARBaseSelect">
+		where ar.statdate between #{startdate} and  #{enddate} 
+		<if test="termtypes != null">
+			and ar.termtype in
+			<foreach collection="termtypes" item="term" index="index" open="(" close=")" separator=",">
+				#{term}
+			</foreach>
+		</if>
+		and ar.gameid=#{gameid}
+		<if test="areas != null">
+			and ar.areaid in
+			<foreach collection="areas" item="area" index="index" open="(" close=")" separator=",">
+				#{area}
+			</foreach>
+		</if>
+		<if test="channelList != null">
+			and ar.channel in
+			<foreach collection="channelList" item="channel" index="index" open="(" close=")" separator=",">
+				#{channel.id}
+			</foreach>
+		</if>
+		<if test="subchannels != null">
+			and ar.chnnnl in
+			<foreach collection="subchannels" item="subchannel" index="index" open="(" close=")" separator=",">
+				#{subchannel}
+			</foreach>
+		</if>
+	</sql>
+	
+	<sql id="JoinAUBaseSelect">
+		<where>
+		<if test="termtypes != null">
+			and au.termtype in
+			<foreach collection="termtypes" item="term" index="index" open="(" close=")" separator=",">
+				#{term}
+			</foreach>
+		</if>
+		and au.gameid=#{gameid}
+		<if test="areas != null">
+			and au.areaid in
+			<foreach collection="areas" item="area" index="index" open="(" close=")" separator=",">
+				#{area}
+			</foreach>
+		</if>
+		<if test="channelList != null">
+			and au.channel in
+			<foreach collection="channelList" item="channel" index="index" open="(" close=")" separator=",">
+				#{channel.id}
+			</foreach>
+		</if>
+		<if test="subchannels != null">
+			and au.chnnnl in
+			<foreach collection="subchannels" item="subchannel" index="index" open="(" close=")" separator=",">
+				#{subchannel}
+			</foreach>
+		</if>
+		</where>
+	</sql>
+
+	<!-- 
+		logplat_active_user : dau , wau , mau
+		logplat_actor_recharge :  select count(distinct uid, actorid) from logplat_actor_recharge; //单机版的 actorid全都是0;
+	-->
+	<!-- 日付费率-->
+	<select id="selectDayPayRateList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select statdate,
+		(count(distinct uid,actorid) / (select sum(newdau+olddau) from logplat_active_user  a
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.ABaseSelect"></include> and a.statdate= b.statdate)) as dailyPayRate
+		from logplat_actor_recharge b
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BBaseSelect"/>
+		<if test="cityList!=null">
+			and b.city in
+			<foreach collection="cityList" item="city" index="index" open="(" close=")" separator=",">
+				#{city}
+			</foreach>
+		</if>
+		group by statdate order by statdate
+	</select>
+	
+	<select id="exportDayPayRateList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+	</select>
+	
+	
+	<!-- 周付费率-->
+	<select id="selectWeekPayRateList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select statdate,(count(distinct uid,actorid) / (select sum(wau) from logplat_active_user  a
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.ABaseSelect"/> and a.statdate= #{enddate})) as weeklyPayRate
+		from logplat_actor_recharge b
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BBaseSelect"/>
+		<if test="cityList!=null">
+			and b.city in
+			<foreach collection="cityList" item="city" index="index" open="(" close=")" separator=",">
+				#{city}
+			</foreach>
+		</if>
+	</select>
+	
+	<select id="exportWeekPayRateList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+	</select>
+	
+	
+	<!-- 月付费率-->
+	<select id="selectMonthPayRateList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select statdate, (count(distinct uid,actorid) / (select sum(mau) from logplat_active_user  a
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.ABaseSelect"/> and a.statdate= #{enddate})) as monthPayRate
+		from logplat_actor_recharge b
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BBaseSelect"/>
+		<if test="cityList!=null">
+			and b.city in
+			<foreach collection="cityList" item="city" index="index" open="(" close=")" separator=",">
+				#{city}
+			</foreach>
+		</if>
+	</select>
+	
+	<select id="exportMonthPayRateList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+	</select>
+	
+	
+	<!-- 各等级付费金额-->
+	<select id="selectActorLevelPaymentList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select actorlevel,sum(money) as money
+		from logplat_actor_recharge
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"></include>
+		<if test="cityList!=null">
+			and city in
+			<foreach collection="cityList" item="city" index="index" open="(" close=")" separator=",">
+				#{city}
+			</foreach>
+		</if>
+		group by actorLevel order by actorLevel
+	</select>
+	<select id="exportActorLevelPaymentList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+	</select>
+	
+	<!-- 各等级充值次数 -->
+	<select id="selectActorLevelRechargeTimeList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select actorlevel,count(distinct actorid,uid) as quantity
+		from logplat_actor_recharge
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"></include>
+		<if test="cityList!=null">
+			and city in
+			<foreach collection="cityList" item="city" index="index" open="(" close=")" separator=",">
+				#{city}
+			</foreach>
+		</if>
+		group by actorLevel order by actorLevel
+	</select>
+	<select id="exportActorLevelRechargeTimeList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+	</select>
+	
+	<!-- 渠道收入 -->
+	<select id="selectChannelIncomeList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select a.channel,cn.channelName,sum(a.money) as money
+		from logplat_actor_recharge a,tb_logplat_channel cn
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.ABaseSelect"/>
+		and a.channel=cn.id
+		<if test="cityList!=null">
+			and a.city in
+			<foreach collection="cityList" item="city" index="index" open="(" close=")" separator=",">
+				#{city}
+			</foreach>
+		</if>
+		group by a.channel order by a.channel
+	</select>
+	<select id="exportChannelIncomeList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+	</select>
+	
+	<!-- 地区账户 -->
+	<select id="selectCityAccountsList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select city,sum(count(distinct actorid,uid)) as quantity
+		from logplat_actor_recharge
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/>
+		group by city order by city
+	</select>
+	<select id="exportCityAccountsList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+	</select>
+	<!-- 地区收入 -->
+	<select id="selectCityIncomeList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+	</select>
+	<select id="exportCityIncomeList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+	</select>
+	<!-- 日ARPU-->
+	<select id="selectDayARPUList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+	</select>
+	
+	<select id="exportDayARPUList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+	</select>
+
+
+	<!-- 月ARPU-->
+	<select id="selectMonthARPUList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+	</select>
+	
+	<select id="exportMonthARPUList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+	</select>
+	
+
+	<!-- 日ARPPU-->
+	<select id="selectDayARPPUList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+	</select>
+	
+	<select id="exportDayARPPUList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+	</select>
+	
+	
+	<!-- 月ARPPU-->
+	<select id="selectMonthARPPUList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+	</select>
+	
+	<select id="exportMonthARPPUList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+	</select>
+	
+	
+	<!-- 地区日均付费率-->
+	<select id="selectLocationOfDailyRateOfPay" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+	</select>
+	
+	<select id="exportLocationOfDailyRateOfPay" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+	</select>
+
+
+	<!-- 地区日均ARPU-->
+	<select id="selectLocationOfDailyARPU" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+	</select>
+	
+	<select id="exportLocationOfDailyARPU" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+	</select>
+
+
+	<!-- 地区日均ARPPU-->
+	<select id="selectLocationOfDailyARPPU" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+	</select>
+	
+	<select id="exportLocationOfDailyARPPU" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+	</select>
+	
+	
+	<!-- 渠道日均付费率-->
+	<select id="selectChannelOfDailyRateOfPay" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+	</select>
+	
+	<select id="exportChannelOfDailyRateOfPay" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+	</select>
+
+
+	<!-- 渠道日均ARPU-->
+	<select id="selectChannelOfDailyARPU" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+	</select>
+	
+	<select id="exportChannelOfDailyARPU" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+	</select>
+	
+	
+	<!-- 渠道日均ARPPU-->
+	<select id="selectChannelOfDailyARPPU" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+	</select>
+	
+	<select id="exportChannelOfDailyARPPU" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+	</select>
+	
+	<!-- 日付费率(按账号)-->
+	<select id="selectDayPayRateOfAccoutList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		SELECT
+			statdate,
+			SUM(rechguser)/SUM(loguser) as dailyPayRate
+		FROM
+			logplat_user_reglogrechg_stat
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/>
+		<choose>
+		 <when test="cityList!=null">
+          	and city in
+			<foreach collection="cityList" item="city" index="index" open="(" close=")" separator=",">
+				#{city}
+			</foreach>
+        </when>
+        <otherwise>
+          	and city='-1'
+        </otherwise>
+        </choose>
+		group by statdate 
+		order by statdate
+	</select>
+	
+	<!-- 周付费率(按账号)-->
+	<select id="selectWeekPayRateOfAccoutList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		SELECT
+				count(DISTINCT uid) / (
+					SELECT
+						sum(wau)
+					FROM
+						logplat_user_reglogrechg_stat a
+					<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.ABaseSelect"/>
+					and a.statdate= #{enddate}
+					<choose>
+					 <when test="cityList!=null">
+			          	and a.city in
+						<foreach collection="cityList" item="city" index="index" open="(" close=")" separator=",">
+							#{city}
+						</foreach>
+			        </when>
+			        <otherwise>
+			          	and a.city='-1'
+			        </otherwise>
+			        </choose>
+				) AS weeklyPayRate
+		FROM
+			logplat_actor_recharge b
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BBaseSelect"/>
+		<if test="cityList!=null">
+			and b.city in
+			<foreach collection="cityList" item="city" index="index" open="(" close=")" separator=",">
+				#{city}
+			</foreach>
+		</if>
+	</select>
+	
+	<!-- 月付费率(按账号)-->
+	<select id="selectMonthPayRateOfAccoutList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		SELECT
+				count(DISTINCT uid) / (
+					SELECT
+						sum(mau)
+					FROM
+						logplat_user_reglogrechg_stat a
+					<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.ABaseSelect"/>
+					and a.statdate= #{enddate}
+					<choose>
+					 <when test="cityList!=null">
+			          	and a.city in
+						<foreach collection="cityList" item="city" index="index" open="(" close=")" separator=",">
+							#{city}
+						</foreach>
+			        </when>
+			        <otherwise>
+			          	and a.city='-1'
+			        </otherwise>
+			        </choose>
+				) AS monthPayRate
+		FROM
+			logplat_actor_recharge b
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BBaseSelect"/>
+		<if test="cityList!=null">
+			and b.city in
+			<foreach collection="cityList" item="city" index="index" open="(" close=")" separator=",">
+				#{city}
+			</foreach>
+		</if>
+	</select>
+	
+</mapper>

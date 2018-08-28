@@ -1,0 +1,24 @@
+{
+  "90dayContributionByChannel": [
+    {
+      "percentage": 66.7,
+      "data": 0.12,
+      "channel": "Android渠道二"
+    },
+    {
+      "percentage": 16.7,
+      "data": 0.03,
+      "channel": "iOS渠道二"
+    },
+    {
+      "percentage": 16.7,
+      "data": 0.03,
+      "channel": "机锋"
+    },
+    {
+      "percentage": 0.0,
+      "data": 0.0,
+      "channel": "iOS渠道三"
+    }
+  ]
+}

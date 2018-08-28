@@ -1,0 +1,65 @@
+<div class="panel panel-default panel_1">
+			<div class="panel-heading">
+				<strong>
+					{{'新增玩家' | translate}}
+					<div class="exp-box">
+						<em class="icon-exp">{{'三角图标' | translate}}</em>
+						<div class="noun-exp" style="width:300px;">							
+						</div>
+					</div>
+					<!--------提示框----------->
+				</strong>
+				<div class="panel_downloadBtn" ng-click="mdownloaddata('avgGameTime')"></div>
+				<!--------下载按钮----------->
+				<div class="clear"></div>
+			</div>
+			<div class="panel-body" ng-class="{'table':panel_1.model=='table','graph':panel_1.model=='graph'}">	
+			<!--------默认panel展示类型，表格tale或图表graph---------->
+				<ul class="nav nav-tabs fl cl" navtabs>
+				  <li role="presentation" class="active"><a href="javascript:void(0);">{{'新增激活和账户' | translate}}</a></li>
+				  <li role="presentation"><a href="javascript:void(0);">{{'玩家转化' | translate}}</a></li>
+				</ul>
+				<!--------选项卡----------->
+				<div class="fl cl info" >
+					<div class="infoact">
+					SUM {{'设备 | 账户' | translate}}：<font><em>{{panel_1.dataList_1.deviceSUM}}</em> | <em>{{panel_1.dataList_1.accountSUM}}</em></font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					AVG {{'设备 | 账户' | translate}}：<font><em>{{panel_1.dataList_1.devicAVG}}</em> | <em>{{panel_1.dataList_1.accountAVG}}</em></font>  
+					</div>
+				</div>
+				<!--------各选项卡数据展示----------->
+				<div class="clear"></div>
+				<div class="panel-showData">
+					<div class="dataList dataList_1">
+						<div class="dataGraph">
+							<div class="graph" data="dataList_1_1_graph"></div>	
+							<!--------图表div，data为graphfun的key----------->
+							<div class="graphLimit" graphLimit datalimit="panel_1.dataList_1.graphLimit" graphdata="panel_1.dataList_1.data"  graphfun="graphfun.dataList_1_graph" model="panel_1.model" isfist="false" key="{d:'value',y:'statcount',y2:'value'}">
+							</div>
+							<!--------图表分页----------->		
+						</div>
+						<div class="dataTable">
+							<table class="table table-bordered text-center">
+								<tr class="tableTr">
+									<th width='33.3333%' ng-click="changeOrderBy(panel_1.dataList_1,'statdate')">{{'日期' | translate}}</th>
+									<th width='33.3333%' ng-click="changeOrderBy(panel_1.dataList_1,'deviceCount')">{{'激活台数(台)' | translate}}</th>
+									<th width='33.3333%' ng-click="changeOrderBy(panel_1.dataList_1,'userCount')">{{'新增玩家(账户)' | translate}}</th>
+									<!--------表格th(数据对象，排序字段)----------->
+								</tr>
+								<tr ng-repeat="data in panel_1.dataList_1.data | orderBy: panel_1.dataList_1.orderBy.t+panel_1.dataList_1.orderBy.s | pageStartFrom : panel_1.dataList_1.limit.now*panel_1.dataList_1.limit.max | limitTo: panel_1.dataList_1.limit.max">
+									<td>{{data.statdate}}</td>
+									<td>{{data.deviceCount}}</td>
+									<td>{{data.userCount}}</td>
+								</tr>
+							</table>
+							<div class="tableLimit" tablelimit datalimit="panel_1.dataList_1.limit"  tabledata="panel_1.dataList_1.data">							
+							</div>
+							<!--------表格分页，datalimit为分页参数，tabledata为数据----------->
+						</div>
+					</div>					
+				</div>
+				<div class="panel-changeData" graphtbale  graphfun="graphfun" datachange="panel_1_change"  datalimit="0" model="panel_1.model">
+				</div>
+				<!-------------图表表格切换，graphfun ----datachange(需要分页时删除不填)------------->
+			</div>
+	</div>
+	

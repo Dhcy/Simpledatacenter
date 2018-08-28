@@ -1,0 +1,53 @@
+<div>
+	<div class="maintop">
+		<div datepicker class="col-xs-3 timeSelect" mstatdate="mstatdate">
+		</div>
+		<!--------日期选择控件----------->
+		<div selectChoose class="selectChoose">
+		</div>
+		<!--------渠道区服选择控件----------->
+		<div class="clear"></div>
+		<div class="panel-selectChoose" callbackchannelqf ng-show="iscallback">
+		</div>
+		<!--------已选择渠道区服显示----------->
+	</div>	
+	
+	<div class="panel panel-default panel_1">
+			<div class="panel-heading">
+				<strong>{{'按实时统计玩家' | translate}}</strong>
+				<div class="panel_downloadBtn"  down-file down-file-url="realTimedata/exportPlayerSummaryData.action" down-file-type="xlsx" down-file-name="按实时统计玩家{{mstatdate}}" savedata="" postdata="searchData" ></div>
+				<div class="clear"></div>
+			</div>
+			<div class="panel-body" ng-class="{'table':panel_1.model=='table','graph':panel_1.model=='graph'}">	
+				<div class="panel-showData">
+					<div class="dataList dataList3 dataList_1 dataListAct">
+						<div class="dataGraph">
+							<div class="graph" data="dataList_1_1_graph"></div>			
+						</div>
+						<div class="dataTable">
+							<table class="table table-bordered text-center">
+								<tr class="tableTr">
+									<th width='20%' ng-click="changeOrderBy(panel_1.dataList_1,'statdate')">{{'日期' | translate}}</th>
+									<th width='20%' ng-click="changeOrderBy(panel_1.dataList_1,'deviceActivation')">{{'激活设备数(台)' | translate}}</th>
+									<th width='20%' ng-click="changeOrderBy(panel_1.dataList_1,'actUser')">{{'活跃玩家(角色)' | translate}}</th>
+									<th width='20%' ng-click="changeOrderBy(panel_1.dataList_1,'payUser')">{{'付费玩家(角色)' | translate}}</th>
+									<th width='20%' ng-click="changeOrderBy(panel_1.dataList_1,'income')">{{'收入' | translate}}</th>
+								</tr>
+								<tr ng-repeat="data in panel_1.dataList_1.data | orderBy: panel_1.dataList_1.orderBy.t+panel_1.dataList_1.orderBy.s | pageStartFrom : panel_1.dataList_1.limit.now*panel_1.dataList_1.limit.max | limitTo: panel_1.dataList_1.limit.max">
+									<td>{{data.statdate}}</td>
+									<td>{{data.deviceActivation}}</td>
+									<td>{{data.actUser}}</td>
+									<td>{{data.payUser}}</td>
+									<td>{{data.income}}</td>
+								</tr>
+							</table>
+							<div class="tableLimit" tablelimit datalimit="panel_1.dataList_1.limit"  tabledata="panel_1.dataList_1.data">							
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="panel-changeData" graphtbale graphtbale graphfun="graphfun" datachange="panel_1_change"  datalimit="0" model="panel_1.model">
+				</div>
+			</div>
+	</div>
+</div>

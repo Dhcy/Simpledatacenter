@@ -1,0 +1,231 @@
+<style type="text/css">
+    .table th,.table td{ border:1px solid #ddd;}
+    .form-group{ margin-left: 10px; margin-top: 10px;}
+    .form-control{ display: inline-block; vertical-align: middle;}
+    .tableListTh{
+    	width: 10%;
+    	white-space: nowrap;
+    	vertical-align: middle;
+    }
+    .channelTd{
+    	width: 10%;
+    	white-space: nowrap;
+    }
+     .tableListTh strong{
+  	   line-height:16px;
+  	   text-align: center;
+	}
+</style>
+<div>
+    <div>
+        <div class="form-group">
+            <div class="div_select">
+                
+            </div>
+            <div datepicker format="yyyy-MM-dd"  class="col-xs-3 timeSelect" mstatdate="mstatdate" style="width:350px;"></div>
+            <!--<div datepicker format="yyyy-MM-dd" minMode="month" class="col-xs-3 timeSelect" mstatdate="mstatdate" style="width:350px;"></div>
+            -->
+            <!-- <label for="">游戏：</label>
+            <select ng-model="postData.gameid" class="form-control" ng-options="data.id as data.name for data in panel_1.gameList"  ng-change="getChannelList()">
+			</select>
+			<label for="">系统：</label>
+            <select ng-model="postData.systemid" class="form-control" ng-options="data.id as data.name for data in panel_1.systemList">
+            </select>&nbsp;&nbsp; -->
+            
+            <a class="btn btn-default" ng-click="getData()" >{{'查询' | translate}}</a>
+        </div>
+    </div>
+    <div class="panel panel-default panel_1">
+		<div class="panel-heading">
+			<strong class="fl">
+				{{'渠道数据' | translate}}
+				<div tipsmsg></div>
+				<!--------提示框----------->
+			</strong>
+		<!--------tab选择按钮----------->
+			<div class="panel_downloadBtn"  down-file down-file-url="sdkdata/exportSDKNewVip.action" 
+					down-file-type="xlsx" down-file-name="新增VIP{{mstatdate}}" savedata="" postdata="postData" ></div>
+			<!--------下载按钮----------->
+			<div class="clear"></div>
+		</div>
+		<div class="panel-body pdlf pdtb">
+			<div class="tableList tableListAct" >
+				<ul class="tableListUl">
+					<li class="tableListLi tableListLiTh clear">
+						<span class="tableListTh">
+							<strong title="">{{'日期' | translate}}</strong>
+							<div tipsmsg></div>
+						</span>
+						<span class="tableListTh">
+							<strong title="">{{'系统' | translate}}</strong>
+							<div tipsmsg></div>
+						</span>
+						<span class="tableListTh">
+							<strong title="">{{'新增' | translate}}<br/>VIP{{'数' | translate}}</strong>
+							<div tipsmsg></div>
+						</span>
+						<span class="tableListTh">
+							<strong title="">{{'新增' | translate}}VIP<br/>{{'付费金额' | translate}}</strong>
+							<div tipsmsg></div>
+						</span>
+						<span class="tableListTh">
+							<strong title="">{{'平均' | translate}}<br/>{{'付费金额' | translate}}</strong>
+							<div tipsmsg></div>
+						</span>
+						<span class="tableListTh">
+							<strong title="">{{'新增' | translate}}VIP<br/>{{'次日留存' | translate}}(%)</strong>
+							<div tipsmsg></div>
+						</span>
+						<span class="tableListTh">
+							<strong title="">{{'新增' | translate}}VIP<br/>3{{'日留存' | translate}}(%)</strong>
+							<div tipsmsg></div>
+						</span>
+						<span class="tableListTh">
+							<strong title="">{{'新增' | translate}}VIP<br/>7{{'日留存' | translate}}(%)</strong>
+							<div tipsmsg></div>
+						</span>
+						<span class="tableListTh">
+							<strong title="">{{'新增' | translate}}VIP<br/>30{{'日留存' | translate}}(%)</strong>
+							<div tipsmsg></div>
+						</span>
+						<span class="tableListTh">
+							<strong ng-click="expandDetail()">{{'详情' | translate}}</strong>
+							<div tipsmsg></div>
+						</span>
+					</li>
+					
+					<li class="tableListLi clear" ng-repeat="data in panel_1.dataList_1.data  | pageStartFrom : panel_1.dataList_1.limit.now*panel_1.dataList_1.limit.max | limitTo: panel_1.dataList_1.limit.max" ng-class="({'show_panel':data.show_panel})">
+						<div class="channelTr clear">
+							<span class="channelTd">
+								{{data.statdate}}
+							</span>
+							<span class="channelTd" ng-if="data.os==0">
+								0
+							</span>
+							<span class="channelTd" ng-if="data.os==1">
+								IOS
+							</span>
+							<span class="channelTd" ng-if="data.os==2">
+								Android
+							</span>
+							<span class="channelTd" ng-if="data.os==3">
+								Winphone
+							</span>
+							<span class="channelTd" ng-if="data.os==4">
+								BlackBerry
+							</span>
+							<span class="channelTd" ng-if="data.os==5">
+								Kjava
+							</span>
+							<span class="channelTd" ng-if="data.os==6">
+								Windows(PC)
+							</span>
+							<span class="channelTd" ng-if="data.os==7">
+								iOS{{'越狱' | translate}}
+							</span>
+							<span class="channelTd" ng-if="data.os==8">
+								Web
+							</span>
+							<span class="channelTd">
+								{{data.new_vip}}
+							</span>
+							<span class="channelTd">
+								{{data.new_vip_money}}
+							</span>
+							<span class="channelTd">
+								{{data.vip_avg_money}}
+							</span>
+							<span class="channelTd">
+								{{data.day1rate}}
+							</span>
+							<span class="channelTd">
+								{{data.day3rate}}
+							</span>
+							<span class="channelTd">
+								{{data.day7rate}}
+							</span>
+							<span class="channelTd">
+								{{data.day30rate}}
+							</span>
+							<span class="channelTd show_panel_btn">
+								<p ng-click="showPanel(data)" ng-show="!data.show_panel">{{'详情' | translate}}</p>
+								<p ng-click="data.show_panel=false;" ng-show="data.show_panel">{{'收起' | translate}}</p>
+							</span>
+						</div>
+					<div class="showData">
+					<div class="panel-body table" >
+					<div class="panel-showData">
+						<div class="dataList dataList2 dataList_1 dataListAct">
+							<div class="dataGraph">
+							</div>
+							<div class="dataTable">
+								<table class="table table-bordered text-center">
+									<tr class="tableTr">
+										<th width='8%' ng-click="changeOrderBy(data,'statdate')">{{'日期' | translate}}</th>
+										<th width='6%' ng-click="changeOrderBy(data,'os')">{{'系统' | translate}}</th>
+										<th width='6%' ng-click="changeOrderBy(data,'source')">{{'来源名称' | translate}}</th>
+										<th width='6%' ng-click="changeOrderBy(data,'sourceid')">{{'对应' | translate}}ID</th>
+										<th width='6%' ng-click="changeOrderBy(data,'new_vip')">{{'新增VIP数' | translate}}</th>
+										<th width='6%' ng-click="changeOrderBy(data,'new_vip_money')">{{'新增VIP付费金额' | translate}}</th>
+										<th width='6%' ng-click="changeOrderBy(data,'vip_avg_money')">{{'平均付费金额' | translate}}</th>
+										<th width='6%' ng-click="changeOrderBy(data,'day1rate')">{{'新增VIP次日留存' | translate}}</th>
+										<th width='6%' ng-click="changeOrderBy(data,'day3rate')">{{'新增VIP3日留存' | translate}}</th>
+										<th width='6%' ng-click="changeOrderBy(data,'day7rate')">{{'新增VIP7日留存' | translate}}</th>
+										<th width='6%' ng-click="changeOrderBy(data,'day30rate')">{{'新增VIP30日留存' | translate}}</th>
+									</tr>
+									<tr ng-repeat="value in data.details | orderBy: data.orderBy.t+data.orderBy.s | pageStartFrom : data.limit.now*data.limit.max | limitTo: data.limit.max">
+										<td>{{value.statdate}}</td>
+										<td ng-if="value.os==0">0</td>
+										<td ng-if="value.os==1">IOS</td>
+										<td ng-if="value.os==2">Android</td>
+										<td ng-if="value.os==3">Winphone</td>
+										<td ng-if="value.os==4">BlackBerry</td>
+										<td ng-if="value.os==5">Kjava</td>
+										<td ng-if="value.os==6">Windows(PC)</td>
+										<td ng-if="value.os==7">iOS{{'越狱' | translate}}</td>
+										<td ng-if="value.os==8">Web</td>
+										<td>{{value.source}}</td>
+										<td>{{value.sourceid}}</td>
+										<td>{{value.new_vip}}</td>
+										<td>{{value.new_vip_money}}</td>
+										<td>{{value.vip_avg_money}}</td>
+										<td>{{value.day1rate}}</td>
+										<td>{{value.day3rate}}</td>
+										<td>{{value.day7rate}}</td>
+										<td>{{value.day30rate}}</td>
+									</tr>
+								</table>
+								<div class="tableLimit" tablelimit datalimit="data.limit"  index="0" tabledata="data.trend.devices">
+								</div>
+							</div>
+						</div>
+                        <!-- <div class="panel-changeData" graphtbale graphfun="graphfun" datachange="panel_change" datalimit="panel_1.dataList_1.limit" model="data.model">
+                        </div> -->
+					<!-------------图表表格切换，graphfun ----datachange(需要分页时删除不填)------------->
+                    </div>
+					</div>
+					</div>
+				</li>
+				</ul>
+				
+				<div class="tableFooter">
+						<div class="buttondiv fl" analysisdrop changei="changetype()">
+							<div class="selectlable fl">{{'每页显示' | translate}}：</div>
+							<div class="analysisdrop fl" style="width:60px;">
+								<div class="hadchoose">
+									<h6>{{val | translate}}</h6></div>
+								<ul class="dropUl">
+									<li ng-click="c('10');changetype(10)">10</li>
+									<li ng-click="c('20');changetype(20)">20</li>
+									<li ng-click="c('50');changetype(50)">50</li>
+									<li ng-click="c('100');changetype(100)">100</li>
+								</ul>
+							</div>
+							<div class="selectlable fl">&nbsp;&nbsp;{{'条记录' | translate}}</div>
+						</div>
+						<div class="dataTables_paginate fr" datatableslimit  datalimit="panel_1.dataList_1.limit"  tabledata="panel_1.dataList_1.data"  datachange="panel_1_change"></div>
+					</div>
+			</div>
+		</div>
+	</div>
+</div>

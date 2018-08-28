@@ -1,0 +1,37 @@
+
+{
+  "totalPaidPlayers": [
+    {
+      "statdate": "2014-08-24",
+      "accounts": 5954
+    },
+    {
+      "statdate": "2014-08-25",
+      "accounts": 6151
+    },
+    {
+      "statdate": "2014-08-26",
+      "accounts": 6330
+    },
+    {
+      "statdate": "2014-08-27",
+      "accounts": 6519
+    },
+    {
+      "statdate": "2014-08-28",
+      "accounts": 6690
+    },
+    {
+      "statdate": "2014-08-29",
+      "accounts": 6867
+    },
+    {
+      "statdate": "2014-08-30",
+      "accounts": 7072
+    },
+    {
+      "statdate": "2014-08-31",
+      "accounts": 7246
+    }
+  ]
+}

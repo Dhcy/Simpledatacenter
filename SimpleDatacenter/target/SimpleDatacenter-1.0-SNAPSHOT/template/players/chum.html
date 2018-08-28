@@ -1,0 +1,196 @@
+<div>
+	<div class="maintop">
+		<div datepicker class="col-xs-3 timeSelect" mstatdate="mstatdate">
+		</div>
+		<!--------日期选择控件----------->
+		<div selectChoose class="selectChoose">
+		</div>
+		<!--------渠道区服选择控件----------->
+		<div class="clear"></div>
+		<div class="panel-selectChoose" callbackchannelqf ng-show="iscallback">
+			<ul ng-show="ischannel" class="cl">
+				<li>{{'渠道' | translate}}：</li>
+				<li ng-repeat="channellist in callbackchannelqfdata.channellist">{{channellist}}</li>
+			</ul>
+			<ul ng-show="isqf"  class="cl">
+				<li>{{'区服' | translate}}：</li>				
+				<li ng-repeat="qflist in callbackchannelqfdata.qflist">{{qflist}}</li>
+			</ul>
+		</div>
+		<!--------已选择渠道区服显示----------->
+	</div>	
+	<div class="panel panel-default panel_1">
+			<div class="panel-heading">
+				<strong class="fl">
+					{{'每日流失' | translate}}
+					<div tipsmsg></div>
+					<!--------提示框----------->
+				</strong>
+				<div class="buttondiv fl" analysisdrop changei="changetype()" style="margin-right:5px;">
+				<div class="selectlable fl">{{'流失条件' | translate}}：</div>
+				<div class="analysisdrop fl"  style="width:180px;">
+					<div class="hadchoose"><h6>{{val | translate}}</h6></div>
+					<ul class="dropUl">
+						<li ng-click="c('连续1天不登陆');changeday(1)">{{'连续1天不登陆' | translate}}</li>
+						<li ng-click="c('连续2天不登陆');changeday(2)">{{'连续2天不登陆' | translate}}</li>
+						<li ng-click="c('连续3天不登陆');changeday(3)">{{'连续3天不登陆' | translate}}</li>
+						<li ng-click="c('连续7天不登陆');changeday(7)">{{'连续7天不登陆' | translate}}</li>
+						<li ng-click="c('连续14天不登陆');changeday(14)">{{'连续14天不登陆' | translate}}</li>
+						<li  ng-click="c('连续30天不登陆');changeday(30)">{{'连续30天不登陆' | translate}}</li>
+					</ul>
+				</div>
+			</div>
+				<div class="buttondiv fl" analysisdrop changei="changetype()" style="margin-left:5px;">
+				<div class="selectlable fl">{{'的' | translate}}&nbsp;&nbsp;&nbsp;</div>
+				<div class="analysisdrop fl"  style="width:180px;">
+					<div class="hadchoose"><h6>{{val| translate}}</h6></div>
+					<ul class="dropUl">
+						<li ng-click="c('全部玩家');changetype(-1)">{{'全部玩家' | translate}}</li>
+						<li ng-click="c('付费玩家');changetype('1')">{{'付费玩家' | translate}}</li>
+						<li ng-click="c('付费玩家');changetype('0')">{{'非付费玩家' | translate}}</li>
+					</ul>
+				</div>
+			</div>
+				<div class="panel_downloadBtn"  down-file down-file-url="players/playersChurn/exportLostAndReturnPerDay.action" down-file-type="xlsx" down-file-name="每日流失{{mstatdate}}" savedata="" postdata="searchData" ></div>
+				
+				<!--------下载按钮----------->
+				<div class="clear"></div>
+			</div>
+			<div class="panel-body" ng-class="{'table':panel_1.model=='table','graph':panel_1.model=='graph'}">	
+			<!--------默认panel展示类型，表格tale或图表graph---------->
+				<ul class="nav nav-tabs fl cl" navtabs>
+				  <li role="presentation" class="active">
+				  	<a href="javascript:void(0);">{{'每日流失' | translate}}</a>
+				  	<div tipsmsg>{{'到某日为止，玩家连续7/14/30天没有再玩过游戏，将被视为一个流失' | translate}}<br/>{{'每日的7日（14日/30日）不登陆流失玩家数占该日7日（14日/30日）前活跃玩家数的比例' | translate}}</div>
+				  </li>
+				  <li role="presentation">
+				  	<a href="javascript:void(0);">{{'每日回流' | translate}}</a>
+				  	<div tipsmsg>{{'流失玩家在某日再次进行游戏，将视为当日的一个回流。回流玩家可用于沉默玩家唤醒活动后的效果评估' | translate}}</div>
+				  </li>
+				</ul>
+				<!--------选项卡----------->
+				<div class="fl cl info" >
+					<div class="infoact">
+					</div>
+				</div>
+				<!--------各选项卡数据展示----------->
+				<div class="clear"></div>
+				<div class="panel-showData">
+					<div class="dataList dataList2 dataList_1">
+						<div class="dataGraph">
+							<div class="graph" data="dataList_1_1_graph"></div>	
+							<!--------图表div，data为graphfun的key----------->	
+						</div>
+						<div class="dataTable">
+							<table class="table table-bordered text-center">
+								<tr class="tableTr">
+									<th width='33.33%' ng-click="changeOrderBy(panel_1.dataList_1,'statdate')">{{'日期' | translate}}</th>
+									<th width='33.33%' ng-click="changeOrderBy(panel_1.dataList_1,'accounts')" ng-bind="panel_1.dataList_2.th.type[palyerType]" ></th>
+									<th width='33.33%' ng-click="changeOrderBy(panel_1.dataList_1,'accounts')">
+									<strong title="每日的7日（14日/30日）不登陆流失玩家数占该日7日（14日/30日）前活跃玩家数的比例">{{'每日流失率' | translate}}(%)</strong>
+									<div tipsmsg>{{'每日的7日（14日/30日）不登陆流失玩家数占该日7日（14日/30日）前活跃玩家数的比例' | translate}}</div>
+									</th>
+									
+									<!--------表格th(数据对象，排序字段)----------->
+								</tr>
+								<tr ng-repeat="data in panel_1.dataList_1.data | orderBy: panel_1.dataList_1.orderBy.t+panel_1.dataList_1.orderBy.s | pageStartFrom : panel_1.dataList_1.limit.now*panel_1.dataList_1.limit.max | limitTo: panel_1.dataList_1.limit.max">
+									<td>{{data.statdate}}</td>
+									<td>{{data.accounts}}</td>
+									<td>{{data.rate}}%</td>
+								</tr>
+							</table>
+							<div class="tableLimit" tablelimit datalimit="panel_1.dataList_1.limit"  tabledata="panel_1.dataList_1.data">							
+							</div>
+							<!--------表格分页，datalimit为分页参数，tabledata为数据----------->
+						</div>
+					</div>
+						<div class="dataList dataList2 dataList_2">
+						<div class="dataGraph">
+							<div class="graph" data="dataList_1_2_graph"></div>	
+							<!--------图表div，data为graphfun的key----------->
+							
+						</div>
+						<div class="dataTable">
+							<table class="table table-bordered text-center">
+								<tr class="tableTr">
+									<th width='50%' ng-click="changeOrderBy(panel_1.dataList_2,'statdate')">{{'日期' | translate}}</th>
+									<th width='50%' ng-click="changeOrderBy(panel_1.dataList_2,'accounts')" ng-bind="panel_1.dataList_2.th.type[palyerType]"></th>
+									<!--------表格th(数据对象，排序字段)----------->
+								</tr>
+								<tr ng-repeat="data in panel_1.dataList_2.data | orderBy: panel_1.dataList_2.orderBy.t+panel_1.dataList_2.orderBy.s | pageStartFrom : panel_1.dataList_2.limit.now*panel_1.dataList_2.limit.max | limitTo: panel_1.dataList_2.limit.max">
+									<td>{{data.statdate}}</td>
+									<td>{{data.accounts}}</td>
+								</tr>
+							</table>
+							<div class="tableLimit" tablelimit datalimit="panel_1.dataList_2.limit"  tabledata="panel_1.dataList_2.data">							
+							</div>
+							<!--------表格分页，datalimit为分页参数，tabledata为数据----------->
+						</div>
+					</div>				
+				</div>
+				<div class="panel-changeData" graphtbale  graphfun="graphfun" datachange="panel_1_change"  datalimit="0" model="panel_1.model">
+				</div>
+				<!-------------图表表格切换，graphfun ----datachange(需要分页时删除不填)------------->
+			</div>
+	</div>
+	<div class="panel panel-default panel_2">
+			<div class="panel-heading">
+				<strong class="fl">
+					{{'流失用户分析' | translate}}
+					<div tipsmsg>{{'圈定时期内符合7/14/30日流失条件的玩家，按照其流失前等级、已游戏天数、付费情况等条件来进行分布，可有效分析流失群体的特征，找出原因优化游戏' | translate}}</div>
+					
+					<!--------提示框----------->
+				</strong>
+				<div class="buttondiv fl" analysisdrop changei="changetype()" style="margin-right:5px;">
+				<div class="selectlable fl">{{'分析方式' | translate}}：</div>
+				<div class="analysisdrop fl"  style="width:140px;">
+					<div class="hadchoose"><h6>{{val | translate}}</h6></div>
+					<ul class="dropUl">
+						<li ng-click="c('流失前等级');changechumplayer(1)">{{'流失前等级' | translate}}</li>
+						<li ng-click="c('用户生命期');changechumplayer(2)">{{'用户生命期' | translate}}</li>
+						<li  ng-click="c('付费金额');changechumplayer(3)">{{'付费金额' | translate}}</li>
+						<li  ng-click="c('付费次数');changechumplayer(4)">{{'付费次数' | translate}}</li>
+					</ul>
+				</div>
+			</div>
+				<div class="panel_downloadBtn"  down-file down-file-url="players/playersChurn/exportLostUserAnalysNumList.action" down-file-type="xlsx" down-file-name="流失用户分析{{mstatdate}}" savedata="" postdata="searchData2" ></div>
+				<!--------下载按钮----------->
+				<div class="clear"></div>
+			</div>
+			<div class="panel-body" ng-class="{'table':panel_2.model=='table','graph':panel_2.model=='graph'}">	
+			<!--------默认panel展示类型，表格tale或图表graph---------->
+				<!--------各选项卡数据展示----------->
+				<div class="clear"></div>
+				<div class="panel-showData">
+					<div class="dataList dataList2 dataList_1 dataListAct">
+						<div class="dataGraph">
+							<div class="graph" data="dataList_2_1_graph"></div>	
+							<!--------图表div，data为graphfun的key----------->	
+						</div>
+						<div class="dataTable">
+							<table class="table table-bordered text-center">
+								<tr class="tableTr">
+									<th width='33.33%' ng-click="changeOrderBy(panel_2.dataList_1,'statdate')">{{panel_2.dataList_1.th.type[chumplayer]}}</th>
+									<th width='33.33%' ng-click="changeOrderBy(panel_2.dataList_1,'accounts')">{{'每日流失数(角色)' | translate}}</th>
+									<th width='33.33%' ng-click="changeOrderBy(panel_2.dataList_1,'accounts')">{{'每日流失比例' | translate}}(%)</th>
+									<!-- <th width='33.33%' ng-click="changeOrderBy(panel_2.dataList_1,'accounts')">每日流失率(%)</th> -->
+									<!--------表格th(数据对象，排序字段)----------->
+								</tr>
+								<tr ng-repeat="data in panel_2.dataList_1.data | orderBy: panel_2.dataList_1.orderBy.t+panel_2.dataList_1.orderBy.s | pageStartFrom : panel_2.dataList_1.limit.now*panel_2.dataList_1.limit.max | limitTo: panel_2.dataList_1.limit.max">
+									<td>{{data.statdate}}</td>
+									<td>{{data.accounts}}</td>
+									<td>{{data.rate}}%</td>
+								</tr>
+							</table>
+							<div class="tableLimit" tablelimit datalimit="panel_2.dataList_1.limit"  tabledata="panel_2.dataList_1.data">							
+							</div>
+							<!--------表格分页，datalimit为分页参数，tabledata为数据----------->
+						</div>
+					</div>			
+				</div>
+				<div class="panel-changeData" graphtbale  graphfun="graphfun" datachange="panel_2_change"  datalimit="0" model="panel_2.model">
+				</div>
+				<!-------------图表表格切换，graphfun ----datachange(需要分页时删除不填)------------->
+			</div>
+	</div>
+</div>

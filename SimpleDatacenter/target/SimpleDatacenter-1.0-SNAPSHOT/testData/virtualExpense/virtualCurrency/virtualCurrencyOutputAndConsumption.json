@@ -1,0 +1,52 @@
+{
+  "virtualCurrencyOutputAndConsumption": [
+    {
+      "purchase": 7884671.0,
+      "statdate": "2014-08-24",
+      "reward": 457500.0,
+      "expense": 1509322.0
+    },
+    {
+      "purchase": 7449061.0,
+      "statdate": "2014-08-25",
+      "reward": 491500.0,
+      "expense": 847768.0
+    },
+    {
+      "purchase": 8169567.0,
+      "statdate": "2014-08-26",
+      "reward": 466100.0,
+      "expense": 1092900.0
+    },
+    {
+      "purchase": 11151551.0,
+      "statdate": "2014-08-27",
+      "reward": 479700.0,
+      "expense": 1196580.0
+    },
+    {
+      "purchase": 5373353.0,
+      "statdate": "2014-08-28",
+      "reward": 587200.0,
+      "expense": 915608.0
+    },
+    {
+      "purchase": 5558878.0,
+      "statdate": "2014-08-29",
+      "reward": 862700.0,
+      "expense": 738262.0
+    },
+    {
+      "purchase": 5614657.0,
+      "statdate": "2014-08-30",
+      "reward": 945600.0,
+      "expense": 769052.0
+    },
+    {
+      "purchase": 6479550.0,
+      "statdate": "2014-08-31",
+      "reward": 924700.0,
+      "expense": 1243808.0
+    }
+  ]
+}

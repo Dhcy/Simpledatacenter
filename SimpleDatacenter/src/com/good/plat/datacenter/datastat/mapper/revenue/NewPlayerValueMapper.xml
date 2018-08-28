@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.datastat.mapper.revenue.NewPlayerValueMapper">
+	<resultMap id="BaseResultMap" type="com.good.plat.datacenter.datastat.entity.revenue.NewPlayerValue">
+		<result column="gameid" property="gameid"/>
+		<result column="gameName" property="gameName"/>
+		<result column="channelid" property="channelid"/>
+		<result column="channelName" property="channelName"/>
+		<result column="subchannelid" property="subchannelid"/>
+		<result column="areaid" property="areaid"/>
+		<result column="areaName" property="areaName"/>
+		<result column="statdate" property="statdate"/>
+		<result column="statType" property="statType"/>
+		<result column="rate" property="rate"/>
+		<result column="data" property="data"/>
+		<result column="day7Con" property="day7Con"/>
+		<result column="day14Con" property="day14Con"/>
+		<result column="day30Con" property="day30Con"/>
+		<result column="AVG" property="AVG"/>
+		<result column="MD" property="MD"/>
+		<!-- 付费金额 -->
+		<result column="accounts" property="accounts"/>
+		<result column="money1" property="money1"/>
+		<result column="money2" property="money2"/>
+		<result column="money3" property="money3"/>
+		<result column="money4" property="money4"/>
+		<result column="money5" property="money5"/>
+		<result column="money6" property="money6"/>
+		<result column="money7" property="money7"/>
+		<result column="money14" property="money14"/>
+		<result column="money30" property="money30"/>
+		<result column="money60" property="money60"/>
+		<result column="money90" property="money90"/>
+		
+		<result column="day1Con" property="day1Con"/>
+		<result column="day2Con" property="day2Con"/>
+		<result column="day3Con" property="day3Con"/>
+		<result column="day4Con" property="day4Con"/>
+		<result column="day5Con" property="day5Con"/>
+		<result column="day6Con" property="day6Con"/>
+		<result column="day60Con" property="day60Con"/>
+		<result column="day90Con" property="day90Con"/>
+		<result column="city" property="city"/>
+		
+	</resultMap>
+	
+	
+	<sql id="BaseSelect">
+		where statdate between #{startdate} and #{enddate} 
+		<if test="termtypes != null">
+			and termtype in
+			<foreach collection="termtypes" item="term" index="index" open="(" close=")" separator=",">
+				#{term}
+			</foreach>
+		</if>
+		and gameid=#{gameid}
+		<if test="areas != null">
+			and areaid in
+			<foreach collection="areas" item="area" index="index" open="(" close=")" separator=",">
+				#{area}
+			</foreach>
+		</if>
+		<if test="channelList != null">
+			and channel in
+			<foreach collection="channelList" item="channel" index="index" open="(" close=")" separator=",">
+				#{channel.id}
+			</foreach>
+		</if>
+		<if test="subchannels != null">
+			and chnnnl in
+			<foreach collection="subchannels" item="subchannel" index="index" open="(" close=")" separator=",">
+				#{subchannel}
+			</foreach>
+		</if>
+	</sql>
+	
+	<sql id="BaseSelectWithoutLanguageEditionTermtypes">
+		where statdate between #{startdate} and #{enddate} 
+		and gameid=#{gameid}
+		<if test="areas != null">
+			and areaid in
+			<foreach collection="areas" item="area" index="index" open="(" close=")" separator=",">
+				#{area}
+			</foreach>
+		</if>
+		<if test="channelList != null">
+			and channel in
+			<foreach collection="channelList" item="channel" index="index" open="(" close=")" separator=",">
+				#{channel.id}
+			</foreach>
+		</if>
+		<if test="subchannels != null">
+			and chnnnl in
+			<foreach collection="subchannels" item="subchannel" index="index" open="(" close=")" separator=",">
+				#{subchannel}
+			</foreach>
+		</if>
+	</sql>
+	
+	<sql id="RegSelect">
+		where regdate between #{startdate} and #{enddate} 
+		<if test="termtypes != null">
+			and termtype in
+			<foreach collection="termtypes" item="term" index="index" open="(" close=")" separator=",">
+				#{term}
+			</foreach>
+		</if>
+		and gameid=#{gameid}
+		<if test="areas != null">
+			and areaid in
+			<foreach collection="areas" item="area" index="index" open="(" close=")" separator=",">
+				#{area}
+			</foreach>
+		</if>
+		<if test="channelList != null">
+			and channel in
+			<foreach collection="channelList" item="channel" index="index" open="(" close=")" separator=",">
+				#{channel.id}
+			</foreach>
+		</if>
+		<if test="subchannels != null">
+			and chnnnl in
+			<foreach collection="subchannels" item="subchannel" index="index" open="(" close=")" separator=",">
+				#{subchannel}
+			</foreach>
+		</if>
+	</sql>
+	<!-- 按账号 -->
+	<sql id="RegSelectByAccout">
+		where uregdate between #{startdate} and #{enddate} 
+		<if test="termtypes != null">
+			and termtype in
+			<foreach collection="termtypes" item="term" index="index" open="(" close=")" separator=",">
+				#{term}
+			</foreach>
+		</if>
+		and gameid=#{gameid}
+		<if test="areas != null">
+			and areaid in
+			<foreach collection="areas" item="area" index="index" open="(" close=")" separator=",">
+				#{area}
+			</foreach>
+		</if>
+		<if test="channelList != null">
+			and channel in
+			<foreach collection="channelList" item="channel" index="index" open="(" close=")" separator=",">
+				#{channel.id}
+			</foreach>
+		</if>
+		<if test="subchannels != null">
+			and chnnnl in
+			<foreach collection="subchannels" item="subchannel" index="index" open="(" close=")" separator=",">
+				#{subchannel}
+			</foreach>
+		</if>
+	</sql>
+
+	<!-- 新玩家收入贡献 -->
+	<select id="selectXdaysAvgContributionList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select regdate statdate,sum(money) , count(distinct uid,actorid),sum(money) div count(distinct uid,actorid) as data
+		from logplat_actor_recharge
+		<include refid="RegSelect"/>
+		<if test="channelList != null">
+			and channel in
+			<foreach collection="channelList" item="channel" index="index" open="(" close=")" separator=",">
+				#{channel.id}
+			</foreach>
+		</if>
+		<if test="cityList!=null">
+		and city in
+		<foreach collection="cityList" item="city" index="index" open="(" close=")" separator=",">
+			#{city}
+		</foreach>
+		</if>
+		and statdate &lt;= DATE_ADD(regdate,INTERVAL #{checktype1} DAY)
+		group by regdate
+	</select>
+	
+	<select id="exportXdaysAvgContributionList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select regdate statdate,sum(money) , count(distinct uid,actorid),sum(money) div count(distinct uid,actorid) as data
+		from logplat_actor_recharge
+		<include refid="RegSelect"/>
+		and statdate &lt;= DATE_ADD(regdate,INTERVAL #{checktype1} DAY)
+		group by regdate
+		
+	</select>
+	
+	<!-- 分区域收入贡献 -->
+	<select id="selectXdaysAvgByRegionContributionList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select city,sum(money) , count(distinct uid,actorid),sum(money) div count(distinct uid,actorid) as data
+		from logplat_actor_recharge
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/>
+		and statdate &lt;= DATE_ADD(regdate,INTERVAL #{checktype1} DAY)
+		group by regdate
+	</select>
+	
+	<!-- 分渠道收入贡献 -->
+	<select id="selectXdaysAvgByChannelContributionList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select channel,sum(money) , count(distinct uid,actorid),sum(money) div count(distinct uid,actorid) as data
+		from logplat_actor_recharge
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/>
+		and statdate &lt;= DATE_ADD(regdate,INTERVAL #{checktype1} DAY)
+		group by regdate
+	</select>
+	
+	<!-- 单日付费金额 -->
+	<select id="selectSimpleDayPayMoneyList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+	select
+		b.statdate as statdate,
+		IFNULL(b.accounts,0) as accounts,
+		IFNULL(a.money1,0) as money1,
+		IFNULL(a.money2,0) as money2,
+		IFNULL(a.money3,0) as money3,
+		IFNULL(a.money4,0) as money4,
+		IFNULL(a.money5,0) as money5,
+		IFNULL(a.money6,0) as money6,
+		IFNULL(a.money7,0) as money7,
+		IFNULL(a.money14,0) as money14,
+		IFNULL(a.money30,0) as money30,
+		IFNULL(a.money60,0) as money60,
+		IFNULL(a.money90,0) as money90
+		from
+		(SELECT
+			regdate,
+			sum(IF (DATEDIFF(statdate,uregdate) = 0, money, 0)) money1,
+			sum(IF (DATEDIFF(statdate,uregdate) = 1, money, 0)) money2,
+			sum(IF (DATEDIFF(statdate,uregdate) = 2, money, 0)) money3,
+			sum(IF (DATEDIFF(statdate,uregdate) = 3, money, 0)) money4,
+			sum(IF (DATEDIFF(statdate,uregdate) = 4, money, 0)) money5,
+			sum(IF (DATEDIFF(statdate,uregdate) = 5, money, 0)) money6,
+			sum(IF (DATEDIFF(statdate,uregdate) = 6, money, 0)) money7,
+			sum(IF (DATEDIFF(statdate,uregdate) BETWEEN 7 and 13, money, 0)) money14,
+			sum(IF (DATEDIFF(statdate,uregdate) BETWEEN 14 and 29, money, 0)) money30,
+			sum(IF (DATEDIFF(statdate,uregdate) BETWEEN 30 and 59, money, 0)) money60,
+			sum(IF (DATEDIFF(statdate,uregdate) BETWEEN 60 and 89, money, 0)) money90
+		FROM
+			logplat_actor_recharge
+		<include refid="RegSelectByAccout"/>
+		<if test="cityList!=null">
+		and city in
+		<foreach collection="cityList" item="city" index="index" open="(" close=")" separator=",">
+			#{city}
+		</foreach>
+		</if>
+		GROUP BY
+			uregdate) a 
+		RIGHT JOIN 
+		(SELECT
+				statdate,
+				sum(newuser) as accounts
+				from logplat_user_reglogrechg_stat
+				<include refid="BaseSelect"/>
+				<!-- 有区域时相当于单机版，没有语言，版本，终端查询 -->
+				 <choose>
+                <when test="cityList!=null">
+                and city in
+				<foreach collection="cityList" item="city" index="index" open="(" close=")" separator=",">
+					#{city}
+				</foreach>
+                </when>
+                 <!-- 全选或者没有区域 -->
+                <otherwise>
+                and city='-1'
+                </otherwise>
+        	 </choose>
+			GROUP BY
+				statdate
+			ORDER BY
+				statdate)b ON a.regdate=b.statdate
+	</select>
+	
+	<!-- 累计付费金额 -->
+	<select id="selectPerDayTotalPayMoneyList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+	select
+		b.statdate as statdate,
+		IFNULL(b.accounts,0) as accounts,
+		IFNULL(a.money1,0) as money1,
+		IFNULL(a.money2,0) as money2,
+		IFNULL(a.money3,0) as money3,
+		IFNULL(a.money4,0) as money4,
+		IFNULL(a.money5,0) as money5,
+		IFNULL(a.money6,0) as money6,
+		IFNULL(a.money7,0) as money7,
+		IFNULL(a.money14,0) as money14,
+		IFNULL(a.money30,0) as money30,
+		IFNULL(a.money60,0) as money60,
+		IFNULL(a.money90,0) as money90
+		from
+		(SELECT
+			regdate,
+			sum(IF (DATEDIFF(statdate,uregdate) &lt;= 0, money, 0)) money1,
+			sum(IF (DATEDIFF(statdate,uregdate) &lt;= 1, money, 0)) money2,
+			sum(IF (DATEDIFF(statdate,uregdate) &lt;= 2, money, 0)) money3,
+			sum(IF (DATEDIFF(statdate,uregdate) &lt;= 3, money, 0)) money4,
+			sum(IF (DATEDIFF(statdate,uregdate) &lt;= 4, money, 0)) money5,
+			sum(IF (DATEDIFF(statdate,uregdate) &lt;= 5, money, 0)) money6,
+			sum(IF (DATEDIFF(statdate,uregdate) &lt;= 6, money, 0)) money7,
+			sum(IF (DATEDIFF(statdate,uregdate) &lt;= 13, money, 0)) money14,
+			sum(IF (DATEDIFF(statdate,uregdate) &lt;= 29, money, 0)) money30,
+			sum(IF (DATEDIFF(statdate,uregdate) &lt;= 59, money, 0)) money60,
+			sum(IF (DATEDIFF(statdate,uregdate) &lt;= 89, money, 0)) money90
+		FROM
+			logplat_actor_recharge
+		<include refid="RegSelectByAccout"/>
+		<if test="cityList!=null">
+		and city in
+		<foreach collection="cityList" item="city" index="index" open="(" close=")" separator=",">
+			#{city}
+		</foreach>
+		</if>		
+		GROUP BY
+			uregdate) a 
+		RIGHT JOIN 
+		(SELECT
+				statdate,
+				sum(newuser) as accounts
+				from logplat_user_reglogrechg_stat
+				<include refid="BaseSelect"/>
+				<!-- 有区域时相当于单机版，没有语言，版本，终端查询 -->
+				 <choose>
+                <when test="cityList!=null">
+                and city in
+				<foreach collection="cityList" item="city" index="index" open="(" close=")" separator=",">
+					#{city}
+				</foreach>
+                </when>
+                 <!-- 全选或者没有区域 -->
+                <otherwise>
+                and city='-1'
+                </otherwise>
+        	 </choose>
+			GROUP BY
+				statdate
+			ORDER BY
+				statdate)b ON a.regdate=b.statdate
+	</select>
+	
+	<!-- 充值区域 列表-->
+	<select id="selectRechargeCityList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		SELECT DISTINCT city  as city from logplat_actor_recharge
+		<include refid="BaseSelect"/>
+	</select>
+</mapper>

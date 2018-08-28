@@ -1,0 +1,472 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.datastat.mapper.index.ReportMapper">
+	<resultMap id="BaseResultMap" type="com.good.plat.datacenter.datastat.entity.index.Report">
+		<result column="gameid" property="gameid"/>
+		<result column="gameName" property="gameName"/>
+		<result column="channelid" property="channelid"/>
+		<result column="channelName" property="channelName"/>
+		<result column="subchannelid" property="subchannelid"/>
+		<result column="areaid" property="areaid"/>
+		<result column="areaName" property="areaName"/>
+		<result column="statdate" property="statdate"/>
+		<result column="statType" property="statType"/>
+		<result column="rate" property="rate"/>
+		<result column="deviceActivation" property="deviceActivation"/>
+		<result column="new_device" property="new_device"/>
+		<result column="newUser" property="newUser"/>
+		<result column="newActor" property="newActor"/>
+		<result column="playerConv" property="playerConv"/>
+		<result column="actv_user" property="actv_user"/>
+		<result column="acu" property="acu"/>
+		<result column="pcu" property="pcu"/>
+		<result column="gameCounts" property="gameCounts"/>
+		<result column="avgGameTime" property="avgGameTime"/>
+		<result column="avgGameCount" property="avgGameCount"/>
+		<result column="newuserDay2" property="newuserDay2"/>
+		<result column="newuserDay3" property="newuserDay3"/>
+		<result column="newuserDay7" property="newuserDay7"/>
+		<result column="actvuserDay2" property="actvuserDay2"/>
+		<result column="actvuserDay3" property="actvuserDay3"/>
+		<result column="actvuserDay7" property="actvuserDay7"/>
+		<result column="deviceDay2" property="deviceDay2"/>
+		<result column="deviceDay7" property="deviceDay7"/>
+		<result column="deviceDay3" property="deviceDay3"/>
+		<result column="money" property="money"/>
+		<result column="npayact" property="npayact"/>
+		<result column="payact" property="payact"/>
+		<result column="act_arpu" property="act_arpu"/>
+		<result column="act_arppu" property="act_arppu"/>
+		<result column="new_arpu" property="new_arpu"/>
+		<result column="new_arppu" property="new_arppu"/>
+		
+		<result column="week_total_device_Cnt" property="week_total_device_Cnt"/>
+		<result column="week_new_play_count" property="week_new_play_count"/>
+		<result column="week_act_play_count" property="week_act_play_count"/>
+		<result column="week_avg_game_time" property="week_avg_game_time"/>
+		<result column="week_avg_game_count" property="week_avg_game_count"/>
+		<result column="week_avg_daily_game_time" property="week_avg_daily_game_time"/>
+		<result column="week_arpu" property="week_arpu"/>
+		<result column="week_income" property="week_income"/>
+		<result column="week_recharge_cnt" property="week_recharge_cnt"/>
+		<result column="week_pay_rate" property="week_pay_rate"/>
+		<result column="week_arppu" property="week_arppu"/>
+		
+		
+		
+		
+	</resultMap>
+	
+	<sql id="BaseSelectWithoutAreaidLanguageEdition">
+		where statdate between #{startdate} and #{enddate} 
+		<if test="termtypes != null">
+			and termtype in
+			<foreach collection="termtypes" item="term" index="index" open="(" close=")" separator=",">
+				#{term}
+			</foreach>
+		</if>
+		and gameid=#{gameid}
+		<if test="channelList != null">
+			and channel in
+			<foreach collection="channelList" item="channel" index="index" open="(" close=")" separator=",">
+				#{channel.id}
+			</foreach>
+		</if>
+		<if test="subchannels != null">
+			and chnnnl in
+			<foreach collection="subchannels" item="subchannel" index="index" open="(" close=")" separator=",">
+				#{subchannel}
+			</foreach>
+		</if>
+		<if test="versionList != null">
+			and edition in
+			<foreach collection="versionList" item="version" index="index" open="(" close=")" separator=",">
+				#{version.version_name}
+			 </foreach>
+		</if>
+		<if test="languageList != null">
+			and language in
+			<foreach collection="languageList" item="language" index="index" open="(" close=")" separator=",">
+				#{language.language_name}
+			 </foreach>
+		</if>
+	</sql>
+	<sql id="BaseSelectLtDate">
+		where statdate &lt;=#{enddate}
+		<if test="termtypes != null">
+			and termtype in
+			<foreach collection="termtypes" item="term" index="index" open="(" close=")" separator=",">
+				#{term}
+			</foreach>
+		</if>
+		and gameid=#{gameid}
+		<if test="channelList != null">
+			and channel in
+			<foreach collection="channelList" item="channel" index="index" open="(" close=")" separator=",">
+				#{channel.id}
+			</foreach>
+		</if>
+		<if test="subchannels != null">
+			and chnnnl in
+			<foreach collection="subchannels" item="subchannel" index="index" open="(" close=")" separator=",">
+				#{subchannel}
+			</foreach>
+		</if>
+	</sql>
+	<sql id="BaseSelectWithoutTermtypesLanguageEdition">
+		where statdate between #{startdate} and #{enddate} 
+		and gameid=#{gameid}
+		<if test="areas != null">
+			and areaid in
+			<foreach collection="areas" item="area" index="index" open="(" close=")" separator=",">
+				#{area}
+			</foreach>
+		</if>
+		<if test="channelList != null">
+			and channel in
+			<foreach collection="channelList" item="channel" index="index" open="(" close=")" separator=",">
+				#{channel.id}
+			</foreach>
+		</if>
+		<if test="subchannels != null">
+			and chnnnl in
+			<foreach collection="subchannels" item="subchannel" index="index" open="(" close=")" separator=",">
+				#{subchannel}
+			</foreach>
+		</if>
+	</sql>
+	
+	<!--新增设备,新增账号,新增角色,新增账号,转化率,活跃玩家-->
+	<select id="selectDailyBaseDataList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		SELECT
+		a.statdate,
+		a.new_device,
+		b.newUser,
+		a.newActor,
+		ifnull(
+			round(
+				(b.newUser / a.new_device) * 100,
+				2
+			),
+			0
+		) AS playerConv,
+		a.actv_user
+		FROM
+			(
+				SELECT
+					statdate,
+					ifnull(sum(actvcount), 0) new_device,
+					ifnull(sum(loginact), 0) actv_user,
+					ifnull(sum(newact),0) newActor
+				FROM
+					logplat_daily_rpt
+				<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect" />
+				GROUP BY
+					statdate
+			) a
+		LEFT JOIN (
+			SELECT
+				statdate,
+				IFNULL(SUM(newuser), 0) AS newUser
+			FROM
+				logplat_user_reglogrechg_stat
+			<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect" />
+			AND city = '-1'
+			GROUP BY
+				statdate
+		) b ON b.statdate = a.statdate;
+	</select>
+	
+	<!--游戏次数,平均日游戏时长（分）,平均日游戏次数 -->
+	<select id="selectDailyGameDataList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		SELECT
+			a.statdate,
+	  sum(a.gamecount) AS gameCounts,
+		sum(a.gametime)/sum(b.accounts) AS avgGameTime,
+		sum(a.gamecount)/sum(b.accounts) AS avgGameCount
+	FROM
+	(select statdate,gameid,termtype,areaid,channel,chnnnl,sum(IFNULL(newdau,0)) + sum(IFNULL(olddau,0)) as accounts
+	from logplat_active_user_city
+	<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect" />
+	and city='-1'
+	 group by statdate,gameid,termtype,areaid,channel,chnnnl) b
+	JOIN (select statdate,gameid,termtype,areaid,channel,chnnnl,sum(gametime) AS gametime,
+		sum(gamecount) AS gamecount from logplat_gamect_daily
+	<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect" />
+	AND type =2
+	 group by statdate,gameid,termtype,areaid,channel,chnnnl) a ON (
+		a.statdate = b.statdate
+		AND a.gameid = b.gameid
+		AND a.termtype = b.termtype
+		AND a.areaid = b.areaid
+		AND a.channel = b.channel
+		AND a.chnnnl = b.chnnnl
+	)GROUP BY a.statdate ORDER BY a.statdate
+	</select>
+	
+	<!--新增玩家次日留存,新增玩家3日留存,新增玩家7日留存 -->
+	<select id="selectDailyNewUserRetationList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		SELECT
+			statdate,
+			sum(1dayret) / sum(newact) newuserDay2,
+			sum(3dayret) / sum(newact) newuserDay3,
+			sum(7dayret) / sum(newact) newuserDay7
+		FROM
+			logplat_daily_retain
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect" />
+		AND type =- 1
+		GROUP BY
+			statdate
+	</select>
+	<!--
+	设备次日留存,设备3日留存,设备7日留存
+	-->
+	<select id="selectDailyDeviceRetationRate" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		SELECT
+			statdate,
+			sum(IF(nday = 1, count, 0)) / sum(regcount) deviceDay2,
+			sum(IF(nday = 3, count, 0)) / sum(regcount) deviceDay3,
+			sum(IF(nday = 7, count, 0)) / sum(regcount) deviceDay7
+		FROM
+			logplat_device_retain
+		<include refid="BaseSelectWithoutAreaidLanguageEdition"/>
+		GROUP BY
+			statdate
+	</select>
+	<!--
+	活跃玩家次日留存,活跃玩家3日留存,活跃玩家7日留存
+	-->
+	<select id="selectActUserRetationRate" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		SELECT
+			statdate,
+			ifnull(sum(IF(nday = 1, count, 0)) / sum(actorcnt),0) actvuserDay2,
+			ifnull(sum(IF(nday = 3, count, 0)) / sum(actorcnt),0) actvuserDay3,
+			IFNULL(sum(IF(nday = 7, count, 0)) / sum(actorcnt),0) actvuserDay7
+		FROM
+			logplat_active_retain
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelectWithoutLanguageEdition"/>
+		GROUP BY
+			statdate
+			
+	</select>
+	<!--
+	付费数据(收入（¥）,新增付费玩家数量,付费玩家数量,日付费率,活跃ARPU,活跃ARPPU,新增ARPU,新增ARPPU)
+	-->
+	<select id="selectpayDataList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		SELECT
+		b.statdate,
+		ifnull(b.money, 0) money,
+		ifnull(a.npayact, 0) npayact,
+		ifnull(b.payact, 0) payact,
+		ifnull(
+			concat(
+				b.payact / b.loginact * 100,
+				'%'
+			),
+			0
+		) dPayRate,
+		ifnull(b.money / b.loginact, 0) act_ARPU,
+		ifnull(b.money / b.payact, 0) act_arppu,
+		ifnull(a.nmoney / b.newact, 0) new_arpu,
+		ifnull(a.nmoney / a.npayact, 0) new_arppu
+	FROM
+		(
+			SELECT
+ 				statdate,
+				sum(money) nmoney,
+ 				sum(IF(regdate = statdate, 1, 0)) npayact
+			FROM
+				logplat_actor_recharge
+			<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/>
+			AND isfirst =1
+			GROUP BY
+				statdate
+		) a RIGHT JOIN
+		(
+			SELECT
+				statdate,
+				sum(income) money,
+				sum(newact) newact,
+				sum(payact) payact,
+				sum(loginact) loginact
+			FROM
+				logplat_daily_rpt
+			<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/>
+			GROUP BY
+				statdate
+		) b on
+		a.statdate = b.statdate
+	</select>
+	<!--
+	累积数据
+	-->
+	<select id="getTotalData" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		SELECT
+		a.statdate,
+		a.new_device,
+		b.newUser,
+		a.payact,
+		a.dPayRate,
+		a.money,
+		a.act_arpu,
+		a.act_arppu
+	FROM
+		(
+			SELECT
+				statdate,
+				SUM(actvcount) new_device,
+				SUM(payact) payact,
+				concat(
+					SUM(payact) / SUM(loginact) * 100,
+					'%'
+				) dPayRate,
+				SUM(income) money,
+				SUM(income) / SUM(loginact) act_arpu,
+				SUM(income) / SUM(payact) act_arppu
+			FROM
+				logplat_daily_rpt
+			<include refid="BaseSelectLtDate"/>
+		) a,
+		(
+			SELECT
+				statdate,
+				IFNULL(SUM(newuser), 0) AS newUser
+			FROM
+				logplat_user_reglogrechg_stat
+			<include refid="BaseSelectLtDate"/>
+			AND city = '-1'
+		) b;
+	</select>
+	<!--
+	周基础数据(周新增设备数,周总新增玩家数量（WNU）,周活跃玩家数（WAU）,周平均游戏时长,周平均游戏次数,平均每次游戏时长,ARPU,周总收入金额,周充值玩家数量,周玩家付费率)
+	-->
+	<select id="getBaseData" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		SELECT
+			IFNULL(a.totalDeviceCnt, 0) week_total_device_Cnt,
+			IFNULL(c.new_play_count, 0) week_new_play_count,
+			IFNULL(a.act_play_count, 0) week_act_play_count,
+			IFNULL(a.avg_game_time, 0)  week_avg_game_time,
+			IFNULL(a.avg_game_count, 0) week_avg_game_count,
+			IFNULL(a.avg_daily_game_time, 0) week_avg_daily_game_time,
+			IFNULL(a.arpu, 0) week_arpu,
+			IFNULL(b.money, 0) week_income,
+			IFNULL(b.recharge_cnt, 0) week_recharge_cnt,
+			IFNULL(round(b.money/b.recharge_cnt,2), 0) week_arppu,
+			ROUND(
+				IFNULL(
+					b.recharge_cnt / a.act_play_count,
+					0
+				) * 100,
+				2
+			) week_pay_rate
+		FROM
+			(
+				SELECT
+					gameid,
+					sum(actvcount) totalDeviceCnt,
+					SUM(loginact) act_play_count,
+					round(SUM(gametime) / SUM(loginact),2) avg_game_time,
+					round(SUM(gamecount) / SUM(loginact),2) avg_game_count,
+					round(SUM(gametime) / SUM(gamecount),2) avg_daily_game_time,
+					round(SUM(income) / SUM(loginact),2) arpu
+				FROM
+					logplat_daily_rpt
+			<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/>
+			) a
+		LEFT JOIN (
+			SELECT
+				gameid,
+				SUM(money) money,
+				count(DISTINCT uid, actorid) recharge_cnt
+			FROM
+				logplat_actor_recharge
+				<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/>
+		) b ON b.gameid = a.gameid,
+	(
+		SELECT
+			statdate,
+			IFNULL(SUM(newuser), 0) AS new_play_count
+		FROM
+			logplat_user_reglogrechg_stat
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/>
+		AND city = '-1'
+	) c;
+	</select>
+	<!--
+	周流失玩家数量,周流失率,周新增玩家次日留存率,周回流玩家数
+	-->
+	<select id="getLostAndRet" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		SELECT
+			a.lostcnt week_lostcnt,
+			a.lostrate week_lostrate,
+			b.day2ret week_day2ret,
+			c.returncnt week_returncnt
+		FROM
+			(
+				SELECT
+					gameid,
+					ifnull(SUM(IF(nday = 7, lostcnt, 0)),0) lostcnt,
+								IFNULL(
+						ROUND(
+							SUM(IF(nday = 7, lostcnt, 0)) / SUM(actvcnt) * 100,
+							2
+						),
+						0
+					) 
+					 lostrate
+				FROM
+					logplat_daily_lost
+				<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/>
+			) a,
+			(
+				SELECT
+					gameid,
+					IFNULL(
+						ROUND(
+							(SUM(1dayret) / SUM(newact)) * 100,
+							2
+						),
+						0
+					) day2ret
+				FROM
+					logplat_daily_retain
+				<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/>
+			) b,
+			(
+				SELECT
+					gameid,
+					IFNULL(SUM(IF(nday = 7, returncnt, 0)),0) returncnt
+				FROM
+					logplat_daily_return
+			<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/>
+			) c
+	</select>
+	
+	<!--acu,pcu -->
+	<select id="selectAcuAndPcuList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		SELECT
+			statdate,
+			ifnull(sum(tonline)/sum(counttime), 0) acu,
+			ifnull(sum(pcu), 0) pcu
+		FROM
+			logplat_daily_rpt
+			<include refid="BaseSelectWithoutTermtypesLanguageEdition" />
+		GROUP BY statdate
+	</select>
+	
+	
+	
+	
+	
+	
+</mapper>

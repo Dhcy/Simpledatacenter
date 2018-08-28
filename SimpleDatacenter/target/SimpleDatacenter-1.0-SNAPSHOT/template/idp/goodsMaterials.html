@@ -1,0 +1,258 @@
+<style type="text/css">
+    .table th,.table td{ border:1px solid #ddd;}
+    .form-group{ margin-left: 10px; margin-top: 10px;}
+    .form-control{ display: inline-block; vertical-align: middle;}
+    .tableListTh{
+    	white-space: nowrap;
+    	text-align:center;
+    }
+    .channelTd{
+    	white-space: nowrap;
+    	text-align:center;
+    }
+</style>
+<div>
+	<div class="maintop">
+		<div datepicker format="yyyy-MM-dd" class="col-xs-3 timeSelect" mstatdate="mstatdate">
+		</div>
+		<!--------日期选择控件----------->
+		
+		<div selectChoose class="selectChoose">
+		</div>
+		<!--------渠道区服选择控件----------->
+		<div class="clear"></div>
+		<div class="panel-selectChoose" callbackchannelqf ng-show="iscallback">
+		</div>
+		<!--------已选择渠道区服显示----------->
+	</div>	
+	<div class="clear"></div>
+		<!--------tab选择按钮----------->
+	<div class="panel panel-default panel_1">
+			<div class="panel-heading">
+			<strong>{{'物资总览' | translate}}</strong>
+			<div class="panel_downloadBtn"  down-file down-file-url="summary/exportGoodsSummaryList.action" 
+					down-file-type="xlsx" down-file-name="物资总览{{mstatdate}}" savedata="" postdata="searchData" ></div>
+			</div>
+			<div class="panel-body pdlf pdtb">
+			<div class="tableList tableListAct" >
+				<ul class="tableListUl">
+					<li class="tableListLi tableListLiTh clear">
+						<span class="tableListTh" style="width:18%" ng-click="changeOrderBy(panel_1.dataList_1,'statdate')">
+							<strong title="">{{'日期' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:15%" ng-click="changeOrderBy(panel_1.dataList_1,'channelName')">
+							<strong title="" >{{'渠道' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:15%" ng-click="changeOrderBy(panel_1.dataList_1,'areaName')">
+							<strong title="" >{{'区服' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:15%" ng-click="changeOrderBy(panel_1.dataList_1,'limitTimeDiscountTotalNum')">
+							<strong title="" >{{'限时折扣(购买总人数)' | translate}}</strong>
+						</span>
+						<!-- 
+						<span class="tableListTh" style="width:13%" ng-click="changeOrderBy(panel_1.dataList_1,'dailySuppTotalNum')">
+							<strong title="" >每日物资(购买总人数)</strong>
+						</span> -->
+						<span class="tableListTh" style="width:15%" ng-click="changeOrderBy(panel_1.dataList_1,'campSuppTotalNum')">
+							<strong title="" >{{'阵营物资(购买总人数)' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:22%">
+							<strong>{{'详情' | translate}}</strong>
+						</span>
+					</li>
+					
+					<li class="tableListLi clear" ng-repeat="data in panel_1.dataList_1.data | orderBy: panel_1.dataList_1.orderBy.t+panel_1.dataList_1.orderBy.s | pageStartFrom : panel_1.dataList_1.limit.now*panel_1.dataList_1.limit.max | limitTo: panel_1.dataList_1.limit.max" ng-class="({'show_panel':data.show_panel})">
+						<div class="channelTr clear">
+							<span class="channelTd" style="width:18%" >
+								{{data.statdate}}
+							</span>
+							<span class="channelTd" style="width:15%">
+								{{data.channelName}}
+							</span>
+							<span class="channelTd" style="width:15%">
+								{{data.areaName}}
+							</span>
+							<span class="channelTd" style="width:15%">
+								{{data.limitTimeDiscountTotalNum}}
+							</span>
+							<!--  
+							<span class="channelTd" style="width:13%">
+								{{data.dailySuppTotalNum}}
+							</span>-->
+							<span class="channelTd" style="width:15%">
+								{{data.campSuppTotalNum}}
+							</span>
+							<span class="channelTd" style="width:22%">
+								<p class="show_panel_btn" ng-click="showPanel(data,$event,'limitTimeDiscount')" ng-show="data.showtype!='limitTimeDiscount'">{{'限时折扣' | translate}}</p>
+								<p class="show_panel_btn" ng-click="data.show_panel=false;data.showtype='';" ng-show="data.showtype=='limitTimeDiscount' &&  data.show_panel == true">{{'收起' | translate}}</p>
+								<!-- <p class="show_panel_btn" ng-click="showPanel(data,$event,'dailyGoods')" ng-show="data.showtype!='dailyGoods' ">每日物资</p>
+								<p class="show_panel_btn" ng-click="data.show_panel=false;data.showtype='';" ng-show="data.showtype=='dailyGoods' &&  data.show_panel == true">收起</p>-->
+								<p class="show_panel_btn" ng-click="showPanel(data,$event,'campGoods')" ng-show="data.showtype!='campGoods' ">{{'阵营物资' | translate}}</p>
+								<p class="show_panel_btn" ng-click="data.show_panel=false;data.showtype='';" ng-show="data.showtype=='campGoods' &&  data.show_panel == true">{{'收起' | translate}}</p>
+							</span>
+						</div>
+						
+						<div class="bgw  midepanel cl">
+						<div class="panel panel-default " ng-class="({'panel-act':data.showtype=='limitTimeDiscount' &&  data.show_panel == true})"  ng-show="data.showtype=='limitTimeDiscount' &&  data.show_panel == true"	>
+								<div class="panel-heading">
+									<strong>
+										{{'限时折扣' | translate}}
+									</strong>
+								</div>
+									<div class="clear"></div>
+							<div class="panel-body" ng-class="{'table':data.limitTimeDiscount.model=='table','graph':data.limitTimeDiscount.model=='graph'}">
+								<ul class="nav nav-tabs fl cl" navtabs>
+								  <li role="presentation" class="active"><a href="javascript:void(0);">{{'限时折扣' | translate}}</a></li>
+								</ul>
+								<div class="clear"></div>
+								<div class="panel-showData" data-type="data">
+									<div class="dataList dataList2 dataList_1 dataListAct">
+										<div class="dataTable">
+											<table class="table table-bordered text-center">
+												<tr class="tableTr">
+													<th width='14%' ng-click="changeOrderBy(data.limitTimeDiscount.dataList_1,'statdate')">{{'日期' | translate}}</th>
+													<th width='14%' ng-click="changeOrderBy(data.limitTimeDiscount.dataList_1,'channelName')">{{'渠道' | translate}}</th>
+													<th width='14%' ng-click="changeOrderBy(data.limitTimeDiscount.dataList_1,'areaName')">{{'区服' | translate}}</th>
+													<th width='14%' ng-click="changeOrderBy(data.limitTimeDiscount.dataList_1,'shopName')">{{'物品' | translate}}</th>
+													<th width='14%' ng-click="changeOrderBy(data.limitTimeDiscount.dataList_1,'population')">{{'购买人数' | translate}}</th>
+													<th width='14%' ng-click="changeOrderBy(data.limitTimeDiscount.dataList_1,'purchases')">{{'购买数量' | translate}}</th>
+													<th width='14%' ng-click="changeOrderBy(data.limitTimeDiscount.dataList_1,'cost')">{{'对应总钻石' | translate}}</th>
+												</tr>
+												<tr ng-repeat="value in data.limitTimeDiscount.dataList_1.data | orderBy: data.limitTimeDiscount.dataList_1.orderBy.t+data.limitTimeDiscount.dataList_1.orderBy.s | pageStartFrom : data.limitTimeDiscount.dataList_1.limit.now*data.limitTimeDiscount.dataList_1.limit.max | limitTo: data.limitTimeDiscount.dataList_1.limit.max">
+													<td>{{value.statdate}}</td>
+													<td>{{value.channelName}}</td>
+													<td>{{value.areaName}}</td>
+													<td>{{value.shopName}}</td>
+													<td>{{value.population}}</td>
+													<td>{{value.purchases}}</td>
+													<td>{{value.cost}}</td>
+												</tr>
+											</table>
+											<div class="tableLimit" tablelimit datalimit="data.limitTimeDiscount.dataList_1.limit" index="0" tabledata="data.limitTimeDiscount.dataList_1.data">
+											</div>	
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!--<div class="bgw  midepanel cl">
+						<div class="panel panel-default "  ng-class="({'panel-act':data.showtype=='dailyGoods' &&  data.show_panel == true})"  ng-show="data.showtype=='dailyGoods' &&  data.show_panel == true"	>
+								<div class="panel-heading">
+									<strong>
+										每日物资
+									</strong>
+								</div>
+									<div class="clear"></div>
+							<div class="panel-body" ng-class="{'table':data.dailyGoods.model=='table','graph':data.dailyGoods.model=='graph'}">
+								<ul class="nav nav-tabs fl cl" navtabs>
+								  <li role="presentation" class="active"><a href="javascript:void(0);">每日物资</a></li>
+								</ul>
+								<div class="clear"></div>
+								<div class="panel-showData" data-type="dailyGoods">
+									<div class="dataList dataList2 dataList_1 dataListAct">
+										<!--<div class="dataGraph">
+											<div class="graph" data="dataList_graph" data-index="{{$index}}" data-data="levelDetail" data-list="1" name="升级时长"></div>
+											<div class="graphLimit" graphLimit datalimit="data.dailyTrend.dataList_1.graphLimit" graphdata="data.dailyTrend.dataList_1.data" graphfun="graphfun.dataList_graph" model="data.dailyTrend.model" name="升级时长" hastarget="true" isfist="false" key="{d:'times',y:'statdate'}">
+											</div>
+										</div>
+										<div class="dataTable">
+											<table class="table table-bordered text-center">
+												<tr class="tableTr">
+													<th width='14%' ng-click="changeOrderBy(data.dailyGoods.dataList_1,'statdate')">日期</th>
+													<th width='14%' ng-click="changeOrderBy(data.dailyGoods.dataList_1,'channelName')">渠道</th>
+													<th width='14%' ng-click="changeOrderBy(data.dailyGoods.dataList_1,'areaName')">区服</th>
+													<th width='14%' ng-click="changeOrderBy(data.dailyGoods.dataList_1,'shopName')">物品</th>
+													<th width='14%' ng-click="changeOrderBy(data.dailyGoods.dataList_1,'population')">购买人数</th>
+													<th width='14%' ng-click="changeOrderBy(data.dailyGoods.dataList_1,'purchases')">购买数量</th>
+													<th width='14%' ng-click="changeOrderBy(data.dailyGoods.dataList_1,'cost')">对应总钻石</th>
+												</tr>
+												<tr ng-repeat="value in data.dailyGoods.dataList_1.data | orderBy: data.dailyGoods.dataList_1.orderBy.t+data.dailyGoods.dataList_1.orderBy.s | pageStartFrom : data.dailyGoods.dataList_1.limit.now*data.dailyGoods.dataList_1.limit.max | limitTo: data.dailyGoods.dataList_1.limit.max">
+													<td>{{value.statdate}}</td>
+													<td>{{value.channelName}}</td>
+													<td>{{value.areaName}}</td>
+													<td>{{value.shopName}}</td>
+													<td>{{value.population}}</td>
+													<td>{{value.purchases}}</td>
+													<td>{{value.cost}}</td>
+												</tr>
+											</table>
+											<div class="tableLimit" tablelimit datalimit="data.dailyGoods.dataList_1.limit" index="0" tabledata="data.dailyGoods.dataList_1.data">
+											</div>
+										</div>
+									</div>
+								</div>
+								<!--<div class="panel-changeData" graphtbale graphfun="graphfun" datachange="panel_change" datalimit="data.dailyTrend.dataList_1.limit"  model="data.dailyTrend.model">
+								</div>
+							</div>
+						</div>
+					</div>-->
+					
+					<div class="bgw  midepanel cl">
+						<div class="panel panel-default "  ng-class="({'panel-act':data.showtype=='campGoods' &&  data.show_panel == true})"  ng-show="data.showtype=='campGoods' &&  data.show_panel == true"	>
+								<div class="panel-heading">
+									<strong>
+										{{'阵营物资' | translate}}
+									</strong>
+								</div>
+									<div class="clear"></div>
+							<div class="panel-body" ng-class="{'table':data.campGoods.model=='table','graph':data.campGoods.model=='graph'}">
+								<ul class="nav nav-tabs fl cl" navtabs>
+								  <li role="presentation" class="active"><a href="javascript:void(0);">{{'阵营物资' | translate}}</a></li>
+								</ul>
+								<div class="clear"></div>
+								<div class="panel-showData" data-type="campGoods">
+									<div class="dataList dataList2 dataList_1 dataListAct">
+										<div class="dataTable">
+											<table class="table table-bordered text-center">
+												<tr class="tableTr">
+													<th width='14%' ng-click="changeOrderBy(data.campGoods.dataList_1,'statdate')">{{'日期' | translate}}</th>
+													<th width='14%' ng-click="changeOrderBy(data.campGoods.dataList_1,'channelName')">{{'渠道' | translate}}</th>
+													<th width='14%' ng-click="changeOrderBy(data.campGoods.dataList_1,'areaName')">{{'区服' | translate}}</th>
+													<th width='14%' ng-click="changeOrderBy(data.campGoods.dataList_1,'shopName')">{{'物品' | translate}}</th>
+													<th width='14%' ng-click="changeOrderBy(data.campGoods.dataList_1,'population')">{{'购买人数' | translate}}</th>
+													<th width='14%' ng-click="changeOrderBy(data.campGoods.dataList_1,'purchases')">{{'购买数量' | translate}}</th>
+													<th width='14%' ng-click="changeOrderBy(data.campGoods.dataList_1,'cost')">{{'对应总钻石' | translate}}</th>
+												</tr>
+												<tr ng-repeat="value in data.campGoods.dataList_1.data | orderBy: data.campGoods.dataList_1.orderBy.t+data.campGoods.dataList_1.orderBy.s | pageStartFrom : data.campGoods.dataList_1.limit.now*data.campGoods.dataList_1.limit.max | limitTo: data.campGoods.dataList_1.limit.max">
+													<td>{{value.statdate}}</td>
+													<td>{{value.channelName}}</td>
+													<td>{{value.areaName}}</td>
+													<td>{{value.shopName}}</td>
+													<td>{{value.population}}</td>
+													<td>{{value.purchases}}</td>
+													<td>{{value.cost}}</td>
+												</tr>
+											</table>
+											<div class="tableLimit" tablelimit datalimit="data.campGoods.dataList_1.limit" index="0" tabledata="data.campGoods.dataList_1.data">
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</li>
+				</ul>
+				<div class="tableFooter">
+						<div class="buttondiv fl" analysisdrop changei="changetype()">
+							<div class="selectlable fl">{{'每页显示' | translate}}：</div>
+							<div class="analysisdrop fl" style="width:60px;">
+								<div class="hadchoose">
+									<h6>{{val | translate}}</h6></div>
+								<ul class="dropUl">
+									<li ng-click="c('10');changetype(10)">10</li>
+									<li ng-click="c('20');changetype(20)">20</li>
+									<li ng-click="c('50');changetype(50)">50</li>
+									<li ng-click="c('100');changetype(100)">100</li>
+								</ul>
+							</div>
+							<div class="selectlable fl">&nbsp;&nbsp;{{'条记录' | translate}}</div>
+						</div>
+						<div class="dataTables_paginate fr" datatableslimit  datalimit="panel_1.dataList_1.limit"  tabledata="panel_1.dataList_1.data"  datachange="panel_1_change"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

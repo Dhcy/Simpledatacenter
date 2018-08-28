@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.datastat.mapper.channels.ChannelDataMapper">
+	<resultMap id="BaseResultMap" type="com.good.plat.datacenter.datastat.entity.channels.ChannelData">
+		<result column="gameid" property="gameid"/>
+		<result column="gameName" property="gameName"/>
+		<result column="channelid" property="channelid"/>
+		<result column="channelName" property="channelName"/>
+		<result column="subchannelid" property="subchannelid"/>
+		<result column="areaid" property="areaid"/>
+		<result column="areaName" property="areaName"/>
+		<result column="statdate" property="statdate"/>
+		<result column="statType" property="statType"/>
+		<result column="rate" property="rate"/>
+		<result column="trackMode" property="trackMode"/>
+		<result column="devices" property="devices"/>
+		<result column="newPlayers" property="newPlayers"/>
+		<result column="regCon" property="regCon"/>
+		<result column="dailyActive" property="dailyActive"/>
+		<result column="oneDayPlayer" property="oneDayPlayer"/>
+		<result column="day1Retention" property="day1Retention"/>
+		<result column="firstWeekCon" property="firstWeekCon"/>
+		<result column="revenue" property="revenue"/>
+		<result column="paidAccounts" property="paidAccounts"/>
+		<result column="dailyCon" property="dailyCon"/>
+		<result column="dailyAvgARPU" property="dailyAvgARPU"/>
+		<result column="dailyAvgARPPU" property="dailyAvgARPPU"/>
+		<result column="activeAccounts" property="activeAccounts"/>
+		<result column="payRate" property="payRate"/>
+		<result column="retentionRate" property="retentionRate"/>
+	</resultMap>
+	
+	<sql id="BaseSelect">
+		where statdate between #{startdate} and #{enddate} 
+		<if test="termtypes != null">
+			and termtype in
+			<foreach collection="termtypes" item="term" index="index" open="(" close=")" separator=",">
+				#{term}
+			</foreach>
+		</if>
+		and gameid=#{gameid}
+		<if test="areas != null">
+			and areaid in
+			<foreach collection="areas" item="area" index="index" open="(" close=")" separator=",">
+				#{area}
+			</foreach>
+		</if>
+		<if test="channelList != null">
+			and channel in
+			<foreach collection="channelList" item="channel" index="index" open="(" close=")" separator=",">
+				#{channel.id}
+			</foreach>
+		</if>
+		<if test="subchannels != null">
+			and chnnnl in
+			<foreach collection="subchannels" item="subchannel" index="index" open="(" close=")" separator=",">
+				#{subchannel}
+			</foreach>
+		</if>
+	</sql>
+	
+	<sql id="ABaseSelect">
+		where a.statdate between #{startdate} and #{enddate} 
+		<if test="termtypes != null">
+			and a.termtype in
+			<foreach collection="termtypes" item="term" index="index" open="(" close=")" separator=",">
+				#{term}
+			</foreach>
+		</if>
+		and a.gameid=#{gameid}
+		<if test="areas != null">
+			and a.areaid in
+			<foreach collection="areas" item="area" index="index" open="(" close=")" separator=",">
+				#{area}
+			</foreach>
+		</if>
+		<if test="channelList != null">
+			and a.channel in
+			<foreach collection="channelList" item="channel" index="index" open="(" close=")" separator=",">
+				#{channel.id}
+			</foreach>
+		</if>
+		<if test="subchannels != null">
+			and a.chnnnl in
+			<foreach collection="subchannels" item="subchannel" index="index" open="(" close=")" separator=",">
+				#{subchannel}
+			</foreach>
+		</if>
+	</sql>
+	
+	<sql id="BBaseSelect">
+		where b.statdate between #{startdate} and #{enddate} 
+		<if test="termtypes != null">
+			and b.termtype in
+			<foreach collection="termtypes" item="term" index="index" open="(" close=")" separator=",">
+				#{term}
+			</foreach>
+		</if>
+		and b.gameid=#{gameid}
+		<if test="areas != null">
+			and b.areaid in
+			<foreach collection="areas" item="area" index="index" open="(" close=")" separator=",">
+				#{area}
+			</foreach>
+		</if>
+		<if test="channelList != null">
+			and b.channel in
+			<foreach collection="channelList" item="channel" index="index" open="(" close=")" separator=",">
+				#{channel.id}
+			</foreach>
+		</if>
+		<if test="subchannels != null">
+			and b.chnnnl in
+			<foreach collection="subchannels" item="subchannel" index="index" open="(" close=")" separator=",">
+				#{subchannel}
+			</foreach>
+		</if>
+	</sql>
+	
+	<sql id="ChannelRechargeBaseSelect">
+		where 1=1
+		<if test="termtypes != null">
+			and termtype in
+			<foreach collection="termtypes" item="term" index="index" open="(" close=")" separator=",">
+				#{term}
+			</foreach>
+		</if>
+		and gameid=#{gameid}
+		<if test="areas != null">
+			and areaid in
+			<foreach collection="areas" item="area" index="index" open="(" close=")" separator=",">
+				#{area}
+			</foreach>
+		</if>
+		<if test="channelList != null">
+			and channel in
+			<foreach collection="channelList" item="channel" index="index" open="(" close=")" separator=",">
+				#{channel.id}
+			</foreach>
+		</if>
+		<if test="subchannels != null">
+			and chnnnl in
+			<foreach collection="subchannels" item="subchannel" index="index" open="(" close=")" separator=",">
+				#{subchannel}
+			</foreach>
+		</if>
+	</sql>
+
+	<!-- 数量指标 -->
+	<select id="selectPartnerAmount" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select a.channel as channelid,sum(a.actvcount) as devices,sum(a.newact) as newPlayers
+		,sum(a.loginact) as activeAccounts,sum(a.income) as revenue,sum(a.payact) as paidAccounts,b.channelName
+		from logplat_daily_rpt a left join tb_logplat_channel b on(a.channel=b.id)
+		<include refid="ABaseSelect"></include>
+		group by a.channel,b.channelName order by a.channel
+	</select>
+	
+	<!-- 数量指标明细 -->
+	<select id="selectPartnerAmountDetail" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select statdate, sum(actvcount) as devices,sum(newact) as newPlayers
+		,sum(loginact) as activeAccounts,sum(income) as revenue,sum(payact) as paidAccounts
+		from logplat_daily_rpt
+		<include refid="BaseSelect"/> and channel=#{checktype1,jdbcType=INTEGER}
+		group by statdate order by statdate
+	</select>
+	
+	
+	<select id="exportPartnerAmount" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	
+	<!-- 质量指标 -->
+	<select id="selectPartnerQuality" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+	</select>
+	
+	<!-- 渠道日活跃数 -->
+	<select id="selectChannelDau" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select a.channel as channelid,a.statdate , sum(a.newdau + a.olddau) as activeAccounts ,c.channelName
+		from logplat_active_user a
+		left join tb_logplat_channel c on(a.channel=c.id)
+		<include refid="ABaseSelect"/>
+		group by a.channel,a.statdate 
+		order by a.channel
+	</select>
+	
+	<select id="selectChannelRetentionAnd1DayRetRate" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select
+		a.channel as channelid,a.statdate,ifnull(sum(a.1dayret),0) as day1Retention,ifnull(sum(a.1dayret)/sum(a.newact),0) as retentionRate
+		,c.channelName
+		from logplat_daily_retain a
+		left join tb_logplat_channel c on(a.channel=c.id)
+		<include refid="ABaseSelect"/> and a.type=-1
+		group by a.channel,a.statdate
+	</select>
+	
+	<!-- 渠道日留存率 -->
+	<select id="selectChannelDayRetention" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select a.channel as channelid,a.statdate,sum(a.1dayret) as day1Retention ,c.channelName
+		from logplat_daily_retain a
+		left join tb_logplat_channel c on(a.channel=c.id)
+		<include refid="ABaseSelect"/>
+		group by a.channel,a.statdate order by a.channel
+	</select>
+	
+	
+	<!-- 渠道玩家在指定期限内首次充值数(率) -->
+	<select id="selectChannelActorFirstRechargeInTime" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select a.channel  as channelid, a.accounts as newPlayers,b.accounts as paidAccounts
+			,ifnull(b.accounts,0)/a.accounts as payRate ,c.channelName
+		from(
+				select channel , sum(newact) as accounts
+				from logplat_daily_rpt
+				<include refid="BaseSelect"/>
+				group by channel
+		) a left join (
+				select channel,count(*) as accounts from(
+						select distinct actorid,uid,channel,regdate,statdate
+						from logplat_actor_recharge 
+						<include refid="ChannelRechargeBaseSelect"/> and regdate between #{startdate} and #{enddate}
+						and TO_DAYS(statdate) - TO_DAYS(regdate) between #{checktype1,jdbcType=INTEGER} and #{checktype2,jdbcType=INTEGER}
+				) aa
+		) b on(a.channel=b.channel)
+		left join tb_logplat_channel c on(a.channel=c.id)
+		order by a.channel
+	</select>
+	
+	<select id="exportPartnerQuality" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+	</select>
+	
+	
+	<!-- 收入指标 -->
+	<select id="selectPartnerIncome" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+	</select>
+	
+	<select id="selectPartnerDailyIncome" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select a.channel as channelid,a.statdate,a.money as revenue,a.paidAccounts,b.dau as activeAccounts,c.channelName
+		from (
+				select channel,statdate,sum(money) as money,count(distinct uid,actorid) as paidAccounts
+				from logplat_actor_recharge
+				<include refid="BaseSelect"/>
+				group by channel,statdate
+		) a left join (
+			select channel,statdate, sum(newdau + olddau) as dau 
+			from logplat_active_user
+			<include refid="BaseSelect"/>
+			group by channel,statdate
+		) b on(a.channel=b.channel and a.statdate=b.statdate)
+		left join tb_logplat_channel c on(a.channel=c.id)
+	</select>
+	
+	<select id="exportPartnerIncome" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	<!-- 设备激活 -->
+	<select id="selectInstallList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	
+	<!-- 新增玩家 -->
+	<select id="selectNewPlayerList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	<!-- 日活跃 -->
+	<select id="selectDauList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	
+	<!-- 收入 -->
+	<select id="selectIncomeNumList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	<!-- 日付费人数 -->
+	<select id="selectChargePlayerNumList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	
+	<!-- ARPU(日) -->
+	<select id="selectDailyARPU" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+</mapper>

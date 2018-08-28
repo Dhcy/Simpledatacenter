@@ -1,0 +1,231 @@
+<style>
+    #myModal .row{margin-bottom: 10px;}
+    .emailList .removeBtn{position: absolute;right: 5px;top: 6px;display: none;cursor: pointer;}
+    .emailList:hover .removeBtn{display: block;}
+    .col-xs-2{line-height: 25px;}
+    table td{word-break: break-word}
+</style>
+<div>
+    <div>
+        <div class="form-group">
+           <!--  <a class="btn btn-default" data-toggle="modal" data-target="#myModal" ng-click="initWarningData()">添加预警</a> -->
+            <a class="btn btn-default" href="javascript:;" ng-click="addData()">{{'添加预警' | translate}}</a>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog  modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel" ng-show="waningData.type==0" >{{'添加预警' | translate}}</h4>
+                    <h4 class="modal-title" id="myModalLabel" ng-show="waningData.type==1">{{'修改预警' | translate}}</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-xs-2 text-right">{{'预警名称' | translate}}:</div>
+                            <div class="col-xs-10">
+                                <input type="text" ng-model="waningData.name" class=" form-control input-sm">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-2 text-right">{{'启动时间' | translate}}:</div>
+                            <div class="col-xs-10">
+                                <select name="" id="" ng-model="waningData.activationTime" ng-options="o for o in activationTimeArr" class=" form-control input-sm">
+                                </select>
+                           {{'时' | translate}}     
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-2 text-right">IF:</div>
+                            <div class="col-xs-10">
+                                <div class="buttondiv fl" analysisdrop changei="changetype()"  style="margin-right:5px;margin-left:5px;">
+                                    <div class="selectlable fl">{{'某日' | translate}}&nbsp;</div>
+                                    <div class="analysisdrop fl" style="width:140px;">
+                                        <div class="hadchoose">
+                                            <h6>{{waningData.warning_event | translate}}</h6></div>
+                                        <ul class="dropUl">
+                                            <li ng-repeat="o in targetArr" ng-click="waningData.warning_event=o.name;waningData.warning_event_id=o.id;hideDrop()" >{{o.name}}</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                &nbsp;
+                                <div class="buttondiv fl" analysisdrop changei="changetype()" style="margin-right:5px;margin-left:5px;">
+                                    <div class="selectlable fl">{{'数据值' | translate}}&nbsp;</div>
+                                    <div class="analysisdrop fl" style="width:140px;">
+                                        <div class="hadchoose">
+                                            <h6 ng-if="waningData.cmptype==1">{{'高于' | translate}}</h6>
+                                            <h6 ng-if="waningData.cmptype==-1">{{'低于' | translate}}</h6>
+                                            <h6 ng-if="waningData.cmptype==0">{{'等于' | translate}}</h6>
+                                            <!-- {{val}} --></div>
+                                        <ul class="dropUl">
+                                            <li ng-click="val='高于';waningData.cmptype=1;">{{'高于' | translate}}</li>
+                                            <li ng-click="val='低于';waningData.cmptype=-1;">{{'低于' | translate}}</li>
+                                             <li ng-click="val='低于';waningData.cmptype=0;">{{'等于' | translate}}</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                &nbsp;
+                                <div class="buttondiv fl" analysisdrop changei="changetype()" style="margin-right:5px;margin-left:5px;">
+                                    <div class="analysisdrop fl" style="width:140px;">
+                                        <div class="hadchoose">
+                                            <h6 ng-if="waningData.unit==0">{{'百分比' | translate}}<!-- {{val}} --></h6>
+                                            <h6 ng-if="waningData.unit!=0">{{'数据值' | translate}}</h6>
+                                            </div>
+                                        <ul class="dropUl">
+                                            <li ng-click="val='百分百';waningData.unit=0;">{{'百分百' | translate}}</li>
+                                            <li ng-click="val='数据值';waningData.unit=1;">{{'数据值' | translate}}</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="pull-left">
+                                <input type="text" class=" form-control input-sm" ng-model="waningData.valve" style="width:40px;">
+                                <span ng-show="waningData.unit==0">%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-2 text-right">{{'扩展值' | translate}}:</div>
+                            <div class="col-xs-10">
+                                <input type="text" class=" form-control input-sm" ng-model="waningData.valve2">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-2 text-right">THEN:</div>
+                            <div class="col-xs-10">
+                                <span class="pull-left" style="line-height:25px;">{{'发送邮件' | translate}}&nbsp;</span>
+                                <div class="clear"></div>
+                                <div class="pull-left rela emailList" ng-repeat="o in waningData.emails track by $index" style="margin-right:10px;margin-bottom:10px;">
+                                    <input type="text" width="120" class=" form-control input-sm" ng-model="waningData.emails[$index]">
+                                    <div class="removeBtn text-danger" ng-click="removeEmail($index)"><span class="glyphicon glyphicon-minus"  ng-show="waningData.emails.length>1"></span></div>
+                                </div>
+                                <div class="addBtn pull-left text-success" style="cursor:pointer;margin-top:6px;" ng-click="addEmail()" ng-show="waningData.emails.length<5"><span class="glyphicon glyphicon-plus"></span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{{'关闭' | translate}}</button>
+                    <button type="button" class="btn btn-primary" ng-click="postData()">{{'保存' | translate}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default panel_1">
+        <div class="panel-heading">
+            <strong>
+				{{'已建立告警项' | translate}}
+				<!--------提示框----------->
+			</strong>
+            <div class="panel_downloadBtn"  down-file down-file-url="analysis/exportWarningItems.action" 
+					down-file-type="xlsx" down-file-name="已建立告警项{{mstatdate}}" savedata="" postdata="searchData" ></div>
+            <!--------下载按钮----------->
+            <div class="clear"></div>
+        </div>
+        <div class="panel-body pdlf pdtb">
+            <div class="tableBox">
+                <table class="table table-striped table-hover">
+                    <tr>
+                        <th class="text-center" width="15%">{{'警告名称' | translate}}</th>
+                        <th class="text-center" width="30%">IF</th>
+                        <th class="text-center" width="30%">THEN</th>
+                        <th class="text-center" width="10%">{{'使用状态' | translate}}</th>
+                        <th class="text-center" width="15%">{{'操作' | translate}}</th>
+                    </tr>
+                    <!-- 
+                    警告名称	IF					THEN					使用状态	操作
+	母鸡抖啊1	某日 设备激活 低于 200 %	发送邮件到 4234234@qq.com  	0		修改 删除 -->
+                    <tr ng-repeat="data in panel_1.dataList_1.data  | orderBy: panel_1.dataList_1.orderBy.t+panel_1.dataList_1.orderBy.s | pageStartFrom : panel_1.dataList_1.limit.now*panel_1.dataList_1.limit.max | limitTo: panel_1.dataList_1.limit.max" class="text-center">
+                        <td>{{data.name}}</td>
+                        <td>
+                 {{'某日' | translate}}
+                           <span>{{data.warning_event | translate}}</span>
+                           <span ng-show="data.cmptype==0">{{'等于' | translate}}</span>
+                           <span ng-show="data.cmptype==1">{{'高于' | translate}}</span>
+                           <span ng-show="data.cmptype==-1">{{'低于' | translate}}</span>
+                           <span>{{data.valve}}</span>
+                           <span ng-show="data.unit == 0">%</span>
+                           <span ng-show="data.valve2 != null && data.valve2 !=''">{{'扩展值' | translate}}&nbsp;{{data.valve2}}</span>
+                           <!-- <span ng-if="data.valve2 != null && data.valve2 !=''">扩展值&nbsp;{{data.valve2}}</span> -->
+                        </td>
+                        <td> <span ng-show="data.emails.length>0">{{'发送邮件到' | translate}}{{data.then}}</span> <span ng-repeat="m in data.emails">{{m}} &nbsp;</span>
+                        	<!-- <span ng-show="data.subscriber.length>0">发送邮件到{{data.then}}</span> <span>{{data.subscriber}} &nbsp;</span> -->
+                        </td>
+                        <td>{{data.stat}}</td>
+                        <td>
+                            <a href="javascript:;" ng-click="modifyData(data)">{{'修改' | translate}}</a>
+                            <a href="javascript:;" ng-click="delData(data)">{{'删除' | translate}}</a>
+                        </td>
+                    </tr>
+                </table>
+                <div class="tableFooter">
+                    <div class="buttondiv fl" analysisdrop changei="changetype()">
+                        <div class="selectlable fl">{{'每页显示' | translate}}：</div>
+                        <div class="analysisdrop fl" style="width:60px;">
+                            <div class="hadchoose">
+                                <h6>{{val  | translate}}</h6></div>
+                            <ul class="dropUl">
+                                <li ng-click="c('10');changetype(10,panel_1)">10</li>
+                                <li ng-click="c('20');changetype(20,panel_1)">20</li>
+                                <li ng-click="c('50');changetype(50,panel_1)">50</li>
+                                <li ng-click="c('100');changetype(100,panel_1)">100</li>
+                            </ul>
+                        </div>
+                        <div class="selectlable fl">&nbsp;&nbsp;{{'条记录' | translate}}</div>
+                    </div>
+                    <div class="dataTables_paginate fr" datatableslimit datalimit="panel_1.dataList_1.limit" tabledata="panel_1.dataList_1.data"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default panel_2">
+        <div class="panel-heading">
+            <strong>
+				{{'通知' | translate}}
+				<!--------提示框----------->
+			</strong>
+            <div class="panel_downloadBtn"  down-file down-file-url="analysis/exportWarningNotice.action" 
+					down-file-type="xlsx" down-file-name="告警通知{{mstatdate}}" savedata="" postdata="searchData" ></div>
+            <!--------下载按钮----------->
+            <div class="clear"></div>
+        </div>
+        <div class="panel-body pdlf pdtb">
+            <div class="tableBox">
+                <table class="table table-striped table-hover">
+                    <tr>
+                        <th class="text-center" width="20%">{{'日期' | translate}}</th>
+                        <th class="text-center" width="20%">{{'警告名称' | translate}}</th>
+                        <th class="text-center" width="40%">{{'原因' | translate}}</th>
+                        <th class="text-center" width="20%">{{'操作' | translate}}</th>
+                    </tr>
+                    <tr ng-repeat="data in panel_2.dataList_1.data  | orderBy: panel_2.dataList_1.orderBy.t+panel_1.dataList_1.orderBy.s | pageStartFrom : panel_2.dataList_1.limit.now*panel_2.dataList_1.limit.max | limitTo: panel_2.dataList_1.limit.max" class="text-center">
+                        <td>{{data.notice_datetime| date:"yyyy-MM-dd hh:mm:ss"}}</td>
+                        <td>{{data.title}}</td>
+                        <td>{{data.content}}</td>
+                        <td>
+                            <a href="javascript:;" ng-click="delNotice(data.id)">{{'删除' | translate}}</a>
+                        </td>
+                    </tr>
+                </table>
+                <div class="tableFooter">
+                    <div class="buttondiv fl" analysisdrop changei="changetype()">
+                        <div class="selectlable fl">{{'每页显示' | translate}}：</div>
+                        <div class="analysisdrop fl" style="width:60px;">
+                            <div class="hadchoose">
+                                <h6>{{val  | translate}}</h6></div>
+                            <ul class="dropUl">
+                                <li ng-click="c('10');changetype(10,panel_2)">10</li>
+                                <li ng-click="c('20');changetype(20,panel_2)">20</li>
+                                <li ng-click="c('50');changetype(50,panel_2)">50</li>
+                                <li ng-click="c('100');changetype(100,panel_2)">100</li>
+                            </ul>
+                        </div>
+                        <div class="selectlable fl">&nbsp;&nbsp;{{'条记录' | translate}}</div>
+                    </div>
+                    <div class="dataTables_paginate fr" datatableslimit datalimit="panel_2.dataList_1.limit" tabledata="panel_2.dataList_1.data"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

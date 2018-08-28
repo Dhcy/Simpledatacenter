@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.independ.mapper.yhindex.YhArenaStatMapper">
+	<resultMap id="BaseResultMap" type="com.good.plat.datacenter.independ.entity.yhindex.YhArenaStat">
+		<result column="statdate" property="statdate"/>
+		<result column="gameid" property="gameid"/>
+		<result column="areaid" property="areaid"/>
+		<result column="channelid" property="channelid"/>
+		<result column="channelName" property="channelName"/>
+		<result column="dan" property="dan"/>
+		<result column="count" property="count"/>
+		<result column="rate" property="rate"/>
+		<result column="time" property="time"/>
+		<result column="type" property="type"/>
+		<result column="typeDesc" property="typeDesc"/>
+		<result column="hour" property="hour"/>
+		<result column="hourDesc" property="hourDesc"/>
+		<result column="jtzCnt" property="jtzCnt"/>
+		<result column="jjcCnt" property="jjcCnt"/>
+	</resultMap>
+		<sql id="BaseSelect">
+			where 1=1
+			<if test="startdate!=null and startdate!=''">
+			and statdate &gt;=#{startdate}
+			</if>
+			<if test="enddate!=null and enddate!=''">
+			and statdate &lt;=#{enddate}
+			</if>
+			and gameid=#{gameid}
+			<if test="channelid!=null and channelid!=-1">
+			and channel=#{channelid}
+			</if>
+			<if test="areaid!=null and areaid!=-1">
+				and areaid=#{areaid}
+			</if>
+		</sql>
+		<sql id="ABaseSelect">
+			where 1=1
+			<if test="startdate!=null and startdate!=''">
+			and a.statdate &gt;=#{startdate}
+			</if>
+			<if test="enddate!=null and enddate!=''">
+			and a.statdate &lt;=#{enddate}
+			</if>
+			and a.gameid=#{gameid}
+			<if test="channelid!=null and channelid!=-1">
+			and a.channel=#{channelid}
+			</if>
+			<if test="areaid!=null and areaid!=-1">
+				and a.areaid=#{areaid}
+			</if>
+		</sql>
+		<!--  段位统计-->
+	<select id="selectYhDanStatList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.IndependBaseSearchData">
+		SELECT
+			a.statdate,
+			a.gameid,
+			a.areaid,
+			a.dan,
+			a.count,
+		IF (
+			b.count IS NULL
+			OR b.count = 0,
+			0,
+			ROUND((a.count / b.count) * 100, 2)
+		)  as rate
+		FROM
+			(
+				SELECT
+					statdate,
+					gameid,
+					areaid,
+					dan,
+					IFNULL(SUM(count), 0) AS count
+				FROM
+					yh_dan_stat
+				<include refid="BaseSelect"/>
+				GROUP BY
+					statdate,
+					gameid,
+					areaid,
+					dan
+			) a
+		LEFT JOIN (
+			SELECT
+				statdate,
+				gameid,
+				areaid,
+				IFNULL(SUM(count), 0) AS count
+			FROM
+				yh_dan_stat
+			<include refid="BaseSelect"/>
+			GROUP BY
+				statdate,
+				gameid,
+				areaid
+		) b ON (
+			a.statdate = b.statdate
+			AND a.gameid = b.gameid
+			AND a.areaid = b.areaid
+		);
+	</select>
+	<!--  各分段匹配时长统计-->
+	<select id="selectPerMateTimeStatList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.IndependBaseSearchData">
+		SELECT
+			a.statdate,
+			a.gameid,
+			a.areaid,
+			a.time,
+			a.type,
+			CASE a.type
+		WHEN 1 THEN
+			'成功'
+		WHEN 2 THEN
+			'取消匹配'
+		ELSE
+			'未知'
+		END typeDesc,
+		a.count,
+		IF(b.count is null or b.count=0,0,ROUND((a.count/b.count)*100,2)) as rate
+		FROM
+			(
+				SELECT
+					statdate,
+					gameid,
+					areaid,
+					time,
+					type,
+					IFNULL(count, 0) AS count
+				FROM
+					yh_mate_stat
+				<include refid="BaseSelect"/>
+				GROUP BY
+					statdate,
+					gameid,
+					areaid,
+					time,
+					type
+			) a
+		LEFT JOIN (
+			SELECT
+				statdate,
+				gameid,
+				areaid,
+				IFNULL(SUM(count), 0) AS count
+			FROM
+				yh_mate_stat
+			<include refid="BaseSelect"/>
+			GROUP BY
+				statdate,
+				gameid,
+				areaid
+		) b ON (
+			a.statdate = b.statdate
+			AND a.gameid = b.gameid
+			AND a.areaid = b.areaid
+		);
+	</select>
+	<!--  各时段在线人数统计-->
+	<select id="selectPerHourOnlineCountStatList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.IndependBaseSearchData">
+		SELECT
+			a.statdate,
+			a.channel as channelid,
+			IF(chn.channelSimName is NULL,'未知渠道： '+a.channel,chn.channelSimName) as channelName,
+			a.`hour`,
+			CASE a.`hour` 
+			when 0 then '00:00~01:00'
+			when 1 then '01:00~02:00'
+			when 2 then '02:00~03:00'
+			when 3 then '03:00~04:00'
+			when 4 then '03:00~05:00'
+			when 5 then '05:00~06:00'
+			when 6 then '06:00~07:00'
+			when 7 then '07:00~08:00'
+			when 8 then '08:00~09:00'
+			when 9 then '09:00~10:00'
+			when 10 then '10:00~11:00'
+			when 11 then '11:00~12:00'
+			when 12 then '12:00~13:00'
+			when 13 then '13:00~14:00'
+			when 14 then '14:00~15:00'
+			when 15 then '15:00~16:00'
+			when 16 then '16:00~17:00'
+			when 17 then '17:00~18:00'
+			when 18 then '18:00~19:00'
+			when 19 then '19:00~20:00'
+			when 20 then '20:00~21:00'
+			when 21 then '21:00~22:00'
+			when 22 then '22:00~23:00'
+			when 23 then '23:00~23:59'
+			else '未知时间段'
+			END hourDesc,
+		  IFNULL(SUM(a.count),0) as count,
+			IFNULL(SUM(a.jtzcnt),0) as jtzCnt,
+			IFNULL(SUM(a.jjccnt),0) as jjcCnt
+		FROM
+			yh_times_stat a LEFT JOIN tb_logplat_channel chn on(chn.id=a.channel)
+		<include refid="ABaseSelect"/>
+		GROUP BY
+		a.statdate,
+		a.channel,
+		a.`hour`
+		ORDER BY
+		a.statdate,
+		a.channel,
+		a.`hour`;
+	</select>
+	
+</mapper>

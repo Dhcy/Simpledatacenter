@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.independ.mapper.sj3index.StageMapper">
+	<resultMap id="BaseResultMap" type="com.good.plat.datacenter.independ.entity.sj3index.Stage">
+		<result column="statdate" property="statdate"/>
+		<result column="gameid" property="gameid"/>
+		<result column="channelid" property="channelid"/>
+		<result column="channelName" property="channelName"/>
+		<result column="subchannelid" property="subchannelid"/>
+		<result column="areaid" property="areaid"/>
+		<result column="areaName" property="areaName"/>
+		<result column="stageType" property="stageType"/>
+		<result column="stageId" property="stageId"/>
+		<result column="stageName" property="stageName"/>
+		<result column="entercnt" property="entercnt"/>
+		<result column="succdcnt" property="succdcnt"/>
+		<result column="avg_succ_time" property="avg_succ_time"/>
+		<result column="failcnt" property="failcnt"/>
+		<result column="jobs" property="jobs"/>
+		<result column="enter_uid_cnt" property="enter_uid_cnt"/>  
+		<result column="succ_uid_cnt" property="succ_uid_cnt"/>
+		<result column="fail_uid_cnt" property="fail_uid_cnt"/>
+		<result column="opencnt" property="opencnt"/>
+		<result column="exitcnt" property="exitcnt"/>
+		<result column="sumtime" property="sumtime"/>
+		<result column="succtimes" property="succtimes"/>
+		<result column="openuidcnt" property="openuidcnt"/>
+		<result column="enteruidcnt" property="enteruidcnt"/>
+		<result column="succduidcnt" property="succduidcnt"/>
+		<result column="failuidcnt" property="failuidcnt"/>
+	</resultMap>
+	<sql id="ABaseSelect">
+			where a.statdate between #{startdate} and #{enddate} 
+			and a.gameid=#{gameid}
+			<if test="areas != null">
+				and a.areaid in
+				<foreach collection="areas" item="area" index="index" open="(" close=")" separator=",">
+					#{area}
+				</foreach>
+			</if>
+			<if test="channelList != null">
+				and a.channel in
+				<foreach collection="channelList" item="channel" index="index" open="(" close=")" separator=",">
+					#{channel.id}
+				</foreach>
+			</if>
+			<if test="subchannels != null">
+				and a.chnnnl in
+				<foreach collection="subchannels" item="subchannel" index="index" open="(" close=")" separator=",">
+					#{subchannel}
+				</foreach>
+			</if>
+		</sql>
+	<!--  关卡任务统计(日期,渠道,任务类型,主线名称,接取主线人数,主线完成数,主线未完成数,主线平均完成用时)-->
+	<select id="selectStageTaskList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.IndependBaseSearchData">
+			SELECT
+			statdate,
+			gameid,
+			channelid,channelName,
+			stageType,
+			stageId,
+			stageName,
+			jobs,
+			IFNULL(sum(entercnt),0) AS entercnt,
+			IFNULL(sum(succdcnt),0)AS succdcnt,
+			IFNULL(SUM(failcnt),0) as failcnt,
+			IFNULL(SUM(enter_uid_cnt),0) AS enter_uid_cnt,
+			IFNULL(SUM(succ_uid_cnt),0) AS succ_uid_cnt,
+			IFNULL(SUM(fail_uid_cnt),0) AS fail_uid_cnt,
+			IFNULL(
+			ROUND(
+				sum(sumtime) / sum(succtimes)
+			),
+			0
+		) AS avg_succ_time from(
+		SELECT
+			a.statdate,
+			a.gameid,
+			a.channel AS channelid,
+		IF (
+			chn.channelSimName IS NULL,
+			CONCAT(
+				'未知渠道： ',
+				a.channel
+			),
+			chn.channelSimName
+		) AS channelName,
+		 a.subchannel AS subchannelid,
+		 a.chnnnl,
+		 a.areaid,
+		 a.stage AS stageName,
+		 a.stageid AS stageId,
+		 a.stagetype AS stageType,
+		 a.jobs as jobs,
+		 max(a.entercnt) AS entercnt,
+		 max(a.succdcnt) AS succdcnt,
+		 SUM(b.entercnt) - SUM(b.`succdcnt`) AS failcnt,
+	 	MAX(a.enteruidcnt) as enter_uid_cnt,
+		MAX(a.succduidcnt) as succ_uid_cnt,
+		SUM(b.enteruidcnt)-SUM(b.succduidcnt) as fail_uid_cnt,
+		IFNULL(max(a.sumtime),0) sumtime,
+		IFNULL(max(a.succtimes),0) succtimes
+		FROM
+			sj3_logplat_stage_task_stat a
+		LEFT JOIN tb_logplat_channel chn ON chn.id = a.channel,
+		 sj3_logplat_stage_task_stat b
+		<include refid="ABaseSelect"/>
+		AND a.`statdate`&gt;= b.`statdate`
+		AND a.`gameid` = b.`gameid`
+		AND a.`channel` = b.`channel`
+		AND a.`subchannel` = b.`subchannel`
+		AND a.`chnnnl` = b.`chnnnl`
+		AND a.`areaid` = b.`areaid`
+		AND a.`stage` = b.`stage`
+		AND a.`stageid` = b.`stageid`
+		AND a.`stagetype` = b.`stagetype`
+		AND a.`jobs`=b.`jobs`
+		GROUP BY
+			a.statdate,
+			a.gameid,
+			a.channel,
+			a.subchannel,
+			a.chnnnl,
+			a.areaid,
+			a.stage,
+			a.stageid,
+			a.stagetype,
+			a.jobs) b
+		GROUP BY
+			statdate,
+			gameid,
+			channelid,channelName,
+			stagetype,
+			stageid,
+			stageName,
+			jobs;
+	</select>
+	<!--关卡统计(日期，渠道，关卡，职业，开启关卡角色数，进入关卡角色数，关卡通关角色数，关卡未通关角色数，中途退出角色数，通关总时长，通关总次数，开启账号数，进入账号数，通关账号数，未通关账号数)-->
+	<select id="selectStageList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.IndependBaseSearchData">
+		SELECT
+		a.statdate as statdate,
+		a.channel as channelid,
+		IF (
+				chn.channelSimName IS NULL,
+				CONCAT(
+					'未知渠道： ',
+					a.channel
+				),
+				chn.channelSimName
+			) AS channelName,
+		a.stageid as stageId,
+		a.stage as stageName,
+		a.jobs,
+		SUM(IF(opencnt IS NULL,0,opencnt)) as opencnt,
+		SUM(IF(entercnt IS NULL,0,entercnt)) as entercnt,
+	    SUM(IF(succdcnt IS NULL,0,succdcnt)) as succdcnt,
+		SUM(IF(failcnt IS NULL,0,failcnt)) as failcnt,
+		SUM(IF(exitcnt IS NULL,0,exitcnt)) as exitcnt,
+		SUM(IF(sumtime IS NULL,0,sumtime)) as sumtime,
+		SUM(IF(succtimes IS NULL,0,succtimes)) as succtimes,
+		SUM(IF(openuidcnt IS NULL,0,openuidcnt)) as openuidcnt,
+		SUM(IF(enteruidcnt IS NULL,0,enteruidcnt)) as enteruidcnt,
+		SUM(IF(succduidcnt IS NULL,0,succduidcnt)) as succduidcnt,
+		SUM(IF(failuidcnt IS NULL,0,failuidcnt)) as failuidcnt
+	FROM
+		sj3_logplat_stage_stat a
+		LEFT JOIN tb_logplat_channel chn ON chn.id = a.channel
+	<include refid="ABaseSelect"/>
+	GROUP BY
+		a.statdate,
+		a.channel,
+		a.stageid,
+		a.stage,
+		a.jobs
+	order by
+	a.statdate,
+	a.channel,
+	a.stageid;
+	</select>
+	
+</mapper>

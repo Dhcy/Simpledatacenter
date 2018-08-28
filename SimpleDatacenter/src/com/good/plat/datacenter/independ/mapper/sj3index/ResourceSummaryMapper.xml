@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.independ.mapper.sj3index.ResourceSummaryMapper">
+	<resultMap id="BaseResultMap" type="com.good.plat.datacenter.independ.entity.sj3index.ResourceSummary">
+		<result column="gameid" property="gameid"/>
+		<result column="gameName" property="gameName"/>
+		<result column="channelid" property="channelid"/>
+		<result column="channelName" property="channelName"/>
+		<result column="subchannelid" property="subchannelid"/>
+		<result column="areaid" property="areaid"/>
+		<result column="areaName" property="areaName"/>
+		<result column="statdate" property="statdate"/>
+		<result column="statType" property="statType"/>
+		<result column="rate" property="rate"/>
+		
+		<result column="typeName" property="typeName"/>
+		<result column="purposeName" property="purposeName"/>
+		<result column="cnt" property="cnt"/>
+		<result column="time" property="time"/>
+		
+		
+	</resultMap>
+	
+	<sql id="ABaseSelect">
+		where a.statdate between #{startdate} and #{enddate} 
+		and a.gameid=#{gameid}
+		<if test="areas != null">
+			and a.areaid in
+			<foreach collection="areas" item="area" index="index" open="(" close=")" separator=",">
+				#{area}
+			</foreach>
+		</if>
+		<if test="channelList != null">
+			and a.channel in
+			<foreach collection="channelList" item="channel" index="index" open="(" close=")" separator=",">
+				#{channel.id}
+			</foreach>
+		</if>
+		<if test="subchannels != null">
+			and a.chnnnl in
+			<foreach collection="subchannels" item="subchannel" index="index" open="(" close=")" separator=",">
+				#{subchannel}
+			</foreach>
+		</if>
+	</sql>
+	
+	<!--
+	资源统计（日期,渠道,类型名，种类名,对应人数）
+	-->
+	<select id="selectResourceSummaryList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		SELECT
+			a.statdate as statdate,
+			a.channel as channelid,
+			IF(b.channelSimName is NULL,CONCAT('未知渠道： ',a.channel),b.channelSimName) as channelName,
+			a.type as typeName,
+			a.purpose as purposeName,
+			IFNULL(SUM(a.cnt),0) as cnt,
+			IFNULL(SUM(a.time),0) as time
+		FROM
+			sj3_resource_stat a
+		LEFT JOIN tb_logplat_channel b ON b.id = a.channel
+		<include refid="ABaseSelect"/>
+		 <choose>
+	        <when test="checktype1!=null and checktype1!='' and checktype1!='-1'">
+	            and a.type=#{checktype1}
+	        </when>
+	        <otherwise>
+	        	and a.type not in
+	        	<foreach collection="filterList" item="filter" index="index" open="(" close=")" separator=",">
+				#{filter}
+			</foreach>
+	        </otherwise>
+    	</choose>
+		<if test="checktype2!=null and checktype2!='-1'">
+			and a.purpose=#{checktype2}
+		</if>
+		GROUP BY
+		a.statdate,
+		a.channel,
+		a.type,
+		a.purpose
+	</select>
+	
+	<!--资源类型（类型名称）-->
+	<select id="selectResourceTypeList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		SELECT
+			DISTINCT a.type AS typeName
+		FROM
+			sj3_resource_stat a
+		WHERE
+			a.statdate BETWEEN #{startdate}
+		AND #{enddate}
+		AND a.gameid =#{gameid}
+	</select>
+	
+	<!--获取方式（方式名称）-->
+	<select id="selectResourceWayList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		SELECT
+			DISTINCT a.purpose AS purposeName
+		FROM
+			sj3_resource_stat a
+		WHERE
+			a.statdate BETWEEN #{startdate}
+		AND #{enddate}
+		AND a.gameid =#{gameid}
+	</select>
+	
+</mapper>

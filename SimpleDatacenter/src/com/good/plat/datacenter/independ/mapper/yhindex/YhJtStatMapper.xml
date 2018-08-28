@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.independ.mapper.yhindex.YhJtStatMapper">
+	<resultMap id="BaseResultMap" type="com.good.plat.datacenter.independ.entity.yhindex.YhJtStat">
+		<result column="statdate" property="statdate"/>
+		<result column="gameid" property="gameid"/>
+		<result column="areaid" property="areaid"/>
+		<result column="channelid" property="channelid"/>
+		<result column="channelName" property="channelName"/>
+		<result column="jtCnt" property="jtCnt"/>
+		<result column="joinJtActCnt" property="joinJtActCnt"/>
+		<result column="joinJtActCntRate" property="joinJtActCntRate"/>
+		<result column="openQdrqJtCnt" property="openQdrqJtCnt"/>
+		<result column="openQdrqJtCntRate" property="openQdrqJtCntRate"/>
+		<result column="joinPurchaseJtCnt" property="joinPurchaseJtCnt"/>
+		<result column="joinPurchaseJtCntRate" property="joinPurchaseJtCntRate"/>
+		<result column="joinJtFightJtCnt" property="joinJtFightJtCnt"/>
+		<result column="joinJtFightJtCntRate" property="joinJtFightJtCntRate"/>
+		<result column="joinJtFightActCnt" property="joinJtFightActCnt"/>
+		<result column="joinJtFightActCntRate" property="joinJtFightActCntRate"/>
+		<result column="lvl" property="lvl"/>
+		<result column="lvlJtCnt" property="lvlJtCnt"/>
+		<result column="lvlJtCntRate" property="lvlJtCntRate"/>
+		<result column="jtjxActCnt" property="jtjxActCnt"/>
+		<result column="jtjxActCntRate" property="jtjxActCntRate"/>
+		<result column="jtjzMoney" property="jtjzMoney"/>
+		<result column="avgJtjzMoney" property="avgJtjzMoney"/>
+		<result column="jbjxcnt" property="jbjxcnt"/>
+		<result column="jbjxCntRate" property="jbjxCntRate"/>
+		<result column="kjjxcnt" property="kjjxcnt"/>
+		<result column="kjjxCntRate" property="kjjxCntRate"/>
+		<result column="stageid" property="stageid"/>
+		<result column="openStageJtCnt" property="openStageJtCnt"/>
+		<result column="successJtCnt" property="successJtCnt"/>
+		<result column="successJtCntRate" property="successJtCntRate"/>
+		<result column="wcxsrwJtCnt" property="wcxsrwJtCnt"/>
+		<result column="wcxsrwJtCntRate" property="wcxsrwJtCntRate"/>
+		<result column="times" property="times"/>
+		<result column="jtCntRate" property="jtCntRate"/>
+		<result column="goodsid" property="goodsid"/>
+		<result column="bugCnt" property="bugCnt"/>
+		<result column="bugCntRate" property="bugCntRate"/>
+		<result column="fbqqActCnt" property="fbqqActCnt"/>
+		<result column="fbqqActCntRate" property="fbqqActCntRate"/>
+		<result column="fbzjqqCnt" property="fbzjqqCnt"/>
+		<result column="fbzjqqCntRate" property="fbzjqqCntRate"/>
+		<result column="fbzzqqCnt" property="fbzzqqCnt"/>
+		<result column="fbzzqqCntRate" property="fbzzqqCntRate"/>
+		<result column="zsActCnt" property="zsActCnt"/>
+		<result column="zsActCntRate" property="zsActCntRate"/>
+		<result column="zszjCnt" property="zszjCnt"/>
+		<result column="zszzCnt" property="zszzCnt"/>
+		<result column="zszjCntRate" property="zszjCntRate"/>
+		<result column="zszzCntRate" property="zszzCntRate"/>
+		<result column="qqCnt" property="qqCnt"/>
+		<result column="ywcqqCnt" property="ywcqqCnt"/>
+		<result column="ywcqqCntRate" property="ywcqqCntRate"/>
+		<result column="ygxqqCnt" property="ygxqqCnt"/>
+		<result column="kgxqqCnt" property="kgxqqCnt"/>
+		<result column="ygxqqCntRate" property="ygxqqCntRate"/>
+	</resultMap>
+		<sql id="BaseSelect">
+			where 1=1
+			<if test="startdate!=null and startdate!=''">
+			and statdate &gt;=#{startdate}
+			</if>
+			<if test="enddate!=null and enddate!=''">
+			and statdate &lt;=#{enddate}
+			</if>
+			and gameid=#{gameid}
+			<if test="channelid!=null and channelid!=-1">
+			and channel=#{channelid}
+			</if>
+			<if test="areaid!=null and areaid!=-1">
+				and areaid=#{areaid}
+			</if>
+		</sql>
+	<!-- 军团统计 -->
+	<select id="selectJtStatList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.IndependBaseSearchData">
+		SELECT
+			a.statdate,
+			a.gameid,
+			a.areaid,
+			a.jtCnt,
+			a.joinJtActCnt,
+		IF (
+			b.count is NULL  or b.count = 0,
+			0,
+			ROUND(
+				(a.joinJtActCnt / b.count) * 100,
+				2
+			)
+		) AS joinJtActCntRate,
+		 a.openQdrqJtCnt,
+		IF (
+			a.jtCnt = 0,
+			0,
+			ROUND(
+				(a.openQdrqJtCnt / a.jtCnt) * 100,
+				2
+			)
+		) as openQdrqJtCntRate,
+		a.joinPurchaseJtCnt,
+		IF (
+			a.jtCnt = 0,
+			0,
+			ROUND(
+				(a.joinPurchaseJtCnt / a.jtCnt) * 100,
+				2
+			)
+		) as joinPurchaseJtCntRate,
+		a.joinJtFightJtCnt,
+		IF (
+			a.jtCnt = 0,
+			0,
+			ROUND(
+				(a.joinJtFightJtCnt / a.jtCnt) * 100,
+				2
+			)
+		) as joinJtFightJtCntRate,
+		a.joinJtFightActCnt,
+		IF(a.joinJtActCnt=0,0,ROUND((a.joinJtFightActCnt/a.joinJtActCnt)*100,2)) as joinJtFightActCntRate
+		FROM
+			(
+				SELECT
+					statdate,
+					gameid,
+					areaid,
+					IFNULL(SUM(jtcnt), 0) jtCnt,
+					IFNULL(SUM(jtactcnt), 0) joinJtActCnt,
+					IFNULL(SUM(kqqdrqjtcnt), 0) openQdrqJtCnt,
+					IFNULL(SUM(cjcgjtcnt), 0) joinPurchaseJtCnt,
+					IFNULL(SUM(jtzjtcnt), 0) joinJtFightJtCnt,
+					IFNULL(SUM(jtzactcnt), 0) joinJtFightActCnt
+				FROM
+					yh_jt_stat
+				<include refid="BaseSelect"/>
+				GROUP BY
+					statdate,
+					gameid,
+					areaid
+			) a
+		LEFT JOIN (
+			SELECT
+				statdate,
+				gameid,
+				areaid,
+				IFNULL(SUM(`count`), 0) AS `count`
+			FROM
+				yh_act_count
+			<include refid="BaseSelect"/>
+			GROUP BY
+				statdate,
+				gameid,
+				areaid
+		) b ON (
+			a.statdate = b.statdate
+			AND a.gameid = b.gameid
+			AND a.areaid = b.areaid
+		);
+	</select>
+	<!--  军团等级分布-->
+	<select id="selectJtLvlDistributeList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.IndependBaseSearchData">
+		SELECT
+			a.statdate,
+			a.gameid,
+			a.areaid,
+			a.lvl,
+			a.lvlJtCnt,
+		IF (
+			b.jtcnt is NULL or b.jtcnt = 0,
+			0,
+			ROUND((a.lvlJtCnt / b.jtcnt) * 100, 2)
+		) AS lvlJtCntRate 
+		FROM
+			(
+				SELECT
+					statdate,
+					gameid,
+					areaid,
+					lvl,
+					IFNULL(SUM(count), 0) AS lvlJtCnt
+				FROM
+					yh_regimentlvl_stat
+				<include refid="BaseSelect"/>
+				GROUP BY
+					statdate,
+					gameid,
+					areaid,
+					lvl
+			) a
+		LEFT JOIN (
+			SELECT
+				statdate,
+				gameid,
+				areaid,
+				IFNULL(SUM(jtcnt), 0) AS jtcnt
+			FROM
+				yh_jt_stat
+			<include refid="BaseSelect"/>
+			GROUP BY
+				statdate,
+				gameid,
+				areaid
+		) b ON (
+			a.statdate = b.statdate
+			AND a.gameid = b.gameid
+			AND a.areaid = b.areaid
+		);
+	</select>
+	<!--  军团捐赠统计-->
+	<select id="selectJtDonateStatList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.IndependBaseSearchData">
+		SELECT
+			statdate,
+			gameid,
+			areaid,
+			IFNULL(SUM(jtjxactcnt), 0) AS jtjxActCnt,
+			IFNULL(SUM(jtactcnt), 0) AS joinJtActCnt,
+			IF(SUM(jtactcnt)=0,0,ROUND((SUM(jtjxactcnt)/SUM(jtactcnt))*100,2)) as jtjxActCntRate,
+			IFNULL(SUM(jtzj), 0) AS jtjzMoney,
+			IF(SUM(jtjxactcnt)=0,0,ROUND((SUM(jtzj)/SUM(jtjxactcnt)),2)) as avgJtjzMoney,
+			IFNULL(SUM(jbjxcnt), 0) AS jbjxcnt,
+			IF((SUM(jbjxcnt)+SUM(kjjxcnt))=0,0,ROUND((SUM(jbjxcnt)/(SUM(jbjxcnt)+SUM(kjjxcnt)))*100,2)) as jbjxCntRate,
+			IFNULL(SUM(kjjxcnt),0) AS kjjxcnt,
+			IF((SUM(jbjxcnt)+SUM(kjjxcnt))=0,0,ROUND((SUM(kjjxcnt)/(SUM(jbjxcnt)+SUM(kjjxcnt)))*100,2)) as kjjxCntRate
+		FROM
+			yh_jt_stat
+		<include refid="BaseSelect"/>
+		GROUP BY
+			statdate,
+			gameid,
+			areaid;
+	</select>
+	<!-- 强敌入侵关卡统计-->
+	<select id="selectJtQdrqStageStatList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.IndependBaseSearchData">
+		SELECT
+			statdate,
+			areaid,
+			stageid,
+			SUM(IF(type=1,`count`,0)) as openStageJtCnt,
+			SUM(IF(type=2,`count`,0)) as successJtCnt,
+			IF(SUM(IF(type=1,`count`,0))=0,0,ROUND((SUM(IF(type=2,`count`,0))/SUM(IF(type=1,`count`,0)))*100,2)) as successJtCntRate,
+			SUM(IF(type=3,`count`,0)) as wcxsrwJtCnt,
+			IF(SUM(IF(type=2,`count`,0))=0,0,ROUND((SUM(IF(type=3,`count`,0))/SUM(IF(type=2,`count`,0)))*100,2)) as wcxsrwJtCntRate
+		FROM
+			yh_qdrqstage_stat
+		<include refid="BaseSelect"/>
+		GROUP BY
+		statdate,
+		areaid,
+		stageid;
+	</select>
+	<!--  军团采购统计-->
+	<select id="selectJtPurchaseList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.IndependBaseSearchData">
+		SELECT
+			a.statdate,
+			a.gameid,
+			a.areaid,
+			a.times,
+			a.jtCnt,
+		IF (
+			b.jtcnt is NULL or b.jtcnt = 0,
+			0,
+			ROUND((a.jtCnt / b.jtcnt) * 100, 2)
+		) AS jtCntRate
+		FROM
+			(
+				SELECT
+					statdate,
+					gameid,
+					areaid,
+					times,
+					IFNULL(SUM(count), 0) AS jtCnt
+				FROM
+					yh_jt_purchase_stat
+				<include refid="BaseSelect"/>
+				GROUP BY
+					statdate,
+					gameid,
+					areaid,
+					times
+			) a
+		LEFT JOIN (
+			SELECT
+				statdate,
+				gameid,
+				areaid,
+				IFNULL(SUM(jtcnt), 0) AS jtcnt
+			FROM
+				yh_jt_stat
+			<include refid="BaseSelect"/>
+			GROUP BY
+				statdate,
+				gameid,
+				areaid
+		) b ON (
+			a.statdate = b.statdate
+			AND a.gameid = b.gameid
+			AND a.areaid = b.areaid
+		);
+	</select>
+	<!--  军团采购商品统计-->
+	<select id="selectJtPurchaseGoodList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.IndependBaseSearchData">
+		SELECT
+			a.statdate,
+			a.gameid,
+			a.areaid,
+			a.goodsid,
+			a.bugCnt,
+		IF (
+			b.bugCnt is NULL or b.bugCnt = 0,
+			0,
+			ROUND((a.bugCnt / b.bugCnt) * 100, 2)
+		) as bugCntRate
+		FROM
+			(
+				SELECT
+					statdate,
+					gameid,
+					areaid,
+					goodsid,
+					IFNULL(SUM(count), 0) AS bugCnt
+				FROM
+					yh_jt_item_stat
+				<include refid="BaseSelect"/>
+				GROUP BY
+					statdate,
+					gameid,
+					areaid,
+					goodsid
+			) a
+		LEFT JOIN (
+			SELECT
+				statdate,
+				gameid,
+				areaid,
+				IFNULL(SUM(count), 0) AS bugCnt
+			FROM
+				yh_jt_item_stat
+			<include refid="BaseSelect"/>
+			GROUP BY
+				statdate,
+				gameid,
+				areaid
+		) b ON (
+			a.statdate = b.statdate
+			AND a.gameid = b.gameid
+			AND a.areaid = b.areaid
+		);
+	</select>
+	<!--  军团发布请求数据-->
+	<select id="selectJtfbqqDataList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.IndependBaseSearchData">
+		SELECT
+			statdate,
+			areaid,
+			IFNULL(SUM(fbqqactcnt),0) as fbqqActCnt,
+			IFNULL(SUM(jtactcnt),0) as joinJtActCnt,
+			IF(SUM(jtactcnt)=0,0,ROUND((SUM(fbqqactcnt)/SUM(jtactcnt))*100,2)) as fbqqActCntRate,
+			IFNULL(SUM(fbzjqqcnt),0) as fbzjqqCnt,
+			IFNULL(SUM(fbzzqqcnt),0) as fbzzqqCnt,
+			IF((SUM(fbzjqqcnt)+SUM(fbzzqqcnt))=0,0,ROUND((SUM(fbzjqqcnt)/(SUM(fbzjqqcnt)+SUM(fbzzqqcnt)))*100,2)) as fbzjqqCntRate,
+			IF((SUM(fbzjqqcnt)+SUM(fbzzqqcnt))=0,0,ROUND((SUM(fbzzqqcnt)/(SUM(fbzjqqcnt)+SUM(fbzzqqcnt)))*100,2)) as fbzzqqCntRate
+		FROM
+			yh_jt_stat
+		<include refid="BaseSelect"/>
+		GROUP BY
+		statdate,
+		areaid;
+	</select>
+	<!--军团赠送数据 -->
+	<select id="selectJtzsDataList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.IndependBaseSearchData">
+		SELECT
+			statdate,
+			areaid,
+			IFNULL(SUM(zsactcnt),0) as zsActCnt,
+			IFNULL(SUM(jtactcnt),0) as joinJtActCnt,
+			IF(SUM(jtactcnt)=0,0,ROUND((SUM(zsactcnt)/SUM(jtactcnt))*100,2)) as zsActCntRate,
+			IFNULL(SUM(zszjcnt),0) as zszjCnt,
+			IFNULL(SUM(zszzcnt),0) as zszzCnt,
+			IF((SUM(zszjcnt)+SUM(zszzcnt))=0,0,ROUND((SUM(zszjcnt)/(SUM(zszjcnt)+SUM(zszzcnt)))*100,2)) as zszjCntRate,
+			IF((SUM(zszjcnt)+SUM(zszzcnt))=0,0,ROUND((SUM(zszzcnt)/(SUM(zszjcnt)+SUM(zszzcnt)))*100,2)) as zszzCntRate
+		FROM
+			yh_jt_stat
+		<include refid="BaseSelect"/>
+		GROUP BY
+		statdate,
+		areaid;
+	</select>
+	<!-- 军团总计数据 -->
+	<select id="selectJtTotalDataList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.IndependBaseSearchData">
+		SELECT
+			statdate,
+			areaid,
+			IFNULL(SUM(qqcnt),0) as qqCnt,
+			IFNULL(SUM(ywcqqcnt),0) as ywcqqCnt,
+			IF(SUM(qqcnt)=0,0,ROUND((SUM(ywcqqcnt)/SUM(qqcnt))*100,2)) as ywcqqCntRate,
+			IFNULL(SUM(ygxqqcnt),0) as ygxqqCnt,
+			IFNULL(SUM(kgxqqcnt),0) as kgxqqCnt,
+			IF(SUM(kgxqqcnt)=0,0,ROUND((SUM(ygxqqcnt)/SUM(kgxqqcnt))*100,2)) as ygxqqCntRate
+		FROM
+			yh_jt_stat
+		<include refid="BaseSelect"/>
+		GROUP BY
+		statdate,
+		areaid;
+	</select>
+	
+</mapper>

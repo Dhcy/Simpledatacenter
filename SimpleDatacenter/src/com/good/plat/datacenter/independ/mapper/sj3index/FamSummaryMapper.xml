@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.independ.mapper.sj3index.FamSummaryMapper">
+	<resultMap id="BaseResultMap" type="com.good.plat.datacenter.independ.entity.sj3index.FamSummary">
+		<result column="gameid" property="gameid"/>
+		<result column="gameName" property="gameName"/>
+		<result column="channelid" property="channelid"/>
+		<result column="channelName" property="channelName"/>
+		<result column="subchannelid" property="subchannelid"/>
+		<result column="areaid" property="areaid"/>
+		<result column="areaName" property="areaName"/>
+		<result column="statdate" property="statdate"/>
+		<result column="statType" property="statType"/>
+		<result column="rate" property="rate"/>
+		
+		<result column="mjName" property="mjName"/>
+		<result column="enterCnt" property="enterCnt"/>
+		<result column="succdCnt" property="succdCnt"/>
+		<result column="totalTime" property="totalTime"/>
+		<result column="failCnt" property="failCnt"/>
+		<result column="exitCnt" property="exitCnt"/>
+		<result column="mjId" property="mjId"/>
+		<result column="enterTimes" property="enterTimes"/>
+		<result column="avgEnterTimes" property="avgEnterTimes"/>
+		
+		
+	</resultMap>
+	
+	<sql id="ABaseSelect">
+		where a.statdate between #{startdate} and #{enddate} 
+		and a.gameid=#{gameid}
+		<if test="areas != null">
+			and a.areaid in
+			<foreach collection="areas" item="area" index="index" open="(" close=")" separator=",">
+				#{area}
+			</foreach>
+		</if>
+		<if test="channelList != null">
+			and a.channel in
+			<foreach collection="channelList" item="channel" index="index" open="(" close=")" separator=",">
+				#{channel.id}
+			</foreach>
+		</if>
+		<if test="subchannels != null">
+			and a.chnnnl in
+			<foreach collection="subchannels" item="subchannel" index="index" open="(" close=")" separator=",">
+				#{subchannel}
+			</foreach>
+		</if>
+	</sql>
+	
+	<!--
+	秘境统计（日期,渠道,秘境名称，进入秘境次数,进入秘境人数,人均进入秘境次数,通关数，总时长，失败次数，中途退出次数）
+	-->
+	<select id="selectFamSummaryList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		SELECT
+			a.statdate AS statdate,
+			a.channel AS channel,
+			b.channelSimName AS channelName,
+			a.mj AS mjName,
+			a.mjid as mjId,
+			IFNULL(SUM(a.entertimes), 0) AS enterTimes,
+			IFNULL(SUM(a.entercnt), 0) AS enterCnt,
+			IF(SUM(a.entercnt)=0,0,IFNULL(SUM(a.entertimes)/SUM(a.entercnt),0)) as avgEnterTimes,
+			IFNULL(SUM(a.succdcnt), 0) AS succdCnt,
+			IFNULL(SUM(a.sumtime), 0) AS totalTime,
+			IFNULL(SUM(a.failcnt), 0) AS failCnt,
+			IFNULL(SUM(a.exitcnt), 0) AS exitCnt
+		FROM
+			sj3_mj_stage_stat a
+		LEFT JOIN tb_logplat_channel b ON b.id = a.channel
+		<include refid="ABaseSelect"/>
+		GROUP BY
+			a.statdate,
+			a.channel,
+			a.mjid,
+			a.mj
+	</select>
+	
+</mapper>

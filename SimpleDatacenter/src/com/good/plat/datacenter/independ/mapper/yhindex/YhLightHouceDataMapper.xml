@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.independ.mapper.yhindex.YhLightHouceDataMapper">
+	<resultMap id="PerLinkLoginResultMap" type="com.good.plat.datacenter.independ.entity.yhindex.YhLightHouceData">
+		<result column="statdate" property="statdate"/>
+		<result column="gameid" property="gameid"/>
+		<result column="hour" property="hour"/>
+		<result column="startGameSuccnt" property="startGameSuccnt"/>
+		<result column="startGameCnt" property="startGameCnt"/>
+		<result column="startGameFailcntRate" property="startGameFailcntRate"/>
+		<result column="gameInitSuccnt" property="gameInitSuccnt"/>
+		<result column="gameInitCnt" property="gameInitCnt"/>
+		<result column="gameInitFailcntRate" property="gameInitFailcntRate"/>
+		<result column="decompDataSuccnt" property="decompDataSuccnt"/>
+		<result column="decompDataCnt" property="decompDataCnt"/>
+		<result column="decompDataFailcntRate" property="decompDataFailcntRate"/>
+		<result column="checkUpdateSuccnt" property="checkUpdateSuccnt"/>
+		<result column="checkUpdateCnt" property="checkUpdateCnt"/>
+		<result column="checkUpdateFailcntRate" property="checkUpdateFailcntRate"/>
+		<result column="updateResSuccnt" property="updateResSuccnt"/>
+		<result column="updateResCnt" property="updateResCnt"/>
+		<result column="updateResFailcntRate" property="updateResFailcntRate"/>
+		<result column="loginAuthSuccnt" property="loginAuthSuccnt"/>
+		<result column="loginAuthCnt" property="loginAuthCnt"/>
+		<result column="loginAuthFailcntRate" property="loginAuthFailcntRate"/>
+		<result column="loginGameServerSuccnt" property="loginGameServerSuccnt"/>
+		<result column="loginGameServerCnt" property="loginGameServerCnt"/>
+		<result column="loginGameServerFailcntRate" property="loginGameServerFailcntRate"/>
+		<result column="enterGameSuccnt" property="enterGameSuccnt"/>
+		<result column="enterGameCnt" property="enterGameCnt"/>
+		<result column="enterGameFailcntRate" property="enterGameFailcntRate"/>
+	</resultMap>
+	
+	<resultMap id="LoginSucceRateResultMap" type="com.good.plat.datacenter.independ.entity.yhindex.YhLoginStat">
+		<result column="type" property="type"/>
+		<result column="typeName" property="typeName"/>
+		<result column="succnt" property="succnt"/>
+		<result column="count" property="count"/>
+		<result column="succntRate" property="succntRate"/>
+	</resultMap>
+	
+	<resultMap id="fpsAndNerworkResultMap" type="com.good.plat.datacenter.independ.entity.yhindex.YhLightHouceData">
+		<result column="statdate" property="statdate"/>
+		<result column="qjtype" property="qjtype"/>
+		<result column="hour" property="hour"/>
+		<result column="times" property="times"/>
+		<result column="fpsRate" property="fpsRate"/>
+		<result column="systemh" property="systemh"/>
+		<result column="avgFps0_14Rate" property="avgFps0_14Rate"/>
+		<result column="avgFps15_19Rate" property="avgFps15_19Rate"/>
+		<result column="avgFps20_24Rate" property="avgFps20_24Rate"/>
+		<result column="avgFps25_30Rate" property="avgFps25_30Rate"/>
+		<result column="avgFps31_40Rate" property="avgFps31_40Rate"/>
+		<result column="avgFps41_60Rate" property="avgFps41_60Rate"/>
+		<result column="avgDelayTimes_3G" property="avgDelayTime_3G"/>
+		<result column="avgDelayTimes_4G" property="avgDelayTime_4G"/>
+		<result column="avgFps41_60Rate" property="avgDelayTime_WIFI"/>
+		<result column="count" property="count"/>
+	</resultMap>
+	
+		<sql id="BaseSelect">
+			where 1=1
+			<if test="startdate!=null and startdate!=''">
+			and statdate=#{startdate}
+			</if>
+			and gameid=#{gameid}
+		</sql>
+		<sql id="ABaseSelect">
+			where 1=1
+			<if test="startdate!=null and startdate!=''">
+			and a.statdate=#{startdate}
+			</if>
+			and a.gameid=#{gameid}
+		</sql>
+		
+	<select id="selectPerLinkCntForHour" resultMap="PerLinkLoginResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		SELECT
+		statdate,
+		`hour`,
+		 type,
+		IFNULL(SUM(succnt), 0) AS succnt,
+	   IFNULL(SUM(count), 0) AS count
+		FROM
+			yh_login_stat 
+		<include refid="BaseSelect"/>
+		GROUP BY
+			statdate,
+			`hour`,
+			type
+		ORDER BY
+			statdate,
+			`hour`,
+			type;
+		<!--
+		GROUP BY
+			statdate,
+			`hour`,
+			type
+		ORDER BY
+			statdate,
+			`hour`,
+			type;
+	
+		SELECT
+			statdate,
+			`hour`,
+			SUM(IF(type = 0, succnt, 0)) AS startGameSuccnt,
+			SUM(IF(type = 0, count, 0)) AS startGameCnt,
+		IF (
+			SUM(IF(type = 0, count, 0)) = 0,
+			0,
+			ROUND(
+				(
+					SUM(IF(type = 0, count, 0)) - SUM(IF(type = 0, succnt, 0))
+				) / SUM(IF(type = 0, count, 0)),
+				4
+			)
+		) AS startGameFailcntRate,
+		 SUM(IF(type = 1, succnt, 0)) AS gameInitSuccnt,
+		 SUM(IF(type = 1, count, 0)) AS gameInitCnt,
+		IF (
+			SUM(IF(type = 1, count, 0)) = 0,
+			0,
+			ROUND(
+				(
+					SUM(IF(type = 1, count, 0)) - SUM(IF(type = 1, succnt, 0))
+				) / SUM(IF(type = 1, count, 0)),
+				4
+			)
+		) AS gameInitFailcntRate,
+		 SUM(IF(type = 2, succnt, 0)) AS decompDataSuccnt,
+		 SUM(IF(type = 2, count, 0)) AS decompDataCnt,
+		IF (
+			SUM(IF(type = 2, count, 0)) = 0,
+			0,
+			ROUND(
+				(
+					SUM(IF(type = 2, count, 0)) - SUM(IF(type = 2, succnt, 0))
+				) / SUM(IF(type = 2, count, 0)),
+				4
+			)
+		) AS decompDataFailcntRate,
+		 SUM(IF(type = 3, succnt, 0)) AS checkUpdateSuccnt,
+		 SUM(IF(type = 3, count, 0)) AS checkUpdateCnt,
+		IF (
+			SUM(IF(type = 3, count, 0)) = 0,
+			0,
+			ROUND(
+				(
+					SUM(IF(type = 3, count, 0)) - SUM(IF(type = 3, succnt, 0))
+				) / SUM(IF(type = 3, count, 0)),
+				4
+			)
+		) AS checkUpdateFailcntRate,
+		 SUM(IF(type = 4, succnt, 0)) AS updateResSuccnt,
+		 SUM(IF(type = 4, count, 0)) AS updateResCnt,
+		IF (
+			SUM(IF(type = 4, count, 0)) = 0,
+			0,
+			ROUND(
+				(
+					SUM(IF(type = 4, count, 0)) - SUM(IF(type = 4, succnt, 0))
+				) / SUM(IF(type = 4, count, 0)),
+				4
+			)
+		) AS updateResFailcntRate,
+		 SUM(IF(type = 5, succnt, 0)) AS loginAuthSuccnt,
+		 SUM(IF(type = 5, count, 0)) AS loginAuthCnt,
+		IF (
+			SUM(IF(type = 5, count, 0)) = 0,
+			0,
+			ROUND(
+				(
+					SUM(IF(type = 5, count, 0)) - SUM(IF(type = 5, succnt, 0))
+				) / SUM(IF(type = 5, count, 0)),
+				4
+			)
+		) AS loginAuthFailcntRate,
+		 SUM(IF(type = 6, succnt, 0)) AS loginGameServerSuccnt,
+		 SUM(IF(type = 6, count, 0)) AS loginGameServerCnt,
+		IF (
+			SUM(IF(type = 6, count, 0)) = 0,
+			0,
+			ROUND(
+				(
+					SUM(IF(type = 6, count, 0)) - SUM(IF(type = 6, succnt, 0))
+				) / SUM(IF(type = 6, count, 0)),
+				4
+			)
+		) AS loginGameServerFailcntRate,
+		 SUM(IF(type = 7, succnt, 0)) AS enterGameSuccnt,
+		 SUM(IF(type = 7, count, 0)) AS enterGameCnt,
+		IF (
+			SUM(IF(type = 7, count, 0)) = 0,
+			0,
+			ROUND(
+				(
+					SUM(IF(type = 7, count, 0)) - SUM(IF(type = 7, succnt, 0))
+				) / SUM(IF(type = 7, count, 0)),
+				4
+			)
+		) AS enterGameFailcntRate
+		FROM
+			yh_login_stat
+		<include refid="BaseSelect"/>
+		GROUP BY
+		statdate,
+		`hour`
+		ORDER BY
+		statdate,
+		`hour`;-->
+	</select>
+	
+	<select id="selectLoginSuccessTransformRate" resultMap="LoginSucceRateResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		SELECT
+		type,
+		CASE type
+			WHEN 0 THEN
+				'启动游戏'
+			WHEN 1 THEN
+				'游戏初始化完成'
+			WHEN 2 THEN
+				'解压数据'
+			WHEN 3 THEN
+				'检查更新'
+			WHEN 4 THEN
+				'更新'
+			WHEN 5 THEN
+				'登录鉴权'
+			WHEN 6 THEN
+				'登录游戏服'
+			WHEN 7 THEN
+				'进入大厅'
+			ELSE
+				'未知环节'
+			END typeName,
+		IFNULL(SUM(succnt), 0) AS succnt,
+		IFNULL(SUM(count), 0) AS count,
+		IF (
+			SUM(count) = 0,
+			0,
+			ROUND(
+				SUM(succnt)/SUM(count),
+				2
+			)
+		) AS succntRate
+		FROM
+			yh_login_stat
+		<include refid="BaseSelect"/>
+		GROUP BY
+			type
+		ORDER BY
+			type;
+	</select>
+	<!-- fps区间分布 -->
+	<select id="selectFpsDistributeRateList" resultMap="fpsAndNerworkResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		SELECT
+			a.qjtype,
+			IFNULL(SUM(a.times),0) as times,
+			IF(b.totalTimes=0,0,ROUND(IFNULL(SUM(a.times),0)/b.totalTimes,4)) as fpsRate
+		FROM
+			yh_fps_stat a,
+			(select IFNULL(SUM(times),0) as totalTimes from yh_fps_stat 
+		 <include refid="BaseSelect"/>
+		AND systems =#{checktype1,jdbcType=VARCHAR}<!--  checktype1='1'是android-->
+		)b
+		<include refid="ABaseSelect"/>
+		AND a.systems =#{checktype1,jdbcType=VARCHAR}
+		GROUP BY
+		a.qjtype;
+	</select>
+	<!-- 机型fps占比 -->
+	<select id="selectSystemHFpsDistributeRateList" resultMap="fpsAndNerworkResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select b.* from (SELECT
+			a.statdate,
+			a.systemh,
+		  	IFNULL(SUM(a.times),0) as totalTimes,
+			IFNULL(SUM(a.fps),0) as totalFps,
+			IF(SUM(a.times)=0,0,ROUND(SUM(a.fps)/SUM(a.times),2)) as fpsRate,
+			IFNULL(ROUND(SUM(IF(a.qjtype='0-14',a.fps,0))/SUM(IF(a.qjtype='0-14',a.times,0)),2),0) as avgFps0_14Rate,
+			IFNULL(ROUND(SUM(IF(a.qjtype='15-19',a.fps,0))/SUM(IF(a.qjtype='15-19',a.times,0)),2),0) as avgFps15_19Rate,
+			IFNULL(ROUND(SUM(IF(a.qjtype='20-24',a.fps,0))/SUM(IF(a.qjtype='20-24',a.times,0)),2),0) as avgFps20_24Rate,
+			IFNULL(ROUND(SUM(IF(a.qjtype='25-30',a.fps,0))/SUM(IF(a.qjtype='25-30',a.times,0)),2),0) as avgFps25_30Rate,
+			IFNULL(ROUND(SUM(IF(a.qjtype='31-40',a.fps,0))/SUM(IF(a.qjtype='31-40',a.times,0)),2),0) as avgFps31_40Rate,
+			IFNULL(ROUND(SUM(IF(a.qjtype='41-60',a.fps,0))/SUM(IF(a.qjtype='41-60',a.times,0)),2),0) as avgFps41_60Rate
+		FROM
+			yh_fps_stat a
+		 <include refid="ABaseSelect"/>
+		AND a.systems =#{checktype3,jdbcType=VARCHAR}<!--  checktype1='1'是android-->
+		GROUP BY
+		a.statdate,
+		a.systemh)b
+		ORDER BY
+		b.fpsRate 
+		DESC
+		LIMIT 10;
+	</select>
+	<!-- 时间段平均延迟 -->
+	<select id="selectAvgDelayTimeByHour" resultMap="fpsAndNerworkResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		SELECT
+			`hour` as hour,
+			IFNULL(ROUND(SUM(IF(network = '3G', time, 0)) / SUM(IF(network = '3G', count, 0)),2),0) AS avgDelayTime_3G,
+			IFNULL(ROUND(SUM(IF(network = '4G', time, 0)) / SUM(IF(network = '4G', count, 0)),2),0) AS avgDelayTime_4G,
+			IFNULL(ROUND(SUM(IF(network = 'WIFI', time, 0)) / SUM(IF(network = 'WIFI', count, 0)),2),0) AS avgDelayTime_WIFI
+		FROM
+			yh_avedelay_stat
+		<include refid="BaseSelect"/>
+		GROUP BY
+		`hour`;
+	</select>
+	<!-- 区间段平均延迟次数 -->
+	<select id="selectAvgDelayCountByInterval" resultMap="fpsAndNerworkResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		SELECT
+			a.qjtype,
+			IFNULL(SUM(a.count),0) as count,
+			IF(b.totalCount=0,0,ROUND(SUM(a.count)/b.totalCount,2)) as fpsRate
+		FROM
+			yh_qjdelay_stat a,
+			(select IFNULL(SUM(count),0) as totalCount from yh_qjdelay_stat <include refid="BaseSelect"/>
+		AND network =#{checktype2})b
+		<include refid="ABaseSelect"/>
+		AND a.network =#{checktype2}
+		GROUP BY
+			a.qjtype;
+	</select>
+
+	
+</mapper>

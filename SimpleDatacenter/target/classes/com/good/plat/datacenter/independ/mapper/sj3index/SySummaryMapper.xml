@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.independ.mapper.sj3index.SySummaryMapper">
+	<resultMap id="BaseResultMap" type="com.good.plat.datacenter.independ.entity.sj3index.SySummary">
+		<result column="gameid" property="gameid"/>
+		<result column="gameName" property="gameName"/>
+		<result column="channelid" property="channelid"/>
+		<result column="channelName" property="channelName"/>
+		<result column="subchannelid" property="subchannelid"/>
+		<result column="areaid" property="areaid"/>
+		<result column="areaName" property="areaName"/>
+		<result column="statdate" property="statdate"/>
+		<result column="statType" property="statType"/>
+		<result column="rate" property="rate"/>
+		
+		<result column="syName" property="syName"/>
+		<result column="startCnt" property="startCnt"/>
+		<result column="totalTime" property="totalTime"/>
+		<result column="succtCnt" property="succtCnt"/>
+		<result column="userCnt" property="userCnt"/>
+		<result column="usuccCnt" property="usuccCnt"/>
+		<result column="ufailCnt" property="ufailCnt"/>
+		<result column="uexitCnt" property="uexitCnt"/>
+		<result column="avgStartCnt" property="avgStartCnt"/>
+		
+		<result column="exitCnt" property="exitCnt"/>
+		<result column="robCnt" property="robCnt"/>
+		<result column="succrobCnt" property="succrobCnt"/>
+		<result column="startUserCnt" property="startUserCnt"/>
+		<result column="avgStartTimes" property="avgStartTimes"/>
+		
+		<result column="reliveCnt" property="reliveCnt"/>
+		<result column="killCnt" property="killCnt"/>
+		<result column="bossCnt" property="bossCnt"/>
+	</resultMap>
+	
+		<sql id="ABaseSelect">
+			where a.statdate between #{startdate} and #{enddate} 
+			and a.gameid=#{gameid}
+			<if test="areas != null">
+				and a.areaid in
+				<foreach collection="areas" item="area" index="index" open="(" close=")" separator=",">
+					#{area}
+				</foreach>
+			</if>
+			<if test="channelList != null">
+				and a.channel in
+				<foreach collection="channelList" item="channel" index="index" open="(" close=")" separator=",">
+					#{channel.id}
+				</foreach>
+			</if>
+			<if test="subchannels != null">
+				and a.chnnnl in
+				<foreach collection="subchannels" item="subchannel" index="index" open="(" close=")" separator=",">
+					#{subchannel}
+				</foreach>
+			</if>
+		</sql>
+	
+	<!--
+	封魔团(日期,渠道,圣域名称,开启战斗数,通关战斗数,通关总用时,参与玩家数,通关玩家数,失败玩家数,中途退出玩家数)
+	-->
+	<select id="selectSyFengMoTuanList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		SELECT
+			a.statdate as statdate,
+			a.channel as channelid,
+			b.channelSimName as channelName,
+			a.name as syName,
+			IFNULL(SUM(a.startcnt),0) as startCnt,
+			IFNULL(SUM(a.succtcnt),0) as succtCnt,
+			IF(SUM(a.usercnt)=0,0,IFNULL(SUM(a.startcnt)/SUM(a.usercnt),0)) as avgStartCnt,
+			IFNULL(SUM(a.times),0) as totalTime,
+			IFNULL(SUM(a.usercnt),0) as userCnt,
+			IFNULL(SUM(a.usucccnt),0) as usuccCnt,
+			IFNULL(SUM(a.ufailcnt),0) as ufailCnt,
+			IFNULL(SUM(a.uexitcnt),0) as uexitCnt
+			from 
+		sj3_sy_fengmo_stat a
+		LEFT JOIN tb_logplat_channel b ON b.id = a.channel
+		<include refid="ABaseSelect"/>
+		GROUP BY
+		a.statdate,
+		a.channel,
+		a.name										
+	</select>
+	
+	<!--
+	爵位战(日期,渠道,圣域名称,开启战斗数,通关总用时,参与玩家数,胜利人次,失败人次,中途退出人次)
+	-->
+	<select id="selectSyJueWeiList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		SELECT
+			a.statdate as statdate,
+			a.channel as channel,
+			b.channelSimName as channelName,
+			a.name as syName,
+			IFNULL(SUM(a.startcnt),0) as startCnt,
+			IFNULL(SUM(a.time),0) as totalTime,
+			IFNULL(SUM(a.usercnt),0) as userCnt,
+			IFNULL(SUM(a.usucccnt),0) as usuccCnt,
+			IFNULL(SUM(a.ufailcnt),0) as ufailCnt,
+			IFNULL(SUM(a.uexitcnt),0) as uexitCnt
+			from 
+		sj3_sy_juewei_stat a
+		LEFT JOIN tb_logplat_channel b ON b.id = a.channel
+		<include refid="ABaseSelect"/>
+		GROUP BY
+		a.statdate,
+		a.channel,
+		a.name
+	</select>
+	<!--
+	猎魔记事(日期,渠道,圣域名称,开启次数,完成次数,完成平均用时,中途退出次数,掠夺次数,成功掠夺次数)
+	-->
+	<select id="selectSyLieMoList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		SELECT
+			a.statdate as statdate,
+			a.channel as channelid,
+			b.channelSimName as channelName,
+			a.name as syName,
+			IFNULL(SUM(a.startcnt),0) as startCnt,
+			IFNULL(SUM(a.usercnt), 0) AS startUserCnt,
+			IF(SUM(a.usercnt)=0,0,IFNULL(SUM(a.startcnt)/SUM(a.usercnt),0)) as avgStartTimes,
+			IFNULL(SUM(a.succtcnt),0) as succtCnt,
+			IFNULL(SUM(a.times),0) as totalTime,
+			IFNULL(SUM(a.robcnt),0) as robCnt,
+			IFNULL(SUM(a.succrobcnt),0) as succrobCnt
+			from 
+		sj3_sy_liemo_stat a
+		LEFT JOIN tb_logplat_channel b ON b.id = a.channel
+		<include refid="ABaseSelect"/>
+		GROUP BY
+		a.statdate,
+		a.channel,
+		a.name
+	</select>
+	
+	<!--
+	魔神降临(日期,渠道,圣域名称,参与玩家数,击杀总用时,付费复活总次数,BOSS击杀玩家人次,当前日期之前的记录数)
+	-->
+	<select id="selectSyMoShenList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		SELECT
+			a.statdate,
+			a.areaid,
+			a.syName,
+			a.userCnt,
+			a.totalTime,
+			a.reliveCnt,
+			a.killCnt,
+			COUNT(*) AS bossCnt
+		FROM
+			(
+				SELECT
+					statdate AS statdate,
+					areaid,
+					NAME AS syName,
+					IFNULL(SUM(usercnt), 0) AS userCnt,
+					IFNULL(SUM(times), 0) AS totalTime,
+					IFNULL(SUM(relivecnt), 0) AS reliveCnt,
+					IFNULL(SUM(killcnt), 0) AS killCnt
+				FROM
+					sj3_sy_moshen_stat
+				WHERE
+					statdate BETWEEN #{startdate}
+				AND #{enddate}
+				AND gameid =#{gameid}
+				<if test="areas != null">
+					and a.areaid in
+					<foreach collection="areas" item="area" index="index" open="(" close=")" separator=",">
+						#{area}
+					</foreach>
+				</if>
+				GROUP BY
+					statdate,
+					areaid,
+					NAME
+			) a,
+			sj3_sy_moshen_stat b
+		WHERE
+			b.statdate &lt;= a.statdate
+		AND gameid =#{gameid}
+		<if test="areas != null">
+			and a.areaid in
+			<foreach collection="areas" item="area" index="index" open="(" close=")" separator=",">
+				#{area}
+			</foreach>
+		</if>
+		GROUP BY
+			a.statdate,
+			a.areaid,
+			a.syName
+	</select>
+</mapper>

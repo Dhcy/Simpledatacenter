@@ -1,0 +1,59 @@
+<style type="text/css">
+    .table th,.table td{ border:1px solid #ddd;}
+</style>
+<div>
+    <div>
+        <div class="form-group">
+            <button class="btn btn-default" ui-sref="main.buyplat.adChannelsModify({ctype:1})">{{'添加' | translate}}</button>
+        </div>
+    </div>
+    <div class="panel panel-default panel_1">
+        <div class="panel-heading">
+            <strong>
+                {{'广告渠道' | translate}}
+                <!--------提示框--------- -->
+            </strong>
+            <div class="panel_downloadBtn" ng-click="mdownloaddata('avgGameTime')"></div>
+            <!--------下载按钮--------- -->
+            <div class="clear"></div>
+        </div>
+        <div class="panel-body pdlf pdtb">
+            <div class="tableBox">
+                <table class="table table-striped">
+                    <tr>
+                        <th class="text-center" width="29%">{{'渠道' | translate}}ID</th>
+                        <th class="text-center" width="29%">{{'渠道名称' | translate}}</th>
+                        <th class="text-center" width="29%">{{'公司' | translate}}</th>
+                        <th class="text-center" width="42%">{{'操作' | translate}}</th>
+                    </tr>
+                    <tr ng-repeat="data in panel_1.dataList_1.data | orderBy: panel_1.dataList_1.orderBy.t+panel_1.dataList_1.orderBy.s | pageStartFrom : panel_1.dataList_1.limit.now*panel_1.dataList_1.limit.max | limitTo: panel_1.dataList_1.limit.max" class="text-center">
+                        <td>{{data.channelid}}</td>
+                        <td>{{data.channelName}}</td>
+                        <td>{{data.companyName}}</td>
+                        <td>
+                            <a href="javascript:;" ui-sref="main.buyplat.adChannelsModify({id:data.id,ctype:2})">{{'修改' | translate}}</a>
+                            <a href="javascript:;" ng-click="delChannels(data.id,data.channelid)">{{'删除' | translate}}</a>
+                        </td>
+                    </tr>
+                </table>
+                <div class="tableFooter">
+                    <div class="buttondiv fl" analysisdrop changei="changetype()">
+                        <div class="selectlable fl">{{'每页显示' | translate}}：</div>
+                        <div class="analysisdrop fl" style="width:60px;">
+                            <div class="hadchoose">
+                                <h6>{{val | translate}}</h6></div>
+                            <ul class="dropUl">
+                                <li ng-click="c('10');changetype(10)">10</li>
+                                <li ng-click="c('20');changetype(20)">20</li>
+                                <li ng-click="c('50');changetype(50)">50</li>
+                                <li ng-click="c('100');changetype(100)">100</li>
+                            </ul>
+                        </div>
+                        <div class="selectlable fl">&nbsp;&nbsp;{{'条记录' | translate}}</div>
+                    </div>
+                    <div class="dataTables_paginate fr" datatableslimit  datalimit="panel_1.dataList_1.limit"  tabledata="panel_1.dataList_1.data"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,45 @@
+
+{
+  "firstDayPay": [
+    {
+      "statdate": "2014-08-24",
+      "accounts": 156,
+      "rate": 2
+    },
+    {
+      "statdate": "2014-08-25",
+      "accounts": 141,
+      "rate": 1.8
+    },
+    {
+      "statdate": "2014-08-26",
+      "accounts": 121,
+      "rate": 1.4
+    },
+    {
+      "statdate": "2014-08-27",
+      "accounts": 139,
+      "rate": 1.6
+    },
+    {
+      "statdate": "2014-08-28",
+      "accounts": 121,
+      "rate": 1.5
+    },
+    {
+      "statdate": "2014-08-29",
+      "accounts": 127,
+      "rate": 1.7
+    },
+    {
+      "statdate": "2014-08-30",
+      "accounts": 143,
+      "rate": 1.8
+    },
+    {
+      "statdate": "2014-08-31",
+      "accounts": 126,
+      "rate": 1.4
+    }
+  ]
+}

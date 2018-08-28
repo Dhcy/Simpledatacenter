@@ -1,0 +1,321 @@
+<style>
+    .wallScroll{max-height: 100px;overflow-y: auto;}
+    label{cursor: pointer;}
+</style>
+<div>
+    <div>
+        <div class="form-group">
+            <label for="">{{'游戏' | translate}}:</label>
+            <!-- <select name="" id="" class="form-control" ng-model="gameid" ng-options="o.id as o.name for o in gameList" >
+                
+            </select> -->
+             <div class="inlineBlock" style="width:200px;">
+            			<ui-select ng-model="postData.gameid" theme="bootstrap">
+            				<ui-select-match placeholder="搜索游戏">{{$select.selected.name}}</ui-select-match>
+                			<ui-select-choices repeat="item.id as item in  gameList | filter: $select.search">
+                				<div ng-bind="item.name | highlight: $select.search"></div>
+                		</ui-select-choices>
+            			</ui-select>
+            </div>
+            <button class="btn btn-default" ng-click="searchData()">{{'搜索' | translate}}</button>
+        </div>
+    </div>
+    <div class="col-xs-12">
+        <div class="panel panel-default panel_1">
+            <div class="panel-heading">
+                <strong>
+				{{'游戏渠道列表' | translate}}
+				<!--------提示框----------->
+			</strong>
+                <!--------下载按钮--------- -->
+                <div class="panel_downloadBtn"  down-file down-file-url="channel/exportGameChannel.action" down-file-type="xlsx" down-file-name="游戏渠道列表{{mstatdate}}" savedata="" postdata="postData" ></div>
+                <div class="clear"></div>
+            </div>
+            
+            <div class="panel-body pdlf pdtb">
+                <div class="tableBox">
+                    <table class="table table-striped table-hover">
+                        <tr>
+                            <th class="text-center" width="20%">{{'渠道简称' | translate}}</th>
+                            <th class="text-center" width="20%">{{'渠道全称' | translate}}</th>
+                            <th class="text-center" width="20%">{{'公司' | translate}}ID</th>
+                            <th class="text-center" width="20%">{{'全渠道子' | translate}}ID</th>
+                            <th class="text-center" width="20%">{{'操作' | translate}}</th>
+                        </tr>
+                        <tr ng-repeat="data in channelData.channelList  | orderBy: panel_1.dataList_1.orderBy.t+panel_1.dataList_1.orderBy.s | pageStartFrom : panel_1.dataList_1.limit.now*panel_1.dataList_1.limit.max | limitTo: panel_1.dataList_1.limit.max" class="text-center">
+                            <td>{{data.channelSimName}}</td>
+                            <td>{{data.channelName}}</td>
+                            <td>{{data.channelid}}</td>
+                            <td>
+                                <span  ng-repeat="child in data.subChannels">
+                                    {{child.subchannelId}} 
+                                </span>
+                            </td>
+                            <td>
+                                <a href="" ng-click="getDetailData(1,data)"  data-toggle="modal" data-target="#showData">{{'查看' | translate}}</a>
+                                <a href="" ng-click="getDetailData(2,data)"  data-toggle="modal" data-target="#showData" >{{'修改' | translate}}</a>
+                            </td>
+                        </tr>
+                    </table>
+                    <div class="tableFooter">
+                        <div class="buttondiv fl" analysisdrop changei="changetype()">
+                            <div class="selectlable fl">{{'每页显示' | translate}}：</div>
+                            <div class="analysisdrop fl" style="width:60px;">
+                                <div class="hadchoose">
+                                    <h6>{{val | translate}}</h6></div>
+                                <ul class="dropUl">
+                                    <li ng-click="c('10');changetype(10)">10</li>
+                                    <li ng-click="c('20');changetype(20)">20</li>
+                                    <li ng-click="c('50');changetype(50)">50</li>
+                                    <li ng-click="c('100');changetype(100)">100</li>
+                                </ul>
+                            </div>
+                            <div class="selectlable fl">&nbsp;&nbsp;{{'条记录' | translate}}</div>
+                        </div>
+                        <div class="dataTables_paginate fr" datatableslimit  datalimit="panel_1.dataList_1.limit"  tabledata="channelData.channelList"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="showData" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">渠道信息</h4>
+      </div>
+      <div class="modal-body form-horizontal">
+        <div class="form-group">
+            <label for="" class="col-xs-2 col-xs-offset-1 text-right control-label">
+                子渠道ID:
+            </label>
+            <div class="col-xs-8 form-control-static" id=""  style="width:283px" >
+                <span  ng-repeat="child in gameChannelData.subChannels">
+                    {{child.subchannelId}} 
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-2 col-xs-offset-1 text-right  control-label">
+                服务器:
+            </label>
+            <div class="col-xs-8 form-control-static"  ng-show="type==1">
+                {{ searchObj(serverList,"id",gameChannelDataShow.servertype,"name")}}
+            </div>
+            <div class="col-xs-8" ng-show="type==2">
+                <select class="form-control" style="width:283px" ng-model="gameChannelData.servertype" ng-options="g.id as g.name for g in serverList" >
+                    
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-2 col-xs-offset-1 text-right control-label">
+                接入服务器:
+            </label>
+            <div class="col-xs-8 form-control-static" ng-show="type==1">
+                {{gameChannelDataShow.joinserver}}
+            </div>
+            <div class="col-xs-8" ng-show="type==2">
+                <input type="text" style="width:283px" class="form-control" ng-model="gameChannelData.joinserver" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-2 col-xs-offset-1 text-right control-label">
+                接入游戏:
+            </label>
+            <div class="col-xs-8 form-control-static" >
+               
+                {{gameChannelDataShow.joingameShow}} ({{gameChannelDataShow.joingame}})
+            </div> 
+            <!--<div class="col-xs-8" ng-show="type==2">
+                 <input type="text" class="form-control" ng-model="gameChannelData.joingame" /> 
+                <select class="form-control" style="width:283px" ng-model="joingame" ng-options="o.id as o.name for o in gameList" >
+                
+                </select>
+            </div> -->
+        </div>
+        <div class="form-group">
+            <label class="col-xs-2 col-xs-offset-1 text-right control-label">
+                SDK:
+            </label>
+            <div class="col-xs-8 form-control-static" ng-show="type==1">
+                {{ searchObj(sdknameList,"id",gameChannelDataShow.sdkname,"name")}}
+            </div>
+            <div class="col-xs-8" ng-show="type==2">
+                <!-- <input type="text" class="form-control" ng-model="gameChannelData.sdkname" /> -->
+                <select class="form-control" style="width:283px" ng-model="gameChannelData.sdkname" ng-options="g.id as g.name for g in sdknameList">
+                    
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-2 col-xs-offset-1 text-right control-label">
+                SDK版本号:
+            </label>
+            <div class="col-xs-8 form-control-static" ng-show="type==1">
+                {{gameChannelDataShow.sdkversion}}
+            </div>
+            <div class="col-xs-8" ng-show="type==2">
+                <input type="text" style="width:283px" class="form-control" ng-model="gameChannelData.sdkversion" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-2 col-xs-offset-1 text-right control-label">
+                SDK下载地址:
+            </label>
+            <div class="col-xs-8 form-control-static" ng-show="type==1">
+                {{gameChannelDataShow.sdkdownloadaddr}}
+            </div>
+            <div class="col-xs-8" ng-show="type==2">
+                <input type="text" style="width:283px" class="form-control" ng-model="gameChannelData.sdkdownloadaddr" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-2 col-xs-offset-1 text-right control-label">
+                客户端类型:
+            </label>
+            <div class="col-xs-8 form-control-static" ng-show="type==1">
+                {{ searchObj(clientplattypeList,"id",gameChannelDataShow.clientplattype,"name")}}
+            </div>
+            <div class="col-xs-8" ng-show="type==2">
+                <select class="form-control" style="width:283px" ng-model="gameChannelData.clientplattype" ng-options="g.id as g.name for g in clientplattypeList">
+                    
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-2 col-xs-offset-1 text-right control-label">
+                角标:
+            </label>
+            <div class="col-xs-8 form-control-static" ng-show="type==1">
+                {{ searchObj(iconList,"id",gameChannelDataShow.icon,"name")}}
+            </div>
+            <div class="col-xs-8" ng-show="type==2">
+                <select class="form-control" style="width:283px" ng-model="gameChannelData.icon" ng-options="g.id as g.name for g in iconList">
+                    
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-2 col-xs-offset-1 text-right control-label">
+                开机画面:
+            </label>
+            <div class="col-xs-8 form-control-static" ng-show="type==1">
+                {{ searchObj(launchvideoList,"id",gameChannelDataShow.launchvideo,"name")}}
+            </div>
+            <div class="col-xs-8" ng-show="type==2">
+                <select class="form-control" style="width:283px" ng-model="gameChannelData.launchvideo" ng-options="g.id as g.name for g in launchvideoList">
+                    
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-2 col-xs-offset-1 text-right control-label">
+                包名:
+            </label>
+            <div class="col-xs-8 form-control-static" ng-show="type==1">
+                {{gameChannelDataShow.packagename}}
+            </div>
+            <div class="col-xs-8" ng-show="type==2">
+                <input type="text" style="width:283px" class="form-control" ng-model="gameChannelData.packagename" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-2 col-xs-offset-1 text-right control-label">
+                客户端需求:
+            </label>
+            <div class="col-xs-8 form-control-static" ng-show="type==1">
+                {{ searchObj(clientpacktypeList,"id",gameChannelDataShow.clientpacktype,"name")}}
+            </div>
+            <div class="col-xs-8" ng-show="type==2">
+                <select class="form-control" style="width:283px" ng-model="gameChannelData.clientpacktype" ng-options="g.id as g.name for g in clientpacktypeList">
+                    
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-2 col-xs-offset-1 text-right control-label">
+                强更地址:
+            </label>
+            <div class="col-xs-8 form-control-static" ng-show="type==1">
+                {{gameChannelDataShow.updateaddr}}
+            </div>
+            <div class="col-xs-8" ng-show="type==2">
+                <input type="text" style="width:283px" class="form-control" ng-model="gameChannelData.updateaddr" />
+            </div>
+        </div><!-- 
+        <div class="form-group">
+            <div class="col-xs-2 col-xs-offset-1 text-center">
+                <strong>接入参数</strong>
+            </div>
+        </div> -->
+        <div class="form-group">
+            <label class="col-xs-2 col-xs-offset-1 text-right control-label">
+                接入参数:
+            </label>
+            <div class="col-xs-8 form-control-static" ng-show="type==1" ng-bind-html="gameChannelDataShow.show_access_options">
+            </div>
+            <div class="col-xs-8" ng-show="type==2">
+                <textarea cols="30" rows="5" style="width:283px" class="form-control" ng-model="gameChannelData.access_options"></textarea>
+            </div>
+        </div><!-- 
+        <div class="form-group">
+            <div class="col-xs-2 col-xs-offset-1 text-right">
+                cp_id:
+            </div>
+            <div class="col-xs-8">
+                1
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-xs-2 col-xs-offset-1 text-right">
+                GAME_id:
+            </div>
+            <div class="col-xs-8">
+                1
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-xs-2 col-xs-offset-1 text-right">
+                server_id:
+            </div>
+            <div class="col-xs-8">
+                1
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-xs-2 col-xs-offset-1 text-right">
+                客户端加密key:
+            </div>
+            <div class="col-xs-8">
+                1
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-xs-2 col-xs-offset-1 text-right">
+                服务端加密key:
+            </div>
+            <div class="col-xs-8">
+                1
+            </div>
+        </div> -->
+        <div class="form-group">
+            <label class="col-xs-2 col-xs-offset-1 text-right control-label">
+                其它备注:
+            </label>
+            <div class="col-xs-8 form-control-static" ng-show="type==1">
+                {{gameChannelData.remark}}
+            </div>
+            <div class="col-xs-8" ng-show="type==2">
+                <input type="text" style="width:283px" class="form-control" ng-model="gameChannelData.remark" />
+            </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" ng-show="type==2" ng-click="postFunc()">保存</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+      </div>
+    </div>
+  </div>
+</div>

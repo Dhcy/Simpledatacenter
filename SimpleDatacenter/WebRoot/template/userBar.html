@@ -1,0 +1,108 @@
+<div class="top_body">
+	<div class="homeBtn">
+		<a href="index.html" ui-sref=".main({'gameid':''})" title="首页" class="">
+<!--
+			<span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+			<p style="display:inline-block" ng-bind="data.indexTitle">SDK管理系统</p>
+-->
+			<img src="dist/images/logo.png" class="logoImg" width="154px" alt="">
+		</a>
+	</div>
+<!--
+	<div class="productMenu menuBtn btn-group  pull-left" ng-show="true">
+		
+	</div>
+-->
+	<div id="topMenu">
+		<!-- <a target="main" href="javascript:window.history.back()"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>后退</a> -->
+		<div class="menuBtn btn-group  pull-left">
+			<button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				<span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{user.name | translate}} <span class="caret"></span>
+				<!--当前登陆用户名称-->
+			</button>
+			<ul class="dropdown-menu">
+				<!-- <li><a href="userInfo.html">个人中心</a></li> -->
+				<li><a ng-show="params.lang=='zh'"  href="modifypw.html">{{'修改密码' | translate}}</a>
+					<a ng-show="params.lang=='jp'"  href="jpmodifypw.html">{{'修改密码' | translate}}</a>
+				</li>
+				<li><a href="" ng-click="toIndex()">{{ '退出登陆' | translate }}</a></li>
+				
+			</ul>
+		</div>
+		<div class="menuBtn btn-group  pull-left">
+			<button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				 {{'切换语言' | translate}} <span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu">
+				<!-- <li><a href="userInfo.html">个人中心</a></li> -->
+				<li><a ui-sref="main({lang:'zh'})">简体中文</a></li>
+				<li><a ui-sref="main({lang:'en'})">English</a></li>
+				<li><a ui-sref="main({lang:'jp'})">日本語</a></li>
+				
+			</ul>
+		</div>
+	</div>
+</div>
+<div class="top_location">
+	<div class="fl">
+<!--		<strong>数据中心</strong>-->
+		
+		<div class="productMenu fl" ng-show="true">
+			<div class="dropselect" ng-class="{'dropselectAct':isdrop1}" ng-click="dropToggle1()">
+				<h4 title="" class="over">{{getPlatformName(params.platformid) | translate}}</h4>
+			</div>
+			<ul class="dropselistbox" ng-show="isdrop1">
+				<li ng-repeat="platformList in platformList"  ui-sref="main({'platformid':platformList.id,'projectid':'','gameid':''})" ng-click="dropToggle1();"  >{{platformList.platname| translate}}</li>
+			</ul>
+		</div>
+		<span ng-show="projectList.length > 0" ></span>
+		<div class="productMenu fl" ng-show="projectList.length > 0">
+			<div class="dropselect" ng-class="{'dropselectAct':isdrop2}" ng-click="dropToggle2()">
+				<h4 title="" class="over">{{getProjectName(params.projectid)| translate}}</h4>
+			</div>
+			<ul class="dropselistbox" ng-show="isdrop2" ng-if="params.platformid=='2'">
+				<li ng-repeat="projectList in projectList"  ui-sref="main.project({'projectid':projectList.id,'gameid':''})" ng-click="dropToggle2()" >{{projectList.name| translate}}</li>
+			</ul>
+			<ul class="dropselistbox" ng-show="isdrop2" ng-if="params.platformid!='2'">
+				<li ng-repeat="projectList in projectList"  ui-sref="main({'projectid':projectList.id,'gameid':''})" ng-click="dropToggle2()" >{{projectList.name| translate}}</li>
+			</ul>
+		</div>
+		<span ng-show="gameList.length > 0" ></span>
+		<div class="productMenu fl" ng-show="gameList.length > 0">
+			<div class="dropselect" ng-class="{'dropselectAct':isdrop3}" ng-click="dropToggle3()">
+				<h4 title="" class="over">{{getGameName(params.gameid)| translate}}</h4>
+			</div>
+			<ul class="dropselistbox" ng-show="isdrop3">
+				<li ng-repeat="gameList in gameList |  gameFilter : params.projectid"  ui-sref="main({'projectid':params.projectid,'gameid':gameList.id})" ng-click="dropToggle3()" >{{gameList.name| translate}}</li>
+			</ul>
+		</div>
+		<span ng-show="gameList.length > 0&&params.platformid!=7" ></span>
+		<div class="productMenu fl" ng-show="gameList.length > 0&&params.platformid!=7" style="width:120px">
+			<div class="dropselect" ng-class="{'dropselectAct':isdrop}" ng-click="dropToggle()">
+				<h4 title="" class="over text-center">
+					<img src="dist/images/IOS_icon.png" alt="" ng-show="gameSystemChoosed[1]">
+					<img src="dist/images/Android_icon.png" alt="" ng-show="gameSystemChoosed[2]">
+					<img src="dist/images/Win_icon.png" alt="" ng-show="gameSystemChoosed[3]">
+				</h4>
+			</div>
+			<ul class="dropselistbox" ng-show="isdrop">
+				<li ng-click="gameSystem.android=!gameSystem.android">
+					<input type="checkbox" ng-checked="gameSystem.android" >
+					Android
+				</li>
+				<li ng-click="gameSystem.ios=!gameSystem.ios">
+					<input type="checkbox" ng-checked="gameSystem.ios" >
+					Ios
+				</li>
+				<li ng-click="gameSystem.win=!gameSystem.win">
+					<input type="checkbox" ng-checked="gameSystem.win" >
+					Winphone
+				</li>
+				<li>
+					<div style="clear: both; display:block; float:left; background:#154f72; width:100%; line-height:24px; margin:0px 0 0 2px; border-radius:2px; cursor:pointer; font-size:12px;text-align:center " ng-click="setGameSys(1)">{{'确定' | translate}}</div>
+					
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>

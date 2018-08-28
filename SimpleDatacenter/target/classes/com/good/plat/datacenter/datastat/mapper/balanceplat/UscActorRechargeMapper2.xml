@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.datastat.mapper.balanceplat.UscActorRechargeMapper2" >
+  <sql id="BaseSearchDataWhereClause">
+		where logdate between #{startdate} and #{enddate} 
+		and gameid=#{gameid}
+		<if test="channelList != null">
+			and channel in
+			<foreach collection="channelList" item="channel" index="index" open="(" close=")" separator=",">
+				#{channel.id}
+			</foreach>
+		</if>
+		<if test="subchannels != null">
+			and subchannel in
+			<foreach collection="subchannels" item="subchannel" index="index" open="(" close=")" separator=",">
+				#{subchannel}
+			</foreach>
+		</if>
+  </sql>
+  
+  <select id="selectUscActorRechargeBalanceList" resultMap="com.good.plat.datacenter.datastat.mapper.balanceplat.UscFinancialAppleReportMapper2.BaseResultMap" 
+   parameterType="com.good.plat.datacenter.common.base.BaseSearchData" >
+    select
+	productid,count(*) as quantity
+	from usc_actor_recharge
+	where gameid=#{gameid,jdbcType=INTEGER} and channel=#{channelid,jdbcType=INTEGER} and logdate between #{startdate,jdbcType=INTEGER} and #{enddate,jdbcType=INTEGER}
+	group by productid
+  </select>
+  
+</mapper>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.independ.mapper.sj3index.SyMapSummaryMapper">
+	<resultMap id="BaseResultMap" type="com.good.plat.datacenter.independ.entity.sj3index.SyMapSummary">
+		<result column="statdate" property="statdate"/>
+		<result column="areaid" property="areaid"/>
+		<result column="areaName" property="areaName"/>
+		<result column="channelid" property="channelid"/>
+		<result column="channelName" property="channelName"/>
+		<result column="star" property="star"/>
+		<result column="starLevel" property="starLevel"/>
+		<result column="openCombatCnt" property="openCombatCnt"/>
+		<result column="avgCombatTime" property="avgCombatTime"/>
+		<result column="actjoincnt" property="actjoincnt"/>
+		<result column="actlootcnt" property="actlootcnt"/>
+		<result column="lootcnt" property="lootcnt"/>
+		<result column="actleavecnt" property="actleavecnt"/>
+		<result column="actfailcnt" property="actfailcnt"/>
+		<result column="actexitcnt" property="actexitcnt"/>
+		<result column="islandcnt" property="islandcnt"/>
+		<result column="jobs" property="jobs"/>
+		
+	</resultMap>
+		<sql id="BaseSelect">
+			where 1=1
+			<if test="startdate!=null and startdate!=''">
+			and statdate &gt;=#{startdate}
+			</if>
+			<if test="enddate!=null and enddate!=''">
+			and statdate &lt;=#{enddate}
+			</if>
+			and gameid=#{gameid}
+			<if test="areaid!=null and areaid!=-1">
+				and areaid=#{areaid}
+			</if>
+		</sql>
+	
+	<!--
+	备注：去掉星级字段查询
+	圣域大地图统计(日期,区服,职业,开启战斗数,平均战斗 用时(s),参与玩家数,抢夺玩家数,抢夺次数,离开玩家数量,失败玩家数,中途退出玩家数,已被占领的海岛数量)
+	-->
+	<select id="selectSyCombatList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.IndependBaseSearchData">
+		SELECT
+			a.statdate,
+			a.areaid,
+			a.jobs,
+			a.combatcnt as openCombatCnt,
+			IF(a.combatcnt=0,0,ROUND(a.combattime/a.combatcnt)) as avgCombatTime,
+			a.actjoincnt,
+			a.actlootcnt,
+			a.lootcnt,
+			a.actleavecnt,
+			a.actfailcnt,
+			a.actexitcnt,
+			a.islandcnt
+		FROM
+			(
+				SELECT
+					statdate,
+					areaid,
+					jobs,
+					IFNULL(SUM(combatcnt), 0) AS combatcnt,
+					IFNULL(SUM(combattime), 0) AS combattime,
+					IFNULL(SUM(actjoincnt), 0) AS actjoincnt,
+					IFNULL(SUM(actlootcnt), 0) AS actlootcnt,
+					IFNULL(SUM(lootcnt), 0) AS lootcnt,
+					IFNULL(SUM(actleavecnt), 0) AS actleavecnt,
+					IFNULL(SUM(actfailcnt), 0) AS actfailcnt,
+					IFNULL(SUM(actexitcnt), 0) AS actexitcnt,
+					IFNULL(SUM(islandcnt), 0) AS islandcnt
+				FROM
+					sj3_sybigmap_stat
+				<include refid="BaseSelect"/>
+				GROUP BY
+					statdate,
+					areaid,
+					jobs
+			)a
+	</select>
+</mapper>

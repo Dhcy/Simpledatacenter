@@ -1,0 +1,323 @@
+<html ng-app="index">
+<head>
+<title>管理系统</title>
+<meta charset="UTF-8"> 
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+<!-- js引入 -->
+<script src="dist/public/js/jquery-1.10.2.min.js"></script>
+<script src="dist/public/js/angular.1.4.4.min.js"></script>
+<script src="dist/public/js/angular-ui-router.min.js"></script>
+<script src="dist/public/js/angular-translate.min.js"></script>
+<script src="dist/public/js/angular-translate-loader-static-files.min.js"></script>
+<script src="dist/public/js/angular-sanitize.js"></script>
+<script src="dist/public/js/angular.select2.js"></script>
+<script src="dist/public/js/ng-file-upload-all.min.js"></script>
+<!--<script src="dist/public/js/oclazyload.js"></script>-->
+<!--<script  data-main="dist/public/js/require.option" src="dist/public/js/require.js"></script>-->
+<script src="dist/js/index/summaryindexController.js"></script>
+<script src="dist/js/index/reportController.js"></script>
+<script src="dist/js/index/datacomparedController.js"></script>
+<script src="dist/js/index/logRealTimeDataController.js"></script>
+
+
+<script src="dist/js/players/conversion.js"></script>
+<script src="dist/js/players/playersChumController.js"></script>
+<script src="dist/js/players/playersBehaviorController.js"></script>
+<script src="dist/js/players/playersDynamicController.js"></script>
+<script src="dist/js/players/playersNewController.js"></script>
+<script src="dist/js/players/playersRetentionController.js"></script>
+<script src="dist/js/players/playersDeviceController.js"></script>
+<script src="dist/js/players/playersRollServController.js"></script>
+<script src="dist/js/players/accountLostController.js"></script>
+
+
+<!-- 实时数据 -->
+<script src="dist/js/realtimedata/realTimeSummaryDataController.js"></script>
+
+
+<script src="dist/js/concurrent/concurrentController.js"></script>
+<script src="dist/js/concurrent/concurrentDataController.js"></script>
+
+
+<script src="dist/js/revenue/revenueDataController.js"></script>
+<script src="dist/js/revenue/revenueConversionController.js"></script>
+<script src="dist/js/revenue/revenueValueController.js"></script>
+<script src="dist/js/revenue/revenueBehaviorController.js"></script>
+<script src="dist/js/revenue/revenueRetationController.js"></script>
+<script src="dist/js/revenue/revenueLtvController.js"></script>
+
+
+<script src="dist/js/whales/whalesController.js"></script>
+
+<script src="dist/js/channels/channelsDataController.js"></script>
+
+<script src="dist/js/virtual/virtualCurrencyController.js"></script>
+<script src="dist/js/virtual/virtualExpenseController.js"></script>
+<script src="dist/js/virtual/virtualItemsController.js"></script>
+
+<script src="dist/js/levels/levelsDetailController.js"></script>
+<script src="dist/js/levels/levelsDistributeController.js"></script>
+<script src="dist/js/levels/levelsProgressController.js"></script>
+
+<script src="dist/js/events/eventsDataController.js"></script>
+<script src="dist/js/events/eventsDetailController.js"></script>
+
+<script src="dist/js/gift/giftDataController.js"></script>
+<script src="dist/js/version/versionDataController.js"></script>
+
+<script src="dist/js/user/userManageController.js"></script>
+<script src="dist/js/user/userModifyController.js"></script>
+<script src="dist/js/user/resourcesController.js"></script>
+<script src="dist/js/user/roleController.js"></script>
+<script src="dist/js/user/roleModifController.js"></script>
+<script src="dist/js/user/firstMenuController.js"></script>
+<script src="dist/js/user/firstMenuModifController.js"></script>
+<script src="dist/js/user/permissionController.js"></script>
+<script src="dist/js/user/permissionModifController.js"></script>
+
+<script src="dist/js/config/gameareaController.js"></script>
+<script src="dist/js/config/gameareaModifController.js"></script>
+<script src="dist/js/config/platformController.js"></script>
+<script src="dist/js/config/platformModifController.js"></script>
+<script src="dist/js/config/projectController.js"></script>
+<script src="dist/js/config/projectModifController.js"></script>
+<script src="dist/js/config/gameController.js"></script>
+<script src="dist/js/config/gameModifController.js"></script>
+<script src="dist/js/config/channelController.js"></script>
+<script src="dist/js/config/channelModifController.js"></script>
+<script src="dist/js/config/subchannelController.js"></script>
+<script src="dist/js/config/subchannelModifController.js"></script>
+<script src="dist/js/config/gameChannelController.js"></script>
+<script src="dist/js/config/gameversionController.js"></script>
+<script src="dist/js/config/gameversionModifyController.js"></script>
+<script src="dist/js/config/gamelanguageController.js"></script>
+<script src="dist/js/config/gamelanguageModifyController.js"></script>
+<script src="dist/js/config/rechgGainWarnController.js"></script>
+<script src="dist/js/config/rechgGainWarnModifController.js"></script>
+<script src="dist/js/config/attrValueController.js"></script>
+
+
+<script src="dist/js/analysis/warningController.js"></script>
+
+<!-- <script src="dist/js/buyplat/adStatisticsController.js"></script> 
+<script src="dist/js/buyplat/channelsModifyController.js"></script>-->
+<script src="dist/js/buyplat/adChannelsController.js"></script>
+<script src="dist/js/buyplat/adChannelsModifyController.js"></script>
+<script src="dist/js/buyplat/adMainListController.js"></script>
+<script src="dist/js/buyplat/adMainListModifyController.js"></script>
+<script src="dist/js/buyplat/amountManageController.js"></script>
+<script src="dist/js/buyplat/amountManageModifyController.js"></script>
+<script src="dist/js/buyplat/dataGatherController.js"></script>
+<script src="dist/js/buyplat/dataQueryController.js"></script>
+<script src="dist/js/buyplat/registerPeriodController.js"></script>
+<script src="dist/js/buyplat/ranksDistributeController.js"></script>
+<script src="dist/js/buyplat/qdUserRegInfoController.js"></script>
+<script src="dist/js/buyplat/advertiserDataController.js"></script>
+<script src="dist/js/buyplat/advertiserQuerController.js"></script>
+
+
+<script src="dist/js/balanceplat/channelbalanceController.js"></script>
+<script src="dist/js/balanceplat/channelbalanceModifyController.js"></script>
+<script src="dist/js/balanceplat/billingformController.js"></script>
+<script src="dist/js/balanceplat/billingformbyweekController.js"></script>
+<script src="dist/js/balanceplat/paychannelController.js"></script>
+<script src="dist/js/balanceplat/autobalanceController.js"></script>
+<script src="dist/js/balanceplat/applebalanceController.js"></script>
+<script src="dist/js/balanceplat/channelCompanyController.js"></script>
+<script src="dist/js/balanceplat/channelCompanyModifyController.js"></script>
+<script src="dist/js/balanceplat/videoAdvertiserController.js"></script>
+<script src="dist/js/balanceplat/videoAdvertiserModifController.js"></script>
+  
+<script src="dist/js/balanceplat/contractFileController.js"></script>
+
+
+
+
+<!-- sdk data -->
+<script src="dist/js/sdkdata/sdkdataBrowserController.js"></script>
+<script src="dist/js/sdkdata/sdkdataDownloadController.js"></script>
+<script src="dist/js/sdkdata/sdkdataDownSrcController.js"></script>
+<script src="dist/js/sdkdata/sdkdataLoginAnalysisController.js"></script>
+<script src="dist/js/sdkdata/sdkdataNewAddController.js"></script>
+<script src="dist/js/sdkdata/sdkdataNewVipController.js"></script>
+<script src="dist/js/sdkdata/sdkdataSummaryController.js"></script>
+<script src="dist/js/sdkdata/sdkdataVipDistController.js"></script>
+<script src="dist/js/sdkdata/sdkdataVipSummaryController.js"></script>
+<!--dau模型 -->
+<script src="dist/js/daumode/dauAndIncomeController.js"></script>
+<!-- 项目配置-->
+<script src="dist/js/project/projectConfigController.js"></script>
+<!-- af_push_api-->
+<script src="dist/js/af_push_api/afPurchaseController.js"></script>
+
+<!-- 香港财务统计 -->
+<script src="dist/js/xgfinance/xgFinanceCostController.js"></script>
+<script src="dist/js/xgfinance/xgFinanceGameUserController.js"></script>
+<!-- 财务数据 -->
+<script src="dist/js/financestat/financeGameUserController.js"></script>
+
+
+
+
+
+<!--
+
+
+
+
+
+<!--  -->
+<script src="dist/public/lang/lang.js"></script>
+<script src="dist/public/js/angular.option.js"></script>
+<script src="dist/public/js/angular-locale_zh-cn.js"></script>
+
+
+<link rel="stylesheet" href="dist/public/css/public.css">
+<link rel="stylesheet" href="dist/bootstrap/css/bootstrap.css">
+<link rel="stylesheet" href="dist/bootstrap/ui-bootstrap-csp.css">
+<link rel="stylesheet" href="dist/bootstrap/css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="dist/public/css/jquery.jscrollpane.css">
+<link rel="stylesheet" href="dist/public/css/datetimepicker.css">
+<link rel="stylesheet" href="dist/public/css/select2.css">
+<!--<script src="dist/public/js/require.option.js"></script>-->
+</head>
+<body>
+<div id="all" class="indexMain" ng-controller="indexController">
+	<div class="topdiv" userbar params="$Params" publicplatform="publicplatform" gamesyslist="gamesyslist" user="user" getSelectInfo="getSelectInfo" dialogopen="dialogopen" >
+		
+	</div>
+	<div class="maindiv" >
+		<div class="maindivCon" ui-view>
+			
+		</div>
+	</div>
+	<div class="footerdiv">
+		<div class="footer"></div>
+	</div>
+	<div dialogmsg dialogopen="dialogopen"></div>
+</div>
+</body>
+<script src="dist/bootstrap/js/bootstrap.min.js"></script>
+<script src="dist/bootstrap/ui-bootstrap-tpls.js"></script>
+<script src="dist/highcharts/highcharts2.js"></script>
+<script src="dist/highcharts/highcharts-more.js"></script>
+<script src="dist/highcharts/modules/solid-gauge.js"></script>
+<script src="dist/echarts/echarts.min.js"></script>
+<script src="dist/echarts/echarts-gl.min.js"></script>
+<script src="dist/echarts/ecStat.min.js"></script>
+<script src="dist/echarts/dataTool.min.js"></script>
+<script src="dist/echarts/china.js"></script>
+<script src="dist/echarts/world.js"></script>
+<script src="dist/echarts/bmap.min.js"></script>
+<script src="dist/echarts/simplex.js"></script>
+<!--<script src="dist/highcharts/themes/grid.js"></script>-->
+<script src="dist/public/js/datetimepicker.js"></script>
+<script src="dist/public/js/jquery.jscrollpane.min.js"></script>
+<script src="dist/public/js/FileSaver.min.js"></script>
+<script src="dist/public/js/jq.option.js" charset="UTF-8"></script>
+<script src="dist/public/js/public.class.js"></script>
+<script src="dist/public/js/datePicker/WdatePicker.js"></script>
+
+
+
+<!-- 独立需求(世界三) -->
+<script src="dist/js/idp/achieveController.js"></script>
+<script src="dist/js/idp/goldController.js"></script>
+<script src="dist/js/idp/stageController.js"></script>
+<script src="dist/js/idp/diamondController.js"></script>
+<script src="dist/js/idp/yuanlingController.js"></script>
+<script src="dist/js/idp/officerDistributeController.js"></script>
+<script src="dist/js/idp/famController.js"></script>
+<script src="dist/js/idp/awardController.js"></script>
+<script src="dist/js/idp/resourceController.js"></script>
+<script src="dist/js/idp/dailySummaryController.js"></script>
+<script src="dist/js/idp/cityFightController.js"></script>
+<script src="dist/js/idp/mwActivateController.js"></script>
+<script src="dist/js/idp/sySummaryController.js"></script>
+<script src="dist/js/idp/rechargeController.js"></script>
+<script src="dist/js/idp/stageNodeController.js"></script>
+<script src="dist/js/idp/activeStatController.js"></script>
+<script src="dist/js/idp/syMapSummaryController.js"></script>
+<script src="dist/js/idp/cityAdventureController.js"></script>
+<script src="dist/js/idp/altarController.js"></script>
+<script src="dist/js/idp/goodsMaterialsController.js"></script>
+<script src="dist/js/idp/sj3WzzbController.js"></script>
+<script src="dist/js/idp/illusStatController.js"></script>
+<script src="dist/js/idp/heroStatController.js"></script>
+<script src="dist/js/idp/vowStatController.js"></script>
+<script src="dist/js/idp/modelStatController.js"></script>
+<script src="dist/js/idp/newActTaskStatController.js"></script>
+<script src="dist/js/idp/sj3MonthCardController.js"></script>
+<script src="dist/js/idp/stageStatController.js"></script>
+
+
+
+<!-- 独立需求 (未来战争)-->
+<script src="dist/js/fw_idp/fwStageController.js"></script>
+<script src="dist/js/fw_idp/fwPrologueController.js"></script>
+<script src="dist/js/fw_idp/fwStageWeaponController.js"></script>
+<script src="dist/js/fw_idp/fwMechaStormController.js"></script>
+<script src="dist/js/fw_idp/ftwStageController.js"></script>
+<script src="dist/js/fw_idp/ftwJTBossController.js"></script>
+
+<!--独立需求(银河掠夺者)-->
+<script src="dist/js/yh_idp/yhStageStatController.js"></script>
+<script src="dist/js/yh_idp/yhTaskManageController.js"></script>
+<script src="dist/js/yh_idp/yhOnlineStatController.js"></script>
+<script src="dist/js/yh_idp/yhLevelDistributeController.js"></script>
+<script src="dist/js/yh_idp/yhCurrencyStatController.js"></script>
+<script src="dist/js/yh_idp/yhGoodsStatController.js"></script>
+<script src="dist/js/yh_idp/yhPlaymineDataController.js"></script>
+<script src="dist/js/yh_idp/yhLightHouceDataController.js"></script>
+<script src="dist/js/yh_idp/yhSocialContractController.js"></script>
+<script src="dist/js/yh_idp/yhJtStatController.js"></script>
+<script src="dist/js/yh_idp/yhAchieveStatController.js"></script>
+<script src="dist/js/yh_idp/yhIframeStatController.js"></script>
+<script src="dist/js/yh_idp/yhArenastatController.js"></script>
+
+<!-- 独立需求（HIE） -->
+<script src="dist/js/hie_idp/taskPointController.js"></script>
+<script src="dist/js/hie_idp/registPointController.js"></script>
+
+<script src="dist/js/hie_idp/diamondsCountController.js"></script>
+<script src="dist/js/hie_idp/glodCountController.js"></script>
+<script src="dist/js/hie_idp/propCountController.js"></script>
+<script src="dist/js/hie_idp/shoppingCountController.js"></script>
+<script src="dist/js/hie_idp/lottoCountController.js"></script>
+<script src="dist/js/hie_idp/ectypeCountController.js"></script>
+<script src="dist/js/hie_idp/firstRechargeController.js"></script>
+<script src="dist/js/hie_idp/singleRechargeController.js"></script>
+<script src="dist/js/hie_idp/onTimeRechargeController.js"></script>
+<script src="dist/js/hie_idp/onLineController.js"></script>
+<!-- 创造者 -->
+<script src="dist/js/czz_idp/czztaskPointController.js"></script>
+<script src="dist/js/czz_idp/czzregistPointController.js"></script>
+<script src="dist/js/czz_idp/czzfirstRechargeController.js"></script>
+<script src="dist/js/czz_idp/czzsingleRechargeController.js"></script>
+<script src="dist/js/czz_idp/czzonTimeRechargeController.js"></script>
+<script src="dist/js/czz_idp/czzdiamondsCountController.js"></script>
+<script src="dist/js/czz_idp/czzpropCountController.js"></script>
+<script src="dist/js/czz_idp/czzshoppingCountController.js"></script>
+<script src="dist/js/czz_idp/czzectypeCountController.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</html>

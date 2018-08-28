@@ -1,0 +1,36 @@
+{
+  "spendingTimes": [
+    {
+      "statdate": "2014-08-24",
+      "accounts": 1643.0
+    },
+    {
+      "statdate": "2014-08-25",
+      "accounts": 1102.0
+    },
+    {
+      "statdate": "2014-08-26",
+      "accounts": 1130.0
+    },
+    {
+      "statdate": "2014-08-27",
+      "accounts": 1115.0
+    },
+    {
+      "statdate": "2014-08-28",
+      "accounts": 1017.0
+    },
+    {
+      "statdate": "2014-08-29",
+      "accounts": 827.0
+    },
+    {
+      "statdate": "2014-08-30",
+      "accounts": 864.0
+    },
+    {
+      "statdate": "2014-08-31",
+      "accounts": 1131.0
+    }
+  ]
+}

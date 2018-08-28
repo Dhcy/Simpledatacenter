@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.datastat.mapper.index.LogRealTimeDataMapper">
+	<resultMap id="BaseResultMap" type="com.good.plat.datacenter.datastat.entity.index.LogTypeAtrrCodeValue">
+		<result column="attr_value" property="attr_value"/>
+		<result column="attr_desc" property="attr_desc"/>
+	</resultMap>
+	
+	<!-- 日志类型-->
+	<select id="selectLogTypeValueDescByCode" resultMap="BaseResultMap" 
+		parameterType="java.lang.String">
+		SELECT
+			b.attr_value,
+			b.attr_desc
+		FROM
+			tb_logplat_attr_code a,
+			tb_logplat_attr_value b
+		WHERE
+			a.id = b.attr_id
+		AND a.attr_code =#{attrCode};
+	</select>
+	
+</mapper>

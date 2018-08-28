@@ -1,0 +1,109 @@
+<style type="text/css">
+    .table th,.table td{ border:1px solid #ddd;}
+    .form-group{ margin-left: 10px; margin-top: 10px;}
+    .form-control{ display: inline-block; vertical-align: middle;}
+</style>
+<div>
+    <div>
+        <div class="form-group">
+            <div class="div_select">
+                
+            </div>
+            <div datepicker format="yyyy-MM"  minMode="month" class="col-xs-3 timeSelect" mstatdate="mstatdate" style="width:320px;"></div>
+            <label for="">{{'游戏' | translate}}：</label>
+             <div class="inlineBlock" style="width:200px;">
+            			<ui-select ng-model="postData.gameid" theme="bootstrap" ng-change="getChannelList()">
+            				<ui-select-match placeholder="搜索游戏">{{$select.selected.name | translate}}</ui-select-match>
+                			<ui-select-choices repeat="item.id as item in  panel_1.gameList | filter: $select.search">
+                				<div ng-bind="item.name | highlight: $select.search"></div>
+                		</ui-select-choices>
+            			</ui-select>
+            </div>
+			<!--  <select ng-model="postData.gameid" class="form-control" ng-options="data.id as data.name for data in panel_1.gameList"  ng-change="getChannelList()">-->
+
+            </select>&nbsp;&nbsp;
+            <label for="">{{'渠道' | translate}}：</label>
+            <select ng-model="postData.channelid" class="form-control" ng-options="data.id as data.channelName for data in panel_1.channelList">
+
+            </select>&nbsp;&nbsp;
+            <label for="">{{'第三方账单' | translate}}：</label>
+             <button class="btn btn-default" type="file" ngf-select="fileChange($file, $invalidFiles)"
+          accept="*" ngf-max-height="1000" ngf-max-size="3MB">
+                  <span ng-show="postData.file=='' || postData.file==null ">{{'上传账单' | translate}}</span>
+                  <span ng-show="postData.file!=''">{{postData.file.name}}</span>
+          
+              </button>
+           &nbsp;&nbsp;
+            <a class="btn btn-default" ng-click="getData()"  >{{'搜索' | translate}}</a>
+       <br>
+        </div>
+    </div>
+    <div class="panel panel-default" ng-show="panel_1.myBillItemCount!=''">
+      <div class="panel-heading">{{'对账结果' | translate}}</div>
+      <div class="panel-body">            
+            <table class="table table-striped">
+                <tr>
+                    <th class="text-center" width="6%">{{'我方账单条目数' | translate}}</th>
+                    <th class="text-center" width="6%">{{'第三方账单条目数' | translate}}</th>
+                    <th class="text-center" width="6%">{{'匹配条目数' | translate}}</th>
+                </tr>
+                <tr class="text-center">
+                    <td>{{panel_1.myBillItemCount}}</td>
+                    <td>{{panel_1.dsBillItemCount}}</td>
+                    <td>{{panel_1.matchItemCount}}</td>
+                </tr>
+            </table>
+      </div>
+    </div>
+    <div class="panel panel-default panel_1" ng-show="panel_1.dataList_1.data.length!=0">
+        <div class="panel-heading">
+            <strong>
+                 {{'差异账单列表' | translate}}
+                <!--------提示框--------- -->
+            </strong>
+            <div class="panel_downloadBtn"  down-file down-file-url="balanceplat/exportAutoCheckBill.action" 
+					down-file-type="xlsx" down-file-name="自动对账{{mstatdate}}" savedata="" postdata="postData" ></div>
+            <!--------下载按钮--------- -->
+            <div class="clear"></div>
+        </div>
+        <div class="panel-body pdlf pdtb">
+            <div class="tableBox">
+                <table class="table table-striped">
+                    <tr>
+                        <th class="text-center" width="6%">{{'订单时间' | translate}}</th>
+                        <th class="text-center" width="6%">{{'我方账单' | translate}}ID</th>
+                        <th class="text-center" width="6%">{{'第三方账单' | translate}}ID</th>
+                        <th class="text-center" width="6%">{{'账单金额' | translate}}</th>
+                        <th class="text-center" width="6%">{{'差异类型' | translate}}</th>
+                        <th class="text-center" width="6%">{{'账号' | translate}}ID</th>
+                    </tr>
+                    <tr ng-repeat="data in panel_1.dataList_1.data  | orderBy: panel_1.dataList_1.orderBy.t+panel_1.dataList_1.orderBy.s | pageStartFrom : panel_1.dataList_1.limit.now*panel_1.dataList_1.limit.max | limitTo: panel_1.dataList_1.limit.max" class="text-center">
+                        <td>{{data.logdate}}</td>
+                        <td>{{data.orderid}}</td>
+                        <td>{{data.dstorderid}}</td>
+                        <td>{{data.money}}</td>
+                        <td>{{data.diffDesc}}</td>
+                        <td>{{data.acctId}}</td>
+                    </tr>
+                </table>
+                <div class="tableFooter">
+                    <div class="buttondiv fl" analysisdrop changei="changetype()">
+                        <div class="selectlable fl">{{'每页显示' | translate}}：</div>
+                        <div class="analysisdrop fl" style="width:60px;">
+                            <div class="hadchoose">
+                                <h6>{{val  | translate}}</h6></div>
+                            <ul class="dropUl">
+                                <li ng-click="c('10');changetype(10)">10</li>
+                                <li ng-click="c('20');changetype(20)">20</li>
+                                <li ng-click="c('50');changetype(50)">50</li>
+                                <li ng-click="c('100');changetype(100)">100</li>
+                            </ul>
+                        </div>
+                        <div class="selectlable fl">&nbsp;&nbsp;{{'条记录' | translate}}</div>
+                    </div>
+                    <div class="dataTables_paginate fr" datatableslimit  datalimit="panel_1.dataList_1.limit"  tabledata="panel_1.dataList_1.data"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

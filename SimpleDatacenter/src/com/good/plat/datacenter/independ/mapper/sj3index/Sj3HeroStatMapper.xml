@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.independ.mapper.sj3index.Sj3HeroStatMapper">
+	<resultMap id="BaseResultMap" type="com.good.plat.datacenter.independ.entity.sj3index.Sj3HeroStat">
+		<result column="statdate" property="statdate"/>
+		<result column="gameid" property="gameid"/>
+		<result column="gameName" property="gameName"/>
+		<result column="channelid" property="channelid"/>
+		<result column="channelName" property="channelName"/>
+		<result column="areaid" property="areaid"/>
+		<result column="areaName" property="areaName"/>
+		
+		<result column="order" property="order"/>
+		<result column="difficult" property="difficult"/>
+		<result column="opencnt" property="opencnt"/>
+		<result column="actonecnt" property="actonecnt"/>
+		<result column="count" property="count"/>
+		
+		<result column="actincnt" property="actincnt"/>
+		<result column="actsuccnt" property="actsuccnt"/>
+		<result column="suctime" property="suctime"/>
+		<result column="starcnt" property="starcnt"/>
+		<result column="failcnt" property="failcnt"/>
+		<result column="exitcnt" property="exitcnt"/>
+		<result column="exitcnt" property="exitcnt"/>
+		<result column="avgsuctime" property="avgsuctime"/>
+		<result column="avgsucstarcnt" property="avgsucstarcnt"/>
+	</resultMap>
+	
+	<sql id="BaseSelect">
+		where 1=1
+			<if test="startdate!=null and startdate!=''">
+			and statdate &gt;=#{startdate}
+			</if>
+			<if test="enddate!=null and enddate!=''">
+			and statdate &lt;=#{enddate}
+			</if>
+			and gameid=#{gameid}
+			<if test="areaid!=null and areaid!=-1">
+				and areaid=#{areaid}
+			</if>
+			<if test="channelid!=null and channelid!=-1">
+				and channel=#{channelid}
+			</if>
+	</sql>
+	
+	<!--
+	每天以前的关卡统计
+	-->
+	<select id="selectStageStatBoforePerday" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.IndependBaseSearchData">
+		SELECT
+			a.`statdate`,
+			a.`gameid`,
+			a.`areaid`,
+			a.`order`,
+			a.`difficult`,
+			SUM(IF (b.opencnt IS NULL,0,b.opencnt)) AS opencnt,
+			SUM(IF (b.`actonecnt` IS NULL,0,b.`actonecnt`)) AS actonecnt,
+			SUM(IF (b.`opencnt` IS NULL,0,b.`opencnt`)) - SUM(IF (b.`actonecnt` IS NULL,0,b.`actonecnt`)) AS count
+		FROM
+			(
+				SELECT
+					`statdate`,
+					`gameid`,
+					`areaid`,
+					`order`,
+					`difficult`
+				FROM
+					sj3_hero_stat
+				<include refid="BaseSelect"/>
+				GROUP BY
+					`statdate`,
+					`gameid`,
+					`areaid`,
+					`order`,
+					`difficult`
+			) a,
+			sj3_hero_stat b
+		WHERE
+			a.`statdate` >= b.`statdate`
+		AND a.`gameid` = b.`gameid`
+		AND a.`areaid` = b.`areaid`
+		AND a.`order` = b.`order`
+		AND a.`difficult` = b.`difficult`
+		GROUP BY
+			a.`statdate`,
+			a.`gameid`,
+			a.`areaid`,
+			a.`order`,
+			a.`difficult`
+			ORDER BY
+			a.statdate,
+			a.areaid,
+			a.`order`,
+			a.difficult
+			DESC;
+	</select>
+	<!-- 英雄冢关卡统计 -->
+	<select id="selectStageStat" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.IndependBaseSearchData">
+		SELECT
+		`statdate`,
+		`areaid`,
+		`order`,
+		`difficult`,
+		SUM(IF(actincnt is NULL,0,actincnt)) as actincnt,
+		SUM(IF(actsuccnt is NULL,0,actsuccnt)) as actsuccnt,
+		SUM(IF(suctime is NULL,0,suctime)) as suctime,
+		SUM(IF(starcnt is NULL,0,starcnt)) as starcnt,
+		SUM(IF(failcnt is NULL,0,failcnt)) as failcnt,
+		SUM(IF(exitcnt is NULL,0,exitcnt)) as exitcnt
+		FROM
+			sj3_hero_stat
+		<include refid="BaseSelect"/>
+		GROUP BY
+		`statdate`,
+		`areaid`,
+		`order`,
+		`difficult`;
+	</select>
+</mapper>

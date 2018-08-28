@@ -1,0 +1,45 @@
+
+{
+  "firstWeekPay": [
+    {
+      "statdate": "2014-08-24",
+      "accounts": 180,
+      "rate": 2.3
+    },
+    {
+      "statdate": "2014-08-25",
+      "accounts": 176,
+      "rate": 2.2
+    },
+    {
+      "statdate": "2014-08-26",
+      "accounts": 146,
+      "rate": 1.7
+    },
+    {
+      "statdate": "2014-08-27",
+      "accounts": 164,
+      "rate": 1.9
+    },
+    {
+      "statdate": "2014-08-28",
+      "accounts": 146,
+      "rate": 1.8
+    },
+    {
+      "statdate": "2014-08-29",
+      "accounts": 158,
+      "rate": 2.2
+    },
+    {
+      "statdate": "2014-08-30",
+      "accounts": 171,
+      "rate": 2.1
+    },
+    {
+      "statdate": "2014-08-31",
+      "accounts": 152,
+      "rate": 1.7
+    }
+  ]
+}

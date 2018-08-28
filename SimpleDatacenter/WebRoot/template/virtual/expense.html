@@ -1,0 +1,131 @@
+<style>
+.panel-showData .dataList_2_height{
+height: auto;
+}
+.dataList_2 .buttondiv{
+	position: absolute;
+    right: 100px;
+    bottom: -34px;
+}
+</style>
+<div>
+	<div class="maintop">
+		<div datepicker class="col-xs-3 timeSelect" mstatdate="mstatdate">
+		</div>
+		<!--------日期选择控件----------->
+		<div selectChoose class="selectChoose">
+		</div>
+		<!--------渠道区服选择控件----------->
+		<div class="clear"></div>
+		<div class="panel-selectChoose" callbackchannelqf ng-show="iscallback">
+			<ul ng-show="ischannel" class="cl">
+				<li>{{'渠道' | translate}}：</li>
+				<li ng-repeat="channellist in callbackchannelqfdata.channellist">{{channellist}}</li>
+			</ul>
+			<ul ng-show="isqf"  class="cl">
+				<li>{{'区服' | translate}}：</li>				
+				<li ng-repeat="qflist in callbackchannelqfdata.qflist">{{qflist}}</li>
+			</ul>
+		</div>
+		<!--------已选择渠道区服显示----------->
+	</div>	
+	
+	<div class="panel panel-default panel_1">
+			<div class="panel-heading">
+				<strong class="fl">
+					{{'各品类销售数量与收入比重' | translate}}
+					<div tipsmsg>{{'图表用于对比各个消费点（或各个消费点类型）占全部消费点的销量比重和虚拟币消耗比重，可观察到哪些消费点（或道具类别）是收入的主力贡献者，而哪些则是带动销量的物品。那些销量比重大，但收入贡献少的商品可用于活动促销，刺激玩家更早的养成付费习惯；而那些收入贡献较高的物品类型则是持续挖掘更多付费点的最佳类别' | translate}}</div>
+					<!--------提示框----------->
+				</strong>
+				
+				<div class="titleTabs fl margin_left" >
+					<div class="selectlable fl">{{'分类方式' | translate}}：</div>
+					<a  class="tagbut hidden" ng-class="{'tagbutAct':tabsbtn==0}"  ng-click="tabsbtn=0">{{'按类别' | translate}}</a>
+					<a  class="tagbut" ng-class="{'tagbutAct':tabsbtn==1}"  ng-click="tabsbtn=1">{{'按消费点' | translate}}</a>
+				</div>				
+				<div class="panel_downloadBtn"  down-file down-file-url="virtual/itemExpense/exportItemPoint.action" 
+					down-file-type="xlsx" down-file-name="各品类销售数量与收入比重{{mstatdate}}" savedata="" postdata="searchData" ></div>
+				<!--------下载按钮----------->
+				<div class="clear"></div>
+			</div>
+			<div class="panel-body" ng-class="{'table':panel_1.model=='table','graph':panel_1.model=='graph'}">	
+				<!--------各选项卡数据展示----------->
+				<div class="clear"></div>
+				<div class="panel-showData">
+					<div class="hidden dataList dataList1 dataList_1 " ng-class="({'dataListAct':tabsbtn==0})">
+						<div class="dataGraph">
+							<div class="graph" data="dataList_1_1_graph"></div>	
+							<!--------图表div，data为graphfun的key----------->	
+						</div>
+						<div class="dataTable">
+							<table class="table table-bordered text-center">
+								<tr class="tableTr">
+									<th width='20%' ng-click="changeOrderBy(panel_1.dataList_1,'virtualGoods')">{{'物品名称' | translate}}</th>
+									<th width='20%' ng-click="changeOrderBy(panel_1.dataList_1,'numberOfSpending')">{{'消费次数' | translate}}</th>
+									<th width='20%' ng-click="changeOrderBy(panel_1.dataList_1,'numberOfSpendingPercentage')">{{'消费次数-百分比' | translate}}</th>
+									<th width='20%' ng-click="changeOrderBy(panel_1.dataList_1,'sumOfSpending')">{{'消费额度' | translate}}</th>
+									<th width='20%' ng-click="changeOrderBy(panel_1.dataList_1,'sumOfSpendingPercentage')">{{'消费额度-百分比' | translate}}</th>
+									<!--------表格th(数据对象，排序字段)----------->
+								</tr>
+								<tr ng-repeat="data in panel_1.dataList_1.data | orderBy: panel_1.dataList_1.orderBy.t+panel_1.dataList_1.orderBy.s | pageStartFrom : panel_1.dataList_1.limit.now*panel_1.dataList_1.limit.max | limitTo: panel_1.dataList_1.limit.max">
+									<td>{{data.virtualGoods}}</td>
+									<td>{{data.numberOfSpending}}</td>
+									<td>{{data.numberOfSpendingPercentage}}%</td>
+									<td>{{data.sumOfSpending}}</td>
+									<td>{{data.sumOfSpendingPercentage}}%</td>
+								</tr>
+							</table>
+							<div class="tableLimit" tablelimit datalimit="panel_1.dataList_1.limit"  tabledata="panel_1.dataList_1.data">							
+							</div>
+							<!--------表格分页，datalimit为分页参数，tabledata为数据----------->
+						</div>
+					</div>				
+					<div class="dataList dataList1 dataList_2 dataList_2_height "  ng-class="({'dataListAct':tabsbtn==1})">
+						<div class="dataGraph">
+							<div class="graph" data="dataList_1_2_graph"></div>	
+							<!--------图表div，data为graphfun的key----------->	
+						</div>
+						<div class="dataTable">
+							<table class="table table-bordered text-center">
+								<tr class="tableTr">
+									<th width='20%' ng-click="changeOrderBy(panel_1.dataList_2,'statType')">{{'物品名称' | translate}}</th>
+									<th width='20%' ng-click="changeOrderBy(panel_1.dataList_2,'numberOfSpending')">{{'消费次数' | translate}}</th>
+									<th width='20%' ng-click="changeOrderBy(panel_1.dataList_2,'numberOfSpendingPercentage')">{{'消费次数-百分比' | translate}}</th>
+									<th width='20%' ng-click="changeOrderBy(panel_1.dataList_2,'sumOfSpending')">{{'消费额度' | translate}}</th>
+									<th width='20%' ng-click="changeOrderBy(panel_1.dataList_2,'sumOfSpendingPercentage')">{{'消费额度-百分比' | translate}}</th>
+									<!--------表格th(数据对象，排序字段)----------->
+								</tr>
+								<tr ng-repeat="data in panel_1.dataList_2.data | orderBy: panel_1.dataList_2.orderBy.t+panel_1.dataList_2.orderBy.s | pageStartFrom : panel_1.dataList_2.limit.now*panel_1.dataList_2.limit.max | limitTo: panel_1.dataList_2.limit.max">
+									<td>{{data.statType}}</td>
+									<td>{{data.numberOfSpending}}</td>
+									<td>{{data.numberOfSpendingPercentage}}%</td>
+									<td>{{data.sumOfSpending}}</td>
+									<td>{{data.sumOfSpendingPercentage}}%</td>
+								</tr>
+							</table>
+							<div class="buttondiv fl" analysisdrop changei="changetype()">
+								<div class="selectlable fl">{{'每页显示' | translate}}：</div>
+								<div class="analysisdrop fl" style="width:60px;">
+									<div class="hadchoose">
+										<h6>{{val | translate}}</h6></div>
+									<ul class="dropUl">
+										<li ng-click="c('15');changetype(15)">15</li>
+										<li ng-click="c('30');changetype(30)">30</li>
+										<li ng-click="c('50');changetype(50)">50</li>
+										<li ng-click="c('100');changetype(100)">100</li>
+									</ul>
+								</div>
+								<div class="selectlable fl">&nbsp;&nbsp;{{'条记录' | translate}}</div>
+							</div>
+							<div class="tableLimit" tablelimit datalimit="panel_1.dataList_2.limit"  tabledata="panel_1.dataList_2.data">							
+							</div>
+							<!--------表格分页，datalimit为分页参数，tabledata为数据----------->
+						</div>
+					</div>				
+				</div>
+				<div class="panel-changeData" graphtbale  graphfun="graphfun" datachange="panel_1_change"  datalimit="0" model="panel_1.model">
+				</div>
+				<!-------------图表表格切换，graphfun ----datachange(需要分页时删除不填)------------->
+			</div>
+	</div>
+</div>

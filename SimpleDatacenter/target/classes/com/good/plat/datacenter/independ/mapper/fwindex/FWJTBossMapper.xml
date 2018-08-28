@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.independ.mapper.fwindex.FWJTBossMapper">
+	<resultMap id="BaseResultMap" type="com.good.plat.datacenter.independ.entity.fwindex.FWJTBoss">
+		<result column="statdate" property="statdate"/>
+		<result column="jtId" property="jtId"/>
+		<result column="jtName" property="jtName"/>
+		<result column="totalJoinNum" property="totalJoinNum"/>
+		<result column="refreshTime" property="refreshTime"/>
+		<result column="bossName" property="bossName"/>
+		<result column="bossLevel" property="bossLevel"/>
+		<result column="killTime" property="killTime"/>
+		<result column="lsName" property="lsName"/>
+		<result column="ranking" property="ranking"/>
+		<result column="actorName" property="actorName"/>
+		<result column="hurt" property="hurt"/>
+		<result column="award" property="award"/>
+		<result column="refreshNum" property="refreshNum"/>
+		<result column="killNum" property="killNum"/>
+		<result column="noKillNum" property="noKillNum"/>
+		<result column="fKillTime" property="fKillTime"/>
+		<result column="avgKillTime" property="avgKillTime"/>
+		
+	</resultMap>
+	
+	<sql id="BaseSelect">
+		where statdate between #{startdate} and #{enddate} 
+		and gameid=#{gameid}
+		<if test="areaid!=null and areaid!=-1">
+			and areaid=#{areaid}
+		</if>
+	</sql>
+	
+	<!--
+	击杀boss军团信息
+	-->
+	<select id="selectKillBossJTInfoList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.IndependBaseSearchData">
+	SELECT
+		statdate,
+		jtid AS jtId,
+		jtname AS jtName,
+		joinnum AS totalJoinNum,
+		refreshtime AS refreshTime,
+		bossname AS bossName,
+		bosslevel AS bossLevel,
+		killtime AS killTime,
+		lsname AS lsName
+	FROM
+		ftw_logplat_jt_boss_kill
+	<include refid="BaseSelect"/>
+	ORDER BY
+		statdate,
+		jtid,
+		refreshtime
+	</select>
+	<!--
+	击杀boss详情（按伤害排名）
+	-->
+	<select id="selectKillBossDetailList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.IndependBaseSearchData">
+	SELECT
+		ranking AS ranking,
+		actorname AS actorName,
+		hurt AS hurt,
+		award AS award
+	FROM
+		ftw_logplat_jt_boss_kill_info
+	<include refid="BaseSelect"/>
+	AND jtid =#{jtId}
+	ORDER BY
+		ranking
+	</select>
+	<!--
+	每天军团的击杀情况
+	-->
+	<select id="selectPerDayJtKillInfoList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.IndependBaseSearchData">
+	SELECT
+		statdate,
+		IFNULL(SUM(refreshnum),0) as refreshNum,
+		IFNULL(SUM(killnum),0) as killNum,
+		IFNULL(SUM(nokillnum),0) as noKillNum,
+		fkilltime as fKillTime,
+		FLOOR(mkilltime/killnum) as avgKillTime
+	FROM
+		ftw_logplat_jt_boss_stat
+	<include refid="BaseSelect"/>
+	GROUP BY
+	statdate
+	order by
+	statdate
+	</select>
+</mapper>

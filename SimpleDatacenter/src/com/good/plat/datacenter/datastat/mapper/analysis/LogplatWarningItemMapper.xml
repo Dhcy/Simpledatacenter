@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.datastat.mapper.analysis.LogplatWarningItemMapper" >
+  <resultMap id="BaseResultMap" type="com.good.plat.datacenter.datastat.entity.analysis.LogplatWarningItem" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="ctime" property="ctime" jdbcType="TIMESTAMP" />
+    <result column="projectid" property="projectid" jdbcType="INTEGER" />
+    <result column="gameid" property="gameid" jdbcType="INTEGER" />
+    <result column="launch_time" property="launch_time" jdbcType="TIME" />
+    <result column="warning_event_id" property="warning_event_id" jdbcType="INTEGER" />
+    <result column="cmptype" property="cmptype" jdbcType="INTEGER" />
+    <result column="unit" property="unit" jdbcType="VARCHAR" />
+    <result column="valve" property="valve" jdbcType="DECIMAL" />
+    <result column="warning_event" property="warning_event" jdbcType="VARCHAR" />
+    <result column="valve2" property="valve2" jdbcType="VARCHAR" />
+    <result column="stat" property="stat" jdbcType="TINYINT" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.good.plat.datacenter.datastat.entity.analysis.LogplatWarningItem" extends="BaseResultMap" >
+    <result column="subscriber" property="subscriber" jdbcType="LONGVARCHAR" />
+  </resultMap>
+ 
+  <sql id="BaseWhere">
+  		where gameid=#{gameid,jdbcType=INTEGER}	
+  </sql>
+  <sql id="Base_Column_List" >
+    id, name, ctime, projectid, gameid, launch_time, warning_event_id, cmptype, unit, 
+    valve,valve2,stat
+  </sql>
+  <sql id="Blob_Column_List" >
+    subscriber
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from logplat_warning_item
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from logplat_warning_item
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.good.plat.datacenter.datastat.entity.analysis.LogplatWarningItem" keyProperty="id" useGeneratedKeys="true">
+    insert into logplat_warning_item (name, ctime, 
+      projectid, gameid, launch_time, 
+      warning_event_id, cmptype, unit, 
+      valve, subscriber,valve2,stat)
+    values ( #{name,jdbcType=VARCHAR}, #{ctime,jdbcType=DATE}, 
+      #{projectid,jdbcType=INTEGER}, #{gameid,jdbcType=INTEGER}, #{launch_time,jdbcType=TIME}, 
+      #{warning_event_id,jdbcType=INTEGER}, #{cmptype,jdbcType=INTEGER}, #{unit,jdbcType=VARCHAR}, 
+      #{valve,jdbcType=DECIMAL}, #{subscriber,jdbcType=LONGVARCHAR}, #{valve2,jdbcType=VARCHAR},#{stat,jdbcType=TINYINT})
+  </insert>
+  <!-- useGeneratedKeys="true" keyProperty="id" -->
+  <insert id="insertSelective" parameterType="com.good.plat.datacenter.datastat.entity.analysis.LogplatWarningItem" >
+  	<selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id">
+  		SELECT LAST_INSERT_ID() AS id
+  	</selectKey>
+    insert into logplat_warning_item
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="ctime != null" >
+        ctime,
+      </if>
+      <if test="projectid != null" >
+        projectid,
+      </if>
+      <if test="gameid != null" >
+        gameid,
+      </if>
+      <if test="launch_time != null" >
+        launch_time,
+      </if>
+      <if test="warning_event_id != null" >
+        warning_event_id,
+      </if>
+      <if test="cmptype != null" >
+        cmptype,
+      </if>
+      <if test="unit != null" >
+        unit,
+      </if>
+      <if test="valve != null" >
+        valve,
+      </if>
+      <if test="subscriber != null" >
+        subscriber,
+      </if>
+      <if test="valve2 != null" >
+        valve2,
+      </if>
+      <if test="stat != null" >
+        stat,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="ctime != null" >
+        #{ctime,jdbcType=DATE},
+      </if>
+      <if test="projectid != null" >
+        #{projectid,jdbcType=INTEGER},
+      </if>
+      <if test="gameid != null" >
+        #{gameid,jdbcType=INTEGER},
+      </if>
+      <if test="launch_time != null" >
+        #{launch_time,jdbcType=TIME},
+      </if>
+      <if test="warning_event_id != null" >
+        #{warning_event_id,jdbcType=INTEGER},
+      </if>
+      <if test="cmptype != null" >
+        #{cmptype,jdbcType=INTEGER},
+      </if>
+      <if test="unit != null" >
+        #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="valve != null" >
+        #{valve,jdbcType=DECIMAL},
+      </if>
+      <if test="subscriber != null" >
+        #{subscriber,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="valve2 != null" >
+        #{valve2,jdbcType=VARCHAR},
+      </if>
+      <if test="stat != null" >
+        #{stat,jdbcType=TINYINT},
+      </if>
+      
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.good.plat.datacenter.datastat.entity.analysis.LogplatWarningItem" >
+    update logplat_warning_item
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="ctime != null" >
+        ctime = #{ctime,jdbcType=DATE},
+      </if>
+      <if test="projectid != null" >
+        projectid = #{projectid,jdbcType=INTEGER},
+      </if>
+      <if test="gameid != null" >
+        gameid = #{gameid,jdbcType=INTEGER},
+      </if>
+      <if test="launch_time != null" >
+        launch_time = #{launch_time,jdbcType=TIME},
+      </if>
+      <if test="warning_event_id != null" >
+        warning_event_id = #{warning_event_id,jdbcType=INTEGER},
+      </if>
+      <if test="cmptype != null" >
+        cmptype = #{cmptype,jdbcType=INTEGER},
+      </if>
+      <if test="unit != null" >
+        unit = #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="valve != null" >
+        valve = #{valve,jdbcType=DECIMAL},
+      </if>
+      <if test="subscriber != null" >
+        subscriber = #{subscriber,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="valve2 != null" >
+        valve2 = #{valve2,jdbcType=VARCHAR},
+      </if>
+      <if test="valve2 != null" >
+        stat = #{stat,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.good.plat.datacenter.datastat.entity.analysis.LogplatWarningItem" >
+    update logplat_warning_item
+    set name = #{name,jdbcType=VARCHAR},
+      ctime = #{ctime,jdbcType=DATE},
+      projectid = #{projectid,jdbcType=INTEGER},
+      gameid = #{gameid,jdbcType=INTEGER},
+      launch_time = #{launch_time,jdbcType=TIME},
+      warning_event_id = #{warning_event_id,jdbcType=INTEGER},
+      cmptype = #{cmptype,jdbcType=INTEGER},
+      unit = #{unit,jdbcType=VARCHAR},
+      valve = #{valve,jdbcType=DECIMAL},
+      subscriber = #{subscriber,jdbcType=LONGVARCHAR},
+      valve2 = #{valve2,jdbcType=VARCHAR},
+      stat = #{stat,jdbcType=TINYINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.good.plat.datacenter.datastat.entity.analysis.LogplatWarningItem" >
+    update logplat_warning_item
+    set name = #{name,jdbcType=VARCHAR},
+      ctime = #{ctime,jdbcType=DATE},
+      projectid = #{projectid,jdbcType=INTEGER},
+      gameid = #{gameid,jdbcType=INTEGER},
+      launch_time = #{launch_time,jdbcType=TIME},
+      warning_event_id = #{warning_event_id,jdbcType=INTEGER},
+      cmptype = #{cmptype,jdbcType=INTEGER},
+      unit = #{unit,jdbcType=VARCHAR},
+      valve = #{valve,jdbcType=DECIMAL},
+      valve2 = #{valve2,jdbcType=VARCHAR},
+      stat = #{stat,jdbcType=TINYINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectItems" parameterType="com.good.plat.datacenter.common.base.BaseSearchData" resultMap="ResultMapWithBLOBs">
+	select 
+  	<include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    ,(select name from logplat_warning_event where id=warning_event_id) as warning_event
+  	from logplat_warning_item
+  	<include refid="BaseWhere"/> and stat=#{checktype1,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectItemsByEventID" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+	select 
+  	<include refid="Base_Column_List" />
+  	from logplat_warning_item
+  	where warning_event_id=#{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAllItems" parameterType="com.good.plat.datacenter.common.base.BaseSearchData" resultMap="ResultMapWithBLOBs">
+  	select 
+  	<include refid="Base_Column_List" />
+  	,
+    <include refid="Blob_Column_List" />
+  	from logplat_warning_item 
+  	where stat=#{checktype1,jdbcType=INTEGER}
+  	order by launch_time asc
+  </select>
+
+</mapper>

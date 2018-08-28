@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.independ.mapper.ccz.index.CzzCostDataMapper">
+
+	<sql id="BaseSelect">
+	where 1=1
+	<if test="gameid !=-1 ">
+	and gameid=#{gameid}
+	</if>
+	<if test="channelid !=-1">
+	and channel=#{channelid}
+	</if>
+	<if test="areaid!=-1">
+	and areaid=#{areaid}
+	</if>
+	<if test="startdate !=null and startdate!='' and enddate==''">
+	and statdate&gt;=#{startdate} 
+	</if>
+	<if test="startdate !=null and startdate!='' and enddate!=null and enddate!=''">
+	and statdate&gt;=#{startdate} and statdate &lt;=#{enddate}
+	</if>
+	<if test="startdate =='' and enddate!=null and enddate!=''">
+	and statdate&lt;=#{enddate}
+	</if>
+	</sql>
+	
+	<sql id="BaseSelect1">
+	where 1=1
+	<if test="gameid !=-1 ">
+	and a.gameid=#{gameid}
+	</if>
+	<if test="channelid !=-1">
+	and a.channel=#{channelid}
+	</if>
+	<if test="areaid!=-1">
+	and a.areaid=#{areaid}
+	</if>
+	<if test="startdate !=null and startdate!='' and enddate==''">
+	and a.statdate&gt;=#{startdate} 
+	</if>
+	<if test="startdate !=null and startdate!='' and enddate!=null and enddate!=''">
+	and a.statdate&gt;=#{startdate} and statdate &lt;=#{enddate}
+	</if>
+	<if test="startdate =='' and enddate!=null and enddate!=''">
+	and a.statdate&lt;=#{enddate}
+	</if>
+	</sql>
+<!-- 商城统计 -->
+	<resultMap id="ShoppingResultMap" type="com.good.plat.datacenter.independ.entity.hie.index.HieShoppingStat">
+		<result column="name" property="name"/>
+		<result column="totalsales" property="totalsales"/>
+		<result column="salesnum" property="salesnum"/>
+		<result column="personnum" property="personnum"/>
+		<result column="salesaf" property="salesaf"/>
+		<result column="peraf" property="peraf"/>
+	</resultMap>
+	
+	<select id="queryShoppingStatList" resultMap="ShoppingResultMap" 
+		parameterType="com.good.plat.datacenter.independ.entity.hie.index.HieShoppingStat">
+		SELECT
+	NAME,
+	sum(totalsales) totalsales,
+	sum(salesnum) salesnum,
+	sum(personnum) personnum,
+	round(sum(totalsales) / a.sumconsume*100,2) salesaf,
+	round(sum(personnum) / b.persontotal*100,2) peraf
+FROM
+	czz_shopping_stat,
+	(
+		SELECT
+			sum(totalsales) sumconsume
+		FROM
+			czz_shopping_stat
+			<include refid="BaseSelect"/>
+	) a,
+	(
+		SELECT
+			sum(personnum) persontotal
+		FROM
+			czz_shopping_stat
+			<include refid="BaseSelect"/>
+	) b
+	 <include refid="BaseSelect"/>
+	 group by name
+		</select>
+		
+<!-- 副本统计 -->
+	<resultMap id="EctypeResultMap" type="com.good.plat.datacenter.independ.entity.czz.index.CzzEctypeStat">
+		<result column="ectypename" property="ectypename"/>
+		<result column="accessnum" property="accessnum"/>
+		<result column="passnum" property="passnum"/>
+		<result column="passrate" property="passrate"/>
+		<result column="accesspersonnum" property="accesspersonnum"/>
+		<result column="passpersonnum" property="passpersonnum"/>
+		<result column="avgtime" property="avgtime"/>
+	</resultMap>
+	
+	<sql id="E1">
+	<if test="checktype1 !='' and  checktype1 !=null" >
+	and ectypename like '%${checktype1}%'
+	</if>
+	</sql>
+	
+	<select id="queryEctypeStatList" resultMap="EctypeResultMap" 
+		parameterType="com.good.plat.datacenter.independ.entity.hie.index.HieEctypeStat">
+				SELECT
+					ectypename,
+					IFNULL(sum(accessnum),0) accessnum,
+					IFNULL(sum(passnum),0) passnum,
+					round(IFNULL(sum(passnum) / sum(accessnum),0)*100,2) passrate,
+					IFNULL(sum(accesspersonnum),0) accesspersonnum,
+					IFNULL(sum(passpersonnum),0) passpersonnum,
+					round(IFNULL(sum(totaltime) / sum(passnum),0)*100,2) avgtime
+				FROM
+					czz_ectype_stat
+				<include refid="BaseSelect"/>
+				<include refid="E1"/>
+				group by ectypename
+		</select>
+		
+<!-- 抽奖统计 -->
+	<resultMap id="LottoResultMap" type="com.good.plat.datacenter.independ.entity.hie.index.HieLottoStat">
+		<result column="channel" property="channel"/>
+		<result column="channelSimName" property="channelSimName"/>
+		<result column="areaid" property="areaid"/>
+		<result column="name" property="name"/>
+		<result column="itemname" property="itemname"/>
+		<result column="lotterytype" property="lotterytype"/>
+		<result column="itemcount" property="itemcount"/>
+	</resultMap>
+	
+
+	<sql id="LottoSelect">
+	<if test="checktype1 !='' and  checktype1 !=null" >
+	and a.itemname like '%${checktype1}%'
+	</if>
+	group by 
+	a.channel,
+	a.areaid,
+	a.itemname,
+	a.lotterytype
+	</sql>
+	
+	<select id="queryLottoStatList" resultMap="LottoResultMap" 
+		parameterType="com.good.plat.datacenter.independ.entity.hie.index.HieLottoStat">
+							SELECT
+					a.channel,
+					b.channelSimName,
+					a.areaid,
+					d. NAME,
+					a.itemname,
+					a.lotterytype,
+					a.gameid,
+					a.statdate,
+					sum(a.itemcount) itemcount
+				FROM
+				hie_lotto_stat a
+				LEFT JOIN tb_logplat_channel b ON a.channel = b.id
+				LEFT JOIN tb_logplat_gamearea d ON a.areaid = d.areaid
+				<include refid="BaseSelect1"/>
+			    <include refid="LottoSelect"/>
+		
+		</select>
+		
+<!-- 货币消耗&存量统计 -->
+	<resultMap id="MoneyResultMap" type="com.good.plat.datacenter.independ.entity.czz.index.CzzDiamond">
+		<result column="approach" property="approach"/>
+		<result column="ypay" property="ypay"/>
+		<result column="npay" property="npay"/>
+		<result column="opay" property="opay" />
+		<result column="num" property="num"/>
+		<result column="personnum" property="personnum"/>
+		<result column="ypercent" property="ypercent"/>
+		<result column="npercent" property="npercent"/>
+		<result column="opercent" property="opercent"/>
+	</resultMap>
+	<sql id="c1">
+	<if test="checktype1 !='' and  checktype1 !=null" >
+	and  handletype=#{checktype1}
+	</if>
+	</sql>
+	
+	
+		<select id="queryMoneyStatList" resultMap="MoneyResultMap" 
+		parameterType="com.good.plat.datacenter.independ.entity.czz.index.CzzDiamond">
+							SELECT
+								approach,
+								CASE
+							WHEN type = 1
+							AND handletype = 1 THEN
+								CONCAT(
+									'-',
+									sum(moneychange),
+									',-',
+									sum(moneychange) / SUM(moneyleft+moneychange) * 100
+								)
+							WHEN type = 1
+							AND handletype = 2 THEN
+								CONCAT(
+									sum(moneychange),
+									',',
+									sum(moneychange) / SUM(moneyleft-moneychange) * 100
+								)
+							ELSE
+								0
+							END AS ypay,
+							 CASE
+							WHEN type = 2
+							AND handletype = 1 THEN
+								CONCAT(
+									'-',
+									sum(moneychange),
+									',-',
+									sum(moneychange) / SUM(moneyleft+moneychange) * 100
+								)
+							WHEN type = 2
+							AND handletype = 2 THEN
+								CONCAT(
+									sum(moneychange),
+									',',
+									sum(moneychange) / SUM(moneyleft-moneychange) * 100
+								)
+							ELSE
+								0
+							END AS npay,
+							 CASE
+							WHEN type = 3
+							AND handletype = 1
+							AND subtype = 501 THEN
+								CONCAT(
+									'金币 -',
+									CONVERT(sum(moneychange),char),
+									',金币 -',
+									CONVERT(sum(moneychange) / SUM(moneyleft+moneychange) * 100,char)
+								)
+							WHEN type = 3
+							AND handletype = 2
+							AND subtype = 501 THEN
+								CONCAT(
+									'金币 +',
+									CONVERT(sum(moneychange),char),
+									',金币 +',
+									CONVERT(sum(moneychange) / SUM(moneyleft-moneychange) * 100,char)
+								)
+							WHEN type = 3
+							AND subtype = 504
+							AND handletype = 1 THEN
+								CONCAT(
+									'星点 -',
+									CONVERT(sum(moneychange),char),
+									',星点 -',
+									CONVERT(sum(moneychange) / SUM(moneyleft+moneychange) * 100,char)
+								)
+							WHEN type = 3
+							AND subtype = 504
+							AND handletype = 2 THEN
+								CONCAT(
+									'星点 +',
+									CONVERT(sum(moneychange),char),
+									',星点 +',
+									CONVERT(sum(moneychange) / SUM(moneyleft-moneychange) * 100,char)
+								)
+							WHEN type = 3
+							AND subtype = 505
+							AND handletype = 1 THEN
+								CONCAT(
+									'装备召唤卷 -',
+									CONVERT(sum(moneychange),char),
+									',装备召唤卷 -',
+									CONVERT(sum(moneychange) / SUM(moneyleft+moneychange) * 100,char)
+								)
+							WHEN type = 3
+							AND subtype = 505
+							AND handletype = 2 THEN
+								CONCAT(
+									'装备召唤卷 +',
+									CONVERT(sum(moneychange),char),
+									',装备召唤卷 +',
+									CONVERT(sum(moneychange) / SUM(moneyleft-moneychange) * 100,char)
+								)
+							WHEN type = 3
+							AND subtype = 506
+							AND handletype = 1 THEN
+								CONCAT(
+									'英雄召唤卷 -',
+									CONVERT(sum(moneychange),char),
+									',英雄召唤卷 -',
+									CONVERT(sum(moneychange) / SUM(moneyleft+moneychange) * 100,char)
+								)
+							WHEN type = 3
+							AND subtype = 506
+							AND handletype = 2 THEN
+								CONCAT(
+									'英雄召唤卷 +',
+									CONVERT(sum(moneychange),char),
+									',英雄召唤卷 +',
+									CONVERT(sum(moneychange) / SUM(moneyleft-moneychange) * 100,char)
+								)
+							WHEN type = 3
+							AND subtype = 510
+							AND handletype = 1 THEN
+								CONCAT(
+									'扭蛋币 -',
+									CONVERT(sum(moneychange),char),
+									',扭蛋币 -',
+									CONVERT(sum(moneychange) / SUM(moneyleft+moneychange) * 100,char)
+								)
+							WHEN type = 3
+							AND subtype = 510
+							AND handletype = 2 THEN
+								CONCAT(
+									'扭蛋币 +',
+									CONVERT(sum(moneychange),char),
+									',扭蛋币 +',
+									CONVERT(sum(moneychange) / SUM(moneyleft-moneychange) * 100,char)
+								)
+							WHEN type = 3
+							AND subtype = 512
+							AND handletype = 1 THEN
+								CONCAT(
+									'竞技场货币 -',
+									CONVERT(sum(moneychange),char),
+									',竞技场货币 -',
+									CONVERT(sum(moneychange) / SUM(moneyleft+moneychange) * 100,char)
+								)
+							WHEN type = 3
+							AND subtype = 512
+							AND handletype = 2 THEN
+								CONCAT(
+									'竞技场货币 +',
+									CONVERT(sum(moneychange),char),
+									',竞技场货币 +',
+									CONVERT(sum(moneychange) / SUM(moneyleft-moneychange) * 100,char)
+								)
+							WHEN type = 3
+							AND subtype = 513
+							AND handletype = 1 THEN
+								CONCAT(
+									'活跃度 -',
+									CONVERT(sum(moneychange),char),
+									',活跃度 -',
+									CONVERT(sum(moneychange) / SUM(moneyleft+moneychange) * 100,char)
+								)
+							WHEN type = 3
+							AND subtype = 513
+							AND handletype = 2 THEN
+								CONCAT(
+									'活跃度 +',
+									CONVERT(sum(moneychange),char),
+									',活跃度 +',
+									CONVERT(sum(moneychange) / SUM(moneyleft-moneychange) * 100,char)
+								)
+							WHEN type = 3
+							AND subtype = 514
+							AND handletype = 1 THEN
+								CONCAT(
+									'鲜花值 -',
+									CONVERT(sum(moneychange),char),
+									',鲜花值 -',
+									CONVERT(sum(moneychange) / SUM(moneyleft+moneychange) * 100,char)
+								)
+							WHEN type = 3
+							AND subtype = 514
+							AND handletype = 2 THEN
+								CONCAT(
+									'鲜花值 +',
+									CONVERT(sum(moneychange),char),
+									',鲜花值 +',
+									CONVERT(sum(moneychange) / SUM(moneyleft-moneychange) * 100,char)
+								)
+							ELSE
+								0
+							END AS opay,
+							 sum(num) num,
+							 sum(personnum) personnum
+							FROM
+								czz_money_stat
+								<include refid="BaseSelect"/>
+								<include refid="c1"/>
+							GROUP BY
+								approach,type,subtype
+							</select>
+							
+		
+<!-- 道具统计 -->
+	<resultMap id="ThingResultMap" type="com.good.plat.datacenter.independ.entity.hie.index.HieThingStat">
+		<result column="itemname" property="itemname"/>
+		<result column="itemcount" property="itemcount"/>
+		<result column="count" property="count"/>
+		<result column="personnum" property="personnum"/>
+	</resultMap>
+	
+	<sql id="ThingSelect">
+	<if test="checktype1 !=null and checktype1 !=''">
+	and type=#{checktype1}
+	</if>
+	group by itemname
+	</sql>
+	
+		<select id="queryThingStatList" resultMap="ThingResultMap" 
+		parameterType="com.good.plat.datacenter.independ.entity.hie.index.HieThingStat">
+						SELECT
+					itemname,
+					sum(itemcount) itemcount,
+					sum(count) count,
+					sum(personnum) personnum
+				FROM
+					czz_thing_stat
+				<include refid="BaseSelect"/>
+				<include refid="ThingSelect"/>
+		</select>
+
+</mapper>

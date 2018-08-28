@@ -1,0 +1,328 @@
+<style type="text/css">
+    .table th,.table td{ border:1px solid #ddd;}
+    .form-group{ margin-left: 10px; margin-top: 10px;}
+    .form-control{ display: inline-block; vertical-align: middle;}
+    .tableListTh{
+    	white-space: nowrap;
+    	text-align:center;
+    }
+    .channelTd{
+    	white-space: nowrap;
+    	text-align:center;
+    }
+</style>
+<div>
+	<div class="maintop">
+		<div datepicker format="yyyy-MM-dd" class="col-xs-3 timeSelect" mstatdate="mstatdate">
+		</div>
+		<!--------日期选择控件----------->
+		
+		<div selectChoose class="selectChoose">
+		</div>
+		<!--------渠道区服选择控件----------->
+		<div class="clear"></div>
+		<div class="panel-selectChoose" callbackchannelqf ng-show="iscallback">
+		</div>
+		<!--------已选择渠道区服显示----------->
+	</div>	
+	<div class="clear"></div>
+		<!--------tab选择按钮----------->
+	<div class="panel panel-default panel_1">
+			<div class="panel-heading">
+			<strong>{{'元灵列表' | translate}}</strong>
+				<div class="panel_downloadBtn"  down-file down-file-url="summary/exportYlNameAndCntList.action" down-file-type="xlsx" down-file-name="元灵列表{{mstatdate}}" savedata="" postdata="searchData" ></div>
+				<div class="clear"></div>
+			</div>
+			<div class="panel-body pdlf pdtb">
+			<div class="tableList tableListAct" >
+				<ul class="tableListUl">
+					<li class="tableListLi tableListLiTh clear">
+						<span class="tableListTh" style="width:22.5%" ng-click="changeOrderBy(panel_1.dataList_1,'statdate')">
+							<strong title="">{{'日期' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:22.5%" ng-click="changeOrderBy(panel_1.dataList_1,'channelName')">
+							<strong title="">{{'渠道' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:22.5%" ng-click="changeOrderBy(panel_1.dataList_1,'ylName')">
+							<strong title="">{{'元灵列表' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:22.5%" ng-click="changeOrderBy(panel_1.dataList_1,'ylUserCnt')">
+							<strong title="">{{'装备该元灵的玩家人次' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:10%">
+							<strong >{{'详情' | translate}}</strong>
+						</span>
+					</li>
+					<li class="tableListLi clear" ng-repeat="data in panel_1.dataList_1.data | orderBy: panel_1.dataList_1.orderBy.t+panel_1.dataList_1.orderBy.s | pageStartFrom : panel_1.dataList_1.limit.now*panel_1.dataList_1.limit.max | limitTo: panel_1.dataList_1.limit.max" ng-class="({'show_panel':data.show_panel})">
+						<div class="channelTr clear">
+							<span class="channelTd" style="width:22.5%" >
+								{{data.statdate}}
+							</span>
+							<span class="channelTd" style="width:22.5%">
+								{{data.channelName}}
+							</span>
+							<span class="channelTd" style="width:22.5%">
+								{{data.ylName}}
+							</span>
+							<span class="channelTd" style="width:22.5%">
+								{{data.ylUserCnt}}
+							</span>
+							<span class="channelTd show_panel_btn" style="width:10%">
+								<p ng-click="showPanel(data)" ng-show="!data.show_panel">{{'详情' | translate}}</p>
+								<p ng-click="data.show_panel=false;" ng-show="data.show_panel">{{'收起' | translate}}</p>
+							</span>
+						</div>
+					<div class="showData">
+					<div class="panel-body table" >
+					<div class="panel-showData">
+						<div class="dataList dataList2 dataList_1 dataListAct">
+							<div class="dataGraph">
+							</div>
+							<div class="dataTable">
+								<table class="table table-bordered text-center">
+									<tr class="tableTr">
+										<th width='20%' ng-click="changeOrderBy(panel_1.dataList_1,'statdate')">{{'日期' | translate}}</th>
+										<th width='16%' ng-click="changeOrderBy(panel_1.dataList_1,'channelName')">{{'渠道' | translate}}</th>
+										<th width='16%' ng-click="changeOrderBy(panel_1.dataList_1,'ylName')">{{'元灵名称' | translate}}</th>
+										<th width='16%' ng-click="changeOrderBy(panel_1.dataList_1,'actorLevel')">{{'玩家等级' | translate}}</th>
+										<th width='16%' ng-click="changeOrderBy(panel_1.dataList_1,'ylLevel')">{{'元灵等级' | translate}}</th>
+										<th width='16%' ng-click="changeOrderBy(panel_1.dataList_1,'ylLevelCnt')">{{'数量' | translate}}</th>
+									</tr>
+									<tr ng-repeat="value in data.details | orderBy: data.orderBy.t+data.orderBy.s | pageStartFrom : data.limit.now*data.limit.max | limitTo: data.limit.max">
+										<td>{{value.statdate}}</td>
+										<td>{{value.channelName}}</td>
+										<td>{{value.ylName}}</td>
+										<td>{{value.actorLevel}}</td>
+										<td>{{value.ylLevel}}</td>
+										<td>{{value.ylLevelCnt}}</td>
+									</tr>
+								</table>
+								<div class="tableLimit" tablelimit datalimit="data.limit"  index="0" tabledata="data.details">
+								</div>
+							</div>
+						</div>
+                        <!-- <div class="panel-changeData" graphtbale graphfun="graphfun" datachange="panel_change" datalimit="panel_1.dataList_1.limit" model="data.model">
+                        </div> -->
+					<!-------------图表表格切换，graphfun ----datachange(需要分页时删除不填)------------->
+                    </div>
+					</div>
+					</div>
+				</li>
+				</ul>
+				<div class="tableFooter">
+						<div class="buttondiv fl" analysisdrop changei="changetype()">
+							<div class="selectlable fl">{{'每页显示' | translate}}：</div>
+							<div class="analysisdrop fl" style="width:60px;">
+								<div class="hadchoose">
+									<h6>{{val | translate}}</h6></div>
+								<ul class="dropUl">
+									<li ng-click="c('10');changetype(10)">10</li>
+									<li ng-click="c('20');changetype(20)">20</li>
+									<li ng-click="c('50');changetype(50)">50</li>
+									<li ng-click="c('100');changetype(100)">100</li>
+								</ul>
+							</div>
+							<div class="selectlable fl">&nbsp;&nbsp;{{'条记录' | translate}}</div>
+						</div>
+						<div class="dataTables_paginate fr" datatableslimit  datalimit="panel_1.dataList_1.limit"  tabledata="panel_1.dataList_1.data"  datachange="panel_1_change"></div>
+					</div>
+			</div>
+		</div>
+	</div>
+	<div class="panel panel-default panel_2">
+			<div class="panel-heading">
+			<strong>{{'元灵二十连抽' | translate}}</strong>
+				<div class="panel_downloadBtn"  down-file down-file-url="summary/exportYlShiLchouList.action" down-file-type="xlsx" down-file-name="二十连抽{{mstatdate}}" savedata="" postdata="searchData" ></div>
+				<div class="clear"></div>
+			</div>
+			<div class="panel-body pdlf pdtb">
+			<div class="tableList tableListAct" >
+				<ul class="tableListUl">
+					<li class="tableListLi tableListLiTh clear">
+						<span class="tableListTh" style="width:33%" ng-click="changeOrderBy(panel_2.dataList_1,'statdate')">
+							<strong title="">{{'日期' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:33%" ng-click="changeOrderBy(panel_2.dataList_1,'channelName')">
+							<strong title="">{{'渠道' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:33%" ng-click="changeOrderBy(panel_2.dataList_1,'slcCnt')">
+							<strong title="">{{'二十连抽' | translate}}</strong>
+						</span>
+					</li>
+					
+					<li class="tableListLi clear" ng-repeat="data in panel_2.dataList_1.data | orderBy: panel_2.dataList_1.orderBy.t+panel_2.dataList_1.orderBy.s | pageStartFrom : panel_2.dataList_1.limit.now*panel_2.dataList_1.limit.max | limitTo: panel_2.dataList_1.limit.max" ng-class="({'show_panel':data.show_panel})">
+						<div class="channelTr clear">
+							<span class="channelTd" style="width:33%" >
+								{{data.statdate}}
+							</span>
+							<span class="channelTd" style="width:33%">
+								{{data.channelName}}
+							</span>
+							<span class="channelTd" style="width:33%">
+								{{data.slcCnt}}
+							</span>
+						</div>
+				</li>
+				</ul>
+				<div class="tableFooter">
+						<div class="buttondiv fl" analysisdrop changei="changetype()">
+							<div class="selectlable fl">{{'每页显示' | translate}}：</div>
+							<div class="analysisdrop fl" style="width:60px;">
+								<div class="hadchoose">
+									<h6>{{val | translate}}</h6></div>
+								<ul class="dropUl">
+									<li ng-click="c('10');changetype2(10)">10</li>
+									<li ng-click="c('20');changetype2(20)">20</li>
+									<li ng-click="c('50');changetype2(50)">50</li>
+									<li ng-click="c('100');changetype2(100)">100</li>
+								</ul>
+							</div>
+							<div class="selectlable fl">&nbsp;&nbsp;{{'条记录' | translate}}</div>
+						</div>
+						<div class="dataTables_paginate fr" datatableslimit  datalimit="panel_2.dataList_1.limit"  tabledata="panel_2.dataList_1.data"  datachange="panel_2_change"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="panel panel-default panel_4">
+			<div class="panel-heading">
+			<strong>{{'元灵单次抽取' | translate}}</strong>
+				<div class="panel_downloadBtn"  down-file down-file-url="summary/exportYlSimExtractCntList.action" down-file-type="xlsx" down-file-name="元灵单次抽取{{mstatdate}}" savedata="" postdata="searchData" ></div>
+				<div class="clear"></div>
+			</div>
+			<div class="panel-body pdlf pdtb">
+			<div class="tableList tableListAct" >
+				<ul class="tableListUl">
+					<li class="tableListLi tableListLiTh clear">
+						<span class="tableListTh" style="width:16%" ng-click="changeOrderBy(panel_4.dataList_1,'statdate')">
+							<strong title="">{{'日期' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:14%" ng-click="changeOrderBy(panel_4.dataList_1,'channelName')">
+							<strong title="">{{'渠道' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:14%" ng-click="changeOrderBy(panel_4.dataList_1,'cup1Cnt')">
+							<strong title="">{{'杯子' | translate}}1</strong>
+						</span>
+						<span class="tableListTh" style="width:14%" ng-click="changeOrderBy(panel_4.dataList_1,'cup2Cnt')">
+							<strong title="">{{'杯子' | translate}}2</strong>
+						</span>
+						<span class="tableListTh" style="width:14%" ng-click="changeOrderBy(panel_4.dataList_1,'cup3Cnt')">
+							<strong title="">{{'杯子' | translate}}3</strong>
+						</span>
+						<span class="tableListTh" style="width:14%" ng-click="changeOrderBy(panel_4.dataList_1,'cup4Cnt')">
+							<strong title="">{{'杯子' | translate}}4</strong>
+						</span>
+						<span class="tableListTh" style="width:14%" ng-click="changeOrderBy(panel_4.dataList_1,'cup5Cnt')">
+							<strong title="">{{'杯子' | translate}}5</strong>
+						</span>
+					</li>
+					
+					<li class="tableListLi clear" ng-repeat="data in panel_4.dataList_1.data | orderBy: panel_4.dataList_1.orderBy.t+panel_4.dataList_1.orderBy.s | pageStartFrom : panel_4.dataList_1.limit.now*panel_4.dataList_1.limit.max | limitTo: panel_4.dataList_1.limit.max" ng-class="({'show_panel':data.show_panel})">
+						<div class="channelTr clear">
+							<span class="channelTd" style="width:16%" >
+								{{data.statdate}}
+							</span>
+							<span class="channelTd" style="width:14%">
+								{{data.channelName}}
+							</span>
+							<span class="channelTd" style="width:14%">
+								{{data.cup1Cnt}}
+							</span>
+							<span class="channelTd" style="width:14%">
+								{{data.cup2Cnt}}
+							</span>
+							<span class="channelTd" style="width:14%">
+								{{data.cup3Cnt}}
+							</span>
+							<span class="channelTd" style="width:14%">
+								{{data.cup4Cnt}}
+							</span>
+							<span class="channelTd" style="width:14%">
+								{{data.cup5Cnt}}
+							</span>
+						</div>
+				</li>
+				</ul>
+				<div class="tableFooter">
+						<div class="buttondiv fl" analysisdrop changei="changetype()">
+							<div class="selectlable fl">{{'每页显示' | translate}}：</div>
+							<div class="analysisdrop fl" style="width:60px;">
+								<div class="hadchoose">
+									<h6>{{val | translate}}</h6></div>
+								<ul class="dropUl">
+									<li ng-click="c('10');changetype4(10)">10</li>
+									<li ng-click="c('20');changetype4(20)">20</li>
+									<li ng-click="c('50');changetype4(50)">50</li>
+									<li ng-click="c('100');changetype4(100)">100</li>
+								</ul>
+							</div>
+							<div class="selectlable fl">&nbsp;&nbsp;{{'条记录' | translate}}</div>
+						</div>
+						<div class="dataTables_paginate fr" datatableslimit  datalimit="panel_4.dataList_1.limit"  tabledata="panel_4.dataList_1.data"  datachange="panel_4_change"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="panel panel-default panel_3">
+			<div class="panel-heading">
+			<strong>{{'元灵等级' | translate}}</strong>
+				<div class="panel_downloadBtn"  down-file down-file-url="summary/exportYlLevelAndCntList.action" down-file-type="xlsx" down-file-name="元灵等级{{mstatdate}}" savedata="" postdata="searchData" ></div>
+				<div class="clear"></div>
+			</div>
+			<div class="panel-body pdlf pdtb">
+			<div class="tableList tableListAct" >
+				<ul class="tableListUl">
+					<li class="tableListLi tableListLiTh clear">
+						<span class="tableListTh" style="width:25%" ng-click="changeOrderBy(panel_3.dataList_1,'statdate')">
+							<strong title="">{{'日期' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:25%" ng-click="changeOrderBy(panel_3.dataList_1,'channelName')">
+							<strong title="">{{'渠道' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:25%" ng-click="changeOrderBy(panel_3.dataList_1,'ylLevel')">
+							<strong title="">{{'元灵等级' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:25%" ng-click="changeOrderBy(panel_3.dataList_1,'ylLevelCnt')">
+							<strong title="">{{'对应玩家数量' | translate}}</strong>
+						</span>
+					</li>
+					
+					<li class="tableListLi clear" ng-repeat="data in panel_3.dataList_1.data | orderBy: panel_3.dataList_1.orderBy.t+panel_3.dataList_1.orderBy.s | pageStartFrom : panel_3.dataList_1.limit.now*panel_3.dataList_1.limit.max | limitTo: panel_3.dataList_1.limit.max" ng-class="({'show_panel':data.show_panel})">
+						<div class="channelTr clear">
+							<span class="channelTd" style="width:25%" >
+								{{data.statdate}}
+							</span>
+							<span class="channelTd" style="width:25%">
+								{{data.channelName}}
+							</span>
+							<span class="channelTd" style="width:25%">
+								{{data.ylLevel}}
+							</span>
+							<span class="channelTd" style="width:25%">
+								{{data.ylLevelCnt}}
+							</span>
+						</div>
+				</li>
+				</ul>
+				<div class="tableFooter">
+						<div class="buttondiv fl" analysisdrop changei="changetype()">
+							<div class="selectlable fl">{{'每页显示' | translate}}：</div>
+							<div class="analysisdrop fl" style="width:60px;">
+								<div class="hadchoose">
+									<h6>{{val | translate}}</h6></div>
+								<ul class="dropUl">
+									<li ng-click="c('10');changetype3(10)">10</li>
+									<li ng-click="c('20');changetype3(20)">20</li>
+									<li ng-click="c('50');changetype3(50)">50</li>
+									<li ng-click="c('100');changetype3(100)">100</li>
+								</ul>
+							</div>
+							<div class="selectlable fl">&nbsp;&nbsp;{{'条记录' | translate}}</div>
+						</div>
+						<div class="dataTables_paginate fr" datatableslimit  datalimit="panel_3.dataList_1.limit"  tabledata="panel_3.dataList_1.data"  datachange="panel_3_change"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+</div>

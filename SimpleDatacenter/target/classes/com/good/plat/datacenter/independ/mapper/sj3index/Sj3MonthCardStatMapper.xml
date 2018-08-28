@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.independ.mapper.sj3index.Sj3MonthCardStatMapper">
+	<resultMap id="BaseResultMap" type="com.good.plat.datacenter.independ.entity.sj3index.Sj3MonthCardStat">
+		<result column="statdate" property="statdate"/>
+		<result column="gameid" property="gameid"/>
+		<result column="gameName" property="gameName"/>
+		<result column="channelid" property="channelid"/>
+		<result column="channelName" property="channelName"/>
+		<result column="areaid" property="areaid"/>
+		<result column="areaName" property="areaName"/>
+		<result column="actCnt" property="actCnt"/>
+		<result column="uidCnt" property="uidCnt"/>
+		<result column="count" property="count"/>
+		<result column="avgCount" property="avgCount"/>
+	</resultMap>
+	<sql id="ABaseSelect">
+		where a.statdate between #{startdate} and #{enddate} 
+		and a.gameid=#{gameid}
+		<if test="areas != null">
+			and a.areaid in
+			<foreach collection="areas" item="area" index="index" open="(" close=")" separator=",">
+				#{area}
+			</foreach>
+		</if>
+		<if test="channelList != null">
+			and a.channel in
+			<foreach collection="channelList" item="channel" index="index" open="(" close=")" separator=",">
+				#{channel.id}
+			</foreach>
+		</if>
+		<if test="subchannels != null">
+			and a.chnnnl in
+			<foreach collection="subchannels" item="subchannel" index="index" open="(" close=")" separator=",">
+				#{subchannel}
+			</foreach>
+		</if>
+	</sql>
+	<!--月卡统计-->
+	<select id="selectMonthCardStatList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.IndependBaseSearchData">
+			SELECT
+				a.statdate as statdate,
+				a.channel as channelid,
+				IF(b.channelSimName is NULL,CONCAT('未知渠道： ',a.channel),b.channelSimName) as channelName,
+				SUM(IF(a.actcnt is NULL,0,a.actcnt)) as actCnt,
+				SUM(IF(a.uidactcnt is NULL,0,a.uidactcnt)) as uidCnt,
+				SUM(IF(a.count is NULL,0,a.count)) as count
+			FROM
+				sj3_month_card_stat a
+				LEFT JOIN tb_logplat_channel b on b.id=a.channel
+			<include refid="ABaseSelect"/>
+			GROUP BY 
+			a.statdate,
+			a.channel;
+	</select>
+	
+	
+</mapper>

@@ -1,0 +1,75 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans-4.2.xsd 
+		http://www.springframework.org/schema/mvc 
+		http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd 
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context-4.2.xsd 
+		http://www.springframework.org/schema/aop 
+		http://www.springframework.org/schema/aop/spring-aop-4.2.xsd 
+		http://www.springframework.org/schema/tx 
+		http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
+	<!-- 定时任务 -->
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean" lazy-init="false">
+    	<property name="triggers">
+        	<list>
+            	<ref bean="cronWarningJobTrigger"/>
+            	<ref bean="contractWarningJobTrigger"/>
+        	</list>
+    	</property>
+	</bean>
+	
+	<bean id="cronWarningJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+    	<property name="jobDetail" ref="WarningJob"/>
+    	<!-- run every morning at 00:00 AM -->
+    	<!-- <property name="cronExpression" value="0 0 0 * * ?"/> -->
+    	<!-- run every 15 minutes -->
+    	<property name="cronExpression" value="0 0/15 * * * ?"/>
+    	<!-- run at every minute -->
+    	<!-- <property name="cronExpression" value="0 0/1 * * * ?"/> -->
+    	<!-- run every morning at 6 AM -->
+    	<!-- <property name="cronExpression" value="0 0 6 * * ?"/> -->
+	</bean>
+	<!-- jobs -->
+	<!-- 新增用户 -->
+	<bean name="WarningJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+    	<property name="jobClass" value="com.good.plat.datacenter.datastat.quartz.jobs.WarningJob"/>
+    	<property name="jobDataAsMap">
+        	<map>
+            	<entry key="warningEventService" value-ref="warningEventService"></entry>
+            	<entry key="warningItemService" value-ref="warningItemService"></entry>
+            	<entry key="warningNoticeService" value-ref="warningNoticeService"></entry>
+        	</map>
+   	 	</property>
+	</bean>
+	<bean id="WarningNoticeJob" class="com.good.plat.datacenter.datastat.quartz.jobs.WarningNoticeJob">
+		<property name="warningEventService" ref="warningEventService"/>
+		<property name="warningItemService" ref="warningItemService"/>
+		<property name="warningNoticeService" ref="warningNoticeService"/>
+		<property name="gameService" ref="gameService"/>
+		<property name="newPlayersService" ref="newPlayersService"/>
+		<property name="playersRetentionService" ref="playersRetentionService"/>
+		<property name="playersChurnService" ref="playersChurnService"/>
+		<property name="incomeDataService" ref="incomeDataService"/>
+		<property name="conversionService" ref="revenueConversionService"/>
+		<property name="activePlayersService" ref="activePlayersService"/>
+	</bean>
+	<!--  合同到期触发器-->
+	<bean id="contractWarningJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+    	<property name="jobDetail" ref="contractWarningJob"/>
+    	<!-- run every morning at 00:00 AM -->
+    	 <property name="cronExpression" value="0 0 0 * * ?"/> 
+	</bean>
+	<!-- 合同到期-->
+	<bean name="contractWarningJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+    	<property name="jobClass" value="com.good.plat.datacenter.datastat.quartz.jobs.ContractWarningNoticeJob"/>
+    	<property name="jobDataAsMap">
+        	<map>
+            	<entry key="balancePlatService" value-ref="balancePlatService"></entry>
+        	</map>
+   	 	</property>
+	</bean>
+</beans>

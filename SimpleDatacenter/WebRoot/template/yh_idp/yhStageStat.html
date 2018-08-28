@@ -1,0 +1,787 @@
+<style type="text/css">
+    .table th,.table td{ border:1px solid #ddd;}
+    .form-group{ margin-left: 10px; margin-top: 10px;}
+    .form-control{ display: inline-block; vertical-align: middle;}
+    .tableListTh{
+    	white-space: nowrap;
+    	text-align:center;
+    }
+    .channelTd{
+    	white-space: nowrap;
+    	text-align:center;
+    }
+    .form-group .form-member{
+    float: left;
+    }
+    .form-group .member-control{
+   	margin-left: 10px;
+    }
+    
+    .fix-height {
+    	height: 44px;
+    	line-height: 21px;
+    }
+    
+    .fix-height span {
+    	vertical-align: middle;
+    }
+    .playerTabs .tagbut {
+    height: 26px;
+    line-height: 26px;
+    margin-top: 6px;
+    }
+    
+</style>
+<div>
+	 <div>
+	        <div class="form-group">
+	            <label for="">{{'查询区服' | translate}}：</label>
+	            <select ng-model="postData.areaid" class="form-control" ng-options="data.id as data.name for data in gameAreaList">
+	            </select>
+	            &nbsp;&nbsp;
+	            <label for="startDate">{{'关卡' | translate}}ID: </label>
+					<input type="text" id="stageid" ng-model="postData.stageId" class="form-control input-height" placeholder="{{postData.stageId}}" />
+	        </div>
+			<div class="form-group">
+				<div class="form-member">
+					<label for="startDate">{{'起始日期' | translate}}: </label>
+					<input type="text" id="startDate" class="form-control" placeholder="{{o.startDate}}" uib-datepicker-popup="{{format}}" ng-model="o.startDate" is-open="o.opened1" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" ng-click="o.opened1=!o.opened1" />
+				</div>
+				<div class="form-member member-control">
+					<label for="endDate">{{'结束日期' | translate}}: </label>
+					<input type="text" id="endDate" class="form-control" placeholder="{{o.endDate}}" uib-datepicker-popup="{{format}}" ng-model="o.endDate" is-open="o.opened2" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" ng-click="o.opened2=!o.opened2" />
+				</div>
+				&nbsp;&nbsp;
+				<button class="btn btn-default" ng-click="getAllData()">{{'查询' | translate}}</button>
+			</div>
+	</div>
+	<div class="clear"></div>
+		<!--------tab选择按钮----------->
+	<div class="panel panel-default panel_1">
+			<div class="panel-heading">
+			<strong>
+				<div class="playerTabs" class="margin_left"  style="float:none;display:inline-block;vertical-align:middle;">
+					<a data="chargePlayer" ng-repeat="stagetabarr in stagetabsarr" class="tagbut" ng-class="{'tagbutAct':stageTabsId==stagetabarr.id}"  ng-click="stageChangetabs(stagetabarr.id)">{{stagetabarr.name}}</a>
+				</div>
+			</strong>
+				<div class="panel_downloadBtn"  ng-click="exportStage(stagetabsarr[stageTabsId-1].name)"></div>
+				<div class="clear"></div>
+			</div>
+			<div class="panel-body pdlf pdtb">
+			<div class="tableList tableListAct" >
+				<ul class="tableListUl">
+					<li class="tableListLi tableListLiTh clear">
+						<span class="tableListTh" style="width:16%">
+							<strong title="">{{'日期' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:12%">
+							<strong title="">{{'渠道' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:12%">
+							<strong title="">{{'关卡' | translate}}ID</strong>
+						</span>
+						<span class="tableListTh" style="width:12%">
+							<strong title="">{{'符合进入玩家数量' | translate}}</strong>
+							<div tipsmsg>{{'开启该关卡的玩家数量【全部】' | translate}}</div>
+						</span>
+						<span class="tableListTh" style="width:12%">
+							<strong title="">{{'进入人数' | translate}}</strong>
+							<div tipsmsg>{{'有进入该关卡的玩家数量【全部，历史以来】' | translate}}</div>
+						</span>
+						<span class="tableListTh" style="width:12%">
+							<strong title="">{{'通关人数' | translate}}</strong>
+							<div tipsmsg>{{'通关了该关卡（历史上至少胜利一次）的玩家数量' | translate}}<br/>{{'【全部，历史以来】' | translate}}</div>
+						</span>
+						<span class="tableListTh" style="width:12%">
+							<strong title="">{{'通关玩家占比' | translate}}</strong>
+							<div tipsmsg>{{'（通关人数/进入人数）*100%' | translate}}</div>
+						</span>
+						<span class="tableListTh" style="width:12%">
+							<strong title="">{{'通关玩家总比' | translate}}</strong>
+							<div tipsmsg>{{'（通关人数/本服务器人数【全部】）*100%' | translate}}</div>
+						</span>
+					</li>
+					<li class="tableListLi clear" ng-repeat="data in panel_1.dataList_1.data | pageStartFrom : panel_1.dataList_1.limit.now*panel_1.dataList_1.limit.max | limitTo: panel_1.dataList_1.limit.max" ng-class="({'show_panel':data.show_panel})">
+						<div class="channelTr clear">
+							<span class="channelTd" style="width:16%" >
+								{{data.statdate}}
+							</span>
+							<span class="channelTd" style="width:12%">
+								{{data.channelName}}
+							</span>
+							<span class="channelTd" style="width:12%">
+								{{data.stageid}}
+							</span>
+							<span class="channelTd" style="width:12%">
+								{{data.fitActUser}}
+							</span>
+							<span class="channelTd" style="width:12%">
+								{{data.enterActUser}}
+							</span>
+							<span class="channelTd" style="width:12%">
+								{{data.successActUser}}
+							</span>
+							<span class="channelTd" style="width:12%">
+								{{data.succActUserRate}}%
+							</span>
+							<span class="channelTd" style="width:12%">
+								{{data.succActUserTotalRate}}%
+							</span>
+						</div>
+				</li>
+				</ul>
+				<div class="tableFooter">
+						<div class="buttondiv fl" analysisdrop changei="changetype()">
+							<div class="selectlable fl">{{'每页显示' | translate}}：</div>
+							<div class="analysisdrop fl" style="width:60px;">
+								<div class="hadchoose">
+									<h6>{{val | translate}}</h6></div>
+								<ul class="dropUl">
+									<li ng-click="c('10');changetype(10)">10</li>
+									<li ng-click="c('20');changetype(20)">20</li>
+									<li ng-click="c('50');changetype(50)">50</li>
+									<li ng-click="c('100');changetype(100)">100</li>
+								</ul>
+							</div>
+							<div class="selectlable fl">&nbsp;&nbsp;{{'条记录' | translate}}</div>
+						</div>
+						<div class="dataTables_paginate fr" datatableslimit  datalimit="panel_1.dataList_1.limit"  tabledata="panel_1.dataList_1.data"  datachange="panel_1_change"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="panel panel-default panel_2">
+			<div class="panel-heading">
+			<strong>
+			<div class="playerTabs" class="margin_left"  style="float:none;display:inline-block;vertical-align:middle;">
+				<a data="chargePlayer" ng-repeat="stageDatatabarr in stageDatatabsarr" class="tagbut" ng-class="{'tagbutAct':stageDataTabsId==stageDatatabarr.id}"  ng-click="stageDataChangetabs(stageDatatabarr.id)">{{stageDatatabarr.name}}</a>
+			</div>
+			</strong>
+				<div class="panel_downloadBtn"  ng-click="exportStageData(stageDatatabsarr[stageDataTabsId-1].name)"></div>
+				<div class="clear"></div>
+			</div>
+			<div class="panel-body pdlf pdtb">
+			<div class="tableList tableListAct" >
+				<ul class="tableListUl">
+					<li class="tableListLi tableListLiTh clear">
+						<span class="tableListTh" style="width:10%">
+							<strong title="">{{'渠道' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:10%">
+							<strong title="">{{'关卡' | translate}}ID</strong>
+						</span>
+						<span class="tableListTh" style="width:10%">
+							<strong title="">{{'挑战次数' | translate}}</strong>
+							<div tipsmsg>{{'挑战该关卡的总次数【所选时间段内总和】' | translate}}</div>
+						</span>
+						<span class="tableListTh" style="width:10%">
+							<strong title="">{{'胜利次数' | translate}}</strong>
+							<div tipsmsg>{{'进入该关卡并战斗胜利的次数【所选时间段内总和】' | translate}}</div>
+						</span>
+						<span class="tableListTh" style="width:10%">
+							<strong title="">{{'胜利概率' | translate}}</strong>
+							<div tipsmsg>{{'（胜利次数/挑战次数）*100%' | translate}}</div>
+						</span>
+						<span class="tableListTh" style="width:10%">
+							<strong title="">{{'平均胜利时长' | translate}}</strong>
+							<div tipsmsg>{{'玩家在关卡中战斗胜利需要的平均时间（单位秒）' | translate}}<br/>{{'【所选时间段内平均】' | translate}}</div>
+						</span>
+						<span class="tableListTh" style="width:10%">
+							<strong title="">{{'平均战败时长' | translate}}</strong>
+							<div tipsmsg>{{'玩家在关卡中战斗需要的平均时间（单位秒）' | translate}}<br/>{{'（无论胜负）【所选时间段内平均】' | translate}}</div>
+						</span>
+						<span class="tableListTh" style="width:10%">
+							<strong title="">{{'平均战斗时长' | translate}}</strong>
+							<div tipsmsg>{{'玩家在关卡中战斗需要的平均时间（单位秒）' | translate}}<br/>{{'（无论胜负）【所选时间段内平均】' | translate}}</div>
+						</span>
+						<span class="tableListTh" style="width:10%">
+							<strong title="">{{'首次通关平均等级' | translate}}</strong>
+							<div tipsmsg>{{'首次通关该关卡时玩家等级的平均数' | translate}}<br/>{{'【所选时间段内平均】' | translate}}</div>
+						</span>
+						<span class="tableListTh" style="width:10%">
+							<strong title="">{{'首次通关最低等级' | translate}}</strong>
+							<div tipsmsg>{{'首次通关该关卡的最低玩家等级' | translate}}<br/>{{'【所选时间段内最小值】' | translate}}</div>
+						</span>
+					</li>
+					<li class="tableListLi clear" ng-repeat="data in panel_2.dataList_1.data | pageStartFrom : panel_2.dataList_1.limit.now*panel_2.dataList_1.limit.max | limitTo: panel_2.dataList_1.limit.max" ng-class="({'show_panel':data.show_panel})">
+						<div class="channelTr clear">
+							<span class="channelTd" style="width:10%">
+								{{data.channelName}}
+							</span>
+							<span class="channelTd" style="width:10%">
+								{{data.stageid}}
+							</span>
+							<span class="channelTd" style="width:10%">
+								{{data.count}}
+							</span>
+							<span class="channelTd" style="width:10%">
+								{{data.successCount}}
+							</span>
+							<span class="channelTd" style="width:10%">
+								{{data.successRate}}%
+							</span>
+							<span class="channelTd" style="width:10%">
+								{{data.avgSuccessTimeStr}}
+							</span>
+							<span class="channelTd" style="width:10%">
+								{{data.avgFailTimeStr}}
+							</span>
+							<span class="channelTd" style="width:10%">
+								{{data.avgFightTimeStr}}
+							</span>
+							<span class="channelTd" style="width:10%">
+								{{data.firstAvgSuccLvl}}
+							</span>
+							<span class="channelTd" style="width:10%">
+								{{data.firstMinLvl}}
+							</span>
+						</div>
+				</li>
+				</ul>
+				<div class="tableFooter">
+						<div class="buttondiv fl" analysisdrop changei="changetype2()">
+							<div class="selectlable fl">{{'每页显示' | translate}}：</div>
+							<div class="analysisdrop fl" style="width:60px;">
+								<div class="hadchoose">
+									<h6>{{val | translate}}</h6></div>
+								<ul class="dropUl">
+									<li ng-click="c('10');changetype2(10)">10</li>
+									<li ng-click="c('20');changetype2(20)">20</li>
+									<li ng-click="c('50');changetype2(50)">50</li>
+									<li ng-click="c('100');changetype2(100)">100</li>
+								</ul>
+							</div>
+							<div class="selectlable fl">&nbsp;&nbsp;{{'条记录' | translate}}</div>
+						</div>
+						<div class="dataTables_paginate fr" datatableslimit  datalimit="panel_2.dataList_1.limit"  tabledata="panel_2.dataList_1.data"  datachange="panel_2_change"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="panel panel-default panel_3">
+			<div class="panel-heading">
+			<strong>
+			<div class="playerTabs" class="margin_left"  style="float:none;display:inline-block;vertical-align:middle;">
+				<a data="chargePlayer" ng-repeat="stageStartabarr in stageStartabsarr" class="tagbut" ng-class="{'tagbutAct':stageStarTabsId==stageStartabarr.id}"  ng-click="stageStarChangetabs(stageStartabarr.id)">{{stageStartabarr.name}}</a>
+			</div>
+			</strong>
+				<div class="panel_downloadBtn"  ng-click="exportStageStar(stageStartabsarr[stageStarTabsId-1].name)"></div>
+				<div class="clear"></div>
+			</div>
+			<div class="panel-body pdlf pdtb">
+			<div class="tableList tableListAct" >
+				<ul class="tableListUl">
+					<li class="tableListLi tableListLiTh clear">
+						<span class="tableListTh" style="width:10%">
+							<strong title="">{{'日期' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:10%">
+							<strong title="">{{'区服' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:10%">
+							<strong title="">{{'渠道' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:10%">
+							<strong title="">{{'关卡' | translate}}ID</strong>
+						</span>
+						<span class="tableListTh" style="width:10%">
+							<strong title="">1{{'星人数' | translate}}</strong>
+							<div tipsmsg>{{'在该关卡只获得1星的玩家数量' | translate}}</div>
+						</span>
+						<span class="tableListTh" style="width:10%">
+							<strong title="">2{{'星人数' | translate}}</strong>
+							<div tipsmsg>{{'在该关卡只获得2星的玩家数量' | translate}}</div>
+						</span>
+						<span class="tableListTh" style="width:10%">
+							<strong title="">3{{'星人数' | translate}}</strong>
+							<div tipsmsg>{{'在该关卡只获得3星的玩家数量' | translate}}</div>
+						</span>
+						<span class="tableListTh" style="width:10%">
+							<strong title="">1{{'星玩家占比' | translate}}</strong>
+							<div tipsmsg>{{'（1星人数/通关人数）*100%' | translate}}</div>
+						</span>
+						<span class="tableListTh" style="width:10%">
+							<strong title="">2{{'星玩家占比' | translate}}</strong>
+							<div tipsmsg>{{'（2星人数/通关人数）*100%' | translate}}</div>
+						</span>
+						<span class="tableListTh" style="width:10%">
+							<strong title="">3{{'星玩家占比' | translate}}</strong>
+							<div tipsmsg>{{'（3星人数/通关人数）*100%' | translate}}</div>
+						</span>
+					</li>
+					<li class="tableListLi clear" ng-repeat="data in panel_3.dataList_1.data | pageStartFrom : panel_3.dataList_1.limit.now*panel_3.dataList_1.limit.max | limitTo: panel_3.dataList_1.limit.max" ng-class="({'show_panel':data.show_panel})">
+						<div class="channelTr clear">
+							<span class="channelTd" style="width:10%">
+								{{data.statdate}}
+							</span>
+							<span class="channelTd" style="width:10%">
+								{{data.areaid}}
+							</span>
+							<span class="channelTd" style="width:10%">
+								{{data.channelName}}
+							</span>
+							<span class="channelTd" style="width:10%">
+								{{data.stageid}}
+							</span>
+							<span class="channelTd" style="width:10%">
+								{{data.onestarcnt}}
+							</span>
+							<span class="channelTd" style="width:10%">
+								{{data.twostarcnt}}
+							</span>
+							<span class="channelTd" style="width:10%">
+								{{data.threestarcnt}}
+							</span>
+							<span class="channelTd" style="width:10%">
+								{{data.onestarcntRate}}%
+							</span>
+							<span class="channelTd" style="width:10%">
+								{{data.twostarcntRate}}%
+							</span>
+							<span class="channelTd" style="width:10%">
+								{{data.threestarcntRate}}%
+							</span>
+						</div>
+				</li>
+				</ul>
+				<div class="tableFooter">
+						<div class="buttondiv fl" analysisdrop changei="changetype3()">
+							<div class="selectlable fl">{{'每页显示' | translate}}：</div>
+							<div class="analysisdrop fl" style="width:60px;">
+								<div class="hadchoose">
+									<h6>{{val | translate}}</h6></div>
+								<ul class="dropUl">
+									<li ng-click="c('10');changetype3(10)">10</li>
+									<li ng-click="c('20');changetype3(20)">20</li>
+									<li ng-click="c('50');changetype3(50)">50</li>
+									<li ng-click="c('100');changetype3(100)">100</li>
+								</ul>
+							</div>
+							<div class="selectlable fl">&nbsp;&nbsp;{{'条记录' | translate}}</div>
+						</div>
+						<div class="dataTables_paginate fr" datatableslimit  datalimit="panel_3.dataList_1.limit"  tabledata="panel_3.dataList_1.data"  datachange="panel_3_change"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="panel panel-default panel_4">
+			<div class="panel-heading">
+			<strong>{{'联合作战统计' | translate}}</strong>
+				<div class="panel_downloadBtn"  down-file down-file-url="yhSummary/exportUnitStageActUserNumList.action" down-file-type="xlsx" down-file-name="联合作战关卡玩家数{{mstatdate}}" savedata="" postdata="postData" ></div>
+				<div class="clear"></div>
+			</div>
+			<div class="panel-body pdlf pdtb">
+			<div class="tableList tableListAct" >
+				<ul class="tableListUl">
+					<li class="tableListLi tableListLiTh clear">
+						<span class="tableListTh" style="width:16%">
+							<strong title="">{{'日期' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:12%">
+							<strong title="">{{'区服' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:12%">
+							<strong title="">{{'联合作战关卡' | translate}}ID</strong>
+						</span>
+						<span class="tableListTh" style="width:12%">
+							<strong title="">{{'符合进入玩家数量' | translate}}</strong>
+							<div tipsmsg>{{'开启（解锁了）该关卡的玩家数量' | translate}}</div>
+						</span>
+						<span class="tableListTh" style="width:12%">
+							<strong title="">{{'进入人数' | translate}}</strong>
+							<div tipsmsg>{{'有进入该关卡的玩家数量' | translate}}</div>
+						</span>
+						<span class="tableListTh" style="width:12%">
+							<strong title="">{{'通关人数' | translate}}</strong>
+							<div tipsmsg>{{'通关了该关卡（历史上至少胜利一次）的玩家数量' | translate}}<br/></div>
+						</span>
+						<span class="tableListTh" style="width:12%">
+							<strong title="">{{'通关玩家占比' | translate}}</strong>
+							<div tipsmsg>{{'（通关人数/进入人数）*100%' | translate}}</div>
+						</span>
+						<span class="tableListTh" style="width:12%">
+							<strong title="">{{'通关玩家总比' | translate}}</strong>
+							<div tipsmsg>{{'（通关人数/本服务器人数【全部】）*100%' | translate}}</div>
+						</span>
+					</li>
+					<li class="tableListLi clear" ng-repeat="data in panel_4.dataList_1.data | pageStartFrom : panel_4.dataList_1.limit.now*panel_4.dataList_1.limit.max | limitTo: panel_4.dataList_1.limit.max" ng-class="({'show_panel':data.show_panel})">
+						<div class="channelTr clear">
+							<span class="channelTd" style="width:16%" >
+								{{data.statdate}}
+							</span>
+							<span class="channelTd" style="width:12%">
+								{{data.areaid}}
+							</span>
+							<span class="channelTd" style="width:12%">
+								{{data.stageid}}
+							</span>
+							<span class="channelTd" style="width:12%">
+								{{data.fitActUser}}
+							</span>
+							<span class="channelTd" style="width:12%">
+								{{data.enterActUser}}
+							</span>
+							<span class="channelTd" style="width:12%">
+								{{data.successActUser}}
+							</span>
+							<span class="channelTd" style="width:12%">
+								{{data.succActUserRate}}%
+							</span>
+							<span class="channelTd" style="width:12%">
+								{{data.succActUserTotalRate}}%
+							</span>
+						</div>
+				</li>
+				</ul>
+				<div class="tableFooter">
+						<div class="buttondiv fl" analysisdrop changei="changetype4()">
+							<div class="selectlable fl">{{'每页显示' | translate}}：</div>
+							<div class="analysisdrop fl" style="width:60px;">
+								<div class="hadchoose">
+									<h6>{{val | translate}}</h6></div>
+								<ul class="dropUl">
+									<li ng-click="c('10');changetype4(10)">10</li>
+									<li ng-click="c('20');changetype4(20)">20</li>
+									<li ng-click="c('50');changetype4(50)">50</li>
+									<li ng-click="c('100');changetype4(100)">100</li>
+								</ul>
+							</div>
+							<div class="selectlable fl">&nbsp;&nbsp;{{'条记录' | translate}}</div>
+						</div>
+						<div class="dataTables_paginate fr" datatableslimit  datalimit="panel_4.dataList_1.limit"  tabledata="panel_4.dataList_1.data"  datachange="panel_4_change"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="panel panel-default panel_5">
+			<div class="panel-heading">
+			<strong>{{'联合作战统计' | translate}}</strong>
+				<div class="panel_downloadBtn"  down-file down-file-url="yhSummary/exportUnitStageCountList.action" down-file-type="xlsx" down-file-name="联合作战关卡次数情况{mstatdate}}" savedata="" postdata="postData" ></div>
+				<div class="clear"></div>
+			</div>
+			<div class="panel-body pdlf pdtb">
+			<div class="tableList tableListAct" >
+				<ul class="tableListUl">
+					<li class="tableListLi tableListLiTh clear fix-height">
+						<span class="tableListTh" style="width:6%">
+							<strong title="">{{'区服' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:7.6%">
+							<strong title="">{{'联合作战' | translate}}<br/>{{'关卡' | translate}}ID</strong>
+						</span>
+						<span class="tableListTh" style="width:6%">
+							<strong title="">{{'挑战次数' | translate}}</strong>
+							<div tipsmsg>{{'挑战该关卡的总次数【所选时间段内总和】' | translate}}</div>
+						</span>
+						<span class="tableListTh" style="width:6%">
+							<strong title="">{{'胜利次数' | translate}}</strong>
+							<div tipsmsg>{{'进入该关卡并战斗胜利的次数【所选时间段内总和】' | translate}}</div>
+						</span>
+						<span class="tableListTh" style="width:6%">
+							<strong title="">{{'胜利概率' | translate}}</strong>
+							<div tipsmsg>{{'（胜利次数/挑战次数）*100%' | translate}}</div>
+						</span>
+						<span class="tableListTh" style="width:7.6%">
+							<strong title="">{{'平均胜利时间' | translate}}</strong>
+							<div tipsmsg>{{'玩家在关卡中战斗胜利需要的平均时间（单位秒）' | translate}}<br/>{{'【所选时间段内平均】' | translate}}</div>
+						</span>
+						<span class="tableListTh" style="width:7.6%">
+							<strong title="">平均战败时间{{'' | translate}}</strong>
+							<div tipsmsg>{{'玩家在关卡中战斗需要的平均时间（单位秒）' | translate}}<br/>（{{'无论胜负）【所选时间段内平均】' | translate}}</div>
+						</span>
+						<span class="tableListTh" style="width:7.6%">
+							<strong title="">{{'平均战斗时间' | translate}}</strong>
+							<div tipsmsg>{{'玩家在关卡中战斗需要的平均时间（单位秒）' | translate}}<br/>{{'（无论胜负）【所选时间段内平均】' | translate}}</div>
+						</span>
+						<span class="tableListTh" style="width:7.6%">
+							<strong title="">{{'首次通关' | translate}}<br/>{{'平均等级' | translate}}</strong>
+							<div tipsmsg>{{'首次通关该关卡时玩家等级的平均数' | translate}}<br/>{{'【所选时间段内平均】' | translate}}</div>
+						</span>
+						<span class="tableListTh" style="width:7.6%">
+							<strong title="">{{'首次通关' | translate}}<br/>{{'最低等级' | translate}}</strong>
+							<div tipsmsg>{{'首次通关该关卡的最低玩家等级' | translate}}<br/>{{'【所选时间段内最小值】' | translate}}</div>
+						</span>
+						<span class="tableListTh" style="width:7.6%">
+							<strong title="">{{'军团助战次数' | translate}}</strong>
+							<div tipsmsg>{{'从军团成员列表中选择了队友进入战斗的次数' | translate}}</div>
+						</span>
+						<span class="tableListTh" style="width:7.6%">
+							<strong title="">{{'好友助战次数' | translate}}</strong>
+							<div tipsmsg>{{'从好友列表中选择了队友进入战斗的次数' | translate}}</div>
+						</span>
+						<span class="tableListTh" style="width:7.6%">
+							<strong title="">{{'随机玩家' | translate}}<br/>{{'助战次数' | translate}}</strong>
+							<div tipsmsg>{{'从随机玩家列表中选择了队友进入战斗的次数' | translate}}</div>
+						</span>
+						<span class="tableListTh" style="width:7.6%">
+							<strong title="">{{'助战选择占比' | translate}}<br/>{{'（军团:好友:随机）' | translate}}</strong>
+							<div tipsmsg>{{'[军团助战次数/（军团助战次数+好友助战次数+随机玩家助战次数）]*100%得到军团助战占比' | translate}}</div>
+						</span>
+					</li>
+					<li class="tableListLi clear" ng-repeat="data in panel_5.dataList_1.data | pageStartFrom : panel_5.dataList_1.limit.now*panel_5.dataList_1.limit.max | limitTo: panel_5.dataList_1.limit.max" ng-class="({'show_panel':data.show_panel})">
+						<div class="channelTr clear">
+							<span class="channelTd" style="width:6%">
+								{{data.areaid}}
+							</span>
+							<span class="channelTd" style="width:7.6%">
+								{{data.stageid}}
+							</span>
+							<span class="channelTd" style="width:6%">
+								{{data.count}}
+							</span>
+							<span class="channelTd" style="width:6%">
+								{{data.successCount}}
+							</span>
+							<span class="channelTd" style="width:6%">
+								{{data.successRate}}%
+							</span>
+							<span class="channelTd" style="width:7.6%">
+								{{data.avgSuccessTime}}
+							</span>
+							<span class="channelTd" style="width:7.6%">
+								{{data.avgFailTime}}
+							</span>
+							<span class="channelTd" style="width:7.6%">
+								{{data.avgFightTime}}
+							</span>
+							<span class="channelTd" style="width:7.6%">
+								{{data.firstAvgSuccLvl}}
+							</span>
+							<span class="channelTd" style="width:7.6%">
+								{{data.firstMinLvl}}
+							</span>
+							<span class="channelTd" style="width:7.6%">
+								{{data.jtCnt}}
+							</span>
+							<span class="channelTd" style="width:7.6%">
+								{{data.friendCnt}}
+							</span>
+							<span class="channelTd" style="width:7.6%">
+								{{data.randomCnt}}
+							</span>
+							<span class="channelTd" style="width:7.6%">
+								{{data.jtRate}}%:{{data.friendRate}}%:{{data.randomRate}}%
+							</span>
+						</div>
+				</li>
+				</ul>
+				<div class="tableFooter">
+						<div class="buttondiv fl" analysisdrop changei="changetype5()">
+							<div class="selectlable fl">{{'每页显示' | translate}}：</div>
+							<div class="analysisdrop fl" style="width:60px;">
+								<div class="hadchoose">
+									<h6>{{val | translate}}</h6></div>
+								<ul class="dropUl">
+									<li ng-click="c('10');changetype5(10)">10</li>
+									<li ng-click="c('20');changetype5(20)">20</li>
+									<li ng-click="c('50');changetype5(50)">50</li>
+									<li ng-click="c('100');changetype5(100)">100</li>
+								</ul>
+							</div>
+							<div class="selectlable fl">&nbsp;&nbsp;{{'条记录' | translate}}</div>
+						</div>
+						<div class="dataTables_paginate fr" datatableslimit  datalimit="panel_5.dataList_1.limit"  tabledata="panel_5.dataList_1.data"  datachange="panel_5_change"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="panel panel-default panel_6">
+			<div class="panel-heading">
+			<strong>{{'演习统计' | translate}}</strong>
+				<div class="panel_downloadBtn"  down-file down-file-url="yhSummary/exportActingStageActUserNumList.action" down-file-type="xlsx" down-file-name="演习统计卡玩家数{{mstatdate}}" savedata="" postdata="postData" ></div>
+				<div class="clear"></div>
+			</div>
+			<div class="panel-body pdlf pdtb">
+			<div class="tableList tableListAct" >
+				<ul class="tableListUl">
+					<li class="tableListLi tableListLiTh clear">
+						<span class="tableListTh" style="width:16%">
+							<strong title="">{{'日期' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:12%">
+							<strong title="">{{'区服' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:12%">
+							<strong title="">{{'演习关卡' | translate}}ID</strong>
+						</span>
+						<span class="tableListTh" style="width:12%">
+							<strong title="">{{'符合进入玩家数量' | translate}}</strong>
+							<div tipsmsg>{{'开启（解锁了）该关卡的玩家数量' | translate}}</div>
+						</span>
+						<span class="tableListTh" style="width:12%">
+							<strong title="">{{'进入人数' | translate}}</strong>
+							<div tipsmsg>{{'有进入该关卡的玩家数量' | translate}}</div>
+						</span>
+						<span class="tableListTh" style="width:12%">
+							<strong title="">{{'通关人数' | translate}}</strong>
+							<div tipsmsg>{{'通关了该关卡（历史上至少胜利一次）的玩家数量' | translate}}<br/></div>
+						</span>
+						<span class="tableListTh" style="width:12%">
+							<strong title="">{{'通关玩家占比' | translate}}</strong>
+							<div tipsmsg>{{'（通关人数/进入人数）*100%' | translate}}</div>
+						</span>
+						<span class="tableListTh" style="width:12%">
+							<strong title="">{{'通关玩家总比' | translate}}</strong>
+							<div tipsmsg>{{'（通关人数/本服务器人数【全部】）*100%' | translate}}</div>
+						</span>
+					</li>
+					<li class="tableListLi clear" ng-repeat="data in panel_6.dataList_1.data | pageStartFrom : panel_6.dataList_1.limit.now*panel_6.dataList_1.limit.max | limitTo: panel_6.dataList_1.limit.max" ng-class="({'show_panel':data.show_panel})">
+						<div class="channelTr clear">
+							<span class="channelTd" style="width:16%" >
+								{{data.statdate}}
+							</span>
+							<span class="channelTd" style="width:12%">
+								{{data.areaid}}
+							</span>
+							<span class="channelTd" style="width:12%">
+								{{data.stageid}}
+							</span>
+							<span class="channelTd" style="width:12%">
+								{{data.fitActUser}}
+							</span>
+							<span class="channelTd" style="width:12%">
+								{{data.enterActUser}}
+							</span>
+							<span class="channelTd" style="width:12%">
+								{{data.successActUser}}
+							</span>
+							<span class="channelTd" style="width:12%">
+								{{data.succActUserRate}}%
+							</span>
+							<span class="channelTd" style="width:12%">
+								{{data.succActUserTotalRate}}%
+							</span>
+						</div>
+				</li>
+				</ul>
+				<div class="tableFooter">
+						<div class="buttondiv fl" analysisdrop changei="changetype6()">
+							<div class="selectlable fl">{{'每页显示' | translate}}：</div>
+							<div class="analysisdrop fl" style="width:60px;">
+								<div class="hadchoose">
+									<h6>{{val | translate}}</h6></div>
+								<ul class="dropUl">
+									<li ng-click="c('10');changetype6(10)">10</li>
+									<li ng-click="c('20');changetype6(20)">20</li>
+									<li ng-click="c('50');changetype6(50)">50</li>
+									<li ng-click="c('100');changetype6(100)">100</li>
+								</ul>
+							</div>
+							<div class="selectlable fl">&nbsp;&nbsp;{{'条记录' | translate}}</div>
+						</div>
+						<div class="dataTables_paginate fr" datatableslimit  datalimit="panel_6.dataList_1.limit"  tabledata="panel_6.dataList_1.data"  datachange="panel_6_change"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="panel panel-default panel_7">
+			<div class="panel-heading">
+			<strong>{{'演习统计' | translate}}</strong>
+				<div class="panel_downloadBtn"  down-file down-file-url="yhSummary/exportActingStageCountList.action" down-file-type="xlsx" down-file-name="演习统计关卡次数情况{mstatdate}}" savedata="" postdata="postData" ></div>
+				<div class="clear"></div>
+			</div>
+			<div class="panel-body pdlf pdtb">
+			<div class="tableList tableListAct" >
+				<ul class="tableListUl">
+					<li class="tableListLi tableListLiTh clear">
+						<span class="tableListTh" style="width:10%">
+							<strong title="">{{'区服' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:10%">
+							<strong title="">{{'演习关卡' | translate}}ID</strong>
+						</span>
+						<span class="tableListTh" style="width:10%">
+							<strong title="">{{'挑战次数' | translate}}</strong>
+							<div tipsmsg>{{'挑战该关卡的总次数【所选时间段内总和】' | translate}}</div>
+						</span>
+						<span class="tableListTh" style="width:10%">
+							<strong title="">{{'胜利次数' | translate}}</strong>
+							<div tipsmsg>{{'进入该关卡并战斗胜利的次数【所选时间段内总和】' | translate}}</div>
+						</span>
+						<span class="tableListTh" style="width:10%">
+							<strong title="">{{'胜利概率' | translate}}</strong>
+							<div tipsmsg>{{'（胜利次数/挑战次数）*100%' | translate}}</div>
+						</span>
+						<span class="tableListTh" style="width:10%">
+							<strong title="">{{'平均胜利时间' | translate}}</strong>
+							<div tipsmsg>{{'玩家在关卡中战斗胜利需要的平均时间（单位秒）' | translate}}<br/>{{'【所选时间段内平均】' | translate}}</div>
+						</span>
+						<span class="tableListTh" style="width:10%">
+							<strong title="">{{'平均战败时间' | translate}}</strong>
+							<div tipsmsg>{{'玩家在关卡中战斗需要的平均时间（单位秒）' | translate}}<br/>{{'（无论胜负）【所选时间段内平均】' | translate}}</div>
+						</span>
+						<span class="tableListTh" style="width:10%">
+							<strong title="">{{'平均战斗时间' | translate}}</strong>
+							<div tipsmsg>{{'玩家在关卡中战斗需要的平均时间（单位秒）' | translate}}<br/>{{'（无论胜负）【所选时间段内平均】' | translate}}</div>
+						</span>
+						<span class="tableListTh" style="width:10%">
+							<strong title="">{{'首次通关平均等级' | translate}}</strong>
+							<div tipsmsg>{{'首次通关该关卡时玩家等级的平均数' | translate}}<br/>{{'【所选时间段内平均】' | translate}}</div>
+						</span>
+						<span class="tableListTh" style="width:10%">
+							<strong title="">{{'首次通关最低等级' | translate}}</strong>
+							<div tipsmsg>{{'首次通关该关卡的最低玩家等级' | translate}}<br/>{{'【所选时间段内最小值】' | translate}}</div>
+						</span>
+					</li>
+					<li class="tableListLi clear" ng-repeat="data in panel_7.dataList_1.data | pageStartFrom : panel_7.dataList_1.limit.now*panel_7.dataList_1.limit.max | limitTo: panel_7.dataList_1.limit.max" ng-class="({'show_panel':data.show_panel})">
+						<div class="channelTr clear">
+							<span class="channelTd" style="width:10%">
+								{{data.areaid}}
+							</span>
+							<span class="channelTd" style="width:10%">
+								{{data.stageid}}
+							</span>
+							<span class="channelTd" style="width:10%">
+								{{data.count}}
+							</span>
+							<span class="channelTd" style="width:10%">
+								{{data.successCount}}
+							</span>
+							<span class="channelTd" style="width:10%">
+								{{data.successRate}}%
+							</span>
+							<span class="channelTd" style="width:10%">
+								{{data.avgSuccessTime}}
+							</span>
+							<span class="channelTd" style="width:10%">
+								{{data.avgFailTime}}
+							</span>
+							<span class="channelTd" style="width:10%">
+								{{data.avgFightTime}}
+							</span>
+							<span class="channelTd" style="width:10%">
+								{{data.firstAvgSuccLvl}}
+							</span>
+							<span class="channelTd" style="width:10%">
+								{{data.firstMinLvl}}
+							</span>
+						</div>
+				</li>
+				</ul>
+				<div class="tableFooter">
+						<div class="buttondiv fl" analysisdrop changei="changetype7()">
+							<div class="selectlable fl">{{'每页显示' | translate}}：</div>
+							<div class="analysisdrop fl" style="width:60px;">
+								<div class="hadchoose">
+									<h6>{{val | translate}}</h6></div>
+								<ul class="dropUl">
+									<li ng-click="c('10');changetype7(10)">10</li>
+									<li ng-click="c('20');changetype7(20)">20</li>
+									<li ng-click="c('50');changetype7(50)">50</li>
+									<li ng-click="c('100');changetype7(100)">100</li>
+								</ul>
+							</div>
+							<div class="selectlable fl">&nbsp;&nbsp;{{'条记录' | translate}}</div>
+						</div>
+						<div class="dataTables_paginate fr" datatableslimit  datalimit="panel_7.dataList_1.limit"  tabledata="panel_7.dataList_1.data"  datachange="panel_7_change"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+</div>

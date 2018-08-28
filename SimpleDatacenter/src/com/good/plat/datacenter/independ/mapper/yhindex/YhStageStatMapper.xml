@@ -1,0 +1,498 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.independ.mapper.yhindex.YhStageStatMapper">
+	<resultMap id="BaseResultMap" type="com.good.plat.datacenter.independ.entity.yhindex.YhStageStat">
+		<result column="statdate" property="statdate"/>
+		<result column="gameid" property="gameid"/>
+		<result column="areaid" property="areaid"/>
+		<result column="channelid" property="channelid"/>
+		<result column="channelName" property="channelName"/>
+		<result column="stageid" property="stageid"/>
+		<result column="fitActUser" property="fitActUser"/>
+		<result column="enterActUser" property="enterActUser"/>
+		<result column="successActUser" property="successActUser"/>
+		<result column="failActUser" property="failActUser"/>
+		<result column="succActUserRate" property="succActUserRate"/>
+		<result column="succActUserTotalRate" property="succActUserTotalRate"/>
+		<result column="count" property="count"/>
+		<result column="regUser" property="regUser"/>
+		<result column="successCount" property="successCount"/>
+		<result column="successRate" property="successRate"/>
+		<result column="avgSuccessTime" property="avgSuccessTime"/>
+		<result column="avgFailTime" property="avgFailTime"/>
+		<result column="avgFightTime" property="avgFightTime"/>
+		<result column="firstAvgSuccLvl" property="firstAvgSuccLvl"/>
+		<result column="firstMinLvl" property="firstMinLvl"/>
+		<result column="onestarcnt" property="onestarcnt"/>
+		<result column="twostarcnt" property="twostarcnt"/>
+		<result column="threestarcnt" property="threestarcnt"/>
+		<result column="jtCnt" property="jtCnt"/>
+		<result column="friendCnt" property="friendCnt"/>
+		<result column="randomCnt" property="randomCnt"/>
+	</resultMap>
+		<sql id="BaseSelect">
+			where 1=1
+			<if test="startdate!=null and startdate!=''">
+			and statdate &gt;=#{startdate}
+			</if>
+			<if test="enddate!=null and enddate!=''">
+			and statdate &lt;=#{enddate}
+			</if>
+			and gameid=#{gameid}
+			<if test="channelid!=null and channelid!=-1">
+			and channel=#{channelid}
+			</if>
+			<if test="areaid!=null and areaid!=-1">
+				and areaid=#{areaid}
+			</if>
+		</sql>
+	<!--  关卡统计（汇总到所选日期之前的总计;日期,渠道,关卡ID，符合进入玩家数，进入人数,通关人数，通关玩家占比,通关玩家总比）-->
+	<select id="selectYhStageList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.IndependBaseSearchData">
+		SELECT
+			c.statdate as statdate ,
+			c.channel as channelid,
+			IF (
+			chn.channelSimName IS NULL,
+			CONCAT(
+				'未知渠道： ',
+				c.channel
+			),
+			chn.channelSimName
+		) AS channelName,
+			c.stageid as stageid,
+			IFNULL(SUM(c.fitActUser),0) as fitActUser,
+			IFNULL(SUM(c.enterActUser),0) as enterActUser,
+			IFNULL(SUM(c.successActUser),0) as successActUser,
+			IFNULL(SUM(c.failActUser),0) as failActUser,
+			SUM(d.count) as regUser,
+			IF(SUM(c.enterActUser)=0,0,SUM(c.successActUser)/SUM(c.enterActUser)) as succActUserRate,
+			IF(SUM(d.count)=0,0,SUM(c.successActUser)/SUM(d.count)) as succActUserTotalRate
+		FROM
+			(
+				SELECT
+					b.statdate,
+					a.gameid,
+					a.channel,
+					a.stageid,
+					SUM(IF(a.type = 1, actcnt, 0)) AS fitActUser,
+					SUM(IF(a.type = 2, actcnt, 0)) AS enterActUser,
+					SUM(IF(a.type = 3, actcnt, 0)) AS successActUser,
+					SUM(IF(a.type = 4, actcnt, 0)) AS failActUser
+				FROM
+					(
+						SELECT DISTINCT
+							statdate
+						FROM
+							yh_stage_stat
+						where statdate between #{startdate} and #{enddate} 
+						and gameid=#{gameid}
+					) b,
+					yh_stage_stat a
+				WHERE
+					b.statdate >= a.statdate
+				<if test="gameid!=null">
+				AND a.gameid =#{gameid}
+				</if>
+				<if test="areaid!=null and areaid!=-1">
+				and areaid=#{areaid}
+				</if>
+				<if test="stageId!=null">
+				and stageid=#{stageId}
+				</if>
+				GROUP BY
+					b.statdate,
+					a.gameid,
+					a.channel,
+					a.stageid
+			) c
+		LEFT JOIN (select statdate,gameid,channel,sum(`count`) `count` from yh_act_count <include refid="BaseSelect"/>group by statdate,gameid,channel) d ON (
+			c.statdate = d.statdate
+			AND c.gameid = d.gameid
+			and c.channel=d.channel
+		)LEFT JOIN tb_logplat_channel chn ON (chn.id = c.channel)
+		GROUP BY
+			c.statdate,
+			c.channel,
+			c.stageid;
+	</select>
+	<!-- 关卡数据（渠道,关卡ID,通关次数，通关概率，平均通关时长，平均战败时长，平均战斗时长，首次通关等级，首次通关最低等级） -->
+	<select id="selectYhStageDataList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.IndependBaseSearchData">
+		SELECT
+		a.channel as channelid,
+			IF (
+				chn.channelSimName IS NULL,
+				CONCAT(
+					'未知渠道： ',
+					a.channel
+				),
+				chn.channelSimName
+			) AS channelName,
+		a.stageid as stageid,
+		a.count as count,
+		a.successCount as successCount,
+		IFNULL(ROUND(a.successCount/a.count*100,2),0) as successRate,
+		IFNULL(ROUND(a.successTime/a.successCount),0) as avgSuccessTime,
+		IFNULL(ROUND(a.failTime/a.failCount),0) as avgFailTime,	
+		IFNULL(ROUND((a.successTime+a.failTime)/(a.successCount+a.failCount)),0) as avgFightTime,
+		IFNULL(ROUND(a.firstlvl/a.actcnt),0) as firstAvgSuccLvl,
+	IF (
+		a.minfirstlvl = 99999,
+		NULL,
+		a.minfirstlvl
+	) AS firstMinLvl
+	FROM
+		(
+			SELECT
+				channel,
+				stageid,
+				SUM(IF(type = 2, count, 0)) as `count`,
+				SUM(IF(type = 3, count, 0)) AS successCount,
+				SUM(IF(type = 3, time, 0)) AS successTime,
+				SUM(IF(type = 4, count, 0)) AS failCount,
+				SUM(IF(type = 4, time, 0)) AS failTime,
+				IFNULL(SUM(IF(type=3,actcnt,0)), 0) AS actcnt,
+				SUM(IF(type = 3, firstlvl, 0)) AS firstlvl,
+				MIN(
+					IF (type = 3, minfirstlvl, 99999)
+				) AS minfirstlvl
+			FROM
+				yh_stage_stat
+			<include refid="BaseSelect"/>
+			<if test="stageId!=null">
+			and stageid=#{stageId}
+			</if>
+			GROUP BY
+				channel,
+				stageid
+		) a LEFT JOIN tb_logplat_channel chn ON (chn.id = a.channel);
+	</select>
+	<!-- 关卡星数 -->
+	<select id="selectYhStageStarNumList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.IndependBaseSearchData">
+		SELECT
+			a.statdate,
+			a.areaid,
+			a.channel as channelid,
+			IF (chn.channelSimName IS NULL,CONCAT('未知渠道： ',a.channel),chn.channelSimName) AS channelName,
+			a.stageid,
+			IFNULL(onestarcnt,0) as onestarcnt,
+			IFNULL(twostarcnt,0) as twostarcnt,
+			IFNULL(threestarcnt,0) as threestarcnt,
+			(IFNULL(onestarcnt,0)+IFNULL(twostarcnt,0)+IFNULL(threestarcnt,0)) as successActUser
+		FROM
+			yh_stage_star_stat a LEFT JOIN tb_logplat_channel chn on chn.id=a.channel
+		<include refid="BaseSelect"/>
+		<if test="stageId!=null">
+			and stageid=#{stageId}
+		</if>
+	</select>
+	
+	<!--联合关卡玩家数  -->
+	<select id="selectUnitStageActUserNumList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.IndependBaseSearchData">
+		SELECT
+			a.statdate,
+			a.gameid,
+			a.areaid,
+			a.stageid,
+			IFNULL(a.fitUserCnt, 0) fitActUser,
+			IFNULL(a.enterUserCnt, 0) enterActUser,
+			IFNULL(a.passUserCnt, 0) successActUser,
+			IF(ISNULL(a.enterUserCnt) or a.enterUserCnt=0,0,ROUND((a.passUserCnt/a.enterUserCnt)*100,2)) succActUserRate,
+			IF(b.count=0,0,ROUND((a.passUserCnt/b.count)*100,2)) succActUserTotalRate
+		FROM
+			(
+				SELECT
+					statdate,
+					gameid,
+					areaid,
+					stageid,
+					SUM(IF(type = 1, actcnt, 0)) AS fitUserCnt,
+					SUM(IF(type = 2, actcnt, 0)) AS enterUserCnt,
+					SUM(IF(type = 3, actcnt, 0)) AS passUserCnt
+				FROM
+					yh_unite_stage_stat
+				<include refid="BaseSelect"/>
+				<if test="stageId!=null">
+				and stageid=#{stageId}
+				</if>
+				GROUP BY
+					statdate,
+					gameid,
+					areaid,
+					stageid
+			) a
+		LEFT JOIN (
+			SELECT
+				statdate,
+				gameid,
+				areaid,
+				IFNULL(SUM(`count`),0) as `count`
+			FROM
+				yh_act_count
+			<include refid="BaseSelect"/>
+			GROUP BY
+				statdate,
+				gameid,
+				areaid
+		) b ON (
+			a.statdate = b.statdate
+			AND a.gameid = b.gameid
+			AND a.areaid = b.areaid
+		);
+	</select>
+	<!--联合关卡次数 -->
+	<select id="selectUnitStageCountList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.IndependBaseSearchData">
+		SELECT
+			areaid,
+			stageid,
+			SUM(IF(type = 2,`count`, 0)) AS count,
+			SUM(IF(type = 3, `count`, 0)) AS successCount,
+			IF(SUM(IF(type = 2,`count`,0))=0,0,ROUND((SUM(IF(type = 3, `count`, 0))/SUM(IF(type = 2,`count`, 0)))*100,2)) as successRate,
+			IF(SUM(IF(type = 3, `count`, 0))=0,0,ROUND(SUM(IF(type=3,time,0))/SUM(IF(type = 3, `count`, 0)),2)) as avgSuccessTime,
+			IF(SUM(IF(type = 4, `count`, 0))=0,0,ROUND(SUM(IF(type=4,time,0))/SUM(IF(type = 4, `count`, 0)),2)) as avgFailTime,
+			IF(SUM(`count`)=0,0,ROUND(SUM(time)/SUM(`count`),2)) as avgFightTime,
+			IF(SUM(IF(type=3,firstcnt,0))=0,0,ROUND(SUM(IF(type=3,firstlvl,0))/SUM(IF(type=3,firstcnt,0)))) firstAvgSuccLvl,
+			min(IF(type=3,minfirstlvl,0)) as firstMinLvl,	
+			SUM(IF(type = 2,`jtcnt`, 0)) as jtCnt,
+			SUM(IF(type = 2,`friendcnt`, 0)) as friendCnt,
+			SUM(IF(type = 2,`randomcnt`, 0)) as randomCnt
+		FROM
+			yh_unite_stage_stat
+		<include refid="BaseSelect"/>
+		<if test="stageId!=null">
+			and stageid=#{stageId}
+		</if>
+		GROUP BY
+			areaid,
+			stageid;
+	</select>
+	<!--  演戏关卡玩家数-->
+	<select id="selectActingStageActUserNumList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.IndependBaseSearchData">
+		SELECT
+			a.statdate,
+			a.gameid,
+			a.areaid,
+			a.stageid,
+			IFNULL(a.fitUserCnt, 0) fitActUser,
+			IFNULL(a.enterUserCnt, 0) enterActUser,
+			IFNULL(a.passUserCnt, 0) successActUser,
+			IF(ISNULL(a.enterUserCnt) or a.enterUserCnt=0,0,ROUND((a.passUserCnt/a.enterUserCnt)*100,2)) succActUserRate,
+			IF(b.count=0,0,ROUND((a.passUserCnt/b.count)*100,2)) succActUserTotalRate
+		FROM
+			(
+				SELECT
+					statdate,
+					gameid,
+					areaid,
+					stageid,
+					SUM(IF(type = 1, actcnt, 0)) AS fitUserCnt,
+					SUM(IF(type = 2, actcnt, 0)) AS enterUserCnt,
+					SUM(IF(type = 3, actcnt, 0)) AS passUserCnt
+				FROM
+					yh_yx_stage_stat
+				<include refid="BaseSelect"/>
+				<if test="stageId!=null">
+					and stageid=#{stageId}
+				</if>
+				GROUP BY
+					statdate,
+					gameid,
+					areaid,
+					stageid
+			) a
+		LEFT JOIN (
+			SELECT
+				statdate,
+				gameid,
+				areaid,
+				IFNULL(SUM(`count`),0) as `count`
+			FROM
+				yh_act_count
+			<include refid="BaseSelect"/>
+			GROUP BY
+				statdate,
+				gameid,
+				areaid
+		) b ON (
+			a.statdate = b.statdate
+			AND a.gameid = b.gameid
+			AND a.areaid = b.areaid
+		);
+	</select>
+	<!-- 演戏关卡次数 -->
+	<select id="selectActingStageCountList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.IndependBaseSearchData">
+		SELECT
+			areaid,
+			stageid,
+			SUM(IF(type = 2,`count`, 0)) AS count,
+			SUM(IF(type = 3, `count`, 0)) AS successCount,
+			IF(SUM(IF(type = 2,`count`, 0))=0,0,ROUND((SUM(IF(type = 3, `count`, 0))/SUM(IF(type = 2,`count`, 0)))*100,2)) as successRate,
+			IF(SUM(IF(type = 3, `count`, 0))=0,0,ROUND(SUM(IF(type=3,time,0))/SUM(IF(type = 3, `count`, 0)),2)) as avgSuccessTime,
+			IF(SUM(IF(type = 4, `count`, 0))=0,0,ROUND(SUM(IF(type=4,time,0))/SUM(IF(type = 4, `count`, 0)),2)) as avgFailTime,
+			IF(SUM(IF(type = 3 OR type=4, `count`, 0))=0,0,ROUND(SUM(time)/SUM(IF(type = 3 OR type=4, `count`, 0)),2)) as avgFightTime,
+			IF(SUM(IF(type=3,firstcnt,0))=0,0,ROUND(SUM(IF(type=3,firstlvl,0))/SUM(IF(type=3,firstcnt,0)))) firstAvgSuccLvl,
+			min(IF(type=3,minfirstlvl,0)) as firstMinLvl	
+		FROM
+			yh_yx_stage_stat
+		<include refid="BaseSelect"/>
+		<if test="stageId!=null">
+			and stageid=#{stageId}
+		</if>
+		GROUP BY
+			areaid,
+			stageid;
+	</select>
+	
+	<!--  关卡统计排重（按当天日期来汇总;日期,渠道,关卡ID，符合进入玩家数，进入人数,通关人数，通关玩家占比,通关玩家总比）-->
+	<select id="selectYhStageDisList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.IndependBaseSearchData">
+		SELECT
+			c.statdate AS statdate,
+			c.channel AS channelid,
+		IF (
+			chn.channelSimName IS NULL,
+			CONCAT(
+				'未知渠道： ',
+				c.channel
+			),
+			chn.channelSimName
+		) AS channelName,
+		 c.stageid AS stageid,
+		 IFNULL(c.fitActUser, 0) AS fitActUser,
+		 IFNULL(c.enterActUser, 0) AS enterActUser,
+		 IFNULL(c.successActUser, 0) AS successActUser,
+		 IFNULL(c.failActUser, 0) AS failActUser,
+		 IFNULL(d.count,0) AS regUser,
+		IF (
+			c.enterActUser is NULL OR c.enterActUser = 0,
+			0,
+			ROUND((c.successActUser/c.enterActUser)*100,2)
+		) AS succActUserRate,
+		
+		IF (
+			d.count IS NULL OR d.count = 0,
+			0,
+			ROUND((c.successActUser/d.count)*100,2)
+		) AS succActUserTotalRate
+		FROM
+			(
+				SELECT
+					statdate,
+					gameid,
+					channel,
+					stageid,
+					SUM(IF(type = 1, actcnt, 0)) AS fitActUser,
+					SUM(IF(type = 2, actcnt, 0)) AS enterActUser,
+					SUM(IF(type = 3, actcnt, 0)) AS successActUser,
+					SUM(IF(type = 4, actcnt, 0)) AS failActUser
+				FROM
+					yh_dis_stage_stat
+				<include refid="BaseSelect"/>
+				<if test="stageId!=null">
+					and stageid=#{stageId}
+				</if>
+				GROUP BY
+					statdate,
+					gameid,
+					channel,
+					stageid
+			) c left JOIN tb_logplat_channel chn on(chn.id=c.channel)
+		LEFT JOIN (
+			SELECT
+				statdate,
+				gameid,
+				channel,
+				sum(`count`) `count`
+			FROM
+				yh_act_count 
+			<include refid="BaseSelect"/>
+			GROUP BY
+				statdate,
+				gameid,
+				channel
+		) d ON (
+			c.statdate = d.statdate
+			AND c.gameid = d.gameid
+			AND c.channel = d.channel
+		)
+	</select>
+	<!-- 关卡数据排重（渠道,关卡ID,通关次数，通关概率，平均通关时长，平均战败时长，平均战斗时长，首次通关等级，首次通关最低等级） -->
+	<select id="selectYhStageDataDisList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.IndependBaseSearchData">
+		SELECT
+		a.channel as channelid,
+			IF (
+				chn.channelSimName IS NULL,
+				CONCAT(
+					'未知渠道： ',
+					a.channel
+				),
+				chn.channelSimName
+			) AS channelName,
+		a.stageid as stageid,
+		a.count as count,
+		a.successCount as successCount,
+		IFNULL(ROUND(a.successCount/a.count*100,2),0) as successRate,
+		IFNULL(ROUND(a.successTime/a.successCount),0) as avgSuccessTime,
+		IFNULL(ROUND(a.failTime/a.failCount),0) as avgFailTime,	
+		IFNULL(ROUND((a.successTime+a.failTime)/(a.successCount+a.failCount)),0) as avgFightTime,
+		IFNULL(ROUND(a.firstlvl/a.actcnt),0) as firstAvgSuccLvl,
+	IF (
+		a.minfirstlvl = 99999,
+		NULL,
+		a.minfirstlvl
+	) AS firstMinLvl
+	FROM
+		(
+			SELECT
+				channel,
+				stageid,
+				SUM(IF(type = 2, count, 0)) as `count`,
+				SUM(IF(type = 3, count, 0)) AS successCount,
+				SUM(IF(type = 3, time, 0)) AS successTime,
+				SUM(IF(type = 4, count, 0)) AS failCount,
+				SUM(IF(type = 4, time, 0)) AS failTime,
+				IFNULL(SUM(IF(type=3,actcnt,0)), 0) AS actcnt,
+				SUM(IF(type = 3, firstlvl, 0)) AS firstlvl,
+				MIN(
+					IF (type = 3, minfirstlvl, 99999)
+				) AS minfirstlvl
+			FROM
+				yh_dis_stage_stat
+			<include refid="BaseSelect"/>
+			<if test="stageId!=null">
+			and stageid=#{stageId}
+			</if>
+			GROUP BY
+				channel,
+				stageid
+		) a LEFT JOIN tb_logplat_channel chn ON (chn.id = a.channel);
+	</select>
+	<!-- 关卡星数排重 -->
+	<select id="selectYhStageStarNumDisList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.IndependBaseSearchData">
+		SELECT
+			a.statdate,
+			a.areaid,
+			a.channel as channelid,
+			IF (chn.channelSimName IS NULL,CONCAT('未知渠道： ',a.channel),chn.channelSimName) AS channelName,
+			a.stageid,
+			IFNULL(onestarcnt,0) as onestarcnt,
+			IFNULL(twostarcnt,0) as twostarcnt,
+			IFNULL(threestarcnt,0) as threestarcnt,
+			(IFNULL(onestarcnt,0)+IFNULL(twostarcnt,0)+IFNULL(threestarcnt,0)) as successActUser
+		FROM
+			yh_dis_stage_star_stat a LEFT JOIN tb_logplat_channel chn on chn.id=a.channel
+		<include refid="BaseSelect"/>
+		<if test="stageId!=null">
+			and stageid=#{stageId}
+		</if>
+	</select>
+	
+</mapper>

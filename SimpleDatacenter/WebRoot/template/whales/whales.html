@@ -1,0 +1,99 @@
+<div>
+	<div class="maintop">
+		<div datepicker class="col-xs-3 timeSelect" mstatdate="mstatdate">
+		</div>
+		<!--------日期选择控件----------->
+		<div selectChoose class="selectChoose">
+		</div>
+		<!--------渠道区服选择控件----------->
+		<div class="clear"></div>
+		<div class="panel-selectChoose" callbackchannelqf ng-show="iscallback">
+			<ul ng-show="ischannel" class="cl">
+				<li>{{'渠道' | translate}}：</li>
+				<li ng-repeat="channellist in callbackchannelqfdata.channellist">{{channellist}}</li>
+			</ul>
+			<ul ng-show="isqf" class="cl">
+				<li>{{'区服' | translate}}：</li>
+				<li ng-repeat="qflist in callbackchannelqfdata.qflist">{{qflist}}</li>
+			</ul>
+		</div>
+		<!--------已选择渠道区服显示----------->
+	</div>
+	<div class="panel panel-default panel_1">
+		<div class="panel-heading">
+			<strong>
+				{{'充值玩家' | translate}}
+				<div tipsmsg>{{'调节不同的选定时期，可依照所选时期中玩家充值的货币额度来筛查' | translate}}</div>
+				<!--------提示框----------->
+			</strong>
+			<div class="panel_downloadBtn"  down-file down-file-url="whales/exportWhaleUserList.action" 
+					down-file-type="xlsx" down-file-name="充值玩家{{mstatdate}}" savedata="" postdata="searchData" ></div>
+			
+			<input class="fr tableBoxSearch" ng-model="tablesearch" type="text" placeholder="搜索账号" >
+			<!--------下载按钮----------->
+			<div class="clear"></div>
+		</div>
+		<div class="panel-body pdlf pdtb">
+			<div class="tableBox">
+				<table class="table table-striped">
+					<tr>
+						<th class="text-center" width="7%" title="根据玩家充值的货币额度来确定的付费排名">{{'排名' | translate}}</th>
+						<th class="text-center" width="10%" title="鲸鱼玩家的游戏帐户">{{'账号' | translate}}</th>
+						<th class="text-center" width="7%" title="鲸鱼玩家的角色名">{{'角色名' | translate}}</th>
+						<th class="text-center" width="7%" title="鲸鱼玩家的渠道">{{'渠道' | translate}}</th>
+						<th class="text-center" width="7%" title="鲸鱼玩家的区服">{{'区服' | translate}}</th>
+						<th class="text-center" width="7%" title="所选时期中玩家充值的现金额度">{{'充值金额' | translate}}</th>
+						<th class="text-center" width="7%" title="所选时期中玩家充值获得的总虚拟币数额">{{'充入虚拟币' | translate}}</th>
+						<th class="text-center" width="7%" title="鲸鱼玩家的剩余氪金">{{'当前剩余氪金' | translate}}</th>
+						<th class="text-center" width="7%" title="鲸鱼玩家的剩余绑定氪金">{{'剩余绑定氪金' | translate}}</th>
+						<th class="text-center" width="7%" title="玩家首次进行游戏的日期">{{'新增日期' | translate}}</th>
+						<th class="text-center" width="7%" title="鲸鱼玩家的首冲日期">{{'首冲日期' | translate}}</th>
+						<th class="text-center" width="7%" title="鲸鱼玩家的最后充值日期">{{'最后充值日期' | translate}}</th>
+						<th class="text-center" width="7%" title="玩家现在的最终等级">{{'当前等级' | translate}}</th>
+					</tr>
+					<tr ng-repeat="data in panel_1.dataList_1.data | filter :  {'account':tablesearch} | orderBy: panel_1.dataList_1.orderBy.t+panel_1.dataList_1.orderBy.s | pageStartFrom : panel_1.dataList_1.limit.now*panel_1.dataList_1.limit.max | limitTo: panel_1.dataList_1.limit.max" class="text-center">
+						<td>{{data.ranking}}</td>
+						<td>{{data.account}}</td>
+						<td>{{data.actorName}}</td>
+						<td>{{data.channelName}}</td>
+						<td>{{data.gameAreaName}}</td>
+						<td>{{data.sumOfPayment}}</td>
+						<td>{{data.currencyPurchased}}</td>
+						<td>{{data.currLeftCount}}</td>
+						<td>{{data.leftBindCount}}</td>
+						<td>{{data.firstLogin}}</td>
+						<td>{{data.firstRechargeDate}}</td>
+						<td>{{data.lastRechargeDate}}</td>
+						<td>{{data.currentLevel}}</td>
+					</tr>
+				</table>
+				<div class="tableFooter">
+					<div class="buttondiv fl" analysisdrop changei="changetype()">
+						<div class="selectlable fl">{{'每页显示' | translate}}：</div>
+						<div class="analysisdrop fl" style="width:60px;">
+							<div class="hadchoose">
+								<h6>{{val | translate}}</h6></div>
+							<ul class="dropUl">
+								<li ng-click="c('10');changetype(10)">10</li>
+								<li ng-click="c('20');changetype(20)">20</li>
+								<li ng-click="c('50');changetype(50)">50</li>
+								<li ng-click="c('100');changetype(100)">100</li>
+							</ul>
+						</div>
+						<div class="selectlable fl">&nbsp;&nbsp;{{'条记录' | translate}}</div>
+					</div>
+					<div class="dataTables_paginate fr" datatableslimit  datalimit="panel_1.dataList_1.limit"  tabledata="panel_1.dataList_1.data"  datachange="panel_1_change"></div>
+				</div>
+			</div>
+		</div>
+		
+	</div>
+	<div class="clear">
+		<div class="col-xs-6">
+
+		</div>
+		<div class="col-xs-6">
+
+		</div>
+	</div>
+</div>

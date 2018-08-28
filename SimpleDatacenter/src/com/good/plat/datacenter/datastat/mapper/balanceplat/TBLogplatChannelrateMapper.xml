@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.datastat.mapper.balanceplat.TBLogplatChannelrateMapper" >
+  <resultMap id="BaseResultMap" type="com.good.plat.datacenter.datastat.entity.balanceplat.TBLogplatChannelrate" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="gameid" property="gameid" jdbcType="INTEGER" />
+    <result column="company" property="company" jdbcType="VARCHAR" />
+    <result column="companyid" property="companyid" jdbcType="INTEGER" />
+    <result column="cooperationType" property="cooperationType" jdbcType="VARCHAR" />
+    <result column="payRate" property="payRate" jdbcType="DOUBLE" />
+    <result column="isPayRate" property="isPayRate" jdbcType="TINYINT" />
+    <result column="taxRate" property="taxRate" jdbcType="DOUBLE" />
+    <result column="divideRate" property="divideRate" jdbcType="DOUBLE" />
+    <result column="isLadder" property="isLadder" jdbcType="TINYINT" />
+    <result column="payType" property="payType" jdbcType="VARCHAR" />
+    <result column="startdate" property="startdate" jdbcType="DATE" />
+    <result column="enddate" property="enddate" jdbcType="DATE" />
+    <result column="validTime" property="validTime" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, gameid, company, companyid, cooperationType, payRate, isPayRate, taxRate, divideRate, 
+    isLadder, payType, startdate, enddate, validTime
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_logplat_channelrate
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_logplat_channelrate
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.good.plat.datacenter.datastat.entity.balanceplat.TBLogplatChannelrate" >
+    insert into tb_logplat_channelrate (id, gameid, company, 
+      companyid, cooperationType, payRate, 
+      isPayRate, taxRate, divideRate, 
+      isLadder, payType, startdate, 
+      enddate, validTime)
+    values (#{id,jdbcType=INTEGER}, #{gameid,jdbcType=INTEGER}, #{company,jdbcType=VARCHAR}, 
+      #{companyid,jdbcType=INTEGER}, #{cooperationType,jdbcType=VARCHAR}, #{payRate,jdbcType=DOUBLE}, 
+      #{isPayRate,jdbcType=TINYINT}, #{taxRate,jdbcType=DOUBLE}, #{divideRate,jdbcType=DOUBLE}, 
+      #{isLadder,jdbcType=TINYINT}, #{payType,jdbcType=VARCHAR}, #{startdate,jdbcType=DATE}, 
+      #{enddate,jdbcType=DATE}, #{validTime,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.good.plat.datacenter.datastat.entity.balanceplat.TBLogplatChannelrate" >
+    insert into tb_logplat_channelrate
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="gameid != null" >
+        gameid,
+      </if>
+      <if test="company != null" >
+        company,
+      </if>
+      <if test="companyid != null" >
+        companyid,
+      </if>
+      <if test="cooperationType != null" >
+        cooperationType,
+      </if>
+      <if test="payRate != null" >
+        payRate,
+      </if>
+      <if test="isPayRate != null" >
+        isPayRate,
+      </if>
+      <if test="taxRate != null" >
+        taxRate,
+      </if>
+      <if test="divideRate != null" >
+        divideRate,
+      </if>
+      <if test="isLadder != null" >
+        isLadder,
+      </if>
+      <if test="payType != null" >
+        payType,
+      </if>
+      <if test="startdate != null" >
+        startdate,
+      </if>
+      <if test="enddate != null" >
+        enddate,
+      </if>
+      <if test="validTime != null" >
+        validTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="gameid != null" >
+        #{gameid,jdbcType=INTEGER},
+      </if>
+      <if test="company != null" >
+        #{company,jdbcType=VARCHAR},
+      </if>
+      <if test="companyid != null" >
+        #{companyid,jdbcType=INTEGER},
+      </if>
+      <if test="cooperationType != null" >
+        #{cooperationType,jdbcType=VARCHAR},
+      </if>
+      <if test="payRate != null" >
+        #{payRate,jdbcType=DOUBLE},
+      </if>
+      <if test="isPayRate != null" >
+        #{isPayRate,jdbcType=TINYINT},
+      </if>
+      <if test="taxRate != null" >
+        #{taxRate,jdbcType=DOUBLE},
+      </if>
+      <if test="divideRate != null" >
+        #{divideRate,jdbcType=DOUBLE},
+      </if>
+      <if test="isLadder != null" >
+        #{isLadder,jdbcType=TINYINT},
+      </if>
+      <if test="payType != null" >
+        #{payType,jdbcType=VARCHAR},
+      </if>
+      <if test="startdate != null" >
+        #{startdate,jdbcType=DATE},
+      </if>
+      <if test="enddate != null" >
+        #{enddate,jdbcType=DATE},
+      </if>
+      <if test="validTime != null" >
+        #{validTime,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.good.plat.datacenter.datastat.entity.balanceplat.TBLogplatChannelrate" >
+    update tb_logplat_channelrate
+    <set >
+      <if test="gameid != null" >
+        gameid = #{gameid,jdbcType=INTEGER},
+      </if>
+      <if test="company != null" >
+        company = #{company,jdbcType=VARCHAR},
+      </if>
+      <if test="companyid != null" >
+        companyid = #{companyid,jdbcType=INTEGER},
+      </if>
+      <if test="cooperationType != null" >
+        cooperationType = #{cooperationType,jdbcType=VARCHAR},
+      </if>
+      <if test="payRate != null" >
+        payRate = #{payRate,jdbcType=DOUBLE},
+      </if>
+      <if test="isPayRate != null" >
+        isPayRate = #{isPayRate,jdbcType=TINYINT},
+      </if>
+      <if test="taxRate != null" >
+        taxRate = #{taxRate,jdbcType=DOUBLE},
+      </if>
+      <if test="divideRate != null" >
+        divideRate = #{divideRate,jdbcType=DOUBLE},
+      </if>
+      <if test="isLadder != null" >
+        isLadder = #{isLadder,jdbcType=TINYINT},
+      </if>
+      <if test="payType != null" >
+        payType = #{payType,jdbcType=VARCHAR},
+      </if>
+      <if test="startdate != null" >
+        startdate = #{startdate,jdbcType=DATE},
+      </if>
+      <if test="enddate != null" >
+        enddate = #{enddate,jdbcType=DATE},
+      </if>
+      <if test="validTime != null" >
+        validTime = #{validTime,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.good.plat.datacenter.datastat.entity.balanceplat.TBLogplatChannelrate" >
+    update tb_logplat_channelrate
+    set gameid = #{gameid,jdbcType=INTEGER},
+      company = #{company,jdbcType=VARCHAR},
+      companyid = #{companyid,jdbcType=INTEGER},
+      cooperationType = #{cooperationType,jdbcType=VARCHAR},
+      payRate = #{payRate,jdbcType=DOUBLE},
+      isPayRate = #{isPayRate,jdbcType=TINYINT},
+      taxRate = #{taxRate,jdbcType=DOUBLE},
+      divideRate = #{divideRate,jdbcType=DOUBLE},
+      isLadder = #{isLadder,jdbcType=TINYINT},
+      payType = #{payType,jdbcType=VARCHAR},
+      startdate = #{startdate,jdbcType=DATE},
+      enddate = #{enddate,jdbcType=DATE},
+      validTime = #{validTime,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

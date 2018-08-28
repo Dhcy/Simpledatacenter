@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.datastat.mapper.project.ProjectGameDetailMapper">
+	<resultMap id="BaseResultMap" type="com.good.plat.datacenter.datastat.entity.project.ProjectGameDetail">
+		<result column="gameid" property="gameid"/>
+		<result column="gameName" property="gameName"/>
+		<result column="channelid" property="channelid"/>
+		<result column="channelName" property="channelName"/>
+		<result column="subchannelid" property="subchannelid"/>
+		<result column="areaid" property="areaid"/>
+		<result column="areaName" property="areaName"/>
+		<result column="statdate" property="statdate"/>
+		<result column="statType" property="statType"/>
+		<result column="rate" property="rate"/>
+		<result column="actvCount" property="actvCount"/>
+		<result column="registerCount" property="registerCount"/>
+		<result column="actUser" property="actUser"/>
+		<result column="payUser" property="payUser"/>
+		<result column="income" property="income"/>
+		<result column="arpu" property="arpu"/>
+		<result column="payTime" property="payTime"/>
+		
+	</resultMap>
+	
+	<sql id="BaseSelect">
+		where statdate between #{startdate} and #{enddate} 
+		<if test="termtypes != null">
+			and termtype in
+			<foreach collection="termtypes" item="term" index="index" open="(" close=")" separator=",">
+				#{term}
+			</foreach>
+		</if>
+		and gameid=#{gameid}
+	</sql>
+	
+	<!--
+	有权限项目下游戏列表
+	-->
+	<select id="selectGameListByProjectId" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		SELECT DISTINCT
+				game.id AS gameid,
+				game. NAME AS gameName,
+				game.projectid
+			FROM
+				tb_logplat_game game,
+				tb_logplat_user_resource res
+			WHERE
+				game.id = res.relationid
+			and game.projectid=#{projectid}
+			AND res.restype = 'game'
+			AND res.userid =#{userid}
+	</select>
+	<!--
+	每个游戏的数据（设备激活,注册账号，活跃用户，付费用户，收入，arpu）
+	-->
+	<select id="selectEveryGameDataList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		SELECT
+			a.statdate,
+			a.actvCount,
+			IFNULL(b.regCnt, 0) AS registerCount,
+			a.actUser,
+			a.payUser,
+			a.income,
+			a.arpu
+		FROM
+			(
+				SELECT
+			statdate,
+			IFNULL(SUM(actvcount), 0) AS actvCount,
+			IFNULL(SUM(loginact), 0) AS actUser,
+			IFNULL(SUM(payact), 0) AS payUser,
+			IFNULL(SUM(income), 0) AS income,
+			IFNULL(
+				round(
+					SUM(income) / SUM(loginact),
+					2
+				),
+				0
+			) AS arpu
+		FROM
+			logplat_daily_rpt
+		<include refid="BaseSelect"/>
+		GROUP BY
+			statdate
+			) a
+		LEFT JOIN (
+			SELECT
+				statdate,
+				IFNULL(SUM(regcnt), 0) AS regCnt
+			FROM
+				logplat_across_stat
+			<include refid="BaseSelect"/>
+			GROUP BY
+				statdate
+			ORDER BY
+				statdate
+		) b ON a.statdate = b.statdate
+	</select>
+	<!--
+	付费次数
+	-->
+	<select id="selectEveryGamePayTime" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		SELECT
+		statdate,
+		IFNULL(count(*), 0) AS payTime
+	FROM
+		logplat_actor_recharge
+	<include refid="BaseSelect"/>
+	GROUP BY
+		statdate
+		</select>
+</mapper>
+	
+	
+	
+	

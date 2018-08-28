@@ -1,0 +1,144 @@
+{
+  "proportionOfItemSaleByCategoryAll": [
+    {
+      "sumOfSpendingPercentage": 36.3,
+      "numberOfSpending": 6858.0,
+      "virtualGoods": "item45",
+      "numberOfSpendingPercentage": 21.2,
+      "sumOfSpending": 11505600.0
+    },
+    {
+      "sumOfSpendingPercentage": 9.0,
+      "numberOfSpending": 5706.0,
+      "virtualGoods": "item51",
+      "numberOfSpendingPercentage": 17.6,
+      "sumOfSpending": 2847600.0
+    },
+    {
+      "sumOfSpendingPercentage": 0.0,
+      "numberOfSpending": 1.0,
+      "virtualGoods": "item73",
+      "numberOfSpendingPercentage": 0.0,
+      "sumOfSpending": 600.0
+    },
+    {
+      "sumOfSpendingPercentage": 3.3,
+      "numberOfSpending": 1751.0,
+      "virtualGoods": "item44",
+      "numberOfSpendingPercentage": 5.4,
+      "sumOfSpending": 1050600.0
+    },
+    {
+      "sumOfSpendingPercentage": 26.7,
+      "numberOfSpending": 9118.0,
+      "virtualGoods": "item70",
+      "numberOfSpendingPercentage": 28.2,
+      "sumOfSpending": 8478900.0
+    },
+    {
+      "sumOfSpendingPercentage": 7.2,
+      "numberOfSpending": 5738.0,
+      "virtualGoods": "item50",
+      "numberOfSpendingPercentage": 17.7,
+      "sumOfSpending": 2295200.0
+    },
+    {
+      "sumOfSpendingPercentage": 5.2,
+      "numberOfSpending": 288.0,
+      "virtualGoods": "item02",
+      "numberOfSpendingPercentage": 0.9,
+      "sumOfSpending": 1659000.0
+    },
+    {
+      "sumOfSpendingPercentage": 0.0,
+      "numberOfSpending": 1111.0,
+      "virtualGoods": "item27",
+      "numberOfSpendingPercentage": 3.4,
+      "sumOfSpending": 9404.0
+    },
+    {
+      "sumOfSpendingPercentage": 2.0,
+      "numberOfSpending": 1072.0,
+      "virtualGoods": "item07",
+      "numberOfSpendingPercentage": 3.3,
+      "sumOfSpending": 633800.0
+    },
+    {
+      "sumOfSpendingPercentage": 0.2,
+      "numberOfSpending": 15.0,
+      "virtualGoods": "item09",
+      "numberOfSpendingPercentage": 0.0,
+      "sumOfSpending": 67500.0
+    },
+    {
+      "sumOfSpendingPercentage": 3.7,
+      "numberOfSpending": 274.0,
+      "virtualGoods": "item03",
+      "numberOfSpendingPercentage": 0.8,
+      "sumOfSpending": 1176300.0
+    },
+    {
+      "sumOfSpendingPercentage": 0.0,
+      "numberOfSpending": 1.0,
+      "virtualGoods": "item15",
+      "numberOfSpendingPercentage": 0.0,
+      "sumOfSpending": 1000.0
+    },
+    {
+      "sumOfSpendingPercentage": 0.0,
+      "numberOfSpending": 1.0,
+      "virtualGoods": "item16",
+      "numberOfSpendingPercentage": 0.0,
+      "sumOfSpending": 1500.0
+    },
+    {
+      "sumOfSpendingPercentage": 0.0,
+      "numberOfSpending": 1.0,
+      "virtualGoods": "item10",
+      "numberOfSpendingPercentage": 0.0,
+      "sumOfSpending": 400.0
+    },
+    {
+      "sumOfSpendingPercentage": 0.0,
+      "numberOfSpending": 1.0,
+      "virtualGoods": "item11",
+      "numberOfSpendingPercentage": 0.0,
+      "sumOfSpending": 1000.0
+    },
+    {
+      "sumOfSpendingPercentage": 5.8,
+      "numberOfSpending": 309.0,
+      "virtualGoods": "itemfd",
+      "numberOfSpendingPercentage": 1.0,
+      "sumOfSpending": 1842000.0
+    },
+    {
+      "sumOfSpendingPercentage": 0.0,
+      "numberOfSpending": 1.0,
+      "virtualGoods": "item14",
+      "numberOfSpendingPercentage": 0.0,
+      "sumOfSpending": 2000.0
+    },
+    {
+      "sumOfSpendingPercentage": 0.3,
+      "numberOfSpending": 107.0,
+      "virtualGoods": "item05",
+      "numberOfSpendingPercentage": 0.3,
+      "sumOfSpending": 107000.0
+    },
+    {
+      "sumOfSpendingPercentage": 0.0,
+      "numberOfSpending": 2.0,
+      "virtualGoods": "item17",
+      "numberOfSpendingPercentage": 0.0,
+      "sumOfSpending": 9000.0
+    },
+    {
+      "sumOfSpendingPercentage": 0.0,
+      "numberOfSpending": 4.0,
+      "virtualGoods": "item26",
+      "numberOfSpendingPercentage": 0.0,
+      "sumOfSpending": 12000.0
+    }
+  ]
+}

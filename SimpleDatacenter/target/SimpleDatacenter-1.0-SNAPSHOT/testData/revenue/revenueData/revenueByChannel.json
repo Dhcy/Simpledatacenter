@@ -1,0 +1,24 @@
+{
+  "revenueByChannel": [
+    {
+      "percentage": 53.7,
+      "data": 392.96,
+      "channel": "Android渠道二"
+    },
+    {
+      "percentage": 36.6,
+      "data": 267.36,
+      "channel": "iOS渠道二"
+    },
+    {
+      "percentage": 9.2,
+      "data": 67.36,
+      "channel": "机锋"
+    },
+    {
+      "percentage": 0.5,
+      "data": 3.68,
+      "channel": "iOS渠道三"
+    }
+  ]
+} 

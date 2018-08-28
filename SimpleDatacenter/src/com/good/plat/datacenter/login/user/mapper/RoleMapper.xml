@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.login.user.mapper.RoleMapper" >
+  <resultMap id="BaseResultMap" type="com.good.plat.datacenter.login.user.entity.Role" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="rolename" property="rolename" jdbcType="CHAR" />
+    <result column="isvalid" property="isvalid" jdbcType="TINYINT" />
+  </resultMap>
+  
+  <resultMap id="RoleUIMap" type="com.good.plat.datacenter.login.user.entity.Role" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="rolename" property="rolename" jdbcType="CHAR" />
+    <result column="isvalid" property="isvalid" jdbcType="TINYINT" />
+    <collection property="menuList" ofType="com.good.plat.datacenter.login.user.entity.SecondMenu">
+    	<id column="menu_id" property="id"/>
+    	<result column="menu_firstId" property="firstId"/>
+    	<result column="menu_key" property="key"/>
+    	<result column="menu_name" property="name"/>
+    	<result column="menu_actkey" property="actkey"/>
+    	<result column="menu_url" property="url"/>
+    	<result column="menu_permission" property="permission"/>
+    </collection>
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, rolename, isvalid
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_logplat_role
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectRoleList" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_logplat_role
+    order by id
+  </select>
+  
+  <select id="updateRoleUI" resultMap="RoleUIMap" parameterType="java.lang.Integer" >
+  	select 
+		role.id, role.rolename, role.isvalid, 
+		menu.id as menu_id, 
+		menu.firstId as menu_firstId, 
+		menu.secondKey as menu_key, 
+		menu.secondName as menu_name, 
+		menu.actkey as menu_actkey, 
+		menu.url as menu_url, 
+		menu.permission as menu_permission 
+	from 
+		tb_logplat_role role left join tb_logplat_role_permission role_menu 
+		on role.id=role_menu.roleid left join tb_logplat_second_menu menu 
+		on menu.id=role_menu.menuid 
+	where 
+		role.id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectByRole" resultMap="BaseResultMap" parameterType="com.good.plat.datacenter.login.user.entity.Role" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_logplat_role
+    where 1=1
+    <if test="id != null">
+    	and id = #{id,jdbcType=INTEGER}
+    </if>
+    <if test="rolename != null">
+    	and rolename = #{rolename}
+    </if>
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_logplat_role
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  
+  <delete id="deleteRoleMenuByRole" parameterType="com.good.plat.datacenter.login.user.entity.Role" >
+    delete from tb_logplat_role_permission
+    where roleid = #{id,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insert" parameterType="com.good.plat.datacenter.login.user.entity.Role" >
+    insert into tb_logplat_role (id, rolename, isvalid
+      )
+    values (#{id,jdbcType=INTEGER}, #{rolename,jdbcType=CHAR}, #{isvalid,jdbcType=TINYINT}
+      )
+  </insert>
+  
+  <insert id="insertRoleMenu" parameterType="com.good.plat.datacenter.login.user.entity.Role" >
+    insert into tb_logplat_role_permission (roleid, menuid) values 
+    <foreach collection="menuList" item="menu" separator="," index="index">
+     (#{id,jdbcType=INTEGER}, #{menu.id,jdbcType=INTEGER})
+    </foreach>
+  </insert>
+  
+  <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id"  parameterType="com.good.plat.datacenter.login.user.entity.Role" >
+    insert into tb_logplat_role
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="rolename != null" >
+        rolename,
+      </if>
+      <if test="isvalid != null" >
+        isvalid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="rolename != null" >
+        #{rolename,jdbcType=CHAR},
+      </if>
+      <if test="isvalid != null" >
+        #{isvalid,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.good.plat.datacenter.login.user.entity.Role" >
+    update tb_logplat_role
+    <set >
+      <if test="rolename != null" >
+        rolename = #{rolename,jdbcType=CHAR},
+      </if>
+      <if test="isvalid != null" >
+        isvalid = #{isvalid,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateByPrimaryKey" parameterType="com.good.plat.datacenter.login.user.entity.Role" >
+    update tb_logplat_role
+    set rolename = #{rolename,jdbcType=CHAR},
+      isvalid = #{isvalid,jdbcType=TINYINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

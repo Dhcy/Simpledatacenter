@@ -1,0 +1,747 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.datastat.mapper.sdkdata.SDKDataAnalysisMapper" >
+  <resultMap id="BaseResultMap" type="com.good.plat.datacenter.datastat.entity.sdkdata.SdkDataSummary" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="gameid" property="gameid" jdbcType="INTEGER" />
+    <result column="statdate" property="statdate" jdbcType="DATE" />
+    <result column="os" property="os" jdbcType="INTEGER" />
+    <result column="sourceid" property="sourceid" jdbcType="INTEGER" />
+    <result column="source" property="source" jdbcType="VARCHAR" />
+    <result column="activate" property="activate" jdbcType="INTEGER" />
+    <result column="all_regist" property="all_regist" jdbcType="INTEGER" />
+    <result column="game_regist" property="game_regist" jdbcType="INTEGER" />
+    <result column="login" property="login" jdbcType="INTEGER" />
+    <result column="all_rechg" property="all_rechg" jdbcType="INTEGER" />
+    <result column="new_actor" property="new_actor" jdbcType="INTEGER" />
+    <result column="new_rechg" property="new_rechg" jdbcType="INTEGER" />
+    <result column="all_money" property="all_money" jdbcType="DECIMAL" />
+    <result column="new_money" property="new_money" jdbcType="DECIMAL" />
+    <result column="rechg_time" property="rechg_time" jdbcType="INTEGER" />
+    <!--  -->
+    <result column="gameName" property="gameName" jdbcType="VARCHAR" />
+    <!--  -->
+    <result column="page_id" property="page_id" jdbcType="INTEGER" />
+    <result column="page_name" property="page_name" jdbcType="VARCHAR" />
+    <result column="dl_count" property="dl_count" jdbcType="INTEGER" />
+    <result column="dl_count2" property="dl_count2" jdbcType="INTEGER" />
+    <result column="dl_user_count" property="dl_user_count" jdbcType="INTEGER" />
+    <!--  -->
+    <result column="cross_login" property="cross_login" jdbcType="INTEGER" />
+    <result column="new_actor" property="new_actor" jdbcType="INTEGER" />
+    <result column="new_money" property="new_money" jdbcType="DECIMAL" />
+    <result column="new_recharge" property="new_recharge" jdbcType="INTEGER" />
+    <result column="1day" property="day1" jdbcType="INTEGER" />
+    <result column="3day" property="day3" jdbcType="INTEGER" />
+    <result column="7day" property="day7" jdbcType="INTEGER" />
+    <result column="30day" property="day30" jdbcType="INTEGER" />
+	<!--  -->    
+	<result column="way" property="way" jdbcType="VARCHAR" />
+    <result column="regsit" property="regsit" jdbcType="INTEGER" />
+    
+    <result column="total_login" property="total_login" jdbcType="INTEGER" />
+    <result column="total_money" property="total_money" jdbcType="DECIMAL" />
+    <result column="total_lost" property="total_lost" jdbcType="INTEGER" />
+    <result column="total_return" property="total_return" jdbcType="INTEGER" />
+	<!--  -->
+	
+    <!--  -->
+    <result column="category_id" property="category_id" jdbcType="VARCHAR" />
+    <result column="category_name" property="category_name" jdbcType="VARCHAR" />
+   
+    <result column="pv" property="pv" jdbcType="INTEGER" />
+    <result column="uv" property="uv" jdbcType="INTEGER" />
+    <!--  -->
+    <result column="vip_level" property="vip_level" jdbcType="INTEGER" />
+    <result column="total_vip" property="total_vip" jdbcType="INTEGER" />
+    <result column="total_vip_money" property="total_vip_money" jdbcType="DECIMAL" />
+    <result column="new_vip" property="new_vip" jdbcType="INTEGER" />
+    <result column="new_vip_money" property="new_vip_money" jdbcType="DECIMAL" />
+    <result column="vip_recharge" property="vip_recharge" jdbcType="INTEGER" />
+    <result column="vip_money" property="vip_money" jdbcType="DECIMAL" />
+    <result column="vip_lost" property="vip_lost" jdbcType="INTEGER" />
+    <result column="vip_return" property="vip_return" jdbcType="INTEGER" />
+    <!--  -->
+    
+    <!-- sdk 数据总览 -->
+    <!--   arrpu,  arpu,  payrate, -->
+    <result column="arrpu" property="arrpu" jdbcType="DECIMAL" />
+    <result column="arpu" property="arpu" jdbcType="DECIMAL" />
+    <result column="payrate" property="payrate" jdbcType="DECIMAL" />
+    <!-- total_recharge,lost,lost_return -->
+    <result column="total_recharge" property="total_recharge" jdbcType="INTEGER" />
+    <result column="lost" property="lost" jdbcType="INTEGER" />
+    <result column="lost_return" property="lost_return" jdbcType="INTEGER" />
+    <!-- sdk 新增数据 -->
+    <!-- active_regist_rate -->
+    <result column="active_regist_rate" property="active_regist_rate" jdbcType="DECIMAL" />
+    <result column="regist_actor_rate" property="regist_actor_rate" jdbcType="DECIMAL" />
+    <!-- payrate -->
+    <result column="day1rate" property="day1rate" jdbcType="DECIMAL" />
+    <result column="day3rate" property="day3rate" jdbcType="DECIMAL" />
+    <result column="day7rate" property="day7rate" jdbcType="DECIMAL" />
+    <result column="day30rate" property="day30rate" jdbcType="DECIMAL" />
+    <!-- 浏览统计 -->
+    <result column="pv_uv_rate" property="pv_uv_rate" jdbcType="DECIMAL" />
+    <!--    day1rate,  day3rate,  day7rate, day30rate -->
+    <result column="day1rate" property="day1rate" jdbcType="DECIMAL" />
+    <result column="day3rate" property="day3rate" jdbcType="DECIMAL" />
+    <result column="day7rate" property="day7rate" jdbcType="DECIMAL" />
+    <result column="day30rate" property="day30rate" jdbcType="DECIMAL" />
+    <!-- 下载统计 -->
+    <result column="cross_login_user_count_rate" property="cross_login_user_count_rate" jdbcType="DECIMAL" />
+    <result column="new_actor_new_regist_rate" property="new_actor_new_regist_rate" jdbcType="DECIMAL" />
+    <!-- VIP新增 -->
+    <result column="vip_avg_money" property="vip_avg_money" jdbcType="DECIMAL" />
+    
+  </resultMap>
+  
+  <resultMap type="com.good.plat.datacenter.datastat.entity.sdkdata.SdkDataVipDistInfo" id="SdkDataVipDistInfoMap">
+  	<id column="id" property="id" jdbcType="INTEGER" />
+    <result column="gameid" property="gameid" jdbcType="INTEGER" />
+    <result column="statdate" property="statdate" jdbcType="DATE" />
+    <result column="os" property="os" jdbcType="INTEGER" />
+    <result column="sourceid" property="sourceid" jdbcType="INTEGER" />
+    <result column="source" property="source" jdbcType="VARCHAR" />
+    <result column="activate" property="activate" jdbcType="INTEGER" />
+    <result column="all_regist" property="all_regist" jdbcType="INTEGER" />
+    <result column="game_regist" property="game_regist" jdbcType="INTEGER" />
+    <result column="login" property="login" jdbcType="INTEGER" />
+    <result column="all_rechg" property="all_rechg" jdbcType="INTEGER" />
+    <result column="new_actor" property="new_actor" jdbcType="INTEGER" />
+    <result column="new_rechg" property="new_rechg" jdbcType="INTEGER" />
+    <result column="all_money" property="all_money" jdbcType="DECIMAL" />
+    <result column="new_money" property="new_money" jdbcType="DECIMAL" />
+    <result column="rechg_time" property="rechg_time" jdbcType="INTEGER" />
+  	<!-- VIP 等级分布 -->
+    <result column="lvl0" property="lvl0" jdbcType="INTEGER" />
+    <result column="lvl1" property="lvl1" jdbcType="INTEGER" />
+    <result column="lvl2" property="lvl2" jdbcType="INTEGER" />
+    <result column="lvl3" property="lvl3" jdbcType="INTEGER" />
+    <result column="lvl4" property="lvl4" jdbcType="INTEGER" />
+    <result column="lvl5" property="lvl5" jdbcType="INTEGER" />
+    <result column="lvl6" property="lvl6" jdbcType="INTEGER" />
+    <result column="lvl7" property="lvl7" jdbcType="INTEGER" />
+    <result column="lvl8" property="lvl8" jdbcType="INTEGER" />
+    <result column="lvl9" property="lvl9" jdbcType="INTEGER" />
+    <result column="lvl10" property="lvl10" jdbcType="INTEGER" />
+    <result column="lvl11" property="lvl11" jdbcType="INTEGER" />
+    <result column="lvl12" property="lvl12" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id,gameid,statdate, os, sourceid, source, activate, all_regist, game_regist, login, 
+    all_rechg, new_actor, new_rechg, all_money, new_money, rechg_time
+  </sql>
+  <sql id="Base_Where_Clause">
+  		statdate between #{startdate} and #{enddate}
+  	 	<if test="systemid != null">
+			and os=#{systemid,jdbcType=INTEGER}
+		</if>
+  </sql>
+  <sql id="A_Base_Where_Clause">
+  		a.statdate between #{startdate} and #{enddate}
+  	 	<if test="systemid != null and systemid > 0">
+			and a.os=#{systemid,jdbcType=INTEGER}
+		</if>
+		<if test="gameid != null and gameid > 0">
+			and a.gameid=#{gameid,jdbcType=INTEGER}
+		</if>
+  </sql>
+		<!-- <if test="statdate != null">
+			and termtype in
+			<foreach collection="termtypes" item="term" index="index" open="(" close=")" separator=",">
+				#{term}
+			</foreach>
+		</if> -->
+  <!-- 数据总览 -->
+  <!-- 日期	系统	总注册用户	总活跃用户	总充值金额	总充值人数	总充值次数	总arrpu	总arpu	总付费率	累积付费玩家	 总流失用户	总回流用户
+   -->
+   <select id="selectSDKDataSummary" resultMap="BaseResultMap" parameterType="com.good.plat.datacenter.common.base.SDKDataBaseSearchData">
+   
+   		SELECT
+		a.statdate,
+		a.os,
+		a.all_regist,
+		ifnull(a.login,0) as login,
+		ifnull(a.all_money,0) as all_money,
+		ifnull(a.all_rechg,0) as all_rechg,
+		ifnull(a.rechg_time,0) as rechg_time,
+		ifnull(a.arrpu,0) as arrpu,
+		ifnull(a.arpu,0) as arpu,
+		ifnull(a.payrate,0) as payrate,
+		ifnull(b.total_recharge,0) as total_recharge, 
+		ifnull(b.lost,0) as lost,
+		ifnull(b.lost_return,0) as lost_return
+		FROM
+			(
+				SELECT
+					statdate,
+					os,
+					ifnull(sum(all_regist), 0) AS all_regist,
+					ifnull(sum(login), 0) AS login,
+					ifnull(sum(all_money), 0) AS all_money,
+					ifnull(sum(all_rechg), 0) AS all_rechg,
+					ifnull(sum(rechg_time), 0) AS rechg_time,
+					ifnull(
+						sum(all_money) / sum(all_rechg),
+						0
+					) AS arrpu,
+					ifnull(
+						sum(all_money) / sum(login),
+						0
+					) AS arpu,
+					ifnull(
+						sum(all_rechg) / sum(login),
+						0
+					) AS payrate
+				FROM
+					sdk_daily_report
+				WHERE
+					<include refid="Base_Where_Clause"/>
+				GROUP BY
+					statdate,
+					os
+			) a
+		LEFT JOIN (
+			SELECT
+				statdate,
+				os,
+				ifnull(sum(total_recharge), 0) AS total_recharge,
+				ifnull(sum(lost), 0) AS lost,
+				ifnull(sum(lost_return), 0) AS lost_return
+			FROM
+				sdk_lost_retain_stat
+			WHERE
+				<include refid="Base_Where_Clause"/>
+			GROUP BY
+				statdate,
+				os
+		) b ON a.statdate = b.statdate
+		AND a.os = b.os 
+  </select>
+  <!-- 数据总览明细 -->
+  <!-- 日期	系统	来源名称	对应ID	总注册用户	总活跃用户	总充值金额	总充值人数	充值次数	arrpu	arpu	总付费率	累积付费玩家	流失用户	回流用户
+   -->
+  <select id="selectSDKDataSummaryDetail" resultMap="BaseResultMap" parameterType="com.good.plat.datacenter.common.base.SDKDataBaseSearchData">
+		  	SELECT
+				a.statdate,
+				a.os,
+				a.sourceid,
+				a.source,
+				IFNULL(a.all_regist, 0) AS all_regist,
+				IFNULL(a.login, 0) AS login,
+				IFNULL(a.all_money, 0) AS all_money,
+				IFNULL(a.all_rechg, 0) AS all_rechg,
+				IFNULL(a.rechg_time, 0) AS rechg_time,
+				IFNULL(a.arrpu, 0) AS arrpu,
+				IFNULL(a.arpu, 0) AS arpu,
+				IFNULL(a.payrate, 0) AS payrate,
+				IFNULL(b.total_recharge, 0) AS total_recharge,
+				IFNULL(b.lost, 0) AS lost,
+				IFNULL(b.lost_return, 0) AS lost_return
+			FROM
+				(
+					SELECT
+						statdate,
+						os,
+						sourceid,
+						source,
+						ifnull(sum(all_regist), 0) AS all_regist,
+						ifnull(sum(login), 0) AS login,
+						ifnull(sum(all_money), 0) AS all_money,
+						ifnull(sum(all_rechg), 0) AS all_rechg,
+						ifnull(sum(rechg_time), 0) AS rechg_time,
+						ifnull(
+							sum(all_money) / sum(all_rechg),
+							0
+						) AS arrpu,
+						ifnull(
+							sum(all_money) / sum(login),
+							0
+						) AS arpu,
+						ifnull(
+							sum(all_rechg) / sum(login),
+							0
+						) AS payrate
+					FROM
+						sdk_daily_report
+					WHERE
+						<include refid="Base_Where_Clause"/>
+					GROUP BY
+						statdate,
+						os,
+						sourceid,
+						source
+				) a
+			LEFT JOIN (
+				SELECT
+					statdate,
+					os,
+					sourceid,
+					source,
+					ifnull(sum(total_recharge), 0) AS total_recharge,
+					ifnull(sum(lost), 0) AS lost,
+					ifnull(sum(lost_return), 0) AS lost_return
+				FROM
+					sdk_lost_retain_stat
+				WHERE
+					<include refid="Base_Where_Clause"/>
+				GROUP BY
+					statdate,
+					os,
+					sourceid,
+					source
+			) b ON a.statdate = b.statdate
+			AND a.os = b.os
+			AND a.sourceid = b.sourceid
+			AND a.source = b.source
+  </select>
+  <!-- 新增数据 -->
+  <!-- 日期	系统	新增激活	新增注册	注册转化率	新增创角数	新增创角转化率	新增充值人数	   新增充值金额	新增付费率	arppu	arpu	次日留存	3日留存	7日留存	30日留存
+   -->
+  <select id="selectSDKDataNewAddData" resultMap="BaseResultMap" parameterType="com.good.plat.datacenter.common.base.SDKDataBaseSearchData" >
+   SELECT 
+		a.statdate,
+		a.os,
+		ifnull(a.activate,0) as activate,
+		ifnull(a.game_regist,0) as game_regist,
+		ifnull(a.active_regist_rate,0) as active_regist_rate,
+		ifnull(a.new_actor,0) as new_actor,
+		ifnull(a.regist_actor_rate,0) as regist_actor_rate,
+		ifnull(a.new_rechg,0) as new_rechg,
+		ifnull(a.new_money,0) as new_money,
+		ifnull(a.payrate,0) as payrate,
+		ifnull(a.arrpu,0) as arrpu,
+		ifnull(a.arpu,0) as arpu,
+			ifnull(
+			b.day1/a.all_regist,
+				0
+			) AS day1rate,
+			ifnull(
+				b.day3 /a.all_regist,
+				0
+			) AS day3rate,
+			ifnull(
+				b.day7/a.all_regist,
+				0
+			) AS day7rate,
+			ifnull(
+				b.day30 /a.all_regist,
+				0
+			) AS day30rate
+		FROM
+		(SELECT
+			statdate,
+			os,
+			ifnull(sum(all_regist), 0) AS all_regist,
+			ifnull(sum(activate), 0) AS activate,
+			ifnull(sum(game_regist), 0) AS game_regist,
+			ifnull(
+				sum(game_regist) / sum(activate),
+				0
+			) AS active_regist_rate,
+			ifnull(sum(new_actor), 0) AS new_actor,
+			ifnull(
+				sum(new_actor) / sum(game_regist),
+				0
+			) AS regist_actor_rate,
+			ifnull(sum(new_rechg), 0) AS new_rechg,
+			ifnull(sum(new_money), 0) AS new_money,
+			ifnull(
+				sum(new_rechg) / sum(game_regist),
+				0
+			) AS payrate,
+			ifnull(
+				sum(new_money) / sum(new_rechg),
+				0
+			) AS arrpu,
+			ifnull(
+				sum(new_money) / sum(game_regist),
+				0
+			) AS arpu
+		from sdk_daily_report
+		WHERE
+		<include refid="Base_Where_Clause"/>
+		GROUP BY
+			statdate,
+			os)a
+		LEFT JOIN
+		(SELECT
+		statdate,
+		os,
+		ifnull(
+				sum(day1),
+				0
+			) AS day1,
+			ifnull(
+				sum(day3),
+				0
+			) AS day3,
+			ifnull(
+				sum(day7),
+				0
+			) AS day7,
+			ifnull(
+				sum(day30),
+				0
+			) AS day30
+		from sdk_lost_retain_stat 
+		WHERE
+		<include refid="Base_Where_Clause"/>
+		GROUP BY 
+		statdate,
+		os)b
+		on a.statdate=b.statdate
+		and a.os=b.os
+  </select>
+  <!-- 新增数据明细 -->
+  <!-- 日期	系统	来源名称	对应ID	新增激活	新增注册	注册转化率	新增创角数	新增创角转化率	新增充值人数	新增充值金额	新增付费率	arppu	arpu	次日留存	3日留存	7日留存	30日留存
+   -->
+  <select id="selectSDKDataNewAddDataDetail" resultMap="BaseResultMap" parameterType="com.good.plat.datacenter.common.base.SDKDataBaseSearchData" >
+    SELECT 
+		a.statdate,
+		a.os,
+		a.sourceid,
+		a.source,
+		ifnull(a.activate,0) as activate,
+		ifnull(a.game_regist,0) as game_regist,
+		ifnull(a.active_regist_rate,0) as active_regist_rate,
+		ifnull(a.new_actor,0) as new_actor,
+		ifnull(a.regist_actor_rate,0) as regist_actor_rate,
+		ifnull(a.new_rechg,0) as new_rechg,
+		ifnull(a.new_money,0) as new_money,
+		ifnull(a.payrate,0) as payrate,
+		ifnull(a.arrpu,0) as arrpu,
+		ifnull(a.arpu,0) as arpu,
+		IFNULL(b.day1/a.all_regist,0) as day1rate,
+		IFNULL(b.day3/a.all_regist,0) as day3rate,
+		IFNULL(b.day7/a.all_regist,0) as day7rate,
+		IFNULL(b.day30/a.all_regist,0) as day30rate
+		FROM
+		(SELECT
+			statdate,
+			os,
+			sourceid,
+			source,
+			ifnull(sum(all_regist), 0) AS all_regist,
+			ifnull(sum(activate), 0) AS activate,
+			ifnull(sum(game_regist), 0) AS game_regist,
+			ifnull(
+				sum(game_regist) / sum(activate),
+				0
+			) AS active_regist_rate,
+			ifnull(sum(new_actor), 0) AS new_actor,
+			ifnull(
+				sum(new_actor) / sum(game_regist),
+				0
+			) AS regist_actor_rate,
+			ifnull(sum(new_rechg), 0) AS new_rechg,
+			ifnull(sum(new_money), 0) AS new_money,
+			ifnull(
+				sum(new_rechg) / sum(game_regist),
+				0
+			) AS payrate,
+			ifnull(
+				sum(new_money) / sum(new_rechg),
+				0
+			) AS arrpu,
+			ifnull(
+				sum(new_money) / sum(game_regist),
+				0
+			) AS arpu
+		FROM
+			sdk_daily_report
+		WHERE
+			<include refid="Base_Where_Clause"/>
+		GROUP BY
+			statdate,
+			os,
+			sourceid,
+			source)a
+		LEFT JOIN
+		(SELECT
+			statdate,
+			os,
+			sourceid,
+			source,
+		ifnull(sum(day1),0) as day1,
+		ifnull(sum(day3),0) as day3,
+		ifnull(sum(day7),0) as day7,
+		ifnull(sum(day30),0) as day30
+		from sdk_lost_retain_stat 
+		WHERE
+			<include refid="Base_Where_Clause"/>
+		GROUP BY
+			statdate,
+			os,
+			sourceid,
+			source)b
+		on a.statdate=b.statdate
+		and a.os=b.os
+		and a.sourceid=b.sourceid
+		and a.source=b.source	
+
+  </select>
+  <!-- 登录分析 -->
+  <!-- 日期	账号登录方式	 新增注册	新增充值人数 	新增充值金额	 总活跃用户	总充值人数	总充值金额	总流失用户	总回流用户
+   -->
+  <select id="selectSDKLoginAnalysis" resultMap="BaseResultMap" parameterType="com.good.plat.datacenter.common.base.SDKDataBaseSearchData" >
+    select a.statdate,a.way,
+    ifnull(sum(a.regsit),0) as regsit,
+    ifnull(sum(a.new_recharge),0) as new_recharge,
+    ifnull(sum(a.new_money),0) as new_money,
+    ifnull(sum(a.total_login),0) as total_login,
+    ifnull(sum(a.total_recharge),0) as total_recharge,
+    ifnull(sum(a.total_money),0) as total_money,
+    ifnull(sum(a.total_lost),0) as total_lost,
+    ifnull(sum(a.total_return),0) as total_return
+    from sdk_login_stat a 
+    where <include refid="A_Base_Where_Clause"/>
+    group by a.statdate,a.way
+
+  </select>
+   <!-- 浏览统计 -->
+  <!-- 日期	主界面ID	界面名称	浏览量	  账号数	占比
+   -->
+  <select id="selectSDKBrowseSummary" resultMap="BaseResultMap" parameterType="com.good.plat.datacenter.common.base.SDKDataBaseSearchData" >
+    select a.statdate,a.category_id,a.category_name,
+    ifnull(sum(a.pv),0) as pv,
+    ifnull(sum(a.uv),0) as uv,
+    ifnull(sum(a.uv)/(select sum(b.login) from sdk_daily_report b WHERE a.statdate=b.statdate),0) as pv_uv_rate
+    from sdk_page_view a
+    where <include refid="A_Base_Where_Clause"/>
+    group by a.statdate,a.category_id,a.category_name
+  </select>
+  <!-- 浏览统计明细  -->
+  <!-- 日期	界面ID	界面名称	浏览量	  账号数	占比
+   -->
+  <select id="selectSDKBrowseSummaryDetail" resultMap="BaseResultMap" parameterType="com.good.plat.datacenter.common.base.SDKDataBaseSearchData" >
+   select a.statdate,a.page_id,a.page_name,
+    ifnull(sum(a.pv),0) as pv,
+    ifnull(sum(a.uv),0) as uv,
+    ifnull(sum(a.uv)/(select sum(b.login) from sdk_daily_report b WHERE a.statdate=b.statdate),0) as pv_uv_rate
+    from sdk_page_view a
+   where <include refid="A_Base_Where_Clause"/>  and a.category_id=#{categoryId,jdbcType=VARCHAR}
+    group by a.statdate,a.page_id
+  </select>
+  <!-- 下载统计 -->
+  <!-- 日期	游戏	系统	下载次数	下载账号数	交叉登录数[交叉渗透数]	交叉渗透率	新增创角数	新增创角转化率	新增充值金额 	新增充值人数	 新增付费率	arpu	arrpu	次日留存	3日留存	7日留存	30日留存
+   -->
+  <select id="selectSDKDownloadSummary" resultMap="BaseResultMap" parameterType="com.good.plat.datacenter.common.base.SDKDataBaseSearchData" >
+  	select a.* , b.name as gameName from (
+    select a.statdate,a.gameid,a.os,
+    ifnull(sum(a.dl_count),0) as dl_count,
+    ifnull(sum(a.dl_count2),0) as dl_count2,
+    ifnull(sum(a.dl_user_count),0) as dl_user_count,
+    ifnull(sum(a.cross_login),0) as cross_login,
+    ifnull(sum(a.cross_login)/sum(a.dl_user_count),0) as cross_login_user_count_rate,
+    ifnull(sum(a.new_actor),0) as new_actor,
+    ifnull(sum(a.new_actor)/sum(a.cross_login),0) as new_actor_new_regist_rate,
+    ifnull(sum(a.new_money),0) as new_money,
+    ifnull(sum(a.new_recharge),0) as new_recharge,
+    ifnull(sum(a.new_recharge)/sum(a.cross_login),0) as payrate,
+    ifnull(sum(a.new_money)/sum(a.cross_login),0) as arpu,
+    ifnull(sum(a.new_money)/sum(a.new_recharge),0) as arrpu,
+    ifnull(sum(a.1day)/sum(a.cross_login),0) as day1rate,
+    ifnull(sum(a.3day)/sum(a.cross_login),0) as day3rate,
+    ifnull(sum(a.7day)/sum(a.cross_login),0) as day7rate,
+    ifnull(sum(a.30day)/sum(a.cross_login),0) as day30rate
+    from sdk_download_stat a
+    where <include refid="A_Base_Where_Clause"/>
+    group by a.statdate,a.gameid,a.os
+	) a left join tb_logplat_game b on(a.gameid=b.id)
+  </select>
+  <!-- 下载来源统计 -->
+  <!-- 日期	游戏	系统	下载次数	下载账号数
+   -->
+  <select id="selectSDKDownloasdSourceSummary" resultMap="BaseResultMap" parameterType="com.good.plat.datacenter.common.base.SDKDataBaseSearchData" >
+  	SELECT
+		a.*, b. NAME AS gameName
+	FROM
+		(
+			SELECT
+				a.statdate,
+				a.gameid,
+				a.os,
+				ifnull(sum(a.dl_count), 0) AS dl_count,
+				ifnull(sum(a.dl_user_count), 0) AS dl_user_count
+			FROM
+				sdk_download_src_stat a
+			WHERE
+				<include refid="A_Base_Where_Clause"/>
+			AND a.page_id =-1
+			GROUP BY
+				a.statdate,
+				a.gameid,
+				a.os
+		) a
+	LEFT JOIN tb_logplat_game b ON (a.gameid = b.id)
+  </select>
+  <!-- 下载来源明细 -->
+  <!-- 日期	游戏	系统	下载次数	来源界面1	来源界面2	来源界面3	来源界面4	来源界面5	来源界面6	来源界面7
+   -->
+  <select id="selectSDKDownloasdSourceDetail" resultMap="BaseResultMap" parameterType="com.good.plat.datacenter.common.base.SDKDataBaseSearchData" >
+		  SELECT
+			a.*,
+			b. NAME AS gameName
+		FROM
+			(
+				SELECT
+					a.statdate,
+					a.gameid,
+					a.os,
+					ifnull(sum(a.dl_count), 0) AS dl_count,
+					a.page_id,
+					a.page_name
+				FROM
+					sdk_download_src_stat a
+				WHERE
+				<include refid="A_Base_Where_Clause"/>
+				and page_id<![CDATA[<>]]>-1
+				GROUP BY
+					a.statdate,
+					a.gameid,
+					a.os,
+					a.page_id,
+					a.page_name
+				ORDER BY
+					a.statdate,
+					a.gameid,
+					a.os,
+					a.page_id
+			) a
+		LEFT JOIN tb_logplat_game b ON (a.gameid = b.id)
+  </select>
+
+  <!-- VIP新增  -->
+  <!-- 日期	系统	新增VIP数	新增VIP付费金额	平均付费金额	 新增VIP次日留存	新增VIP3日留存	新增VIP7日留存	新增VIP30日留存
+   -->
+  <select id="selectSDKNewVip" resultMap="BaseResultMap" parameterType="com.good.plat.datacenter.common.base.SDKDataBaseSearchData" >
+    select a.statdate,a.os,
+    	ifnull(sum(a.new_vip),0) as new_vip,
+    	ifnull(sum(a.new_vip_money),0) as new_vip_money,
+    	ifnull(sum(a.new_vip_money)/sum(a.new_vip),0) as vip_avg_money,
+    	ifnull(sum(a.vip_day1)/sum(a.new_vip),0) as day1rate,
+    	ifnull(sum(a.vip_day3)/sum(a.new_vip),0) as day3rate,
+    	ifnull(sum(a.vip_day7)/sum(a.new_vip),0) as day7rate,
+    	ifnull(sum(a.vip_day30)/sum(a.new_vip),0) as day30rate
+    from sdk_new_vip_stat a
+    where <include refid="A_Base_Where_Clause"/>
+    group by a.statdate,a.os
+  </select>
+  <!-- VIP新增明细 -->
+  <!-- 日期	系统	来源名称	对应ID	新增VIP数	新增VIP付费金额	平均付费金额	 新增VIP次日留存	新增VIP3日留存	新增VIP7日留存	新增VIP30日留存
+   -->
+  <select id="selectSDKNewVipDetail" resultMap="BaseResultMap" parameterType="com.good.plat.datacenter.common.base.SDKDataBaseSearchData" >
+    select a.statdate,a.os,a.sourceid,a.source,
+    	ifnull(sum(a.new_vip),0) as new_vip,
+    	ifnull(sum(a.new_vip_money),0) as new_vip_money,
+    	ifnull(sum(a.new_vip_money)/sum(a.new_vip),0) as vip_avg_money,
+    	ifnull(sum(a.vip_day1)/sum(a.new_vip),0) as day1rate,
+    	ifnull(sum(a.vip_day3)/sum(a.new_vip),0) as day3rate,
+    	ifnull(sum(a.vip_day7)/sum(a.new_vip),0) as day7rate,
+    	ifnull(sum(a.vip_day30)/sum(a.new_vip),0) as day30rate
+    from sdk_new_vip_stat a
+    where <include refid="A_Base_Where_Clause"/>
+    group by a.statdate,a.os,a.sourceid,a.source
+  </select>
+  <!-- VIP分布 -->
+  <!-- 日期	VIP0	VIP1	VIP2	VIP3	VIP4	VIP5	VIP6	VIP7	VIP8	VIP9	VIP10	VIP11	VIP12
+   -->
+  <select id="selectSDKVIPDistribute" resultMap="SdkDataVipDistInfoMap" parameterType="com.good.plat.datacenter.common.base.SDKDataBaseSearchData" >
+   select a.statdate,
+    ifnull(sum(case when a.vip=0 then a.count else 0 end),0) as lvl0,
+	ifnull(sum(case when a.vip=1 then a.count else 0 end),0) as lvl1,
+	ifnull(sum(case when a.vip=2 then a.count else 0 end),0) as lvl2,
+	ifnull(sum(case when a.vip=3 then a.count else 0 end),0) as lvl3,
+	ifnull(sum(case when a.vip=4 then a.count else 0 end),0) as lvl4,
+	ifnull(sum(case when a.vip=5 then a.count else 0 end),0) as lvl5,
+	ifnull(sum(case when a.vip=6 then a.count else 0 end),0) as lvl6,
+	ifnull(sum(case when a.vip=7 then a.count else 0 end),0) as lvl7,
+	ifnull(sum(case when a.vip=8 then a.count else 0 end),0) as lvl8,
+	ifnull(sum(case when a.vip=9 then a.count else 0 end),0) as lvl9,
+	ifnull(sum(case when a.vip=10 then a.count else 0 end),0) as lvl10,
+	ifnull(sum(case when a.vip=11 then a.count else 0 end),0) as lvl11,
+	ifnull(sum(case when a.vip=12 then a.count else 0 end),0) as lvl12
+    from sdk_vip_dist a
+    where <include refid="A_Base_Where_Clause"/> and a.vip between 0 and 12
+    group by a.statdate
+  </select>
+  <!-- VIP分布明细 -->
+  <!-- 日期	系统	VIP0	VIP1	VIP2	VIP3	VIP4	VIP5	VIP6	VIP7	VIP8	VIP9	VIP10	VIP11	VIP12
+   -->
+  <select id="selectSDKVIPDistributeDetail" resultMap="SdkDataVipDistInfoMap" parameterType="com.good.plat.datacenter.common.base.SDKDataBaseSearchData" >
+   select a.statdate,a.os,
+    ifnull(sum(case when a.vip=0 then a.count else 0 end),0) as lvl0,
+	ifnull(sum(case when a.vip=1 then a.count else 0 end),0) as lvl1,
+	ifnull(sum(case when a.vip=2 then a.count else 0 end),0) as lvl2,
+	ifnull(sum(case when a.vip=3 then a.count else 0 end),0) as lvl3,
+	ifnull(sum(case when a.vip=4 then a.count else 0 end),0) as lvl4,
+	ifnull(sum(case when a.vip=5 then a.count else 0 end),0) as lvl5,
+	ifnull(sum(case when a.vip=6 then a.count else 0 end),0) as lvl6,
+	ifnull(sum(case when a.vip=7 then a.count else 0 end),0) as lvl7,
+	ifnull(sum(case when a.vip=8 then a.count else 0 end),0) as lvl8,
+	ifnull(sum(case when a.vip=9 then a.count else 0 end),0) as lvl9,
+	ifnull(sum(case when a.vip=10 then a.count else 0 end),0) as lvl10,
+	ifnull(sum(case when a.vip=11 then a.count else 0 end),0) as lvl11,
+	ifnull(sum(case when a.vip=12 then a.count else 0 end),0) as lvl12
+    from sdk_vip_dist a
+    where <include refid="A_Base_Where_Clause"/> and a.vip between 0 and 12
+    group by a.statdate,a.os
+  </select>
+  <!-- VIP统计 -->
+  <!-- 日期	系统	累积VIP总数	VIP累积付费总额	累积贡献率	VIP累积充值人数	VIP累积平均付费	当日新增VIP数	VIP当日付费总额	VIP当日贡献率	VIP当日充值人数	VIP[日平均付费]	流失  VIP人数	回流VIP人数
+   -->
+  <select id="selectSDKVIPSummary" resultMap="BaseResultMap" parameterType="com.good.plat.datacenter.common.base.SDKDataBaseSearchData" >
+    select a.statdate,a.os,
+    ifnull(sum(a.total_vip),0) as total_vip,
+    ifnull(sum(a.total_vip_money),0) as total_vip_money,
+    ifnull(sum(a.total_vip_money)/sum(a.total_vip_money),0) as vip_total_money_rate,
+    ifnull(sum(a.total_vip),0) as total_vip,
+    ifnull(sum(a.total_vip_money)/sum(a.total_vip),0) as vip_total_avg_money,
+    ifnull(sum(a.new_vip),0) as new_vip,
+    ifnull(sum(a.vip_money),0) as vip_money,
+    ifnull(sum(a.vip_money)/sum(a.total_vip_money),0) as vip_money_rate,
+    ifnull(sum(a.vip_recharge),0) as vip_recharge,
+    ifnull(sum(a.vip_money)/sum(a.vip_recharge),0) as vip_avg_money,
+    ifnull(sum(a.vip_lost),0) as vip_lost,
+    ifnull(sum(a.vip_return),0) as vip_return
+    from sdk_vip_stat a
+    where <include refid="A_Base_Where_Clause"/>
+    group by a.statdate,a.os
+  </select>
+  <!-- VIP统计明细 -->
+  <!-- 日期	系统	VIP等级	累积VIP总数	VIP累积付费总额	累积贡献率	VIP累积充值人数	VIP累积平均付费	当日新增VIP数	VIP当日付费总额	VIP当日贡献率	VIP当日充值人数	当VIP[日平均付费	流失VIP人数	回流VIP人数
+   -->
+  <select id="selectSDKVIPSummaryDetail" resultMap="BaseResultMap" parameterType="com.good.plat.datacenter.common.base.SDKDataBaseSearchData" >
+    select a.statdate,a.os,a.vip_level,
+    ifnull(sum(a.total_vip),0) as total_vip,
+    ifnull(sum(a.total_vip_money),0) as total_vip_money,
+    ifnull(sum(a.total_vip_money)/sum(a.total_vip_money),0) as vip_total_money_rate,
+    ifnull(sum(a.total_vip),0) as total_vip,
+    ifnull(sum(a.total_vip_money)/sum(a.total_vip),0) as vip_total_avg_money,
+    ifnull(sum(a.new_vip),0) as new_vip,
+    ifnull(sum(a.vip_money),0) as vip_money,
+    ifnull(sum(a.vip_money)/sum(a.total_vip_money),0) as vip_money_rate,
+    ifnull(sum(a.vip_recharge),0) as vip_recharge,
+    ifnull(sum(a.vip_money)/sum(a.vip_recharge),0) as vip_avg_money,
+    ifnull(sum(a.vip_lost),0) as vip_lost,
+    ifnull(sum(a.vip_return),0) as vip_return
+    from sdk_vip_stat a
+    where <include refid="A_Base_Where_Clause"/>
+    group by a.statdate,a.os,a.vip_level
+  </select>
+
+	<!-- sdk 资讯 -->
+	<select id="selectSdkNewsList" resultMap="com.good.plat.datacenter.datastat.mapper.sdkdata.SdkNewsStatMapper.BaseResultMap" parameterType="com.good.plat.datacenter.common.base.SDKDataBaseSearchData">
+		select 
+		<include refid="com.good.plat.datacenter.datastat.mapper.sdkdata.SdkNewsStatMapper.Base_Column_List"/>
+		from sdk_news_stat
+		where statdate between #{startdate} and #{enddate}
+		and news_id in <foreach collection="news_ids" open="(" close=")" separator="," item="id">
+				#{id,jdbcType=INTEGER}
+			</foreach>
+	</select>
+</mapper>
+

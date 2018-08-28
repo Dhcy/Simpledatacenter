@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.datastat.mapper.players.ActivePlayersMapper">
+	<resultMap id="BaseResultMap" type="com.good.plat.datacenter.datastat.entity.players.ActivePlayers">
+		<result column="gameid" property="gameid"/>
+		<result column="gameName" property="gameName"/>
+		<result column="channelid" property="channelid"/>
+		<result column="channelName" property="channelName"/>
+		<result column="subchannelid" property="subchannelid"/>
+		<result column="areaid" property="areaid"/>
+		<result column="areaName" property="areaName"/>
+		<result column="statdate" property="statdate"/>
+		<result column="statType" property="statType"/>
+		<result column="rate" property="rate"/>
+		<result column="newUser" property="newUser"/>
+		<result column="oldUser" property="oldUser"/>
+		<result column="count" property="count"/>
+		<result column="wauAccount" property="wauAccount"/>
+		<result column="mauAccount" property="mauAccount"/>
+		<result column="dmauAccount" property="dmauAccount"/>
+		<result column="activeUser" property="activeUser"/>
+	</resultMap>
+	
+	<sql id="BaseSelect">
+		where statdate between #{startdate} and #{enddate} 
+		<if test="termtypes != null">
+			and termtype in
+			<foreach collection="termtypes" item="term" index="index" open="(" close=")" separator=",">
+				#{term}
+			</foreach>
+		</if>
+		and gameid=#{gameid}
+		<if test="areas != null">
+			and areaid in
+			<foreach collection="areas" item="area" index="index" open="(" close=")" separator=",">
+				#{area}
+			</foreach>
+		</if>
+		<if test="channelList != null">
+			and channel in
+			<foreach collection="channelList" item="channel" index="index" open="(" close=")" separator=",">
+				#{channel.id}
+			</foreach>
+		</if>
+		<if test="subchannels != null">
+			and chnnnl in
+			<foreach collection="subchannels" item="subchannel" index="index" open="(" close=")" separator=",">
+				#{subchannel}
+			</foreach>
+		</if>
+	</sql>
+	
+	<sql id="BaseUnionSelect">
+		where active.statdate between #{startdate} and #{enddate} 
+		<if test="termtypes != null">
+			and active.termtype in
+			<foreach collection="termtypes" item="term" index="index" open="(" close=")" separator=",">
+				#{term}
+			</foreach>
+		</if>
+		and active.gameid=#{gameid}
+		<if test="areas != null">
+			and areaid in
+			<foreach collection="areas" item="area" index="index" open="(" close=")" separator=",">
+				#{area}
+			</foreach>
+		</if>
+		<if test="channelList != null">
+			and active.channel in
+			<foreach collection="channelList" item="channel" index="index" open="(" close=")" separator=",">
+				#{channel.id}
+			</foreach>
+		</if>
+		<if test="subchannels != null">
+			and active.chnnnl in
+			<foreach collection="subchannels" item="subchannel" index="index" open="(" close=")" separator=",">
+				#{subchannel}
+			</foreach>
+		</if>
+	</sql>
+
+	<!-- DAU -->
+	<select id="selectDauList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select 
+			statdate, 
+			sum(newdau) as newuser, 
+			sum(olddau) as olduser, 
+			sum(IFNULL(newdau,0)) + sum(IFNULL(olddau,0)) AS count
+		from 
+			logplat_active_user_city 
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect" />
+		<choose>
+                <when test="cityList!=null">
+                and city in
+				<foreach collection="cityList" item="city" index="index" open="(" close=")" separator=",">
+					#{city}
+				</foreach>
+                </when>
+                 <!-- 全选或者没有区域 -->
+                <otherwise>
+                and city='-1'
+                </otherwise>
+       	 </choose>	
+		group by statdate order by statdate
+		
+	</select>
+	
+	<select id="exportDauList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	
+	<!-- wau -->
+	<select id="selectWauList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select 
+			statdate,
+			sum(wau) as wauAccount
+		from 
+			logplat_active_user_city 
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect" />	
+		<choose>
+                <when test="cityList!=null">
+                and city in
+				<foreach collection="cityList" item="city" index="index" open="(" close=")" separator=",">
+					#{city}
+				</foreach>
+                </when>
+                 <!-- 全选或者没有区域 -->
+                <otherwise>
+                and city='-1'
+                </otherwise>
+       	 </choose>	
+		group by statdate order by statdate	
+		
+	</select>
+	
+	<select id="exportWauList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	
+	<!-- mau -->
+	<select id="selectMauList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select 
+			statdate,
+			sum(mau) as mauAccount
+		from 
+			logplat_active_user_city 
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect" />
+		<choose>
+                <when test="cityList!=null">
+                and city in
+				<foreach collection="cityList" item="city" index="index" open="(" close=")" separator=",">
+					#{city}
+				</foreach>
+                </when>
+                 <!-- 全选或者没有区域 -->
+                <otherwise>
+                and city='-1'
+                </otherwise>
+       	 </choose>		
+		group by statdate order by statdate	
+		
+	</select>
+	
+	<select id="exportMauList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	
+	<!-- dau/mau -->
+	<select id="selectDauDivideMauList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select 
+			statdate,
+			round((sum(newdau)+sum(olddau))/sum(mau),2) as dmauAccount
+		from 
+			logplat_active_user_city 
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect" />	
+		<choose>
+                <when test="cityList!=null">
+                and city in
+				<foreach collection="cityList" item="city" index="index" open="(" close=")" separator=",">
+					#{city}
+				</foreach>
+                </when>
+                 <!-- 全选或者没有区域 -->
+                <otherwise>
+                and city='-1'
+                </otherwise>
+       	 </choose>	
+		group by statdate order by statdate	
+		
+	</select>
+	
+	<select id="exportDauDivideMauList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	
+	<!-- 活跃玩家已玩天数 -->
+	<select id="selectDaysOfActivePlayer" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	<select id="exportDaysOfActivePlayer" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	
+	<!-- 活跃玩家等级 -->
+	<select id="selectLevelOfActivePlayer" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	<select id="exportLevelOfActivePlayer" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	
+	
+	<!-- 活跃玩家地区 -->
+	<select id="selectCityOfActivePlayer" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	<select id="exportCityOfActivePlayer" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	
+	<!-- 渠道活跃玩家 -->
+	<select id="selectChannelOfActivePlayer" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select 
+			cha.channelsimname as channelName, 
+			sum(a.newact), 
+			round(sum(a.newact)/(select sum(newact) from logplat_daily_rpt
+			<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/>)*100,2) 
+		from 
+			logplat_daily_rpt a, tb_logplat_channel cha 
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.ABaseSelect"/> and a.channel=cha.id
+		group by a.channel order by a.channel
+	</select>
+	
+	<select id="exportChannelOfActivePlayer" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	<!--活跃玩家区域列表 -->
+		<select id="selectActUserCityList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select DISTINCT city from logplat_active_user_city 
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect" />	
+		 and city<![CDATA[<>]]>'-1';
+	</select>
+	
+	<!-- 活跃玩家 按时登陆 -->
+	<resultMap id="ActiveByTimeResultMap" type="com.good.plat.datacenter.datastat.entity.players.ActiveByTime">
+		<result column="hourdate" property="hourdate"/>
+		<result column="newact" property="newact"/>
+		<result column="newUser" property="newUser"/>
+		<result column="oldUser" property="oldUser"/>
+		</resultMap>
+		
+	    <select id="selectActUserByTimeList" resultMap="ActiveByTimeResultMap" 
+		parameterType="com.good.plat.datacenter.datastat.entity.players.ActiveByTime">
+		
+		SELECT
+			hourdate,
+	sum(IFNULL(newact, 0)) newact,
+	sum(IFNULL(newlogin, 0)) newlogintimes,
+	sum(IFNULL(oldlogin, 0)) oldlogintimes
+		FROM
+			logplat_hour_act
+			<include refid="BaseSelect"/>
+		GROUP BY
+			hourdate
+		</select>
+		<!-- 活跃玩家 按时登陆 -->
+	<resultMap id="ActiveByChnnelResultMap" type="com.good.plat.datacenter.datastat.entity.players.ActiveByChnnel">
+		<result column="hourdate" property="hourdate"/>
+		<result column="newact" property="newact"/>
+		<result column="newUser" property="newUser"/>
+		<result column="oldUser" property="oldUser"/>
+		</resultMap>
+		
+	    <select id="selectActUserChannelList" resultMap="ActiveByChnnelResultMap" 
+		parameterType="com.good.plat.datacenter.datastat.entity.players.ActiveByChnnel">
+		
+			SELECT
+				b.channelSimName channelName,
+	sum(IFNULL(newact, 0)) newact,
+	sum(IFNULL(newlogin, 0)) newlogintimes,
+	sum(IFNULL(oldlogin, 0)) oldlogintimes
+			FROM
+				logplat_hour_act a,
+				tb_logplat_channel b
+			<include refid="BaseSelect"/>
+				and a.channel = b.id
+			GROUP BY
+				channel
+		</select>
+	
+</mapper>

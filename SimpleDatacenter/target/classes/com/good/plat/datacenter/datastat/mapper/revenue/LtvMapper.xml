@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.datastat.mapper.revenue.LtvMapper">
+	
+	<sql id="BaseSelect">
+		where regdate between #{startdate} and #{enddate} 
+		<if test="termtypes != null">
+			and termtype in
+			<foreach collection="termtypes" item="term" index="index" open="(" close=")" separator=",">
+				#{term}
+			</foreach>
+		</if>
+		and gameid=#{gameid}
+		<if test="areas != null">
+			and areaid in
+			<foreach collection="areas" item="area" index="index" open="(" close=")" separator=",">
+				#{area}
+			</foreach>
+		</if>
+		<if test="channelList != null">
+			and channel in
+			<foreach collection="channelList" item="channel" index="index" open="(" close=")" separator=",">
+				#{channel.id}
+			</foreach>
+		</if>
+		<if test="subchannels != null">
+			and chnnnl in
+			<foreach collection="subchannels" item="subchannel" index="index" open="(" close=")" separator=",">
+				#{subchannel}
+			</foreach>
+		</if>
+	</sql>
+	<sql id="Select">
+		where statdate between #{startdate} and #{enddate} 
+		<if test="termtypes != null">
+			and termtype in
+			<foreach collection="termtypes" item="term" index="index" open="(" close=")" separator=",">
+				#{term}
+			</foreach>
+		</if>
+		and gameid=#{gameid}
+		<if test="areas != null">
+			and areaid in
+			<foreach collection="areas" item="area" index="index" open="(" close=")" separator=",">
+				#{area}
+			</foreach>
+		</if>
+		<if test="channelList != null">
+			and channel in
+			<foreach collection="channelList" item="channel" index="index" open="(" close=")" separator=",">
+				#{channel.id}
+			</foreach>
+		</if>
+		<if test="subchannels != null">
+			and chnnnl in
+			<foreach collection="subchannels" item="subchannel" index="index" open="(" close=")" separator=",">
+				#{subchannel}
+			</foreach>
+		</if>
+	</sql>
+	
+	<sql id="currentSelect">
+		where statdate=#{enddate} 
+		<if test="termtypes != null">
+			and termtype in
+			<foreach collection="termtypes" item="term" index="index" open="(" close=")" separator=",">
+				#{term}
+			</foreach>
+		</if>
+		and gameid=#{gameid}
+		<if test="areas != null">
+			and areaid in
+			<foreach collection="areas" item="area" index="index" open="(" close=")" separator=",">
+				#{area}
+			</foreach>
+		</if>
+		<if test="channelList != null">
+			and channel in
+			<foreach collection="channelList" item="channel" index="index" open="(" close=")" separator=",">
+				#{channel.id}
+			</foreach>
+		</if>
+		<if test="subchannels != null">
+			and chnnnl in
+			<foreach collection="subchannels" item="subchannel" index="index" open="(" close=")" separator=",">
+				#{subchannel}
+			</foreach>
+		</if>
+	</sql>
+	
+	<!--
+	注收比
+	-->
+	<select id="selectRegPayMoneyAndCount" resultType="com.good.plat.datacenter.datastat.entity.revenue.Ltv"
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		SELECT
+			b.regdate regdate,
+			SUM(c.newact) AS newact,
+			b.day0 day0_pay,
+			b.day1 day1_pay,
+			b.day2 day2_pay,
+			b.day3 day3_pay,
+			b.day4 day4_pay,
+			b.day5 day5_pay,
+			b.day6 day6_pay,
+			b.day7 day7_pay,
+			b.day8 day8_pay,
+			b.day9 day9_pay,
+			b.day10 day10_pay,
+			b.day11 day11_pay,
+			b.day12 day12_pay
+		FROM
+			(
+				SELECT
+					regdate,
+					gameid,
+					termtype,
+					areaid,
+					channel,
+					chnnnl,
+					sum(IF(days &gt;= 0, a.money, 0)) day0,
+					sum(IF(days &gt;= 1, a.money, 0)) day1,
+					sum(IF(days &gt;= 2, a.money, 0)) day2,
+					sum(IF(days &gt;= 3, a.money, 0)) day3,
+					sum(IF(days &gt;= 4, a.money, 0)) day4,
+					sum(IF(days &gt;= 5, a.money, 0)) day5,
+					sum(IF(days &gt;= 6, a.money, 0)) day6,
+					sum(IF(days &gt;= 7, a.money, 0)) day7,
+					sum(IF(days &gt;= 8, a.money, 0)) day8,
+					sum(IF(days &gt;= 9, a.money, 0)) day9,
+					sum(IF(days &gt;= 10, a.money, 0)) day10,
+					sum(IF(days &gt;= 11, a.money, 0)) day11,
+					sum(IF(days &gt;= 12, a.money, 0)) day12
+				FROM
+					(
+						SELECT
+							regdate,
+							statdate,
+							gameid,
+							termtype,
+							areaid,
+							channel,
+							chnnnl,
+							datediff(statdate, regdate) days,
+							sum(money) money
+						FROM
+							logplat_actor_recharge
+						<include refid="BaseSelect"/>
+						AND statdate BETWEEN regdate
+						AND date_add(regdate, INTERVAL 12 DAY)
+						GROUP BY
+							regdate,
+							statdate
+					) a
+				GROUP BY
+					regdate
+			) b
+		JOIN logplat_daily_rpt c ON (
+			c.statdate = b.regdate
+			AND c.gameid = b.gameid
+			AND c.termtype = b.termtype
+			AND c.areaid = b.areaid
+			AND c.channel = b.channel
+			AND c.chnnnl = b.chnnnl
+		)
+		GROUP BY
+			b.regdate
+	</select>
+	<!--
+	
+	每个日期的生命周期价值（enddate 指当前日期）
+	-->
+	<select id="selectLtvofCurrDate" resultType="com.good.plat.datacenter.datastat.entity.revenue.Ltv"
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		SELECT
+			b.statdate statdate,
+			ifnull(a.dayret2,0) * ifnull(b.arpu3,0) ltv3,
+			ifnull(a.dayret6,0) * ifnull(b.arpu7,0) ltv7,
+			ifnull(a.dayret29,0) * ifnull(b.arpu30,0) ltv30,
+			ifnull(a.dayret59,0) * ifnull(b.arpu60,0) ltv60
+		FROM
+			(
+				SELECT
+		 			SUM(2dayret) dayret2,
+		 			SUM(6dayret) dayret6,
+		 			SUM(29dayret) dayret29,
+					SUM(59dayret) dayret59
+				FROM
+					logplat_daily_retain
+				<include refid="Select"/>
+				AND type =- 1
+			) a,
+			(
+				SELECT
+					statdate,
+					sum(money3) / sum(day3) arpu3,
+					SUM(money7) / SUM(day7) arpu7,
+					SUM(money30) / SUM(day30) arpu30,
+					SUM(money60) / SUM(day60) arpu60
+				FROM
+					logplat_ltv_actv_rechg
+				<include refid="currentSelect"/>
+			) b
+	</select>
+	
+	
+	
+		
+</mapper>

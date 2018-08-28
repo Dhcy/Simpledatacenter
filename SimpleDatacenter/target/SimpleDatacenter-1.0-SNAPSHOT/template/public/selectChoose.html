@@ -1,0 +1,132 @@
+<div id="selectChoose"> 
+	<a href="javascript:void(0);" class="selectChooseBtn" ng-click="slideToggle()">
+		<span><font>{{'筛选' | translate}}</font></span>
+	</a>
+	<div class="clear"></div>
+	<div class="selectDialog">
+		<div class="select selectChannel cl">
+			<div class="selectTitle cl">
+				<label for="">{{'语言' | translate}}：</label>
+				<div class="selectBtn" ng-class="{'selectBtn-on':isLang}" ng-click="isLangToggle()" ></div>
+				<div class="selectStatus">
+					<span ng-hide="isLang">{{'未选择' | translate}}</span>
+					<span ng-show="isLang">{{'已选择' | translate}}<font class="grean">{{selectLangSum}}</font>{{'项' | translate}}</span>
+				</div>
+			</div>
+			<div class="selectCon" ng-show="isLang">
+				<div class="selectSearch">
+					<input type="text" class="searchInput" ng-model="langSearch" placeholder="{{'搜索' | translate}}{{'语言' | translate}}">
+					<div class="choose fr">
+						<div class="chooseBtn" ng-click='addAllLang()'>{{'全选' | translate}}</div>
+						<div class="chooseBtn" ng-click='removeAllLang()'>{{'不选' | translate}}</div>
+					</div>
+				</div>
+				<ul class="selectUl cl">
+					<li ng-repeat="langdata in langdata | filter:langSearch"  data-clangId='{{langdata.language_id}}'  title="{{langdata.language_name}}" class="li" ng-class="{'li-on': hadAddLang(langdata.language_id)}">
+					<span ng-show="hadAddLang(langdata.language_id)" ng-click="chooseLang2(langdata.language_id,langdata.language_name,1);">×</span>
+					<span class="channelName" ng-show="!hadAddLang(langdata.language_id)" ng-click="chooseLang2(langdata.language_id,langdata.language_name,0);">{{langdata.language_name}}</span>
+					<span class="channelName" ng-show="hadAddLang(langdata.language_id)">{{langdata.language_name}}</span>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="select selectChannel cl">
+			<div class="selectTitle cl">
+				<label for="">{{'版本' | translate}}：</label>
+				<div class="selectBtn" ng-class="{'selectBtn-on':isVersion}" ng-click="isVersionToggle()" ></div>
+				<div class="selectStatus">
+					<span ng-hide="isVersion">{{'未选择' | translate}}</span>
+					<span ng-show="isVersion">{{'已选择' | translate}}<font class="grean">{{selectVersionSum}}</font>{{'项' | translate}}</span>
+				</div>
+			</div>
+			<div class="selectCon" ng-show="isVersion">
+				<div class="selectSearch">
+					<input type="text" class="searchInput" ng-model="versionSearch" placeholder="{{'搜索' | translate}}{{'语言' | translate}}">
+					<div class="choose fr">
+						<div class="chooseBtn" ng-click='addAllVersion()'>{{'全选' | translate}}</div>
+						<div class="chooseBtn" ng-click='removeAllVersion()'>{{'不选' | translate}}</div>
+					</div>
+				</div>
+				<ul class="selectUl cl">
+					<li ng-repeat="versiondata in versiondata | filter:versionSearch"  data-versionId='{{versiondata.version_id}}'  title="{{versiondata.version_name}}" class="li" ng-class="{'li-on': hadAddVersion(versiondata.version_id)}">
+					<span ng-show="hadAddVersion(versiondata.version_id)" ng-click="chooseVersion2(versiondata.version_id,versiondata.version_name,1);">×</span>
+					<span class="channelName" ng-show="!hadAddVersion(versiondata.version_id)" ng-click="chooseVersion2(versiondata.version_id,versiondata.version_name,0);">{{versiondata.version_name}}</span>
+					<span class="channelName" ng-show="hadAddVersion(versiondata.version_id)">{{versiondata.version_name}}</span>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="select selectChannel cl">
+			<div class="selectTitle cl">
+				<label for="">{{'渠道' | translate}}：</label>
+				<div class="selectBtn" ng-class="{'selectBtn-on':isChannel}" ng-click="isChannelToggle()" ></div>
+				<div class="selectStatus">
+					<span ng-hide="isChannel">{{'未选择' | translate}}</span>
+					<span ng-show="isChannel">{{'已选择' | translate}}<font class="grean">{{selectChannelSum}}</font>{{'项' | translate}}</span>
+				</div>
+			</div>
+			<div class="selectCon" ng-show="isChannel">
+				<div class="selectSearch">
+					<input type="text" class="searchInput" ng-model="channelSearch" placeholder="{{'搜索' | translate}}{{'渠道' | translate}}">
+					<div class="choose fr">
+						<div class="chooseBtn" ng-click='addAllChannel()'>{{'全选' | translate}}</div>
+						<div class="chooseBtn" ng-click='removeAllChannel()'>{{'不选' | translate}}</div>
+					</div>
+				</div>
+				<ul class="selectUl cl">
+					<li ng-repeat="channeldata in channeldata | filter:channelSearch"  data-channelId='{{channeldata.id}}'  title="{{channeldata.channelSimName}}" class="li" ng-class="{'li-on': hadAddChannel(channeldata.id)}">
+					<span ng-show="hadAddChannel(channeldata.id)" ng-click="chooseChannel2(channeldata.id,channeldata.name,1);removeSubChannelList(channeldata.id)">×</span>
+					<span class="channelName" ng-show="!hadAddChannel(channeldata.id)" ng-click="chooseChannel2(channeldata.id,channeldata.channelSimName,0);showSubChannelList(channeldata.id)">{{channeldata.channelSimName}}</span>
+					<span class="channelName" ng-show="hadAddChannel(channeldata.id)">{{channeldata.channelSimName}}</span>
+
+					</li>
+				</ul>
+				<div class="selectUl cl" style="border-top:1px dashed #b7bfc3;" ng-show="showSubChannelData.length > 0">
+					<div class="clear" ng-repeat="showSubChannelData in showSubChannelData" >
+						<p style="margin:0;">{{showSubChannelData.channelSimName}}:</p>
+						<ul>
+							<li ng-repeat="list in showSubChannelData.list" class="li" ng-class="{'li-on': hadAddSubChannel(showSubChannelData.id,list.subId)}">
+							<span ng-show="hadAddSubChannel(showSubChannelData.id,list.subId)" ng-click="removeSubChannel(showSubChannelData.id,list.subId)">×</span>
+							<span class="channelName" ng-show="hadAddSubChannel(showSubChannelData.id,list.subId)">{{list.subId}}</span>
+							<span class="channelName" ng-show="!hadAddSubChannel(showSubChannelData.id,list.subId)" ng-click="addSubChannelList(showSubChannelData.id,list.subId)">{{list.subId}}</span>
+
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="select selectAreaClothing cl">
+			<div class="selectTitle cl">
+				<label for="">{{'区服' | translate}}：</label>
+				<div class="selectBtn " ng-class="{'selectBtn-on':isAreaClothing}" ng-click="isAreaClothingToggle()"></div>
+				<div class="selectStatus">
+					<span ng-hide="isAreaClothing">{{'未选择' | translate}}</span>
+					<span ng-show="isAreaClothing">{{'已选择' | translate}}<font class="grean">{{selectAreaClothingSum}}{{'项' | translate}}</font></span>
+				</div>
+			</div>
+			<div class="selectCon" ng-show="isAreaClothing">
+				<div class="selectSearch">
+					<input type="text" class="searchInput" ng-model="areaClothingSearch" placeholder="{{'搜索' | translate}}{{'区服' | translate}}">
+					<div class="choose fr">
+							<div class="chooseBtn" ng-click='addAllAreaClothing()'>{{'全选' | translate}}</div>
+							<div class="chooseBtn" ng-click='removeAllAreaClothing()'>{{'不选' | translate}}</div>
+					</div>
+				</div>
+				<ul class="selectUl cl">
+					<li ng-repeat="areaClothingData in areaClothingData | filter:areaClothingSearch"  data-channelId='{{areaClothingData.id}}'  title="{{areaClothingData.name}}" class="li" ng-class="{'li-on': hadAddAreaClothing(areaClothingData.id)}">
+					<span ng-show="hadAddAreaClothing(areaClothingData.id)" ng-click="chooseAddAreaClothing2(areaClothingData.id,areaClothingData.name,1)">×</span>
+					<span  class="channelName" ng-show="!hadAddAreaClothing(areaClothingData.id)" ng-click="chooseAddAreaClothing2(areaClothingData.id,areaClothingData.name,0)">{{areaClothingData.name}}</span>
+					<span  class="channelName"  ng-show="hadAddAreaClothing(areaClothingData.id)">{{areaClothingData.name}}</span>
+
+					</li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="selectFooter">
+			<div class="dialogBtn dialogBtnQd" ng-click="qd()">{{'确定' | translate}}</div>
+		<div class="dialogBtn dialogBtnQx" ng-click="slideToggle()">{{'取消' | translate}}</div>
+		</div>
+	</div>
+</div>

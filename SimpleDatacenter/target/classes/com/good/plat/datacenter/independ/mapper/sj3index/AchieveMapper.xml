@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.independ.mapper.sj3index.AchieveMapper">
+	<resultMap id="BaseResultMap" type="com.good.plat.datacenter.independ.entity.sj3index.Achieve">
+		<result column="gameid" property="gameid"/>
+		<result column="gameName" property="gameName"/>
+		<result column="channelid" property="channelid"/>
+		<result column="channelName" property="channelName"/>
+		<result column="subchannelid" property="subchannelid"/>
+		<result column="areaid" property="areaid"/>
+		<result column="areaName" property="areaName"/>
+		<result column="statdate" property="statdate"/>
+		<result column="statType" property="statType"/>
+		<result column="rate" property="rate"/>
+		<result column="achieveId" property="achieveId"/>
+		<result column="achieveName" property="achieveName"/>
+		<result column="usercnt" property="usercnt"/>
+		<result column="finish_rate" property="finish_rate"/>
+		<result column="total_cnt" property="total_cnt"/>
+		<result column="avg_achieve_cnt" property="avg_achieve_cnt"/>
+		
+		<result column="actorName" property="actorName"/>
+		<result column="lvl" property="lvl"/>
+		<result column="left_gold" property="left_gold"/>
+		
+		<result column="stageName" property="stageName"/>
+		<result column="entercnt" property="entercnt"/>
+		<result column="succdcnt" property="succdcnt"/>
+		<result column="avg_succ_time" property="avg_succ_time"/>
+		<result column="avg_succ_startcnt" property="avg_succ_startcnt"/>
+		<result column="failcnt" property="failcnt"/>
+		<result column="exitcnt" property="exitcnt"/>
+		<result column="relivecnt" property="relivecnt"/>
+		<result column="jobs" property="jobs"/>
+		
+	</resultMap>
+	
+	<sql id="BaseSelect">
+		where statdate between #{startdate} and #{enddate} 
+		and gameid=#{gameid}
+		<if test="channelList != null">
+			and channel in
+			<foreach collection="channelList" item="channel" index="index" open="(" close=")" separator=",">
+				#{channel.id}
+			</foreach>
+		</if>
+		<if test="subchannels != null">
+			and chnnnl in
+			<foreach collection="subchannels" item="subchannel" index="index" open="(" close=")" separator=",">
+				#{subchannel}
+			</foreach>
+		</if>
+		<if test="areas != null">
+			and areaid in
+			<foreach collection="areas" item="area" index="index" open="(" close=")" separator=",">
+				#{area}
+			</foreach>
+		</if>
+	</sql>
+	
+	<!--
+	成就总览(日期,渠道,成就id,完成人数,完成率)
+	-->
+	<select id="selectAchieveFinishNumList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		SELECT
+			a.statdate as statdate,
+			a.channel as channelid,
+			a.channelName as channelName,
+			a.achieveid as achieveId,
+			a.achieve as achieveName,
+			a.jobs,
+			IFNULL(a.usercnt,0) as usercnt,
+			IFNULL(
+				a.usercnt / b.loginact,
+				0
+			) as finish_rate
+		FROM
+			(
+				SELECT
+					statdate,
+					channel,
+					c.channelSimName as channelName,
+					achieve,
+					achieveid,
+					IFNULL(jobs,'未知') as jobs,
+					SUM(usercnt) usercnt
+				FROM
+					sj3_achieve_stat
+			LEFT JOIN tb_logplat_channel c ON c.id=channel
+				<include refid="BaseSelect"/>
+				AND achieveid <![CDATA[<>]]>-1
+				GROUP BY
+					statdate,
+					channel,
+					achieveid,
+					achieve,
+					jobs
+			) a,
+			(
+				SELECT
+					SUM(loginact) loginact
+				FROM
+					logplat_daily_rpt
+				<include refid="BaseSelect"/>
+			) b
+	</select>
+	
+	<!--
+	成就总数(日期,渠道,完成成就总数，人均完成成就数)
+	-->
+	<select id="selectAchieveFinishTotalNumList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		SELECT
+			a.statdate as statdate,
+			a.channel as channel,
+			b.channelSimName as channelName,
+			IFNULL(jobs,'未知') as jobs,
+			IFNULL(SUM(a.achievecount),0) as total_cnt,
+			IFNULL(ROUND(SUM(a.achievecount)/SUM(a.usercnt),2),0) as avg_achieve_cnt
+		FROM
+			sj3_achieve_stat a
+		LEFT JOIN tb_logplat_channel b on b.id=a.channel
+		<include refid="BaseSelect"/>
+			AND achieveid =- 1
+		GROUP BY
+			statdate,
+			channel,
+			jobs														
+	</select>
+	
+	
+	
+</mapper>

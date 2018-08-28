@@ -1,0 +1,111 @@
+<style type="text/css">
+    .table th,.table td{ border:1px solid #ddd; padding-left: 0; padding-right: 0;}
+    .form-group{ margin-left: 10px; margin-top: 10px;}
+    .form-control{ display: inline-block; vertical-align: middle;}
+</style>
+<div>
+    <div>
+        <div class="form-group">
+            <div class="div_select">
+                
+            </div>
+            <label for="">{{'时间区域' | translate}}：</label>
+            <div datepicker class="col-xs-3 timeSelect" mstatdate="mstatdate" style="width:250px;"></div>
+            <label for="">{{'游戏' | translate}}：</label>
+            <select ng-model="postData.gameid" class="form-control" ng-options="abc.id as abc.name for abc in panel_1.gameList">
+
+            </select>&nbsp;&nbsp;
+            <label for="">{{'渠道' | translate}}：</label>
+            <select ng-model="postData.channelid" class="form-control" ng-options="abc.id as abc.channelName for abc in panel_1.channelList">
+
+            </select>&nbsp;&nbsp;
+            <label for="">{{'终端' | translate}}：</label>
+            <select ng-model="postData.terminalid" class="form-control" ng-options="abc.id as abc.name for abc in terminalList">
+                
+            </select>&nbsp;&nbsp;
+            <button class="btn btn-default" ng-click="mdownloaddata('avgGameTime')">{{'导出' | translate}}</button>
+            <button class="btn btn-default" ng-click="searchData()">{{'搜索' | translate}}</button>
+        </div>
+    </div>
+    <div class="panel panel-default panel_1">
+        <div class="panel-heading">
+            <strong>
+                 {{'游戏角色等级分布' | translate}}
+                <!--------提示框--------- -->
+            </strong>
+            <div class="panel_downloadBtn" ng-click="mdownloaddata('avgGameTime')"></div>
+            <!--------下载按钮--------- -->
+            <div class="clear"></div>
+        </div>
+        
+        <div class="panel-body pdlf pdtb">
+            <div class="tableBox">
+                <table class="table table-striped">
+                    <tr>
+                        <th class="text-center" width="4.5%">{{'日期' | translate}}</th>
+                        <th class="text-center" width="4.5%">{{'游戏名称' | translate}}</th>
+                        <th class="text-center" width="4.5%">{{'终端' | translate}}</th>
+                        <th class="text-center" width="4.5%">{{'渠道名称' | translate}}</th>
+                        <th class="text-center" width="4.5%" title="渠道主ID+渠道子ID">{{'渠道' | translate}}ID</th>
+                        <th class="text-center" width="4.5%">{{'登录数' | translate}}</th>
+                        <th class="text-center" width="4.5%" title="注册账号且进入游戏，算一个有效,设备ID去重">{{'注册数' | translate}}</th>
+                        <th class="text-center" width="4.5%">1-2{{'级' | translate}}</th>
+                        <th class="text-center" width="4.5%" title="n-m级用户数/注册数">1-2{{'级占比' | translate}}(%)</th>
+                        <th class="text-center" width="4.5%">3-10{{'级' | translate}}</th>
+                        <th class="text-center" width="4.5%" title="n-m级用户数/注册数">3-10{{'级占比' | translate}}(%)</th>
+                        <th class="text-center" width="4.5%">11-20{{'级' | translate}}</th>
+                        <th class="text-center" width="4.5%" title="n-m级用户数/注册数">11-20{{'级占比' | translate}}(%)</th>
+                        <th class="text-center" width="4.5%">21-30{{'级' | translate}}</th>
+                        <th class="text-center" width="4.5%" title="n-m级用户数/注册数">21-30{{'级占比' | translate}}(%)</th>
+                        <th class="text-center" width="4.5%">31-40{{'级' | translate}}</th>
+                        <th class="text-center" width="4.5%" title="n-m级用户数/注册数">31-40{{'级占比' | translate}}(%)</th>
+                        <th class="text-center" width="4.5%">41-50{{'级' | translate}}</th>
+                        <th class="text-center" width="4.5%" title="n-m级用户数/注册数">41-50{{'级占比' | translate}}(%)</th>
+                        <th class="text-center" width="4.5%">51{{'级以上' | translate}}</th>
+                        <th class="text-center" width="4.5%" title="n-m级用户数/注册数">51{{'级以上占比' | translate}}(%)</th>
+                    </tr>
+                    <tr ng-repeat="data in panel_1.dataList_1.data | filter:searchData.gameList | filter:searchData.channelList | filter:searchData.terminalList |orderBy: panel_1.dataList_1.orderBy.t+panel_1.dataList_1.orderBy.s | pageStartFrom : panel_1.dataList_1.limit.now*panel_1.dataList_1.limit.max | limitTo: panel_1.dataList_1.limit.max" class="text-center">
+                        <td>{{data.startDataTxt}}</td>
+                        <td>{{data.gameName}}</td>
+                        <td>{{data.termtypeName}}</td>
+                        <td>{{data.channelName}}</td>
+                        <td>{{data.adchannel}} {{data.subchannel}}</td>
+                        <td>{{data.acticount}}</td>
+                        <td>{{data.regcount}}</td>
+                        <td>{{data.actlvl_1_2}}</td>
+                        <td>{{data.actlvl_1_2_rate}}</td>
+                        <td>{{data.actlvl_3_10}}</td>
+                        <td>{{data.actlvl_3_10_rate}}</td>
+                        <td>{{data.actlvl_11_20}}</td>
+                        <td>{{data.actlvl_11_20_rate}}</td>
+                        <td>{{data.actlvl_21_30}}</td>
+                        <td>{{data.actlvl_21_30_rate}}</td>
+                        <td>{{data.actlvl_31_40}}</td>
+                        <td>{{data.actlvl_31_40_rate}}</td>
+                        <td>{{data.actlvl_41_50}}</td>
+                        <td>{{data.actlvl_41_50_rate}}</td>
+                        <td>{{data.actlvl_51_X}}</td>
+                        <td>{{data.actlvl_51_X_rate}}</td>
+                    </tr>
+                </table>
+                <div class="tableFooter">
+                    <div class="buttondiv fl" analysisdrop changei="changetype()">
+                        <div class="selectlable fl">{{'每页显示' | translate}}：</div>
+                        <div class="analysisdrop fl" style="width:60px;">
+                            <div class="hadchoose">
+                                <h6>{{val | translate}}</h6></div>
+                            <ul class="dropUl">
+                                <li ng-click="c('10');changetype(10)">10</li>
+                                <li ng-click="c('20');changetype(20)">20</li>
+                                <li ng-click="c('50');changetype(50)">50</li>
+                                <li ng-click="c('100');changetype(100)">100</li>
+                            </ul>
+                        </div>
+                        <div class="selectlable fl">&nbsp;&nbsp;{{'条记录' | translate}}</div>
+                    </div>
+                    <div class="dataTables_paginate fr" datatableslimit  datalimit="panel_1.dataList_1.limit"  tabledata="panel_1.dataList_1.data"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

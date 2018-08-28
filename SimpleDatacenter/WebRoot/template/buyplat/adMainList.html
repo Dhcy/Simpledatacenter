@@ -1,0 +1,101 @@
+<style type="text/css">
+    .table th,.table td{ border:1px solid #ddd;}
+    .form-group{ margin-left: 10px; margin-top: 10px;}
+    .form-control{ display: inline-block; vertical-align: middle;}
+</style>
+<div>
+    <div>
+        <div class="form-group">
+            <div class="div_select">
+                
+            </div>
+            <label for="">{{'时间区域' | translate}}：</label>
+            <div datepicker class="col-xs-3 timeSelect" mstatdate="mstatdate" style="width:250px;"></div>
+            <label for="">{{'游戏' | translate}}：</label>
+            <select ng-model="postData.gameid" class="form-control" ng-options="abc.id as abc.name for abc in panel_1.gameList">
+
+            </select>&nbsp;&nbsp;
+            <label for="">{{'渠道' | translate}}：</label>
+            <select ng-model="postData.channelid" class="form-control" ng-options="abc.id as abc.channelName for abc in panel_1.channelList">
+
+            </select>&nbsp;&nbsp;
+            <label for="">{{'终端' | translate}}：</label>
+            <select ng-model="postData.terminalid" class="form-control" ng-options="abc.id as abc.name for abc in terminalList">
+                
+            </select>&nbsp;&nbsp;
+            <a class="btn btn-default" ui-sref="main.buyplat.adMainListModify({ctype:1})">{{'添加' | translate}}</a>
+            <button class="btn btn-default" ng-click="searchData()">{{'搜索' | translate}}</button>
+        </div>
+    </div>
+    <div class="panel panel-default panel_1">
+        <div class="panel-heading">
+            <strong>
+                 {{'广告主管理' | translate}}
+                <!--------提示框--------- -->
+            </strong>
+            <div class="panel_downloadBtn" ng-click="mdownloaddata('avgGameTime')"></div>
+            <!--------下载按钮--------- -->
+            <div class="clear"></div>
+        </div>
+        
+        <div class="panel-body pdlf pdtb" >
+            <div class="tableBox">
+                <table class="table table-striped">
+                    <tr>
+                        <th class="text-center" width="8%" title="">{{'广告开始时间' | translate}}</th>
+                        <th class="text-center" width="8%" title="">{{'广告结束时间' | translate}}</th>
+                        <th class="text-center" width="8%" title="">{{'游戏' | translate}}</th>
+                        <th class="text-center" width="8%" title="">{{'终端' | translate}}</th>
+                        <th class="text-center" width="8%" title="">{{'渠道' | translate}}</th>
+                        <th class="text-center" width="8%" title="渠道主ID+渠道子ID">{{'渠道' | translate}}ID</th>
+                        <th class="text-center" width="8%" title="">{{'广告位' | translate}}</th>
+                        <th class="text-center" width="8%" title="">{{'广告类型' | translate}}</th>
+                        <th class="text-center" width="8%" title="">{{'单价' | translate}}</th>
+                        <th class="text-center" width="8%" title="">{{'计价方式' | translate}}</th>
+                        <th class="text-center" width="8%" title="广告用户量*单价">{{'广告费' | translate}}</th>
+                        <th class="text-center" width="8%" title="广告类型CPA，对应广告用户量的“安装或注册量”
+广告类型CPD，对应广告用户量“下载量”
+广告类型CPC，对应广告用户量“点击量”
+广告类型CPT，对应广告用户量“展示天数”">{{'广告用户量' | translate}}</th>
+                        <th class="text-center" width="12%">{{'操作' | translate}}</th>
+                    </tr>
+                    <tr ng-repeat="data in panel_1.dataList_1.data  | orderBy: panel_1.dataList_1.orderBy.t+panel_1.dataList_1.orderBy.s | pageStartFrom : panel_1.dataList_1.limit.now*panel_1.dataList_1.limit.max | limitTo: panel_1.dataList_1.limit.max" class="text-center">
+                        <td>{{data.startDataTxt}}</td>
+                        <td>{{data.endDataTxt}}</td>
+                        <td>{{data.gameName}}</td>
+                        <td>{{data.termtypeName}}<!-- {{data.termType}} --></td>
+                        <td>{{data.channelName}}</td>
+                        <td>{{data.adchannel}} {{data.subchannel}}</td>
+                        <td>{{data.adSpaces}}</td>
+                        <td>{{data.adTypeName}}</td>
+                        <td>{{data.price}}</td>
+                        <td><!-- {{data.pricingType}}- -->{{data.pricingTypeName}}</td>
+                        <td>{{data.adcost}}</td>
+                        <td>{{data.busicount}}</td>
+                        <td>
+                            <a href="javascript:;" ui-sref="main.buyplat.adMainListModify({ctype: 2,id: data.id})">{{'编辑' | translate}}</a>
+                            <a href="javascript:;" ng-click="delAdMain(data.id, data.channelName)">{{'删除' | translate}}</a>
+                        </td>
+                    </tr>
+                </table>
+                <div class="tableFooter">
+                    <div class="buttondiv fl" analysisdrop changei="changetype()">
+                        <div class="selectlable fl">{{'每页显示' | translate}}：</div>
+                        <div class="analysisdrop fl" style="width:60px;">
+                            <div class="hadchoose">
+                                <h6>{{val | translate}}</h6></div>
+                            <ul class="dropUl">
+                                <li ng-click="c('10');changetype(10)">10</li>
+                                <li ng-click="c('20');changetype(20)">20</li>
+                                <li ng-click="c('50');changetype(50)">50</li>
+                                <li ng-click="c('100');changetype(100)">100</li>
+                            </ul>
+                        </div>
+                        <div class="selectlable fl">&nbsp;&nbsp;{{'条记录' | translate}}</div>
+                    </div>
+                    <div class="dataTables_paginate fr" datatableslimit  datalimit="panel_1.dataList_1.limit"  tabledata="panel_1.dataList_1.data"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

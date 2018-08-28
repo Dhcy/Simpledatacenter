@@ -1,0 +1,104 @@
+{
+  "newPlayerLevelChange": [
+    {
+      "title": 1,
+      "firstNew": 52,
+      "1day": 51,
+      "2day": 50,
+      "3day": 50,
+      "4day": 49,
+      "5day": 49,
+      "6day": 49
+    },
+    {
+      "title": 2,
+      "firstNew": 14,
+      "1day": 14,
+      "2day": 14,
+      "3day": 14,
+      "4day": 14,
+      "5day": 14,
+      "6day": 14
+    },
+    {
+      "title": 3,
+      "firstNew": 15,
+      "1day": 15,
+      "2day": 15,
+      "3day": 15,
+      "4day": 15, 
+      "5day": 16,
+      "6day": 16
+    },
+    {
+      "title": 4,
+      "firstNew": 9,
+      "1day": 9,
+      "2day": 9,
+      "3day": 9,
+      "4day": 10,
+      "5day": 10,
+      "6day": 10
+    },
+    {
+      "title": 5,
+      "firstNew": 5,
+      "1day": 5,
+      "2day": 5,
+      "3day": 5,
+      "4day": 5,
+      "5day": 5,
+      "6day": 5
+    },
+    {
+      "title": 6,
+      "firstNew": 2,
+      "1day": 2,
+      "2day": 2,
+      "3day": 2,
+      "4day": 2,
+      "5day": 2,
+      "6day": 2
+    },
+    {
+      "title": 7,
+      "firstNew": 1,
+      "1day": 1,
+      "2day": 1,
+      "3day": 1,
+      "4day": 1,
+      "5day": 1,
+      "6day": 1
+    },
+    {
+      "title": 8,
+      "firstNew": 1,
+      "1day": 1,
+      "2day": 1,
+      "3day": 1,
+      "4day": 1,
+      "5day": 1,
+      "6day": 1
+    },
+    {
+      "title": 9,
+      "firstNew": 1,
+      "1day": 1,
+      "2day": 1,
+      "3day": 1,
+      "4day": 1,
+      "5day": 1,
+      "6day": 1
+    },
+    {
+      "title": 10,
+      "firstNew": 1,
+      "1day": 1,
+      "2day": 1,
+      "3day": 1,
+      "4day": 1,
+      "5day": 1,
+      "6day": 1
+    }
+  ]
+}

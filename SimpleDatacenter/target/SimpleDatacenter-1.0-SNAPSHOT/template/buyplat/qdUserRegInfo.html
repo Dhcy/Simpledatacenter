@@ -1,0 +1,106 @@
+<style type="text/css">
+    .table th,.table td{ border:1px solid #ddd; padding-left: 0; padding-right: 0;}
+    .form-group{ margin-left: 10px; margin-top: 10px;}
+    .form-control{ display: inline-block; vertical-align: middle;}
+    #datas{width: 800px; margin: 0 auto;}
+</style>
+<div>
+    <div>
+        <div class="form-group">
+            <div class="div_select">
+                
+            </div>
+            <label for="">{{'时间区域' | translate}}：</label>
+            <div datepicker class="col-xs-3 timeSelect" mstatdate="mstatdate" style="width:250px;"></div>
+            <label for="">{{'游戏' | translate}}：</label>
+            <select ng-model="postData.gameid" style="width:100px;" class="form-control" ng-options="abc.id as abc.name for abc in panel_1.gameList">
+
+            </select>&nbsp;&nbsp;
+            <label for="">{{'渠道' | translate}}：</label>
+            <select ng-model="postData.channelid" style="width:170px;" class="form-control" ng-options="abc.id as abc.channelName for abc in panel_1.channelList">
+
+            </select>&nbsp;&nbsp;
+            <label for="">{{'终端' | translate}}：</label>
+            <select ng-model="postData.terminalid" style="width:100px;" class="form-control" ng-options="abc.id as abc.name for abc in terminalList">
+                
+            </select>&nbsp;&nbsp;
+            <label for="">{{'渠道用户注册信息' | translate}}：</label>
+            <select ng-model="postData.infoid" style="width:150px;" class="form-control" ng-options="abc.id as abc.name for abc in infoList">
+                
+            </select>&nbsp;&nbsp;
+            <button class="btn btn-default" ng-click="mdownloaddata('avgGameTime')">{{'导出' | translate}}</button>
+            <button class="btn btn-default" ng-click="searchData()">{{'搜索' | translate}}</button>
+        </div>
+    </div>
+    <div class="panel panel-default panel_1">
+        <div class="panel-heading">
+            <strong>
+                 {{'渠道用户注册信息' | translate}}
+                <!--------提示框--------- -->
+            </strong>
+            <div class="panel_downloadBtn" ng-click="mdownloaddata('avgGameTime')"></div>
+            <!--------下载按钮--------- -->
+            <div class="clear"></div>
+        </div>
+        
+        <!-- <div class="panel-body pdlf pdtb">
+            <div class="tableBox">
+                <table class="table table-striped">
+                    <tr>
+                        <th class="text-center" width="10%">注册时间段</th>
+                        <th class="text-center" width="10%">创角时间段</th>
+                        <th class="text-center" width="10%">联网方式</th>
+                        <th class="text-center" width="10%">注册IP</th>
+                        <th class="text-center" width="10%">城市区域</th>
+                        <th class="text-center" width="10%">设备类型</th>
+                        <th class="text-center" width="10%">系统版本号</th>
+                        <th class="text-center" width="10%">IMEI</th>
+                        <th class="text-center" width="10%">deviceid</th>
+                        <th class="text-center" width="10%">Mac地址</th>
+                    </tr>
+                    <tr ng-repeat="data in panel_1.dataList_1.data | filter:searchData.gameList | filter:searchData.channelList | filter:searchData.terminalList |orderBy: panel_1.dataList_1.orderBy.t+panel_1.dataList_1.orderBy.s | pageStartFrom : panel_1.dataList_1.limit.now*panel_1.dataList_1.limit.max | limitTo: panel_1.dataList_1.limit.max" class="text-center">
+                        <td>{{}}</td>
+                        <td>{{}}</td>
+                        <td>{{}}</td>
+                        <td>{{}}</td>
+                        <td>{{}}</td>
+                        <td>{{}}</td>
+                        <td>{{}}</td>
+                        <td>{{}}</td>
+                        <td>{{}}</td>
+                        <td>{{}}</td>
+                    </tr>
+                </table>
+                <div class="tableFooter">
+                    <div class="buttondiv fl" analysisdrop changei="changetype()">
+                        <div class="selectlable fl">每页显示：</div>
+                        <div class="analysisdrop fl" style="width:60px;">
+                            <div class="hadchoose">
+                                <h6>{{val}}</h6></div>
+                            <ul class="dropUl">
+                                <li ng-click="c('10');changetype(10)">10</li>
+                                <li ng-click="c('20');changetype(20)">20</li>
+                                <li ng-click="c('50');changetype(50)">50</li>
+                                <li ng-click="c('100');changetype(100)">100</li>
+                            </ul>
+                        </div>
+                        <div class="selectlable fl">&nbsp;&nbsp;条记录</div>
+                    </div>
+                    <div class="dataTables_paginate fr" datatableslimit  datalimit="panel_1.dataList_1.limit"  tabledata="panel_1.dataList_1.data"></div>
+                </div>
+            </div>
+        </div> -->
+        <div class="panel-body" ng-class="{'table':panel_1.model=='table','graph':panel_1.model=='graph'}"> 
+                <!--------各选项卡数据展示--------- -->
+                <div class="clear"></div>
+                <div class="panel-showData">
+                    <div class="dataList dataList2 dataList_1 dataListAct">
+                        <div class="dataGraph">
+                            <div class="graph" data="dataList_2_1_graph" id="datas"></div> 
+                            <!--------图表div，data为graphfun的key--------- -->   
+                        </div>
+                    </div>              
+                </div>
+            </div>
+    </div>
+</div>

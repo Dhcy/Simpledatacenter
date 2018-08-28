@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.independ.mapper.sj3index.Sj3WzzbMapper">
+	<resultMap id="BaseResultMap" type="com.good.plat.datacenter.independ.entity.sj3index.Sj3Wzzb">
+		<result column="statdate" property="statdate"/>
+		<result column="areaid" property="areaid"/>
+		<result column="areaName" property="areaName"/>
+		<result column="channelid" property="channelid"/>
+		<result column="channelName" property="channelName"/>
+		<result column="joinCnt" property="joinCnt"/>
+		<result column="trainCnt" property="trainCnt"/>
+		<result column="jnCnt" property="jnCnt"/>
+		<result column="mwCnt" property="mwCnt"/>
+		<result column="lhCnt" property="lhCnt"/>
+		<result column="lhCnt" property="lhCnt"/>
+		<result column="watchCnt" property="watchCnt"/>
+		<result column="watchTimes" property="watchTimes"/>
+		<result column="type" property="type"/>
+		<result column="equipName" property="equipName"/>
+		<result column="equipCnt" property="equipCnt"/>
+		<result column="betCnt" property="betCnt"/>
+		<result column="betTimes" property="betTimes"/>
+		<result column="betCost" property="betCost"/>
+		<result column="betGain" property="betGain"/>
+		<result column="groupBetCnt" property="groupBetCnt"/>
+		<result column="groupBetTimes" property="groupBetTimes"/>
+		<result column="finalsBetCnt" property="finalsBetCnt"/>
+		<result column="finalsBetTimes" property="finalsBetTimes"/>
+		<result column="actorid" property="actorid"/>
+		<result column="actorname" property="actorname"/>
+		<result column="joinTimes" property="joinTimes"/>
+		<result column="winTimes" property="winTimes"/>
+		<result column="winRate" property="winRate"/>
+		<result column="lsTimes" property="lsTimes"/>
+		<result column="lsCnt" property="lsCnt"/>
+		<result column="level" property="level"/>
+		<result column="jobs" property="jobs"/>
+	</resultMap>
+	
+		<sql id="BaseSelect">
+			where statdate between #{startdate} and #{enddate} 
+			and gameid=#{gameid}
+			<if test="areas != null">
+				and areaid in
+				<foreach collection="areas" item="area" index="index" open="(" close=")" separator=",">
+					#{area}
+				</foreach>
+			</if>
+			<if test="channelList != null">
+				and channel in
+				<foreach collection="channelList" item="channel" index="index" open="(" close=")" separator=",">
+					#{channel.id}
+				</foreach>
+			</if>
+		</sql>
+		
+		<sql id="BaseSelectWithoutChannel">
+			where statdate between #{startdate} and #{enddate} 
+			and gameid=#{gameid}
+			<if test="areas != null">
+				and areaid in
+				<foreach collection="areas" item="area" index="index" open="(" close=")" separator=",">
+					#{area}
+				</foreach>
+			</if>
+		</sql>
+		
+		<sql id="BaseSelectWithAreaid">
+			where statdate between #{startdate} and #{enddate} 
+			and gameid=#{gameid}
+			<if test="areaid != null">
+				and areaid=#{areaid}
+			</if>
+		</sql>
+	
+	<!-- 王者争霸-->
+	<select id="selectWzzbList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.IndependBaseSearchData">
+		SELECT
+			a.statdate,
+			a.areaid,
+			a.jobs,
+			IFNULL(a.joinCnt,0) as joinCnt,
+			IFNULL(a.trainCnt,0) as trainCnt,
+			IFNULL(b.jnCnt,0) as jnCnt,
+			IFNULL(b.mwCnt,0) as mwCnt,
+			IFNULL(b.lhCnt,0) as lhCnt,
+			IFNULL(c.watchCnt,0) as watchCnt,
+			IFNULL(c.watchTimes,0) as watchTimes
+		FROM
+			(
+				SELECT
+					statdate,
+					areaid,
+					jobs,
+					IFNULL(SUM(jioncnt), 0) AS joinCnt,
+					IFNULL(SUM(traincnt), 0) AS trainCnt
+				FROM
+					sj3_wzzb_jion_stat
+				<include refid="BaseSelect"/>
+				GROUP BY
+					statdate,
+					areaid,
+					jobs
+			) a
+		LEFT JOIN (
+			SELECT
+				statdate,
+				areaid,
+				jobs,
+				SUM(IF(type = 1, count, 0)) AS jnCnt,
+				SUM(IF(type = 2, count, 0)) AS mwCnt,
+				SUM(IF(type = 3, count, 0)) AS lhCnt
+			FROM
+				sj3_wzzb_equip_stat
+			<include refid="BaseSelect"/>
+			GROUP BY
+				statdate,
+				areaid,
+				jobs
+		) b ON b.statdate = a.statdate
+		AND b.areaid = a.areaid
+		AND b.jobs = a.jobs
+		LEFT JOIN
+		(
+			SELECT
+				statdate,
+				areaid,
+				IFNULL(SUM(count), 0) AS watchCnt,
+				IFNULL(SUM(games), 0) AS watchTimes
+			FROM
+				sj3_wzzb_watch_stat
+			<include refid="BaseSelect"/>
+			GROUP BY
+				statdate,
+				areaid
+		)c on c.statdate=a.statdate and c.areaid=a.areaid;
+	</select>
+	<!-- 王者争霸装备详情 -->
+	<select id="selectWzzbEquipDetailList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.IndependBaseSearchData">
+		SELECT
+			statdate,
+			areaid,
+			jobs,
+			type,
+			subtype AS equipName,
+			IFNULL(SUM(count), 0) AS equipCnt
+		FROM
+			sj3_wzzb_equip_stat
+	<include refid="BaseSelectWithAreaid"/>
+		<!-- 装备类型 -->
+		AND type =#{checktype1}
+		<if test="checktype2!=null and checktype2!='全部'">
+		AND jobs=#{checktype2}
+		</if>
+		GROUP BY
+			statdate,
+			areaid,
+			jobs,
+			type,
+			subtype;
+	</select>
+	
+	<!-- 王者争霸押注 -->
+	<select id="selectWzzbBetList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.IndependBaseSearchData">
+		SELECT
+			statdate,
+			areaid,
+			jobs,
+			IFNULL(SUM(betcnt), 0) AS betCnt,
+			IFNULL(SUM(bettimes), 0) AS betTimes,
+			IFNULL(SUM(cost), 0) AS betCost,
+			IFNULL(SUM(gain), 0) AS betGain
+		FROM
+			sj3_wzzb_bet_stat
+		<include refid="BaseSelect"/>
+		GROUP BY
+			statdate,
+			areaid,
+			jobs;
+	</select>
+	
+	<!-- 王者争霸押注档次 -->
+	<select id="selectWzzbBetLevelList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.IndependBaseSearchData">
+		select 
+			statdate,
+			areaid,
+			zone as level,
+			jobs,
+			SUM(IF(betgames=1,betcnt,0)) as groupBetCnt,
+			SUM(IF(betgames=1,bettimes,0)) as groupBetTimes,
+			SUM(IF(betgames=2,betcnt,0)) as finalsBetCnt,
+			SUM(IF(betgames=2,bettimes,0)) as finalsBetTimes
+		from sj3_wzzb_bets_stat  
+			<include refid="BaseSelectWithoutChannel"/>
+			GROUP BY
+			statdate,
+			areaid,
+			zone,
+			jobs;
+	</select>
+	
+	<!-- 王者争霸外围赛战斗次数最多 -->
+	<select id="selectMaxJoinActorDetailList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.IndependBaseSearchData">
+		SELECT
+			statdate,
+			areaid,
+			jobs,
+			actorid,
+			actorname,
+			IFNULL(SUM(jioncnt), 0) AS joinTimes,
+			IFNULL(SUM(wincnt), 0) AS winTimes,
+			IFNULL(SUM(wincnt)/SUM(jioncnt),0) AS winRate
+		FROM
+			sj3_wzzb_maxjion_stat
+		<include refid="BaseSelectWithAreaid"/>
+		<if test="checktype2!=null and checktype2!='全部'">
+		AND jobs=#{checktype2}
+		</if>
+		GROUP BY
+			statdate,
+			areaid,
+			jobs,
+			actorid,
+			actorname
+		ORDER BY
+		joinTimes
+		LIMIT 20
+	</select>
+	
+	<!-- 外围赛连胜次数人数 -->
+	<select id="selectWzzbLsList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.IndependBaseSearchData">
+		SELECT
+			statdate,
+			areaid,
+			jobs,
+			SUM(lstimes) AS lsTimes,
+			SUM(count) AS lsCnt
+		FROM
+			sj3_wzzb_ls_stat
+		<include refid="BaseSelectWithAreaid"/>
+		<if test="checktype2!=null and checktype2!='全部'">
+		AND jobs=#{checktype2}
+		</if>
+		GROUP BY
+			statdate,
+			areaid,
+			jobs
+	</select>
+	
+</mapper>

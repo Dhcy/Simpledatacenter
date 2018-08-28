@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.login.user.mapper.FirstMenuMapper" >
+  <resultMap id="BaseResultMap" type="com.good.plat.datacenter.login.user.entity.FirstMenu" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="firstKey" property="key" jdbcType="VARCHAR" />
+    <result column="firstName" property="name" jdbcType="VARCHAR" />
+    <result column="platid" property="platid" jdbcType="INTEGER" />
+    <result column="platname" property="platname" jdbcType="VARCHAR"/>
+  </resultMap>
+  
+  <resultMap type="com.good.plat.datacenter.login.user.entity.FirstMenu" id="UserMenuMap">
+  	<id column="menu1_id" property="id" jdbcType="INTEGER" />
+    <result column="menu1_key" property="key" jdbcType="VARCHAR" />
+    <result column="menu1_name" property="name" jdbcType="VARCHAR" />
+    <collection property="menuList" ofType="com.good.plat.datacenter.login.user.entity.SecondMenu">
+    	<id column="menu2_id" property="id"/>
+    	<result column="menu2_firstId" property="firstId"/>
+    	<result column="menu2_key" property="key"/>
+    	<result column="menu2_name" property="name"/>
+    	<result column="menu2_actkey" property="actkey"/>
+    	<result column="menu2_url" property="url"/>
+    	<result column="menu2_permission" property="permission"/>
+    	<result column="menu2_type" property="menuType"/>
+    </collection>
+  </resultMap>
+  
+  <sql id="User_Menu_List">
+  	select
+		distinct(menu2.id) as menu2_id,
+		menu2.firstId as menu2_firstId,
+		menu2.secondKey as menu2_key,
+		menu2.secondName as menu2_name,
+		menu2.actkey as menu2_actkey,
+		menu2.url as menu2_url,
+		menu2.permission as menu2_permission,
+		menu2.type as menu2_type,
+		menu1.id as menu1_id, 
+		menu1.firstKey as menu1_key, 
+		menu1.firstName as menu1_name
+	from 
+		tb_logplat_role role, 
+		tb_logplat_role_permission per, 
+		tb_logplat_second_menu menu2, 
+		tb_logplat_first_menu menu1
+	where 
+		role.id=per.roleid
+		and per.menuid = menu2.id 
+		and menu1.id = menu2.firstId
+  </sql>
+  
+  
+  <sql id="Base_Column_List" >
+    id, firstKey, firstName,platid
+  </sql>
+  
+  <sql id="Base_Column_List_FOR_JOIN" >
+    a.id, a.firstKey, a.firstName,a.platid
+  </sql>
+  
+  <select id="selectMenuListByUserId" resultMap="UserMenuMap" parameterType="java.lang.Integer" >
+  	<include refid="User_Menu_List" />
+  	<if test="userId != null">
+  		and role.id in (select roleid from tb_logplat_user_role where userid=#{userId,jdbcType=INTEGER})
+  	</if>
+  	order by menu1.id, menu2.id
+  </select>
+  
+  <select id="selectMenuListByRoles" resultMap="UserMenuMap" parameterType="java.util.List" >
+  	<include refid="User_Menu_List" />
+  	<if test="roleIds != null">
+  		and role.id in 
+  		<foreach collection="roleIds" item="roleId" open="(" close=")" separator=",">
+  			#{roleId}
+  		</foreach>
+  	</if>
+  	order by menu1.id,menu2.id
+  </select>
+  
+  <select id="selectFirstMenuList" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from tb_logplat_first_menu
+    order by id
+  </select>
+  
+  <select id="selectPlatFirstMenuList" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List_FOR_JOIN" />
+    ,plat.platname
+    from tb_logplat_first_menu a
+    join tb_logplat_sys_plat plat on(a.platid=plat.id)
+    order by a.id
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_logplat_first_menu
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectByMenuName" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  	select 
+    <include refid="Base_Column_List" />
+    from tb_logplat_first_menu
+    where firstName = #{menuName,jdbcType=INTEGER}
+  </select>
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_logplat_first_menu
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insert" parameterType="com.good.plat.datacenter.login.user.entity.FirstMenu" >
+    insert into tb_logplat_first_menu (id, firstKey, firstName,platid
+      )
+    values (#{id,jdbcType=INTEGER}, #{key,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},#{platid,jdbcType=INTEGER}
+      )
+  </insert>
+  
+  <insert id="insertSelective" parameterType="com.good.plat.datacenter.login.user.entity.FirstMenu" >
+    insert into tb_logplat_first_menu
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="key != null" >
+        firstKey,
+      </if>
+      <if test="name != null" >
+        firstName,
+      </if>
+      <if test="platid != null" >
+        platid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="key != null" >
+        #{key,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="platid != null" >
+        #{platid,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.good.plat.datacenter.login.user.entity.FirstMenu" >
+    update tb_logplat_first_menu
+    <set >
+      <if test="key != null" >
+        firstKey = #{key,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        firstName = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="platid != null" >
+        platid = #{platid,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  
+  <update id="updateByPrimaryKey" parameterType="com.good.plat.datacenter.login.user.entity.FirstMenu" >
+    update tb_logplat_first_menu
+    set firstKey = #{key,jdbcType=VARCHAR},
+      firstName = #{name,jdbcType=VARCHAR},
+      platid = #{platid,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectMenuListByUserIdAndMenuType" resultMap="UserMenuMap">
+  		<include refid="User_Menu_List" />
+  	<if test="checktype2 != null">
+  		and menu2.type in(0,#{checktype2,jdbcType=INTEGER})
+  	</if>
+  	<if test="checktype1 != null">
+  		and role.id in (select roleid from tb_logplat_user_role where userid=#{checktype1,jdbcType=INTEGER})
+  	</if>
+  	order by menu1.id, menu2.id
+  </select>
+  
+  <select id="firstUserMenuListByPlatId" parameterType="com.good.plat.datacenter.common.base.BaseSearchData" resultMap="UserMenuMap">>
+  	<include refid="User_Menu_List" />
+  	<if test="checktype2 != null">
+  		and menu2.type in(0,#{checktype2,jdbcType=INTEGER})
+  	</if>
+  	<if test="checktype1 != null">
+  		and role.id in (select roleid from tb_logplat_user_role where userid=#{checktype1,jdbcType=INTEGER})
+  	</if>
+  	<if test="checktype3 != null">
+  		and menu1.platid=#{checktype3,jdbcType=INTEGER})
+  	</if>
+  	order by menu1.id, menu2.id
+  </select>
+</mapper>

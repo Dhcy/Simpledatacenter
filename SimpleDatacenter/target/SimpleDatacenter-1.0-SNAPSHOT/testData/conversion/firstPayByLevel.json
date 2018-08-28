@@ -1,0 +1,57 @@
+ 
+{
+  "firstPayByLevel": [
+    {
+      "level": 1,
+      "accounts": 589,
+      "percentage": 39.4
+    },
+    {
+      "level": 2,
+      "accounts": 219,
+      "percentage": 14.6
+    },
+    {
+      "level": 3,
+      "accounts": 199,
+      "percentage": 13.3
+    },
+    {
+      "level": 4,
+      "accounts": 120,
+      "percentage": 8.0
+    },
+    {
+      "level": 5,
+      "accounts": 101,
+      "percentage": 6.8
+    },
+    {
+      "level": 6,
+      "accounts": 69,
+      "percentage": 4.6
+    },
+    {
+      "level": 7,
+      "accounts": 34,
+      "percentage": 2.3
+    },
+    {
+      "level": 8,
+      "accounts": 30,
+      "percentage": 2.0
+    },
+    {
+      "level": 9,
+      "accounts": 37,
+      "percentage": 2.5
+    },
+    {
+      "level": 10,
+      "accounts": 97,
+      "percentage": 6.5
+    }
+  ],
+	"AVG":3,
+	"MD":2
+}

@@ -1,0 +1,17 @@
+<div class="ul" >
+	<div class="menus {{data.key}}" ng-repeat="data in menuData">
+		<div class="menu1 menuBtn" ng-click="menuBtnClick($event)" ng-class="{act: $state.includes('main.'+data.key)}" ui-sref=".{{data.key}}" ng-show="!data.menuList" >		
+			<span class="icon"></span>{{data.name | translate}}
+		</div>
+		<div class="menu1 menuBtn" ng-click="menuBtnClick($event)" ng-class="{act: $state.includes('main.'+data.key)}" ng-show="data.menuList">		
+			<span class="icon"></span>{{data.name | translate}}
+		</div>
+		<div class="menu_1 menuList" ng-class="{menu_act: $state.includes('main.'+data.key),show:$state.includes('main.'+data.key)}" ng-show="data.menuList">
+			<ul class="nav">
+				<li ng-hide="list.isHideMenu" role="presentation" class="" ng-repeat="list in data.menuList" ng-class="{active: $state.includes('main.'+data.key+'.'+list.key) || $state.includes('main.'+data.key+'.'+list.actkey) || $state.includes('main.'+data.key+'.'+list.actkey2)}">
+					<a href="javascript:void(0);" ui-sref=".{{data.key}}.{{list.key}}($stateParams)"><span class="leftArow" aria-hidden="true"></span>{{list.name | translate }}</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,202 @@
+<style type="text/css">
+    .table th,.table td{ border:1px solid #ddd;}
+    .form-group{ margin-left: 10px; margin-top: 10px;}
+    .form-control{ display: inline-block; vertical-align: middle;}
+    .tableListTh{
+    	white-space: nowrap;
+    	text-align:center;
+    }
+    .channelTd{
+    	white-space: nowrap;
+    	text-align:center;
+    }
+    .form-group .form-member{
+    float: left;
+    }
+    .form-group .member-control{
+   	margin-left: 10px;
+    }
+    .playerTabs .tagbut {
+    height: 26px;
+    line-height: 26px;
+    margin-top: 6px;
+    }
+</style>
+<div>
+	 <div>
+	        <div class="form-group">
+	            <label for="">{{'查询区服' | translate}}：</label>
+	            <select ng-model="postData.areaid" class="form-control" ng-options="data.id as data.name for data in gameAreaList">
+	            </select>
+	        </div>
+			<div class="form-group">
+				<div class="form-member">
+					<label for="startDate">{{'起始日期' | translate}}: </label>
+					<input type="text" id="startDate" class="form-control" placeholder="{{o.startDate}}" uib-datepicker-popup="{{format}}" ng-model="o.startDate" is-open="o.opened1" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" ng-click="o.opened1=!o.opened1" />
+				</div>
+				<div class="form-member member-control">
+					<label for="endDate">{{'结束日期' | translate}}: </label>
+					<input type="text" id="endDate" class="form-control" placeholder="{{o.endDate}}" uib-datepicker-popup="{{format}}" ng-model="o.endDate" is-open="o.opened2" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" ng-click="o.opened2=!o.opened2" />
+				</div>
+				&nbsp;&nbsp;
+				<button class="btn btn-default" ng-click="getAllData()">{{'查询' | translate}}</button>
+			</div>
+	</div>
+	<div class="clear"></div>
+		<!--------tab选择按钮----------->
+	<div class="panel panel-default panel_1">
+			<div class="panel-heading">
+			  <strong>
+			  	<div class="playerTabs" class="margin_left" playertabs tabsarr="tabsarr" style="float:none;display:inline-block;vertical-align:middle;">
+				</div>
+			 </strong>
+				<div class="panel_downloadBtn"  down-file down-file-url="yhSummary/exportYhCourseStatList.action" down-file-type="xlsx" down-file-name="{{tabsarr[tabsId-1].name}}{{mstatdate}}" savedata="" postdata="postData" ></div>
+				<div class="clear"></div>
+			</div>
+			<div class="panel-body pdlf pdtb">
+			<div class="tableList tableListAct" >
+				<ul class="tableListUl">
+					<li class="tableListLi tableListLiTh clear">
+						<span class="tableListTh" style="width:20%">
+							<strong title="">{{'日期' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:20%">
+							<strong title="">{{'渠道' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:20%">
+							<strong title="">{{'教程' | translate}}ID</strong>
+						</span>
+						<span class="tableListTh" style="width:20%">
+							<strong title="">{{'停留在此教程的人数' | translate}}</strong>
+							<div tipsmsg>{{'最近一次完成的教程是此ID的教程的人数' | translate}}</div>
+						</span>
+						<span class="tableListTh" style="width:20%">
+							<strong title="">{{'停留人数占比' | translate}}</strong>
+							<div tipsmsg>{{'（停留在此教程的人数/服务器总人数）*100%【活跃】' | translate}}</div>
+						</span>
+						
+					</li>
+					<li class="tableListLi clear" ng-repeat="data in panel_1.dataList_1.data | pageStartFrom : panel_1.dataList_1.limit.now*panel_1.dataList_1.limit.max | limitTo: panel_1.dataList_1.limit.max" ng-class="({'show_panel':data.show_panel})">
+						<div class="channelTr clear">
+							<span class="channelTd" style="width:20%" >
+								{{data.statdate}}
+							</span>
+							<span class="channelTd" style="width:20%">
+								{{data.channelName}}
+							</span>
+							<span class="channelTd" style="width:20%">
+								{{data.courseid}}
+							</span>
+							<span class="channelTd" style="width:20%">
+								{{data.count}}
+							</span>
+							<span class="channelTd" style="width:20%">
+								{{data.rate}}%
+							</span>
+						</div>
+				</li>
+				</ul>
+				<div class="tableFooter">
+						<div class="buttondiv fl" analysisdrop changei="changetype()">
+							<div class="selectlable fl">{{'每页显示' | translate}}：</div>
+							<div class="analysisdrop fl" style="width:60px;">
+								<div class="hadchoose">
+									<h6>{{val | translate}}</h6></div>
+								<ul class="dropUl">
+									<li ng-click="c('10');changetype(10)">10</li>
+									<li ng-click="c('20');changetype(20)">20</li>
+									<li ng-click="c('50');changetype(50)">50</li>
+									<li ng-click="c('100');changetype(100)">100</li>
+								</ul>
+							</div>
+							<div class="selectlable fl">&nbsp;&nbsp;{{'条记录' | translate}}</div>
+						</div>
+						<div class="dataTables_paginate fr" datatableslimit  datalimit="panel_1.dataList_1.limit"  tabledata="panel_1.dataList_1.data"  datachange="panel_1_change"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="panel panel-default panel_2">
+			<div class="panel-heading">
+			<strong>{{'系统参与度' | translate}}</strong>
+				<div class="panel_downloadBtn"  down-file down-file-url="yhSummary/exportYhSystemJoinList.action" down-file-type="xlsx" down-file-name="系统参与度{{mstatdate}}" savedata="" postdata="postData" ></div>
+				<div class="clear"></div>
+			</div>
+			<div class="panel-body pdlf pdtb">
+			<div class="tableList tableListAct" >
+				<ul class="tableListUl">
+					<li class="tableListLi tableListLiTh clear">
+						<span class="tableListTh" style="width:16%">
+							<strong title="">{{'日期' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:14%">
+							<strong title="">{{'渠道' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:14%">
+							<strong title="">{{'系统' | translate}}</strong>
+						</span>
+						<span class="tableListTh" style="width:14%">
+							<strong title="">{{'参与人数' | translate}}</strong>
+							<div tipsmsg>{{'参与了此系统的人数' | translate}}</div>
+						</span>
+						<span class="tableListTh" style="width:14%">
+							<strong title="">{{'参与人数占比' | translate}}</strong>
+							<div tipsmsg>{{'参与人数占比=参与人数/服务器总人数【活跃】' | translate}}</div>
+						</span>
+						<span class="tableListTh" style="width:14%">
+							<strong title="">{{'平均参与人次' | translate}}</strong>
+							<div tipsmsg>{{'平均参与人次=参与人次/参与人数' | translate}}</div>
+						</span>
+						<span class="tableListTh" style="width:14%">
+							<strong title="">{{'平均首次参与等级' | translate}}</strong>
+						</span>
+					</li>
+					<li class="tableListLi clear" ng-repeat="data in panel_2.dataList_1.data | pageStartFrom : panel_2.dataList_1.limit.now*panel_2.dataList_1.limit.max | limitTo: panel_2.dataList_1.limit.max" ng-class="({'show_panel':data.show_panel})">
+						<div class="channelTr clear">
+							<span class="channelTd" style="width:16%" >
+								{{data.statdate}}
+							</span>
+							<span class="channelTd" style="width:14%">
+								{{data.channelName}}
+							</span>
+							<span class="channelTd" style="width:14%">
+								{{data.sysname}}
+							</span>
+							<span class="channelTd" style="width:14%">
+								{{data.joinUser}}
+							</span>
+							<span class="channelTd" style="width:14%">
+								{{data.joinUserRate}}%
+							</span>
+							<span class="channelTd" style="width:14%">
+								{{data.avgJoinTimes}}
+							</span>
+							<span class="channelTd" style="width:14%">
+								{{data.avgFirstJoinLvl}}
+							</span>
+						</div>
+				</li>
+				</ul>
+				<div class="tableFooter">
+						<div class="buttondiv fl" analysisdrop changei="changetype2()">
+							<div class="selectlable fl">{{'每页显示' | translate}}：</div>
+							<div class="analysisdrop fl" style="width:60px;">
+								<div class="hadchoose">
+									<h6>{{val}}</h6></div>
+								<ul class="dropUl">
+									<li ng-click="c('10');changetype2(10)">10</li>
+									<li ng-click="c('20');changetype2(20)">20</li>
+									<li ng-click="c('50');changetype2(50)">50</li>
+									<li ng-click="c('100');changetype2(100)">100</li>
+								</ul>
+							</div>
+							<div class="selectlable fl">&nbsp;&nbsp;{{'条记录' | translate}}</div>
+						</div>
+						<div class="dataTables_paginate fr" datatableslimit  datalimit="panel_2.dataList_1.limit"  tabledata="panel_2.dataList_1.data"  datachange="panel_2_change"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+</div>

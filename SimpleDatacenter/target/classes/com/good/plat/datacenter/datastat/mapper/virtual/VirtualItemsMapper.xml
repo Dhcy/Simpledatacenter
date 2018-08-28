@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.datastat.mapper.virtual.VirtualItemsMapper">
+	<resultMap id="BaseResultMap" type="com.good.plat.datacenter.datastat.entity.virtual.VirtualItems">
+		<result column="gameid" property="gameid"/>
+		<result column="gameName" property="gameName"/>
+		<result column="channelid" property="channelid"/>
+		<result column="channelName" property="channelName"/>
+		<result column="subchannelid" property="subchannelid"/>
+		<result column="areaid" property="areaid"/>
+		<result column="areaName" property="areaName"/>
+		<result column="statdate" property="statdate"/>
+		<result column="statType" property="statType"/>
+		<result column="rate" property="rate"/>
+		<result column="currencyPurchase" property="currencyPurchase"/>
+		<result column="currencySum" property="currencySum"/>
+		<result column="numberOfExpense" property="numberOfExpense"/>
+		<result column="spendingAccounts" property="spendingAccounts"/>
+		
+		<result column="itemid" property="itemid"/>
+		<result column="itemName" property="itemName"/>
+		<result column="actorLevel" property="actorLevel"/>
+		
+	</resultMap>
+	
+	<sql id="BaseSelect">
+		where statdate between #{startdate} and #{enddate} 
+		<if test="termtypes != null">
+			and termtype in
+			<foreach collection="termtypes" item="term" index="index" open="(" close=")" separator=",">
+				#{term}
+			</foreach>
+		</if>
+		and gameid=#{gameid}
+		<if test="areas != null">
+			and areaid in
+			<foreach collection="areas" item="area" index="index" open="(" close=")" separator=",">
+				#{area}
+			</foreach>
+		</if>
+		<if test="channelList != null">
+			and channel in
+			<foreach collection="channelList" item="channel" index="index" open="(" close=")" separator=",">
+				#{channel.id}
+			</foreach>
+		</if>
+		<if test="subchannels != null">
+			and chnnnl in
+			<foreach collection="subchannels" item="subchannel" index="index" open="(" close=")" separator=",">
+				#{subchannel}
+			</foreach>
+		</if>
+	</sql>
+
+	<!-- 热门物品 -->
+	<select id="selectItemPointList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select itemid,item as itemName,ifnull(sum(purchcnt),0) as currencyPurchase, ifnull(sum(currcnt),0) as currencySum
+		,ifnull(sum(conscnt),0) as numberOfExpense
+		from logplat_curr_item_stat 
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/>
+		group by itemid,item
+	</select>
+	
+	<select id="exportItemPointList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	<!-- 按日期热门物品 -->
+	<select id="selectDailyItemPointDetailList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select statdate,ifnull(sum(purchcnt),0) as currencyPurchase, ifnull(sum(currcnt),0) as currencySum,ifnull(sum(conscnt),0) as numberOfExpense
+		,ifnull(sum(purchactcnt),0) as spendingAccounts
+		from logplat_curr_item_stat 
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/>
+		and itemid=#{checktype1,jdbcType=VARCHAR}
+		group by statdate order by statdate
+	</select>
+	
+	<!-- 按等级热门物品 -->
+	<select id="selectLevelItemPointDetailList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select actorlevel,ifnull(sum(purchcnt),0) as currencyPurchase, ifnull(sum(currcnt),0) as currencySum
+		,ifnull(sum(conscnt),0) as numberOfExpense,ifnull(sum(purchactcnt),0) as spendingAccounts
+		from logplat_curr_item_stat 
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/>
+		and itemid=#{checktype1,jdbcType=VARCHAR}
+		<if test="checktype2!=null and checktype2!=''">
+		and item=#{checktype2,jdbcType=VARCHAR}
+		</if>
+		group by actorlevel order by actorlevel
+	</select>
+	
+	<!-- 购买数量 -->
+	<select id="selectPurchaseItemNumberList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	<!-- 虚拟币总值 -->
+	<select id="selectPurchaseVirtualCurrencyList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	
+	<!-- 消耗数量 -->
+	<select id="selectUseinfoItemNumberList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	<!-- 购买人数 -->
+	<select id="selectVcConsumeNumOfPeople" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+
+	
+</mapper>

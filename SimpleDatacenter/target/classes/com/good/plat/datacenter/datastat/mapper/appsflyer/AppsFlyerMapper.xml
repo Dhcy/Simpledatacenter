@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.datastat.mapper.appsflyer.AppsFlyerMapper" >
+  <resultMap id="BaseResultMap" type="com.good.plat.datacenter.datastat.entity.appsflyer.AppsFlyer" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="dateTime" property="dateTime" jdbcType="TIMESTAMP" />
+    <result column="installTime" property="installTime" jdbcType="TIMESTAMP" />
+    <result column="platform" property="platform" jdbcType="VARCHAR" />
+    <result column="eventName" property="eventName" jdbcType="VARCHAR" />
+    <result column="afData" property="afData" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <insert id="addAppsFlyer" parameterType="com.good.plat.datacenter.datastat.entity.appsflyer.AppsFlyer">
+  insert into logplat_appsflyer(statdate,afdata,installtime,platform,eventname,appid) values(#{dateTime,jdbcType=TIMESTAMP},#{afData,jdbcType=VARCHAR},#{installTime,jdbcType=TIMESTAMP},#{platform,jdbcType=VARCHAR},#{eventName,jdbcType=VARCHAR},#{appId})
+  </insert>
+  
+  <sql id="base_column_select">
+  	id as id,
+	statdate as dateTime,
+	installtime as installTime,
+	platform as platform,
+	eventname as eventName,
+	afdata as afData,
+	appid as appId
+  </sql>
+  <sql id="base_select">
+		where installtime between #{startdate} and #{enddate}
+		<if test="eventName!=null and eventName!=''">
+			and eventname=#{eventName}
+		</if>
+		<if test="appId!=null and appId!=''">
+			and appid=#{appId}
+		</if>
+  </sql>
+  
+  <select id="selectAppsFlyerList" parameterType="com.good.plat.datacenter.datastat.entity.appsflyer.AppsFlyer" resultMap="BaseResultMap">
+  		select
+  		<include refid="base_column_select"/>
+		FROM
+			logplat_appsflyer
+		<include refid="base_select"/>
+  </select>
+  
+</mapper>

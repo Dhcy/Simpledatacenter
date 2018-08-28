@@ -1,0 +1,71 @@
+<div>
+    <div class="maintop">
+        <div datepicker class="col-xs-3 timeSelect" mstatdate="mstatdate">
+        </div>
+        <!--------日期选择控件----------->
+    </div>  
+    
+    <div class="panel panel-default panel_1">
+            <div class="panel-heading">
+                <strong>
+                    {{'您当前的位置 > 广告统计' | translate}}
+                    <div class="exp-box">
+                        <em class="icon-exp">{{'三角图标' | translate}}</em>
+                        <div class="noun-exp" style="width:300px;">                         {{'所选期间的新增玩家在新增后的7日内每日的等级进展情况，可用于分析同一批新增玩家中，浅中重度玩家的不同比例' | translate}}
+                        </div>
+                    </div>
+                    <!--------提示框----------->
+                </strong>
+                <div class="panel_downloadBtn" ng-click="mdownloaddata('avgGameTime')"></div>
+                <!--------下载按钮----------->
+                <div class="clear"></div>
+            </div>
+            <div class="panel-body" ng-class="{'table':panel_1.model=='table','graph':panel_1.model=='graph'}"> 
+                <!--------各选项卡数据展示----------->
+                <div class="clear"></div>
+                <div class="panel-showData">
+                    <div class="dataList dataList2 dataList_1 dataListAct">
+                        <div class="dataGraph">
+                            <div class="graph" data="dataList_2_1_graph"></div> 
+                            <!--------图表div，data为graphfun的key----------->   
+                        </div>
+                        <div class="dataTable">
+                            <table class="table table-bordered text-center">
+                                <tr class="tableTr">
+                                    <th width='0.9%' ng-click="changeOrderBy(panel_1.dataList_1,'level')">{{'日期' | translate}}</th>
+                                    <th width='9.09%' ng-click="changeOrderBy(panel_1.dataList_1,'day0')">{{'总收入' | translate}}</th>
+                                    <th width='9.09%' ng-click="changeOrderBy(panel_1.dataList_1,'day1')">{{'订单数' | translate}}</th>
+                                    <th width='9.09%' ng-click="changeOrderBy(panel_1.dataList_1,'day2')">{{'付费数' | translate}}</th>
+                                    <th width='9.09%' ng-click="changeOrderBy(panel_1.dataList_1,'day3')">{{'注册数' | translate}}</th>
+                                    <th width='9.09%' ng-click="changeOrderBy(panel_1.dataList_1,'day4')">{{'点击数' | translate}}</th>
+                                    <th width='9.09%' ng-click="changeOrderBy(panel_1.dataList_1,'day5')">{{'付费' | translate}}ARPU</th>
+                                    <th width='9.09%' ng-click="changeOrderBy(panel_1.dataList_1,'day6')">{{'付费率' | translate}}</th>
+                                    <th width='9.09%' ng-click="changeOrderBy(panel_1.dataList_1,'day6')">{{'次日留存率' | translate}}</th>
+                                    <th width='9.09%' ng-click="changeOrderBy(panel_1.dataList_1,'day6')">3{{'日留存率' | translate}}</th>
+                                    <th width='9.09%' ng-click="changeOrderBy(panel_1.dataList_1,'day6')">7{{'日留存率' | translate}}</th>
+                                    <!--------表格th(数据对象，排序字段)----------->
+                                </tr>
+                                <tr ng-repeat="data in panel_1.dataList_1.data | orderBy: panel_1.dataList_1.orderBy.t+panel_1.dataList_1.orderBy.s | pageStartFrom : panel_1.dataList_1.limit.now*panel_1.dataList_1.limit.max | limitTo: panel_1.dataList_1.limit.max">
+                                    <td>{{data.level}}</td>
+                                    <td>{{data.day0}}</td>
+                                    <td>{{data['day1']}}</td>
+                                    <td>{{data['day2']}}</td>
+                                    <td>{{data['day3']}}</td>
+                                    <td>{{data['day4']}}</td>
+                                    <td>{{data['day5']}}</td>
+                                    <td>{{data['day6']}}</td>
+                                </tr>
+                            </table>
+                            <div class="tableLimit" tablelimit datalimit="panel_1.dataList_1.limit"  tabledata="panel_1.dataList_1.data">                           
+                            </div>
+                            <!--------表格分页，datalimit为分页参数，tabledata为数据----------->
+                        </div>
+                    </div>              
+                </div>
+                <div class="panel-changeData"   graphfun="graphfun" datachange="panel_1_change"  datalimit="0" model="panel_1.model">
+                &nbsp;
+                </div>
+                <!-------------图表表格切换，graphfun ----datachange(需要分页时删除不填)------------->
+            </div>
+    </div>
+</div>

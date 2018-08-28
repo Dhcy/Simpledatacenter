@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.datastat.mapper.balanceplat.UscActorRechargeMapper" >
+  <resultMap id="BaseResultMap" type="com.good.plat.datacenter.datastat.entity.balanceplat.UscActorRecharge" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="gameid" property="gameid" jdbcType="INTEGER" />
+    <result column="logdate" property="logdate" jdbcType="TIMESTAMP" />
+    <result column="localdate" property="localdate" jdbcType="TIMESTAMP" />
+    <result column="clientdate" property="clientdate" jdbcType="TIMESTAMP" />
+    <result column="ucgameid" property="ucgameid" jdbcType="INTEGER" />
+    <result column="ucplatid" property="ucplatid" jdbcType="INTEGER" />
+    <result column="channel" property="channel" jdbcType="INTEGER" />
+    <result column="subchannel" property="subchannel" jdbcType="INTEGER" />
+    <result column="paychannel" property="paychannel" jdbcType="INTEGER" />
+    <result column="money" property="money" jdbcType="DECIMAL" />
+    <result column="serverip" property="serverip" jdbcType="VARCHAR" />
+    <result column="currency" property="currency" jdbcType="INTEGER" />
+    <result column="orderid" property="orderid" jdbcType="VARCHAR" />
+    <result column="dstorderid" property="dstorderid" jdbcType="VARCHAR" />
+    <result column="productid" property="productid" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, gameid, logdate, localdate, clientdate, ucgameid, ucplatid, channel, subchannel, 
+    paychannel, money, serverip, currency, orderid, dstorderid,productid
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from usc_actor_recharge
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from usc_actor_recharge
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.good.plat.datacenter.datastat.entity.balanceplat.UscActorRecharge" >
+    insert into usc_actor_recharge (id, gameid, logdate, 
+      localdate, clientdate, ucgameid, 
+      ucplatid, channel, subchannel, 
+      paychannel, money, serverip, 
+      currency, orderid, dstorderid,productid
+      )
+    values (#{id,jdbcType=INTEGER}, #{gameid,jdbcType=INTEGER}, #{logdate,jdbcType=TIMESTAMP}, 
+      #{localdate,jdbcType=TIMESTAMP}, #{clientdate,jdbcType=TIMESTAMP}, #{ucgameid,jdbcType=INTEGER}, 
+      #{ucplatid,jdbcType=INTEGER}, #{channel,jdbcType=INTEGER}, #{subchannel,jdbcType=INTEGER}, 
+      #{paychannel,jdbcType=INTEGER}, #{money,jdbcType=DECIMAL}, #{serverip,jdbcType=VARCHAR}, 
+      #{currency,jdbcType=INTEGER}, #{orderid,jdbcType=VARCHAR}, #{dstorderid,jdbcType=VARCHAR},
+      #{productid,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.good.plat.datacenter.datastat.entity.balanceplat.UscActorRecharge" >
+    insert into usc_actor_recharge
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="gameid != null" >
+        gameid,
+      </if>
+      <if test="logdate != null" >
+        logdate,
+      </if>
+      <if test="localdate != null" >
+        localdate,
+      </if>
+      <if test="clientdate != null" >
+        clientdate,
+      </if>
+      <if test="ucgameid != null" >
+        ucgameid,
+      </if>
+      <if test="ucplatid != null" >
+        ucplatid,
+      </if>
+      <if test="channel != null" >
+        channel,
+      </if>
+      <if test="subchannel != null" >
+        subchannel,
+      </if>
+      <if test="paychannel != null" >
+        paychannel,
+      </if>
+      <if test="money != null" >
+        money,
+      </if>
+      <if test="serverip != null" >
+        serverip,
+      </if>
+      <if test="currency != null" >
+        currency,
+      </if>
+      <if test="orderid != null" >
+        orderid,
+      </if>
+      <if test="dstorderid != null" >
+        dstorderid,
+      </if>
+      <if test="productid != null">
+      	productid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="gameid != null" >
+        #{gameid,jdbcType=INTEGER},
+      </if>
+      <if test="logdate != null" >
+        #{logdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="localdate != null" >
+        #{localdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="clientdate != null" >
+        #{clientdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ucgameid != null" >
+        #{ucgameid,jdbcType=INTEGER},
+      </if>
+      <if test="ucplatid != null" >
+        #{ucplatid,jdbcType=INTEGER},
+      </if>
+      <if test="channel != null" >
+        #{channel,jdbcType=INTEGER},
+      </if>
+      <if test="subchannel != null" >
+        #{subchannel,jdbcType=INTEGER},
+      </if>
+      <if test="paychannel != null" >
+        #{paychannel,jdbcType=INTEGER},
+      </if>
+      <if test="money != null" >
+        #{money,jdbcType=DECIMAL},
+      </if>
+      <if test="serverip != null" >
+        #{serverip,jdbcType=VARCHAR},
+      </if>
+      <if test="currency != null" >
+        #{currency,jdbcType=INTEGER},
+      </if>
+      <if test="orderid != null" >
+        #{orderid,jdbcType=VARCHAR},
+      </if>
+      <if test="dstorderid != null" >
+        #{dstorderid,jdbcType=VARCHAR},
+      </if>
+      <if test="productid != null" >
+        #{productid,jdbcType=VARCHAR},
+      </if>
+      
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.good.plat.datacenter.datastat.entity.balanceplat.UscActorRecharge" >
+    update usc_actor_recharge
+    <set >
+      <if test="gameid != null" >
+        gameid = #{gameid,jdbcType=INTEGER},
+      </if>
+      <if test="logdate != null" >
+        logdate = #{logdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="localdate != null" >
+        localdate = #{localdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="clientdate != null" >
+        clientdate = #{clientdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ucgameid != null" >
+        ucgameid = #{ucgameid,jdbcType=INTEGER},
+      </if>
+      <if test="ucplatid != null" >
+        ucplatid = #{ucplatid,jdbcType=INTEGER},
+      </if>
+      <if test="channel != null" >
+        channel = #{channel,jdbcType=INTEGER},
+      </if>
+      <if test="subchannel != null" >
+        subchannel = #{subchannel,jdbcType=INTEGER},
+      </if>
+      <if test="paychannel != null" >
+        paychannel = #{paychannel,jdbcType=INTEGER},
+      </if>
+      <if test="money != null" >
+        money = #{money,jdbcType=DECIMAL},
+      </if>
+      <if test="serverip != null" >
+        serverip = #{serverip,jdbcType=VARCHAR},
+      </if>
+      <if test="currency != null" >
+        currency = #{currency,jdbcType=INTEGER},
+      </if>
+      <if test="orderid != null" >
+        orderid = #{orderid,jdbcType=VARCHAR},
+      </if>
+      <if test="dstorderid != null" >
+        dstorderid = #{dstorderid,jdbcType=VARCHAR},
+      </if>
+      <if test="productid != null" >
+        productid = #{productid,jdbcType=VARCHAR},
+      </if>
+      
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.good.plat.datacenter.datastat.entity.balanceplat.UscActorRecharge" >
+    update usc_actor_recharge
+    set gameid = #{gameid,jdbcType=INTEGER},
+      logdate = #{logdate,jdbcType=TIMESTAMP},
+      localdate = #{localdate,jdbcType=TIMESTAMP},
+      clientdate = #{clientdate,jdbcType=TIMESTAMP},
+      ucgameid = #{ucgameid,jdbcType=INTEGER},
+      ucplatid = #{ucplatid,jdbcType=INTEGER},
+      channel = #{channel,jdbcType=INTEGER},
+      subchannel = #{subchannel,jdbcType=INTEGER},
+      paychannel = #{paychannel,jdbcType=INTEGER},
+      money = #{money,jdbcType=DECIMAL},
+      serverip = #{serverip,jdbcType=VARCHAR},
+      currency = #{currency,jdbcType=INTEGER},
+      orderid = #{orderid,jdbcType=VARCHAR},
+      dstorderid = #{dstorderid,jdbcType=VARCHAR},
+      productid = #{productid,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

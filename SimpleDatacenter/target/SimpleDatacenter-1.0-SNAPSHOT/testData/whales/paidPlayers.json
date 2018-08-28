@@ -1,0 +1,742 @@
+{
+  "paidPlayers": [
+    {
+      "ranking": 1.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 169580.0,
+      "currentLevel.": 9.0,
+      "purchased": 96000.0,
+      "statdate": "2014-10-10 12:01:47",
+      "payment": 28.48
+    },
+    {
+      "ranking": 2.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 1485176.0,
+      "currentLevel.": 10.0,
+      "purchased": 614000.0,
+      "statdate": "--",
+      "payment": 26.56
+    },
+    {
+      "ranking": 3.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 152866.0,
+      "currentLevel.": 10.0,
+      "purchased": 44000.0,
+      "statdate": "2014-08-02 22:10:10",
+      "payment": 23.36
+    },
+    {
+      "ranking": 4.0,
+      "account": "b74c0d9b72e3af68e862f2a4a8de09bf",
+      "consume": 1861100.0,
+      "currentLevel.": 6.0,
+      "purchased": 965013.0,
+      "statdate": "2014-08-09 07:19:31",
+      "payment": 20.16
+    },
+    {
+      "ranking": 5.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 78806.0,
+      "currentLevel.": 10.0,
+      "purchased": 53000.0,
+      "statdate": "2014-10-10 10:11:08",
+      "payment": 19.36
+    },
+    {
+      "ranking": 6.0,
+      "account": "62918dc355c0fbc043f5166d058359fe",
+      "consume": 3104200.0,
+      "currentLevel.": 7.0,
+      "purchased": 1070002.0,
+      "statdate": "--",
+      "payment": 19.2
+    },
+    {
+      "ranking": 7.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 1403502.0,
+      "currentLevel.": 10.0,
+      "purchased": 1020000.0,
+      "statdate": "--",
+      "payment": 18.88
+    },
+    {
+      "ranking": 8.0,
+      "account": "bed1955826e2815c250d4fc4e0ee5e12",
+      "consume": 949700.0,
+      "currentLevel.": 10.0,
+      "purchased": 515002.0,
+      "statdate": "--",
+      "payment": 16.64
+    },
+    {
+      "ranking": 9.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 509818.0,
+      "currentLevel.": 10.0,
+      "purchased": 208000.0,
+      "statdate": "--",
+      "payment": 16.32
+    },
+    {
+      "ranking": 10.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 435936.0,
+      "currentLevel.": 10.0,
+      "purchased": 174000.0,
+      "statdate": "2014-07-27 22:25:05",
+      "payment": 15.84
+    },
+    {
+      "ranking": 11.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 169580.0,
+      "currentLevel.": 9.0,
+      "purchased": 96000.0,
+      "statdate": "2014-10-10 12:01:47",
+      "payment": 28.48
+    },
+    {
+      "ranking": 12.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 1485176.0,
+      "currentLevel.": 10.0,
+      "purchased": 614000.0,
+      "statdate": "--",
+      "payment": 26.56
+    },
+    {
+      "ranking": 13.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 152866.0,
+      "currentLevel.": 10.0,
+      "purchased": 44000.0,
+      "statdate": "2014-08-02 22:10:10",
+      "payment": 23.36
+    },
+    {
+      "ranking": 14.0,
+      "account": "b74c0d9b72e3af68e862f2a4a8de09bf",
+      "consume": 1861100.0,
+      "currentLevel.": 6.0,
+      "purchased": 965013.0,
+      "statdate": "2014-08-09 07:19:31",
+      "payment": 20.16
+    },
+    {
+      "ranking": 15.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 78806.0,
+      "currentLevel.": 10.0,
+      "purchased": 53000.0,
+      "statdate": "2014-10-10 10:11:08",
+      "payment": 19.36
+    },
+    {
+      "ranking": 16.0,
+      "account": "62918dc355c0fbc043f5166d058359fe",
+      "consume": 3104200.0,
+      "currentLevel.": 7.0,
+      "purchased": 1070002.0,
+      "statdate": "--",
+      "payment": 19.2
+    },
+    {
+      "ranking": 17.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 1403502.0,
+      "currentLevel.": 10.0,
+      "purchased": 1020000.0,
+      "statdate": "--",
+      "payment": 18.88
+    },
+    {
+      "ranking": 18.0,
+      "account": "bed1955826e2815c250d4fc4e0ee5e12",
+      "consume": 949700.0,
+      "currentLevel.": 10.0,
+      "purchased": 515002.0,
+      "statdate": "--",
+      "payment": 16.64
+    },
+    {
+      "ranking": 19.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 509818.0,
+      "currentLevel.": 10.0,
+      "purchased": 208000.0,
+      "statdate": "--",
+      "payment": 16.32
+    },
+    {
+      "ranking": 20.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 435936.0,
+      "currentLevel.": 10.0,
+      "purchased": 174000.0,
+      "statdate": "2014-07-27 22:25:05",
+      "payment": 15.84
+    },
+    {
+      "ranking": 21.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 169580.0,
+      "currentLevel.": 9.0,
+      "purchased": 96000.0,
+      "statdate": "2014-10-10 12:01:47",
+      "payment": 28.48
+    },
+    {
+      "ranking": 22.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 1485176.0,
+      "currentLevel.": 10.0,
+      "purchased": 614000.0,
+      "statdate": "--",
+      "payment": 26.56
+    },
+    {
+      "ranking": 23.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 152866.0,
+      "currentLevel.": 10.0,
+      "purchased": 44000.0,
+      "statdate": "2014-08-02 22:10:10",
+      "payment": 23.36
+    },
+    {
+      "ranking": 24.0,
+      "account": "b74c0d9b72e3af68e862f2a4a8de09bf",
+      "consume": 1861100.0,
+      "currentLevel.": 6.0,
+      "purchased": 965013.0,
+      "statdate": "2014-08-09 07:19:31",
+      "payment": 20.16
+    },
+    {
+      "ranking": 25.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 78806.0,
+      "currentLevel.": 10.0,
+      "purchased": 53000.0,
+      "statdate": "2014-10-10 10:11:08",
+      "payment": 19.36
+    },
+    {
+      "ranking": 26.0,
+      "account": "62918dc355c0fbc043f5166d058359fe",
+      "consume": 3104200.0,
+      "currentLevel.": 7.0,
+      "purchased": 1070002.0,
+      "statdate": "--",
+      "payment": 19.2
+    },
+    {
+      "ranking": 27.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 1403502.0,
+      "currentLevel.": 10.0,
+      "purchased": 1020000.0,
+      "statdate": "--",
+      "payment": 18.88
+    },
+    {
+      "ranking": 28.0,
+      "account": "bed1955826e2815c250d4fc4e0ee5e12",
+      "consume": 949700.0,
+      "currentLevel.": 10.0,
+      "purchased": 515002.0,
+      "statdate": "--",
+      "payment": 16.64
+    },
+    {
+      "ranking": 29.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 509818.0,
+      "currentLevel.": 10.0,
+      "purchased": 208000.0,
+      "statdate": "--",
+      "payment": 16.32
+    },
+    {
+      "ranking": 30.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 435936.0,
+      "currentLevel.": 10.0,
+      "purchased": 174000.0,
+      "statdate": "2014-07-27 22:25:05",
+      "payment": 15.84
+    },
+    {
+      "ranking": 31.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 169580.0,
+      "currentLevel.": 9.0,
+      "purchased": 96000.0,
+      "statdate": "2014-10-10 12:01:47",
+      "payment": 28.48
+    },
+    {
+      "ranking": 32.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 1485176.0,
+      "currentLevel.": 10.0,
+      "purchased": 614000.0,
+      "statdate": "--",
+      "payment": 26.56
+    },
+    {
+      "ranking": 33.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 152866.0,
+      "currentLevel.": 10.0,
+      "purchased": 44000.0,
+      "statdate": "2014-08-02 22:10:10",
+      "payment": 23.36
+    },
+    {
+      "ranking": 34.0,
+      "account": "b74c0d9b72e3af68e862f2a4a8de09bf",
+      "consume": 1861100.0,
+      "currentLevel.": 6.0,
+      "purchased": 965013.0,
+      "statdate": "2014-08-09 07:19:31",
+      "payment": 20.16
+    },
+    {
+      "ranking": 35.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 78806.0,
+      "currentLevel.": 10.0,
+      "purchased": 53000.0,
+      "statdate": "2014-10-10 10:11:08",
+      "payment": 19.36
+    },
+    {
+      "ranking": 36.0,
+      "account": "62918dc355c0fbc043f5166d058359fe",
+      "consume": 3104200.0,
+      "currentLevel.": 7.0,
+      "purchased": 1070002.0,
+      "statdate": "--",
+      "payment": 19.2
+    },
+    {
+      "ranking": 37.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 1403502.0,
+      "currentLevel.": 10.0,
+      "purchased": 1020000.0,
+      "statdate": "--",
+      "payment": 18.88
+    },
+    {
+      "ranking": 38.0,
+      "account": "bed1955826e2815c250d4fc4e0ee5e12",
+      "consume": 949700.0,
+      "currentLevel.": 10.0,
+      "purchased": 515002.0,
+      "statdate": "--",
+      "payment": 16.64
+    },
+    {
+      "ranking": 39.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 509818.0,
+      "currentLevel.": 10.0,
+      "purchased": 208000.0,
+      "statdate": "--",
+      "payment": 16.32
+    },
+    {
+      "ranking": 40.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 435936.0,
+      "currentLevel.": 10.0,
+      "purchased": 174000.0,
+      "statdate": "2014-07-27 22:25:05",
+      "payment": 15.84
+    },
+    {
+      "ranking": 41.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 435936.0,
+      "currentLevel.": 10.0,
+      "purchased": 174000.0,
+      "statdate": "2014-07-27 22:25:05",
+      "payment": 15.84
+    },
+    {
+      "ranking": 42.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 435936.0,
+      "currentLevel.": 10.0,
+      "purchased": 174000.0,
+      "statdate": "2014-07-27 22:25:05",
+      "payment": 15.84
+    },
+    {
+      "ranking": 39.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 509818.0,
+      "currentLevel.": 10.0,
+      "purchased": 208000.0,
+      "statdate": "--",
+      "payment": 16.32
+    },
+    {
+      "ranking": 40.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 435936.0,
+      "currentLevel.": 10.0,
+      "purchased": 174000.0,
+      "statdate": "2014-07-27 22:25:05",
+      "payment": 15.84
+    },
+    {
+      "ranking": 41.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 435936.0,
+      "currentLevel.": 10.0,
+      "purchased": 174000.0,
+      "statdate": "2014-07-27 22:25:05",
+      "payment": 15.84
+    },
+    {
+      "ranking": 42.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 435936.0,
+      "currentLevel.": 10.0,
+      "purchased": 174000.0,
+      "statdate": "2014-07-27 22:25:05",
+      "payment": 15.84
+    },
+    {
+      "ranking": 39.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 509818.0,
+      "currentLevel.": 10.0,
+      "purchased": 208000.0,
+      "statdate": "--",
+      "payment": 16.32
+    },
+    {
+      "ranking": 40.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 435936.0,
+      "currentLevel.": 10.0,
+      "purchased": 174000.0,
+      "statdate": "2014-07-27 22:25:05",
+      "payment": 15.84
+    },
+    {
+      "ranking": 41.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 435936.0,
+      "currentLevel.": 10.0,
+      "purchased": 174000.0,
+      "statdate": "2014-07-27 22:25:05",
+      "payment": 15.84
+    },
+    {
+      "ranking": 42.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 435936.0,
+      "currentLevel.": 10.0,
+      "purchased": 174000.0,
+      "statdate": "2014-07-27 22:25:05",
+      "payment": 15.84
+    },
+    {
+      "ranking": 39.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 509818.0,
+      "currentLevel.": 10.0,
+      "purchased": 208000.0,
+      "statdate": "--",
+      "payment": 16.32
+    },
+    {
+      "ranking": 40.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 435936.0,
+      "currentLevel.": 10.0,
+      "purchased": 174000.0,
+      "statdate": "2014-07-27 22:25:05",
+      "payment": 15.84
+    },
+    {
+      "ranking": 41.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 435936.0,
+      "currentLevel.": 10.0,
+      "purchased": 174000.0,
+      "statdate": "2014-07-27 22:25:05",
+      "payment": 15.84
+    },
+    {
+      "ranking": 42.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 435936.0,
+      "currentLevel.": 10.0,
+      "purchased": 174000.0,
+      "statdate": "2014-07-27 22:25:05",
+      "payment": 15.84
+    },
+    {
+      "ranking": 39.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 509818.0,
+      "currentLevel.": 10.0,
+      "purchased": 208000.0,
+      "statdate": "--",
+      "payment": 16.32
+    },
+    {
+      "ranking": 40.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 435936.0,
+      "currentLevel.": 10.0,
+      "purchased": 174000.0,
+      "statdate": "2014-07-27 22:25:05",
+      "payment": 15.84
+    },
+    {
+      "ranking": 41.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 435936.0,
+      "currentLevel.": 10.0,
+      "purchased": 174000.0,
+      "statdate": "2014-07-27 22:25:05",
+      "payment": 15.84
+    },
+    {
+      "ranking": 42.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 435936.0,
+      "currentLevel.": 10.0,
+      "purchased": 174000.0,
+      "statdate": "2014-07-27 22:25:05",
+      "payment": 15.84
+    },
+    {
+      "ranking": 39.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 509818.0,
+      "currentLevel.": 10.0,
+      "purchased": 208000.0,
+      "statdate": "--",
+      "payment": 16.32
+    },
+    {
+      "ranking": 40.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 435936.0,
+      "currentLevel.": 10.0,
+      "purchased": 174000.0,
+      "statdate": "2014-07-27 22:25:05",
+      "payment": 15.84
+    },
+    {
+      "ranking": 41.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 435936.0,
+      "currentLevel.": 10.0,
+      "purchased": 174000.0,
+      "statdate": "2014-07-27 22:25:05",
+      "payment": 15.84
+    },
+    {
+      "ranking": 42.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 435936.0,
+      "currentLevel.": 10.0,
+      "purchased": 174000.0,
+      "statdate": "2014-07-27 22:25:05",
+      "payment": 15.84
+    },
+    {
+      "ranking": 39.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 509818.0,
+      "currentLevel.": 10.0,
+      "purchased": 208000.0,
+      "statdate": "--",
+      "payment": 16.32
+    },
+    {
+      "ranking": 40.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 435936.0,
+      "currentLevel.": 10.0,
+      "purchased": 174000.0,
+      "statdate": "2014-07-27 22:25:05",
+      "payment": 15.84
+    },
+    {
+      "ranking": 41.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 435936.0,
+      "currentLevel.": 10.0,
+      "purchased": 174000.0,
+      "statdate": "2014-07-27 22:25:05",
+      "payment": 15.84
+    },
+    {
+      "ranking": 42.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 435936.0,
+      "currentLevel.": 10.0,
+      "purchased": 174000.0,
+      "statdate": "2014-07-27 22:25:05",
+      "payment": 15.84
+    },
+    {
+      "ranking": 39.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 509818.0,
+      "currentLevel.": 10.0,
+      "purchased": 208000.0,
+      "statdate": "--",
+      "payment": 16.32
+    },
+    {
+      "ranking": 40.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 435936.0,
+      "currentLevel.": 10.0,
+      "purchased": 174000.0,
+      "statdate": "2014-07-27 22:25:05",
+      "payment": 15.84
+    },
+    {
+      "ranking": 41.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 435936.0,
+      "currentLevel.": 10.0,
+      "purchased": 174000.0,
+      "statdate": "2014-07-27 22:25:05",
+      "payment": 15.84
+    },
+    {
+      "ranking": 42.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 435936.0,
+      "currentLevel.": 10.0,
+      "purchased": 174000.0,
+      "statdate": "2014-07-27 22:25:05",
+      "payment": 15.84
+    },
+    {
+      "ranking": 39.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 509818.0,
+      "currentLevel.": 10.0,
+      "purchased": 208000.0,
+      "statdate": "--",
+      "payment": 16.32
+    },
+    {
+      "ranking": 40.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 435936.0,
+      "currentLevel.": 10.0,
+      "purchased": 174000.0,
+      "statdate": "2014-07-27 22:25:05",
+      "payment": 15.84
+    },
+    {
+      "ranking": 41.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 435936.0,
+      "currentLevel.": 10.0,
+      "purchased": 174000.0,
+      "statdate": "2014-07-27 22:25:05",
+      "payment": 15.84
+    },
+    {
+      "ranking": 42.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 435936.0,
+      "currentLevel.": 10.0,
+      "purchased": 174000.0,
+      "statdate": "2014-07-27 22:25:05",
+      "payment": 15.84
+    },
+    {
+      "ranking": 39.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 509818.0,
+      "currentLevel.": 10.0,
+      "purchased": 208000.0,
+      "statdate": "--",
+      "payment": 16.32
+    },
+    {
+      "ranking": 40.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 435936.0,
+      "currentLevel.": 10.0,
+      "purchased": 174000.0,
+      "statdate": "2014-07-27 22:25:05",
+      "payment": 15.84
+    },
+    {
+      "ranking": 41.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 435936.0,
+      "currentLevel.": 10.0,
+      "purchased": 174000.0,
+      "statdate": "2014-07-27 22:25:05",
+      "payment": 15.84
+    },
+    {
+      "ranking": 42.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 435936.0,
+      "currentLevel.": 10.0,
+      "purchased": 174000.0,
+      "statdate": "2014-07-27 22:25:05",
+      "payment": 15.84
+    },
+    {
+      "ranking": 39.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 509818.0,
+      "currentLevel.": 10.0,
+      "purchased": 208000.0,
+      "statdate": "--",
+      "payment": 16.32
+    },
+    {
+      "ranking": 40.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 435936.0,
+      "currentLevel.": 10.0,
+      "purchased": 174000.0,
+      "statdate": "2014-07-27 22:25:05",
+      "payment": 15.84
+    },
+    {
+      "ranking": 41.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 435936.0,
+      "currentLevel.": 10.0,
+      "purchased": 174000.0,
+      "statdate": "2014-07-27 22:25:05",
+      "payment": 15.84
+    },
+    {
+      "ranking": 42.0,
+      "account": "d41d8cd98f00b204e9800998ecf8427e",
+      "consume": 435936.0,
+      "currentLevel.": 10.0,
+      "purchased": 174000.0,
+      "statdate": "2014-07-27 22:25:05",
+      "payment": 15.84
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "currencyBalance": [
+    {
+      "statdate": "2014-08-24",
+      "accounts": 312674730.0
+    },
+    {
+      "statdate": "2014-08-25",
+      "accounts": 319767523.0
+    },
+    {
+      "statdate": "2014-08-26",
+      "accounts": 327310290.0
+    },
+    {
+      "statdate": "2014-08-27",
+      "accounts": 337744961.0
+    },
+    {
+      "statdate": "2014-08-28",
+      "accounts": 342789906.0
+    },
+    {
+      "statdate": "2014-08-29",
+      "accounts": 348473222.0
+    },
+    {
+      "statdate": "2014-08-30",
+      "accounts": 354264427.0
+    },
+    {
+      "statdate": "2014-08-31",
+      "accounts": 360424869.0
+    }
+  ]
+}

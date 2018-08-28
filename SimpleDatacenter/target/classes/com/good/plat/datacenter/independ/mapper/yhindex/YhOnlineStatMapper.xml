@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.independ.mapper.yhindex.YhOnlineStatMapper">
+	<resultMap id="BaseResultMap" type="com.good.plat.datacenter.independ.entity.yhindex.YhOnlineStat">
+		<result column="statdate" property="statdate"/>
+		<result column="gameid" property="gameid"/>
+		<result column="channelid" property="channelid"/>
+		<result column="channelName" property="channelName"/>
+		<result column="minutes_0to9User" property="minutes_0to9User"/>
+		<result column="minutes_10to19User" property="minutes_10to19User"/>
+		<result column="minutes_20to29User" property="minutes_20to29User"/>
+		<result column="minutes_30to59User" property="minutes_30to59User"/>
+		<result column="minutes_60to89User" property="minutes_60to89User"/>
+		<result column="minutes_90to119User" property="minutes_90to119User"/>
+		<result column="minutes_120to149User" property="minutes_120to149User"/>
+		<result column="minutes_150to179User" property="minutes_150to179User"/>
+		<result column="minutes_180to239User" property="minutes_180to239User"/>
+		<result column="minutes_240toUser" property="minutes_240toUser"/>
+		<result column="minutes_0to9UserRate" property="minutes_0to9UserRate"/>
+		<result column="minutes_10to19UserRate" property="minutes_10to19UserRate"/>
+		<result column="minutes_20to29UserRate" property="minutes_20to29UserRate"/>
+		<result column="minutes_30to59UserRate" property="minutes_30to59UserRate"/>
+		<result column="minutes_60to89UserRate" property="minutes_60to89UserRate"/>
+		<result column="minutes_90to119UserRate" property="minutes_90to119UserRate"/>
+		<result column="minutes_120to149UserRate" property="minutes_120to149UserRate"/>
+		<result column="minutes_150to179UserRate" property="minutes_150to179UserRate"/>
+		<result column="minutes_180to239UserRate" property="minutes_180to239UserRate"/>
+		<result column="minutes_240toUserRate" property="minutes_240toUserRate"/>
+	</resultMap>
+	<resultMap id="LoginTimesResultMap" type="com.good.plat.datacenter.independ.entity.yhindex.YhOnlineStat">
+		<result column="statdate" property="statdate"/>
+		<result column="gameid" property="gameid"/>
+		<result column="channelid" property="channelid"/>
+		<result column="channelName" property="channelName"/>
+		<result column="loginTimes0User" property="loginTimes0User"/>
+		<result column="loginTimes1to2User" property="loginTimes1to2User"/>
+		<result column="loginTimes3to5User" property="loginTimes3to5User"/>
+		<result column="loginTimes6to10User" property="loginTimes6to10User"/>
+		<result column="loginTimes11toUser" property="loginTimes11toUser"/>
+		<result column="loginTimes0UserRate" property="loginTimes0UserRate"/>
+		<result column="loginTimes1to2UserRate" property="loginTimes1to2UserRate"/>
+		<result column="loginTimes3to5UserRate" property="loginTimes3to5UserRate"/>
+		<result column="loginTimes6to10UserRate" property="loginTimes6to10UserRate"/>
+		<result column="loginTimes11toUserRate" property="loginTimes11toUserRate"/>
+	</resultMap>
+		<sql id="BaseSelect">
+			where 1=1
+			<if test="startdate!=null and startdate!=''">
+			and statdate &gt;=#{startdate}
+			</if>
+			<if test="enddate!=null and enddate!=''">
+			and statdate &lt;=#{enddate}
+			</if>
+			and gameid=#{gameid}
+			<if test="channelid!=null and channelid!=-1">
+			and channel=#{channelid}
+			</if>
+			<if test="areaid!=null and areaid!=-1">
+				and areaid=#{areaid}
+			</if>
+		</sql>
+	<!--  在线统计-->
+	<select id="selectYhOnlineStatList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.IndependBaseSearchData">
+			SELECT
+			a.statdate,
+			a.channel as channelid,
+			IF (
+					chn.channelSimName IS NULL,
+					CONCAT(
+						'未知渠道： ',
+						a.channel
+					),
+					chn.channelSimName
+				) AS channelName,
+			IFNULL(a.minutes_0to9User,0) as minutes_0to9User,
+			IFNULL(a.minutes_10to19User,0) as minutes_10to19User,
+			IFNULL(a.minutes_20to29User,0) as minutes_20to29User,
+			IFNULL(a.minutes_30to59User,0) as minutes_30to59User,
+			IFNULL(a.minutes_60to89User,0) as minutes_60to89User,
+			IFNULL(a.minutes_90to119User,0) as minutes_90to119User,
+			IFNULL(a.minutes_120to149User,0) as minutes_120to149User,
+			IFNULL(a.minutes_150to179User,0) as minutes_150to179User,
+			IFNULL(a.minutes_180to239User,0) as minutes_180to239User,
+			IFNULL(a.minutes_240toUser,0) as minutes_240toUser,
+			IF(b.count=0,0,ROUND((a.minutes_0to9User/b.count)*100,2)) as minutes_0to9UserRate,
+			IF(b.count=0,0,ROUND((a.minutes_10to19User/b.count)*100,2)) as minutes_10to19UserRate,
+			IF(b.count=0,0,ROUND((a.minutes_20to29User/b.count)*100,2)) as minutes_20to29UserRate,
+			IF(b.count=0,0,ROUND((a.minutes_30to59User/b.count)*100,2)) as minutes_30to59UserRate,
+			IF(b.count=0,0,ROUND((a.minutes_60to89User/b.count)*100,2)) as minutes_60to89UserRate,
+			IF(b.count=0,0,ROUND((a.minutes_90to119User/b.count)*100,2)) as minutes_90to119UserRate,	
+			IF(b.count=0,0,ROUND((a.minutes_120to149User/b.count)*100,2)) as minutes_120to149UserRate,
+			IF(b.count=0,0,ROUND((a.minutes_150to179User/b.count)*100,2)) as minutes_150to179UserRate,
+			IF(b.count=0,0,ROUND((a.minutes_180to239User/b.count)*100,2)) as minutes_180to239UserRate,
+			IF(b.count=0,0,ROUND((a.minutes_240toUser/b.count)*100,2)) as minutes_240toUserRate
+		FROM
+			(
+				SELECT
+					statdate,
+					gameid,
+					channel,
+					sum(IF(section = 0, count, 0)) AS minutes_0to9User,
+					sum(IF(section = 10, count, 0)) AS minutes_10to19User,
+					sum(IF(section = 20, count, 0)) AS minutes_20to29User,
+					sum(IF(section = 30, count, 0)) AS minutes_30to59User,
+					sum(IF(section = 60, count, 0)) AS minutes_60to89User,
+					sum(IF(section = 90, count, 0)) AS minutes_90to119User,
+					sum(IF(section = 120, count, 0)) AS minutes_120to149User,
+					sum(IF(section = 150, count, 0)) AS minutes_150to179User,
+					sum(IF(section = 180, count, 0)) AS minutes_180to239User,
+					sum(IF(section = 240, count, 0)) AS minutes_240toUser
+				FROM
+					yh_online_stat
+				<include refid="BaseSelect"/>
+				GROUP BY
+					statdate,
+					gameid,
+					channel
+			) a
+		LEFT JOIN (
+			SELECT
+				statdate,
+				gameid,
+				channel,
+				IFNULL(sum(acticount),0) as count
+			FROM
+				yh_act_count
+			<include refid="BaseSelect"/>
+			GROUP BY
+				statdate,
+				gameid,
+				channel
+		) b ON (
+			a.statdate = b.statdate
+			AND a.gameid = b.gameid
+			AND a.channel = b.channel
+		)LEFT JOIN tb_logplat_channel chn ON (chn.id = a.channel);
+	</select>
+	<!--  登入次数-->
+	<select id="selectYhLoginTimesList" resultMap="LoginTimesResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.IndependBaseSearchData">
+			SELECT
+		a.statdate,
+		a.channel AS channelid,
+		IF (
+				chn.channelSimName IS NULL,
+				CONCAT(
+					'未知渠道： ',
+					a.channel
+				),
+				chn.channelSimName
+			) AS channelName,
+		(b.count-b.acticount) as loginTimes0User,
+		IFNULL(a.loginTimes1to2User,0) as loginTimes1to2User,
+		IFNULL(a.loginTimes3to5User,0) as loginTimes3to5User,
+		IFNULL(a.loginTimes6to10User,0) as loginTimes6to10User,
+		IFNULL(a.loginTimes11toUser,0) as loginTimes11toUser,
+		IF(b.count=0,0,ROUND(((b.count-b.acticount)/b.count)*100,2)) as loginTimes0UserRate,
+		IF(b.count=0,0,ROUND((a.loginTimes1to2User/b.count)*100,2)) as loginTimes1to2UserRate,
+		IF(b.count=0,0,ROUND((a.loginTimes3to5User/b.count)*100,2)) as loginTimes3to5UserRate,
+		IF(b.count=0,0,ROUND((a.loginTimes6to10User/b.count)*100,2)) as loginTimes6to10UserRate,
+		IF(b.count=0,0,ROUND((a.loginTimes11toUser/b.count)*100,2)) as loginTimes11toUserRate
+	FROM
+		(
+			SELECT
+				statdate,
+				gameid,
+				channel,
+				SUM(IF(section=1,count,0)) as loginTimes1to2User,
+				SUM(IF(section=2,count,0)) as loginTimes3to5User,
+				SUM(IF(section=3,count,0)) as loginTimes6to10User,
+				SUM(IF(section=4,count,0)) as loginTimes11toUser
+			FROM
+				yh_enter_stat
+			<include refid="BaseSelect"/>
+			GROUP BY
+				statdate,
+				gameid,
+				channel
+		) a
+	LEFT JOIN (
+		SELECT
+			statdate,
+			gameid,
+			channel,
+			IFNULL(sum(`count`), 0) AS `count`,
+			IFNULL(sum(`acticount`), 0) AS `acticount`
+		FROM
+			yh_act_count
+		<include refid="BaseSelect"/>
+		GROUP BY
+			statdate,
+			gameid,
+			channel
+	) b ON (
+		a.statdate = b.statdate
+		AND a.gameid = b.gameid
+		AND a.channel = b.channel
+	)
+	LEFT JOIN tb_logplat_channel chn ON (chn.id = a.channel);
+	</select>
+
+</mapper>

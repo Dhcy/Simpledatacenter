@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.independ.mapper.sj3index.CityStatMapper">
+	<resultMap id="BaseResultMap" type="com.good.plat.datacenter.independ.entity.sj3index.CityStat">
+		<result column="gameid" property="gameid"/>
+		<result column="gameName" property="gameName"/>
+		<result column="channelid" property="channelid"/>
+		<result column="channelName" property="channelName"/>
+		<result column="subchannelid" property="subchannelid"/>
+		<result column="areaid" property="areaid"/>
+		<result column="areaName" property="areaName"/>
+		<result column="statdate" property="statdate"/>
+		<result column="statType" property="statType"/>
+		<result column="rate" property="rate"/>
+		
+		<result column="yymgCnt" property="yymgCnt"/>
+		<result column="ymzyCnt" property="ymzyCnt"/>
+		<result column="lmshCnt" property="lmshCnt"/>
+		<result column="fightCnt" property="fightCnt"/>
+		<result column="actorCnt" property="actorCnt"/>
+		<result column="reliveCnt" property="reliveCnt"/>
+		<result column="fightTime" property="fightTime"/>
+		
+		
+	</resultMap>
+	
+	<sql id="ABaseSelect">
+		where a.statdate between #{startdate} and #{enddate} 
+		and a.gameid=#{gameid}
+		<if test="areas != null">
+			and a.areaid in
+			<foreach collection="areas" item="area" index="index" open="(" close=")" separator=",">
+				#{area}
+			</foreach>
+		</if>
+		<if test="channelList != null">
+			and a.channel in
+			<foreach collection="channelList" item="channel" index="index" open="(" close=")" separator=",">
+				#{channel.id}
+			</foreach>
+		</if>
+		<if test="subchannels != null">
+			and a.chnnnl in
+			<foreach collection="subchannels" item="subchannel" index="index" open="(" close=")" separator=",">
+				#{subchannel}
+			</foreach>
+		</if>
+	</sql>
+	
+	<sql id="BaseSelect">
+		where statdate between #{startdate} and #{enddate} 
+		and gameid=#{gameid}
+		<if test="areas != null">
+			and areaid in
+			<foreach collection="areas" item="area" index="index" open="(" close=")" separator=",">
+				#{area}
+			</foreach>
+		</if>
+	</sql>
+	
+	<!--
+	城市争夺次数分布（日期,渠道,永夜明光占领次数，幽冥之翼占领次数,黎明圣火占领次数）
+	-->
+	<select id="selectCityCntDistributeList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		SELECT
+			a.statdate as statdate,
+			b.areaid as areaid,
+			IFNULL(sum(yymgcnt),0) as yymgCnt,
+			IFNULL(sum(ymzycnt),0) as ymzyCnt,
+			IFNULL(sum(lmshcnt),0) as lmshCnt
+		FROM
+			(
+				SELECT DISTINCT
+					statdate
+				FROM
+					logplat_daily_rpt
+				WHERE
+					gameid =#{gameid}
+				AND statdate BETWEEN #{startdate}
+				AND #{enddate}
+			) a,
+			sj3_city_stat b
+		WHERE
+			b.statdate &lt;= a.statdate
+			and b.gameid=#{gameid}
+			<if test="areas != null">
+			and b.areaid in
+			<foreach collection="areas" item="area" index="index" open="(" close=")" separator=",">
+				#{area}
+			</foreach>
+		</if>
+		GROUP BY
+			a.statdate,
+			b.areaid
+	</select>
+	
+	<!--
+	城市争夺细分（日期,区服,永夜明光占领次数，幽冥之翼占领次数,黎明圣火占领次数）
+	-->
+	<select id="selectCityFightDetailList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		SELECT
+			statdate AS statdate,
+			areaid AS areaid,
+			IFNULL(sum(yymgcnt), 0) AS yymgCnt,
+			IFNULL(sum(ymzycnt), 0) AS ymzyCnt,
+			IFNULL(sum(lmshcnt), 0) AS lmshCnt
+		FROM
+			sj3_city_stat
+		<include refid="BaseSelect"/>
+		GROUP BY
+			statdate,
+			areaid
+		order by
+		areaid,
+		statdate
+	</select>
+	
+	<select id="selectCityFightSetList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		SELECT
+			statdate,
+			IFNULL(SUM(fightcnt),0) as fightCnt,
+			IFNULL(SUM(actorcnt),0) as actorCnt,
+			IFNULL(SUM(relivecnt),0) as reliveCnt,
+			IFNULL(SUM(fighttime),0) as fightTime
+		FROM
+			sj3_city_fight_stat
+		<include refid="BaseSelect"/>
+		GROUP BY
+		statdate
+	</select>
+	
+	
+	
+</mapper>

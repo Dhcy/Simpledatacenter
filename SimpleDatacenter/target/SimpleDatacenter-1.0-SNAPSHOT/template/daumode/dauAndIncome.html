@@ -1,0 +1,387 @@
+<div>
+	<div class="maintop form">
+		<div class="form-group">
+			<label for="flag">{{'模型选择' | translate}}:</label>
+			<select ng-model="flag" name="modelType" id="modelType" class="form-control">
+		</div>
+			<option value="1">{{'自然用户数据 ' | translate}}</option>
+			<option value="2">{{'推广用户数据' | translate}}</option>
+		</select>
+<!--
+		<div datepicker class="col-xs-3 timeSelect" mstatdate="mstatdate">
+		</div>
+-->
+	</div>
+	<div class="panel panel_1 panel-default" ng-if="flag==1">
+		<div class="panel-heading">
+			<strong>
+				{{'自然用户数据' | translate}}
+			</strong>
+		</div>
+		<div class="panel-body form-inline"  ng-class="{'table':panel_1.model=='table','graph':panel_1.model=='graph'}">
+			<div class="">
+			<div class="form-group">
+				<label for="currDate">{{'日期' | translate}}: </label>
+				<input type="text" id="currDate" class="form-control input-sm" placeholder="{{naturalUsersPostData.currDate}}" uib-datepicker-popup="{{format}}" ng-model="naturalUsersPostData.currDate" is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" ng-click="open1()" />
+			</div>
+			&nbsp;&nbsp;
+			<div class="form-group">
+				<label for="">{{'导入用户数' | translate}}: </label>
+				<input ng-model="naturalUsersPostData.userCnt" type="text" class="form-control input-sm" style="width:80px">
+				<span class="text-muted">{{'人/每日' | translate}}</span>
+			</div>
+			&nbsp;&nbsp;
+			<div class="form-group">
+				<label for="">{{'留存率' | translate}}: </label>
+				<div class="btn btn-default btn-sm" ng-click="showNaturalUsersRetention=!showNaturalUsersRetention"  ng-bind ="showNaturalUsersRetention?'收起':'查看'"></div>
+				<div class="btn btn-default btn-sm" ng-click="naturalUsersRetentionToShow()">{{'编辑' | translate}}</div>
+			</div>
+			&nbsp;&nbsp;
+			<div class="form-group">
+				<label for="">ARPPU: </label>
+				<input ng-model="naturalUsersPostData.arpu" type="text" class="form-control input-sm" style="width:80px">
+				<span class="text-muted">元/人</span>
+			</div>
+			&nbsp;&nbsp;
+			<div class="form-group">
+				<label for="">{{'付费率' | translate}}: </label>
+				<input ng-model="naturalUsersPostData.payRate" type="text" class="form-control input-sm" style="width:80px">
+				<span class="text-muted">%</span>
+			</div>
+			&nbsp;&nbsp;
+			<div class="form-group">
+				<div class="btn btn-default btn-sm" ng-click="postData()">{{'生成数据' | translate}}</div>
+			</div>
+			<br>
+			<div class="col-sm-offset-1" ng-if="showNaturalUsersRetention">
+				<br>
+				<h6>{{'最大留存率' | translate}}:</h6>
+				<div class="col-sm-offset-1 form-inline">
+					<div class="form-group col-sm-1" ng-repeat="(key,value) in naturalUsersRetentionData.max" style="margin-bottom:5px;">
+						<label for="" class="text-right" style="width:35px">{{key}}{{'天' | translate}}: </label>
+						<span>{{naturalUsersRetentionData.max[key]}}%</span>
+					</div>
+				</div>
+				<div class="clear"></div>
+				<h6>{{'最小留存率' | translate}}:</h6>
+				<div class="col-sm-offset-1 form-inline">
+					<div class="form-group col-sm-1" ng-repeat="(key,value) in naturalUsersRetentionData.min" style="margin-bottom:5px;">
+						<label for="" class="text-right" style="width:35px">{{key}}{{'天' | translate}}: </label>
+						<span>{{naturalUsersRetentionData.min[key]}}%</span>
+					</div>
+				</div>
+				<div class="clear"></div>
+				<div class="col-sm-offset-1 form-inline">
+					<div class="form-group col-sm-1" style="margin-bottom:5px;">
+						<label for="" class="text-right" style="width:35px">{{'衰退值' | translate}}: </label>
+						<span>{{naturalUsersRetentionData.decayValue}}%</span>
+					</div>
+				</div>
+				<div class="clear"></div>
+			</div>
+			</div>		<br>
+			<ul class="nav nav-tabs fl cl" navtabs>
+			  <li role="presentation" class="active">
+			  <a href="javascript:void(0);">DAU{{'预测' | translate}}</a>
+			  	<div tipsmsg>{{'根据上述填写的自然流入用户量，推广用户量以及留存率，对推广开始日期后的dau做出预测结果（推广开始后60日的预测值）。' | translate}}
+					{{'预测结果分为预测dau的最大可能值，最小可能值。最大可能值是通过留存的最大可能性预测结果;' | translate}}
+					{{'相反，最小可能值是通过留存的最小可能性预测的结果。' | translate}}
+				</div>
+			  </li>
+			  <li role="presentation"><a href="javascript:void(0);">{{'收入累计预测' | translate}}</a>
+			  <div tipsmsg>{{'根据上述填写的自然流入用户量，推广用户量以及留存率，对推广开始日期后的收入做出预测结果（推广开始后60日的预测值）。' | translate}}
+					{{'预测结果分为预测收入的最大可能值，最小可能值。最大可能值是通过留存的最大可能性预测结果;' | translate}}
+					{{'相反，最小可能值是通过留存的最小可能性预测的结果。' | translate}}
+				</div>
+			  </li>
+			</ul>	<div class="clear"></div>
+			<div class="panel-showData clearfix">
+				<div class="dataList dataList2 dataList_1 dataListAct">
+					<div class="dataGraph">
+						<div class="graph" data="dataList_1_1_graph"></div>
+						<!--------图表div，data为graphfun的key----------->
+					</div>
+					<div class="dataTable">
+						<table class="table table-bordered text-center">
+							<tr class="tableTr">
+								<th width='33.3333%' ng-click="changeOrderBy(panel_1.dataList_1,'currDate')">{{'日期' | translate}}</th>
+								<th width='33.3333%' ng-click="changeOrderBy(panel_1.dataList_1,'min_dau')">{{'预测' | translate}}DAU(Min)</th>
+								<th width='33.3333%' ng-click="changeOrderBy(panel_1.dataList_1,'max_dau')">{{'预测' | translate}}DAU(Max)</th>
+								<!--------表格th(数据对象，排序字段)----------->
+							</tr>
+							<tr ng-repeat="data in panel_1.dataList_1.data | orderBy: panel_1.dataList_1.orderBy.t+panel_1.dataList_1.orderBy.s | pageStartFrom : panel_1.dataList_1.limit.now*panel_1.dataList_1.limit.max | limitTo: panel_1.dataList_1.limit.max">
+								<td>{{data.currDate}}</td>
+								<td>{{data.min_dau}}</td>
+								<td>{{data.max_dau}}</td>
+							</tr>
+						</table>
+						<div class="tableLimit" tablelimit datalimit="panel_1.dataList_1.limit"  tabledata="panel_1.dataList_1.data">
+						</div>
+						<!--------表格分页，datalimit为分页参数，tabledata为数据----------->
+					</div>
+				</div>
+				<div class="dataList dataList2 dataList_2">
+					<div class="dataGraph">
+						<div class="graph" data="dataList_1_2_graph"></div>
+						<!--------图表div，data为graphfun的key----------->
+					</div>
+					<div class="dataTable">
+						<table class="table table-bordered text-center">
+							<tr class="tableTr">
+								<th width='33.3333%' ng-click="changeOrderBy(panel_1.dataList_2,'currDate')">{{'日期' | translate}}</th>
+								<th width='33.3333%' ng-click="changeOrderBy(panel_1.dataList_2,'min_income')">{{'预测累计收入' | translate}}(Min)</th>
+								<th width='33.3333%' ng-click="changeOrderBy(panel_1.dataList_2,'max_income')">{{'预测累计收入' | translate}}(Max)</th>
+								<!--------表格th(数据对象，排序字段)----------->
+							</tr>
+							<tr ng-repeat="data in panel_1.dataList_2.data | orderBy: panel_1.dataList_2.orderBy.t+panel_1.dataList_2.orderBy.s | pageStartFrom : panel_1.dataList_2.limit.now*panel_1.dataList_2.limit.max | limitTo: panel_1.dataList_2.limit.max">
+								<td>{{data.currDate}}</td>
+								<td>{{data.min_income}}</td>
+								<td>{{data.max_income}}</td>
+							</tr>
+						</table>
+						<div class="tableLimit" tablelimit datalimit="panel_1.dataList_2.limit"  tabledata="panel_1.dataList_2.data">
+						</div>
+						<!--------表格分页，datalimit为分页参数，tabledata为数据----------->
+					</div>
+				</div>
+			</div>
+			<div class="panel-changeData" graphtbale  graphfun="graphfun" datachange="panel_1_change"  datalimit="0" model="panel_1.model">
+			</div>
+		</div>
+	</div>
+	<div class="panel panel_2 panel-default" ng-if="flag==2">
+		<div class="panel-heading">
+			<strong>
+				{{'推广用户数据' | translate}}
+			</strong>
+		</div>
+		<div class="panel-body form-inline"  ng-class="{'table':panel_2.model=='table','graph':panel_2.model=='graph'}">
+			<div class="">
+				<div ng-repeat="o in promotionUsersPostData.mutilParamList track by $index">
+				<div class="form-group">
+					<label for="startDate">{{'起始日期' | translate}}: </label>
+					<input type="text" id="startDate" class="form-control input-sm" placeholder="{{o.startDate}}" uib-datepicker-popup="{{format}}" ng-model="o.startDate" is-open="o.opened1" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" ng-click="o.opened1=!o.opened1" />
+				</div>
+				&nbsp;&nbsp;
+				<div class="form-group">
+					<label for="endDate">{{'结束日期' | translate}}: </label>
+					<input type="text" id="endDate" class="form-control input-sm" placeholder="{{o.endDate}}" uib-datepicker-popup="{{format}}" ng-model="o.endDate" is-open="o.opened2" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" ng-click="o.opened2=!o.opened2" />
+				</div>
+				&nbsp;&nbsp;
+				<div class="form-group">
+					<label for="">{{'导入用户数' | translate}}: </label>
+					<input ng-model="o.userCnt" type="text" class="form-control input-sm" style="width:80px">
+					<span class="text-muted">{{'人/每日' | translate}}</span>
+				</div>
+				&nbsp;&nbsp;
+				<div class="form-group">
+					<button class="btn btn-default btn-sm" ng-click="removeDateUser($index)" ng-if="$index!=0">{{'删除' | translate}}</button>
+					&nbsp;&nbsp;
+					<button class="btn btn-default btn-sm" ng-click="addDateUser()" ng-if="$index == promotionUsersPostData.mutilParamList.length-1">{{'添加' | translate}}</button>
+				</div>
+				<br>
+				<br>
+				</div>
+			<br>
+			&nbsp;&nbsp;
+			<div class="form-group">
+				<label for="">{{'留存率' | translate}}: </label>
+				<div class="btn btn-default btn-sm" ng-click="showNaturalUsersRetention=!showNaturalUsersRetention"  ng-bind ="showPromotionUsersRetention?'收起':'查看'"></div>
+				<div class="btn btn-default btn-sm" ng-click="promotionUsersRetentionToShow()">{{'编辑' | translate}}</div>
+			</div>
+			&nbsp;&nbsp;
+			<div class="form-group">
+				<label for="">ARPPU: </label>
+				<input ng-model="promotionUsersPostData.arpu" type="text" class="form-control input-sm" style="width:80px">
+				<span class="text-muted">{{'元/人' | translate}}</span>
+			</div>
+			&nbsp;&nbsp;
+			<div class="form-group">
+				<label for="">{{'付费率' | translate}}: </label>
+				<input ng-model="promotionUsersPostData.payRate" type="text" class="form-control input-sm" style="width:80px">
+				<span class="text-muted">%</span>
+			</div>
+			<br>
+			<br>
+			<div class="form-group">
+				<div class="btn btn-default btn-sm" ng-click="postData()">{{'生成数据' | translate}}</div>
+			</div>
+			<br>
+			<div class="col-sm-offset-1" ng-if="showNaturalUsersRetention">
+				<br>
+				<h6>{{'最大留存率' | translate}}:</h6>
+				<div class="col-sm-offset-1 form-inline">
+					<div class="form-group col-sm-1" ng-repeat="(key,value) in promotionUsersRetentionData.max" style="margin-bottom:5px;">
+						<label for="" class="text-right" style="width:35px">{{key}}{{'天' | translate}}: </label>
+						<span>{{promotionUsersRetentionData.max[key]}}%</span>
+					</div>
+				</div>
+				<div class="clear"></div>
+				<h6>{{'最小留存率' | translate}}:</h6>
+				<div class="col-sm-offset-1 form-inline">
+					<div class="form-group col-sm-1" ng-repeat="(key,value) in promotionUsersRetentionData.min" style="margin-bottom:5px;">
+						<label for="" class="text-right" style="width:35px">{{key}}{{'天' | translate}}: </label>
+						<span>{{promotionUsersRetentionData.min[key]}}%</span>
+					</div>
+				</div>
+				<div class="clear"></div>
+				<div class="col-sm-offset-1 form-inline">
+					<div class="form-group col-sm-1" style="margin-bottom:5px;">
+						<label for="" class="text-right" style="width:35px">{{'衰退值' | translate}}: </label>
+						<span>{{promotionUsersRetentionData.decayValue}}%</span>
+					</div>
+				</div>
+				<div class="clear"></div>
+			</div>
+			</div>	<br>
+			<ul class="nav nav-tabs fl cl" navtabs>
+			  <li role="presentation" class="active"><a href="javascript:void(0);">DAU{{'预测' | translate}}</a></li>
+			  <li role="presentation"><a href="javascript:void(0);">{{'收入累计预测' | translate}}</a></li>
+			</ul>	<div class="clear"></div>
+			<div class="panel-showData clearfix">
+				<div class="dataList dataList2 dataList_1 dataListAct">
+					<div class="dataGraph">
+						<div class="graph" data="dataList_2_1_graph"></div>
+						<!--------图表div，data为graphfun的key----------->
+					</div>
+					<div class="dataTable">
+						<table class="table table-bordered text-center">
+							<tr class="tableTr">
+								<th width='33.3333%' ng-click="changeOrderBy(panel_2.dataList_1,'currDate')">{{'日期' | translate}}</th>
+								<th width='33.3333%' ng-click="changeOrderBy(panel_2.dataList_1,'min_dau')">{{'预测' | translate}}DAU(Min)</th>
+								<th width='33.3333%' ng-click="changeOrderBy(panel_2.dataList_1,'max_dau')">{{'预测' | translate}}DAU(Max)</th>
+								<!--------表格th(数据对象，排序字段)----------->
+							</tr>
+							<tr ng-repeat="data in panel_2.dataList_1.data | orderBy: panel_2.dataList_1.orderBy.t+panel_2.dataList_1.orderBy.s | pageStartFrom : panel_2.dataList_1.limit.now*panel_2.dataList_1.limit.max | limitTo: panel_2.dataList_1.limit.max">
+								<td>{{data.currDate}}</td>
+								<td>{{data.min_dau}}</td>
+								<td>{{data.max_dau}}</td>
+							</tr>
+						</table>
+						<div class="tableLimit" tablelimit datalimit="panel_2.dataList_1.limit"  tabledata="panel_2.dataList_1.data">
+						</div>
+						<!--------表格分页，datalimit为分页参数，tabledata为数据----------->
+					</div>
+				</div>
+				<div class="dataList dataList2 dataList_2">
+					<div class="dataGraph">
+						<div class="graph" data="dataList_2_2_graph"></div>
+						<!--------图表div，data为graphfun的key----------->
+					</div>
+					<div class="dataTable">
+						<table class="table table-bordered text-center">
+							<tr class="tableTr">
+								<th width='33.3333%' ng-click="changeOrderBy(panel_2.dataList_2,'currDate')">{{'日期' | translate}}</th>
+								<th width='33.3333%' ng-click="changeOrderBy(panel_2.dataList_2,'min_incomeu')">{{'预测累计收入' | translate}}(Min)</th>
+								<th width='33.3333%' ng-click="changeOrderBy(panel_2.dataList_2,'max_income')">{{'预测累计收入' | translate}}(Max)</th>
+								<!--------表格th(数据对象，排序字段)----------->
+							</tr>
+							<tr ng-repeat="data in panel_2.dataList_2.data | orderBy: panel_2.dataList_2.orderBy.t+panel_2.dataList_2.orderBy.s | pageStartFrom : panel_2.dataList_2.limit.now*panel_2.dataList_2.limit.max | limitTo: panel_2.dataList_2.limit.max">
+								<td>{{data.currDate}}</td>
+								<td>{{data.min_income}}</td>
+								<td>{{data.max_income}}</td>
+							</tr>
+						</table>
+						<div class="tableLimit" tablelimit datalimit="panel_2.dataList_2.limit"  tabledata="panel_2.dataList_2.data">
+						</div>
+						<!--------表格分页，datalimit为分页参数，tabledata为数据----------->
+					</div>
+				</div>
+			</div>
+			<div class="panel-changeData" graphtbale  graphfun="graphfun" datachange="panel_2_change"  datalimit="0" model="panel_2.model">
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+
+
+
+<!-- 自然用户留存率 -->
+<div class="modal fade" id="naturalUsersRetention" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel">{{'自然用户留存率' | translate}}</h4>
+      </div>
+      <div class="modal-body">
+		<h5>{{'最大留存率' | translate}}:</h5>
+		<div class="col-sm-offset-1 form-inline">
+			<div class="form-group col-sm-4" ng-repeat="(key,value) in naturalUsersRetentionData.max" style="margin-bottom:5px;">
+				<label for="" class="text-right" style="width:35px">{{key}}{{'天' | translate}}: </label>
+				<input type="text" class="form-control input-sm" style="width:80px" ng-model="naturalUsersRetentionData.max[key]">
+				<span class="text-muted">%</span>
+			</div>
+		</div>
+
+		<h5>{{'最小留存率' | translate}}:</h5>
+		<div class="col-sm-offset-1 form-inline">
+			<div class="form-group col-sm-4" ng-repeat="(key,value) in naturalUsersRetentionData.min" style="margin-bottom:5px;">
+				<label for="" class="text-right" style="width:35px">{{key}}{{'天' | translate}}: </label>
+				<input type="text" class="form-control input-sm" style="width:80px" ng-model="naturalUsersRetentionData.min[key]">
+				<span class="text-muted">%</span>
+			</div>
+		</div>
+     	<div class="clear"></div>
+		<div class="col-sm-offset-1 form-inline">
+			<div class="form-group col-sm-4" style="margin-bottom:5px;">
+				<label for="" class="text-right" style="width:35px">{{'衰退值' | translate}}: </label>
+				<input type="text" class="form-control input-sm" style="width:80px" ng-model="naturalUsersRetentionData.decayValue">
+				<span class="text-muted">%</span>
+			</div>
+		</div>
+     	<div class="clear"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" ng-click="naturalUsersRetentionToSave(0)" data-dismiss="modal">{{'关闭' | translate}}</button>
+        <button type="button" class="btn btn-primary" ng-click="naturalUsersRetentionToSave(1)" data-dismiss="modal">{{'保存' | translate}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 推广用户留存率 -->
+<div class="modal fade" id="promotionUsersRetention" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel">{{'推广用户留存率' | translate}}</h4>
+      </div>
+      <div class="modal-body">
+		<h5>{{'最大留存率' | translate}}:</h5>
+		<div class="col-sm-offset-1 form-inline">
+			<div class="form-group col-sm-4" ng-repeat="(key,value) in promotionUsersRetentionData.max" style="margin-bottom:5px;">
+				<label for="" class="text-right" style="width:35px">{{key}}{{'天' | translate}}: </label>
+				<input type="text" class="form-control input-sm" style="width:80px" ng-model="promotionUsersRetentionData.max[key]">
+				<span class="text-muted">%</span>
+			</div>
+		</div>
+
+		<h5>{{'最小留存率' | translate}}:</h5>
+		<div class="col-sm-offset-1 form-inline">
+			<div class="form-group col-sm-4" ng-repeat="(key,value) in promotionUsersRetentionData.min" style="margin-bottom:5px;">
+				<label for="" class="text-right" style="width:35px">{{key}}{{'天' | translate}}: </label>
+				<input type="text" class="form-control input-sm" style="width:80px" ng-model="promotionUsersRetentionData.min[key]">
+				<span class="text-muted">%</span>
+			</div>
+		</div>
+     	<div class="clear"></div>
+
+		<div class="col-sm-offset-1 form-inline">
+			<div class="form-group col-sm-4" style="margin-bottom:5px;">
+				<label for="" class="text-right" style="width:35px">{{'衰退值' | translate}}: </label>
+				<input type="text" class="form-control input-sm" style="width:80px" ng-model="promotionUsersRetentionData.decayValue">
+				<span class="text-muted">%</span>
+			</div>
+		</div>
+     	<div class="clear"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" ng-click="promotionUsersRetentionToSave(0)" data-dismiss="modal">{{'关闭' | translate}}</button>
+        <button type="button" class="btn btn-primary" ng-click="promotionUsersRetentionToSave(1)" data-dismiss="modal">{{'保存' | translate}}</button>
+      </div>
+    </div>
+  </div>
+</div>

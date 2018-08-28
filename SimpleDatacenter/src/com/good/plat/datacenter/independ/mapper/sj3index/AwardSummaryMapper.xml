@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.independ.mapper.sj3index.AwardSummaryMapper">
+	<resultMap id="BaseResultMap" type="com.good.plat.datacenter.independ.entity.sj3index.AwardSummary">
+		<result column="gameid" property="gameid"/>
+		<result column="gameName" property="gameName"/>
+		<result column="channelid" property="channelid"/>
+		<result column="channelName" property="channelName"/>
+		<result column="subchannelid" property="subchannelid"/>
+		<result column="areaid" property="areaid"/>
+		<result column="areaName" property="areaName"/>
+		<result column="statdate" property="statdate"/>
+		<result column="statType" property="statType"/>
+		<result column="rate" property="rate"/>
+		
+		<result column="awardName" property="awardName"/>
+		<result column="getCnt" property="getCnt"/>
+		<result column="giveupCnt" property="giveupCnt"/>
+		<result column="succCnt" property="succCnt"/>
+		
+	</resultMap>
+	
+	<sql id="ABaseSelect">
+		where a.statdate between #{startdate} and #{enddate} 
+		and a.gameid=#{gameid}
+		<if test="areas != null">
+			and a.areaid in
+			<foreach collection="areas" item="area" index="index" open="(" close=")" separator=",">
+				#{area}
+			</foreach>
+		</if>
+		<if test="channelList != null">
+			and a.channel in
+			<foreach collection="channelList" item="channel" index="index" open="(" close=")" separator=",">
+				#{channel.id}
+			</foreach>
+		</if>
+		<if test="subchannels != null">
+			and a.chnnnl in
+			<foreach collection="subchannels" item="subchannel" index="index" open="(" close=")" separator=",">
+				#{subchannel}
+			</foreach>
+		</if>
+	</sql>
+	
+	<!--
+	悬赏统计（日期,渠道,悬赏名，任务领取数,任务完成数,完成率）
+	-->
+	<select id="selectAwardSummaryList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		SELECT
+			a.statdate as statdate,
+			a.channel as channel,
+			b.channelSimName as channelName,
+			a.award as awardName,
+			IFNULL(SUM(a.get),0) as getCnt,
+			IFNULL(SUM(a.succ),0) as succCnt,
+			SUM(a.succ)/SUM(a.get) as rate
+		FROM
+			sj3_award_stat a
+		LEFT JOIN tb_logplat_channel b ON b.id = a.channel
+		<include refid="ABaseSelect"/>
+		GROUP BY
+		a.statdate,
+		a.channel,
+		a.award
+	</select>
+	
+</mapper>

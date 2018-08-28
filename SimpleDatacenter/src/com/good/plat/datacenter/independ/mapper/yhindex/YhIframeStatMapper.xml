@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.independ.mapper.yhindex.YhIframeStatMapper">
+	<resultMap id="BaseResultMap" type="com.good.plat.datacenter.independ.entity.yhindex.YhIframeStat">
+		<result column="statdate" property="statdate"/>
+		<result column="gameid" property="gameid"/>
+		<result column="areaid" property="areaid"/>
+		<result column="channelid" property="channelid"/>
+		<result column="channelName" property="channelName"/>
+		<result column="iframeid" property="iframeid"/>
+		<result column="wearActCnt" property="wearActCnt"/>
+		<result column="unlockActCnt" property="unlockActCnt"/>
+		<result column="wearActCntRate" property="wearActCntRate"/>
+		<result column="count" property="count"/>
+	</resultMap>
+		<sql id="BaseSelect">
+			where 1=1
+			<if test="startdate!=null and startdate!=''">
+			and statdate &gt;=#{startdate}
+			</if>
+			<if test="enddate!=null and enddate!=''">
+			and statdate &lt;=#{enddate}
+			</if>
+			and gameid=#{gameid}
+			<if test="channelid!=null and channelid!=-1">
+			and channel=#{channelid}
+			</if>
+			<if test="areaid!=null and areaid!=-1">
+				and areaid=#{areaid}
+			</if>
+		</sql>
+		<!-- 头像或者头框统计 -->
+	<select id="selectYhIframeStatList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.IndependBaseSearchData">
+		SELECT
+			c.statdate,
+			c.gameid,
+			c.areaid,
+			c.iframeid,
+			c.wearActCnt,
+			c.unlockActCnt,
+			d.count
+		FROM
+			(
+				SELECT
+					a.statdate,
+					b.gameid,
+					b.areaid,
+					b.iframeid,
+					a.wearActCnt,
+					SUM(IF(b.subtype = 2, b.count, 0)) AS unlockActCnt
+				FROM
+					(
+						SELECT
+							statdate,
+							gameid,
+							areaid,
+							type,
+							iframeid,
+							SUM(IF(subtype = 1, count, 0)) AS wearActCnt
+						FROM
+							yh_iframe_stat
+						<include refid="BaseSelect"/>
+						and type=#{checktype1}
+						GROUP BY
+							statdate,
+							gameid,
+							areaid,
+							type,
+							iframeid
+					) a,
+					yh_iframe_stat b
+				WHERE
+					a.statdate &gt;= b.statdate
+				AND a.gameid = b.gameid
+				AND a.areaid = b.areaid
+				AND a.iframeid = b.iframeid
+				AND a.type = b.type
+				GROUP BY
+					a.statdate,
+					b.gameid,
+					b.areaid,
+					b.iframeid
+			) c
+		LEFT JOIN (
+			SELECT
+				statdate,
+				gameid,
+				areaid,
+				IFNULL(SUM(`count`), 0) AS `count`
+			FROM
+				yh_act_count
+			<include refid="BaseSelect"/>
+			GROUP BY
+				statdate,
+				gameid,
+				areaid
+		) d ON (
+			c.statdate = d.statdate
+			AND c.gameid = d.gameid
+			AND c.areaid = d.areaid
+		);
+	</select>
+	
+	
+</mapper>

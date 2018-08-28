@@ -1,0 +1,144 @@
+<style>
+.panel_1 .btn_change{
+	display:inline-block;
+	
+	width: 88px;
+    height: 25px;
+    margin-top: 6px;
+    margin-left: 5px;
+}
+</style>
+<div>
+	<div class="maintop">
+		<div datepicker class="col-xs-3 timeSelect" mstatdate="mstatdate">
+		</div>
+		<!--------日期选择控件----------->
+		<div selectChoose class="selectChoose">
+		</div>
+		<!--------渠道区服选择控件----------->
+		<div class="clear"></div>
+		<div class="panel-selectChoose" callbackchannelqf ng-show="iscallback">
+			<ul ng-show="ischannel" class="cl">
+				<li>{{'渠道' | translate}}：</li>
+				<li ng-repeat="channellist in callbackchannelqfdata.channellist">{{channellist}}</li>
+			</ul>
+			<ul ng-show="isqf"  class="cl">
+				<li>{{'区服' | translate}}：</li>				
+				<li ng-repeat="qflist in callbackchannelqfdata.qflist">{{qflist}}</li>
+			</ul>
+		</div>
+		<!--------已选择渠道区服显示----------->
+	</div>	
+	<div class="panel panel-default panel_1">
+			<div class="panel-heading">
+				<strong>
+					LTV{{'值' | translate}}
+					<div tipsmsg></div>
+					<!--------提示框----------->
+				</strong>
+				<div class="panel_downloadBtn"  down-file down-file-url="revenue/ltv/exportPayMoneyRateAndLtvList.action" 
+					down-file-type="xlsx" down-file-name="注收比及用户生命周期价值{{mstatdate}}" savedata="" postdata="searchData" ></div>
+				<!--------下载按钮----------->
+				<div class="panel_rightBtn" ng-click="changePay(payType1)" ng-show="isShow">{{payTypeArr[payType1]}}</div>
+				<div class="clear"></div>
+			</div>
+			<div class="panel-body" ng-class="{'table':panel_1.model=='table','graph':panel_1.model=='graph'}">	
+			<!--------默认panel展示类型，表格tale或图表graph---------->
+				<ul class="nav nav-tabs fl cl" navtabs>
+				  <li role="presentation" class="active" ng-click="isShow=true">
+				  	<a href="javascript:void(0);" >{{'注收比' | translate}}</a>
+				  	<div ng-show="payType1==1" tipsmsg>{{'当日付费玩家/新增账号数' | translate}}</div>
+				  	<div ng-show="payType1==0" tipsmsg>{{'当日注册玩家，在之后每一日的付费金额' | translate}}</div>
+				  </li>
+				  <li role="presentation"  ng-click="isShow=false">
+				  	<a href="javascript:void(0);" >{{'用户生命周期价值' | translate}}</a>
+				  </li>
+				</ul>
+				<!--------各选项卡数据展示----------->
+				<div class="clear"></div>
+				<div class="panel-showData">
+					<div class="dataList dataList2 dataList_1">
+						<div class="dataGraph">
+							<div class="graph" data="dataList_1_1_graph"></div>	
+							<!--------图表div，data为graphfun的key----------->	
+						</div>
+						<div class="dataTable">
+							<table class="table table-bordered text-center">
+								<tr class="tableTr">
+									<th width='12%' ng-click="changeOrderBy(panel_1.dataList_1,'regdate')">{{'日期' | translate}}</th>
+									<th width='6%' ng-click="changeOrderBy(panel_1.dataList_1,'newact')">{{'新增玩家数(角色)' | translate}}</th>
+									<th width='6%' ng-click="changeOrderBy(panel_1.dataList_1,'payType1==0?day0_pay:day0_pay_rate')">{{pay_rate_arr[payType1].day0_pay}}</th>
+									<th width='6%' ng-click="changeOrderBy(panel_1.dataList_1,'payType1==0?day1_pay:day1_pay_rate')">{{pay_rate_arr[payType1].day1_pay}}</th>
+									<th width='6%' ng-click="changeOrderBy(panel_1.dataList_1,'payType1==0?day2_pay:day2_pay_rate')">{{pay_rate_arr[payType1].day2_pay}}</th>
+									<th width='6%' ng-click="changeOrderBy(panel_1.dataList_1,'payType1==0?day3_pay:day3_pay_rate')">{{pay_rate_arr[payType1].day3_pay}}</th>
+									<th width='6%' ng-click="changeOrderBy(panel_1.dataList_1,'payType1==0?day4_pay:day4_pay_rate')">{{pay_rate_arr[payType1].day4_pay}}</th>
+									<th width='6%' ng-click="changeOrderBy(panel_1.dataList_1,'payType1==0?day5_pay:day5_pay_rate')">{{pay_rate_arr[payType1].day5_pay}}</th>
+									<th width='6%' ng-click="changeOrderBy(panel_1.dataList_1,'payType1==0?day6_pay:day6_pay_rate')">{{pay_rate_arr[payType1].day6_pay}}</th>
+									<th width='6%' ng-click="changeOrderBy(panel_1.dataList_1,'payType1==0?day7_pay:day7_pay_rate')">{{pay_rate_arr[payType1].day7_pay}}</th>
+									<th width='6%' ng-click="changeOrderBy(panel_1.dataList_1,'payType1==0?day8_pay:day8_pay_rate')">{{pay_rate_arr[payType1].day8_pay}}</th>
+									<th width='6%' ng-click="changeOrderBy(panel_1.dataList_1,'payType1==0?day9_pay:day9_pay_rate')">{{pay_rate_arr[payType1].day9_pay}}</th>
+									<th width='6%' ng-click="changeOrderBy(panel_1.dataList_1,'payType1==0?day10_pay:day10_pay_rate')">{{pay_rate_arr[payType1].day10_pay}}</th>
+									<th width='6%' ng-click="changeOrderBy(panel_1.dataList_1,'payType1==0?day11_pay:day11_pay_rate')">{{pay_rate_arr[payType1].day11_pay}}</th>
+									<th width='6%' ng-click="changeOrderBy(panel_1.dataList_1,'payType1==0?day12_pay:day12_pay_rate')">{{pay_rate_arr[payType1].day12_pay}}</th>
+									<!--------表格th(数据对象，排序字段)----------->
+								</tr>
+								<tr ng-repeat="data in panel_1.dataList_1.data | orderBy: panel_1.dataList_1.orderBy.t+panel_1.dataList_1.orderBy.s | pageStartFrom : panel_1.dataList_1.limit.now*panel_1.dataList_1.limit.max | limitTo: panel_1.dataList_1.limit.max">
+									<td>{{data.regdate}}</td>
+									<td>{{data.newact}}</td>
+									<td>{{payType1==0?data.day0_pay:data.day0_pay_rate}}</td>
+									<td>{{payType1==0?data.day1_pay:data.day1_pay_rate}}</td>
+									<td>{{payType1==0?data.day2_pay:data.day2_pay_rate}}</td>
+									<td>{{payType1==0?data.day3_pay:data.day3_pay_rate}}</td>
+									<td>{{payType1==0?data.day4_pay:data.day4_pay_rate}}</td>
+									<td>{{payType1==0?data.day5_pay:data.day5_pay_rate}}</td>
+									<td>{{payType1==0?data.day6_pay:data.day6_pay_rate}}</td>
+									<td>{{payType1==0?data.day7_pay:data.day7_pay_rate}}</td>
+									<td>{{payType1==0?data.day8_pay:data.day8_pay_rate}}</td>
+									<td>{{payType1==0?data.day9_pay:data.day9_pay_rate}}</td>
+									<td>{{payType1==0?data.day10_pay:data.day10_pay_rate}}</td>
+									<td>{{payType1==0?data.day11_pay:data.day11_pay_rate}}</td>
+									<td>{{payType1==0?data.day12_pay:data.day12_pay_rate}}</td>
+									
+								</tr>
+							</table>
+							<div class="tableLimit" tablelimit datalimit="panel_1.dataList_1.limit"  tabledata="panel_1.dataList_1.data">							
+							</div>
+							<!--------表格分页，datalimit为分页参数，tabledata为数据----------->
+						</div>
+					</div>
+						<div class="dataList dataList2 dataList_2">
+						<div class="dataGraph">
+							<div class="graph" data="dataList_1_2_graph"></div>	
+							<!--------图表div，data为graphfun的key----------->
+							
+						</div>
+						<div class="dataTable">
+							<table class="table table-bordered text-center">
+								<tr class="tableTr">
+									<th width='20%' ng-click="changeOrderBy(panel_1.dataList_2,'statdate')">{{'日期' | translate}}</th>
+									<th width='20%' ng-click="changeOrderBy(panel_1.dataList_2,'ltv3')">3{{'日' | translate}}LTV(￥)</th>
+									<th width='20%' ng-click="changeOrderBy(panel_1.dataList_2,'ltv7')">7{{'日' | translate}}LTV(￥)</th>
+									<th width='20%' ng-click="changeOrderBy(panel_1.dataList_2,'ltv30')">30{{'日' | translate}}LTV(￥)</th>
+									<th width='20%' ng-click="changeOrderBy(panel_1.dataList_2,'ltv60')">60{{'日' | translate}}LTV(￥)</th>
+									<!--------表格th(数据对象，排序字段)----------->
+								</tr>
+								<tr ng-repeat="data in panel_1.dataList_2.data | orderBy: panel_1.dataList_2.orderBy.t+panel_1.dataList_2.orderBy.s | pageStartFrom : panel_1.dataList_2.limit.now*panel_1.dataList_2.limit.max | limitTo: panel_1.dataList_2.limit.max">
+									<td>{{data.statdate}}</td>
+									<td>{{data.ltv3}}</td>
+									<td>{{data.ltv7}}</td>
+									<td>{{data.ltv30}}</td>
+									<td>{{data.ltv60}}</td>
+								</tr>
+							</table>
+							<div class="tableLimit" tablelimit datalimit="panel_1.dataList_2.limit"  tabledata="panel_1.dataList_2.data">							
+							</div>
+							<!--------表格分页，datalimit为分页参数，tabledata为数据----------->
+						</div>
+					</div>	
+				</div>
+				<div class="panel-changeData" graphtbale  graphfun="graphfun" datachange="panel_1_change"  datalimit="0" model="panel_1.model">
+				</div>
+				<!-------------图表表格切换，graphfun ----datachange(需要分页时删除不填)------------->
+			</div>
+	</div>
+</div>

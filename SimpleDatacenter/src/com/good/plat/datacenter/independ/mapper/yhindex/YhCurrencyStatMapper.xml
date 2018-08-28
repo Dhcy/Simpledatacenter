@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.independ.mapper.yhindex.YhCurrencyStatMapper">
+	<resultMap id="BaseResultMap" type="com.good.plat.datacenter.independ.entity.yhindex.YhCurrencyStat">
+		<result column="statdate" property="statdate"/>
+		<result column="gameid" property="gameid"/>
+		<result column="channelid" property="channelid"/>
+		<result column="channelName" property="channelName"/>
+		
+		<result column="actUser" property="actUser"/>
+		<result column="avgPowerValue" property="avgPowerValue"/>
+		<result column="buyPower0TimesActUser" property="buyPower0TimesActUser"/>
+		<result column="buyPower1TimesActUser" property="buyPower1TimesActUser"/>
+		<result column="buyPower2TimesActUser" property="buyPower2TimesActUser"/>
+		<result column="buyPower3TimesActUser" property="buyPower3TimesActUser"/>
+		<result column="buyPower4TimesActUser" property="buyPower4TimesActUser"/>
+		<result column="buyPowerHigh5TimesActUser" property="buyPowerHigh5TimesActUser"/>
+		<result column="buyPower0TimesActUserRate" property="buyPower0TimesActUserRate"/>
+		<result column="buyPower1TimesActUserRate" property="buyPower1TimesActUserRate"/>
+		<result column="buyPower2TimesActUserRate" property="buyPower2TimesActUserRate"/>
+		<result column="buyPower3TimesActUserRate" property="buyPower3TimesActUserRate"/>
+		<result column="buyPower4TimesActUserRate" property="buyPower4TimesActUserRate"/>
+		<result column="buyPowerHigh5TimesActUserRate" property="buyPowerHigh5TimesActUserRate"/>
+		<result column="count" property="count"/>
+		<result column="avgConsumRate" property="avgConsumRate"/>
+		<result column="lvlsection" property="lvlsection"/>
+		<result column="sect0CoutRate" property="sect0CoutRate"/>
+		<result column="sect101CoutRate" property="sect101CoutRate"/>
+		<result column="sect1001CoutRate" property="sect1001CoutRate"/>
+		<result column="sect3001CoutRate" property="sect3001CoutRate"/>
+		<result column="sect10001CoutRate" property="sect10001CoutRate"/>
+	</resultMap>
+	
+	<resultMap id="currencyResultMap" type="com.good.plat.datacenter.independ.entity.yhindex.YhCurrencyStat">
+		<result column="statdate" property="statdate"/>
+		<result column="gameid" property="gameid"/>
+		<result column="channelid" property="channelid"/>
+		<result column="channelName" property="channelName"/>
+		
+		<result column="actUser" property="actUser"/>
+		<result column="consumeType" property="consumeType"/>
+		<result column="consumeCnt" property="consumeCnt"/>
+		<result column="currencyCount" property="currencyCount"/>
+		<result column="avgPerTimeCount" property="avgPerTimeCount"/>
+		<result column="avgPerUserConsumeCnt" property="avgPerUserConsumeCnt"/>
+		<result column="avgPerUserCount" property="avgPerUserCount"/>
+		<result column="curType" property="curType"/>
+		<result column="gainCnt" property="gainCnt"/>
+		<result column="leftCount" property="leftCount"/>
+		
+	</resultMap>
+	
+		<sql id="BaseSelect">
+			where 1=1
+			<if test="startdate!=null and startdate!=''">
+			and statdate &gt;=#{startdate}
+			</if>
+			<if test="enddate!=null and enddate!=''">
+			and statdate &lt;=#{enddate}
+			</if>
+			and gameid=#{gameid}
+			<if test="channelid!=null and channelid!=-1">
+			and channel=#{channelid}
+			</if>
+			<if test="areaid!=null and areaid!=-1">
+				and areaid=#{areaid}
+			</if>
+		</sql>
+	<!--  体力统计-->
+	<select id="selectYhPowerStatList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.IndependBaseSearchData">
+		SELECT
+		a.statdate,
+		a.channel AS channelid,
+		IF (chn.channelSimName IS NULL,CONCAT('未知渠道： ',a.channel),chn.channelSimName) AS channelName,
+		IFNULL(b.acticount,0) as actUser,
+		IF(b.acticount=0,0,ROUND(c.powercnt/b.acticount)) as avgPowerValue,
+		a.buyPower1TimesActUser,
+		a.buyPower2TimesActUser,
+		a.buyPower3TimesActUser,
+		a.buyPower4TimesActUser,
+		a.buyPowerHigh5TimesActUser,
+		IF(b.acticount=0,0,ROUND((a.buyPower1TimesActUser/b.acticount)*100,2)) as buyPower1TimesActUserRate,
+		IF(b.acticount=0,0,ROUND((a.buyPower2TimesActUser/b.acticount)*100,2)) as buyPower2TimesActUserRate,
+		IF(b.acticount=0,0,ROUND((a.buyPower3TimesActUser/b.acticount)*100,2)) as buyPower3TimesActUserRate,
+		IF(b.acticount=0,0,ROUND((a.buyPower4TimesActUser/b.acticount)*100,2)) as buyPower4TimesActUserRate,
+		IF(b.acticount=0,0,ROUND((a.buyPowerHigh5TimesActUser/b.acticount)*100,2)) as buyPowerHigh5TimesActUserRate
+		FROM
+			(
+				SELECT
+					statdate,
+					gameid,
+					channel,
+					IFNULL(SUM(IF(type = 1, count, 0)),0) AS buyPower1TimesActUser,
+					IFNULL(SUM(IF(type = 2, count, 0)),0) AS buyPower2TimesActUser,
+					IFNULL(SUM(IF(type = 3, count, 0)),0) AS buyPower3TimesActUser,
+					IFNULL(SUM(IF(type = 4, count, 0)),0) AS buyPower4TimesActUser,
+					IFNULL(SUM(IF(type = 5, count, 0)),0) AS buyPowerHigh5TimesActUser
+				FROM
+					yh_power_stat
+				<include refid="BaseSelect"/>
+				GROUP BY
+					statdate,
+					gameid,
+					channel
+			) a
+		LEFT JOIN (
+			SELECT
+				statdate,
+				gameid,
+				channel,
+				IFNULL(sum(`acticount`), 0) AS `acticount`
+			FROM
+				yh_act_count
+			<include refid="BaseSelect"/>
+			GROUP BY
+				statdate,
+				gameid,
+				channel
+		) b ON (
+			a.statdate = b.statdate
+			AND a.gameid = b.gameid
+			AND a.channel = b.channel
+		)
+		LEFT JOIN (
+			SELECT
+				statdate,
+				gameid,
+				channel,
+				IFNULL(SUM(powercnt), 0) AS powercnt
+			FROM
+				yh_powerout_stat
+			<include refid="BaseSelect"/>
+			GROUP BY
+				statdate,
+				gameid,
+				channel
+		) c ON (
+			a.statdate = c.statdate
+			AND a.gameid = c.gameid
+			AND a.channel = c.channel
+		)
+		LEFT JOIN tb_logplat_channel chn ON (chn.id = a.channel);
+		</select>
+		<!-- 氪金消耗 -->
+		<select id="selectYhKrypGoldConsumpList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.IndependBaseSearchData">
+		SELECT
+		a.statdate,
+		a.channel AS channelid,
+		IF (chn.channelSimName IS NULL,CONCAT('未知渠道： ',a.channel),chn.channelSimName) AS channelName,
+		a.count as count,
+		b.acticount as ActUser,
+		IF(b.acticount=0,0,ROUND(a.count/b.acticount)) as avgConsumRate
+		FROM
+			(
+				SELECT
+					statdate,
+					gameid,
+					channel,
+					IFNULL(SUM(count),0) as count
+				FROM
+					yh_kejin_stat
+					<include refid="BaseSelect"/>
+				GROUP BY
+					statdate,
+					gameid,
+					channel
+			) a
+		LEFT JOIN (
+			SELECT
+				statdate,
+				gameid,
+				channel,
+				IFNULL(sum(`acticount`), 0) AS `acticount`
+			FROM
+				yh_act_count
+			<include refid="BaseSelect"/>
+			GROUP BY
+				statdate,
+				gameid,
+				channel
+		) b ON (
+			a.statdate = b.statdate
+			AND a.gameid = b.gameid
+			AND a.channel = b.channel
+		)
+		LEFT JOIN tb_logplat_channel chn ON (chn.id = a.channel);
+		</select>
+	<!--  氪金存量-->
+	<select id="selectYhKrypGoldLeftList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.IndependBaseSearchData">
+		select 
+			a.statdate,
+			a.channel AS channelid,
+			IF (chn.channelSimName IS NULL,CONCAT('未知渠道： ',a.channel),chn.channelSimName) AS channelName,
+			a.lvlsection,
+			IF(a.lvlUserCount=0,0,ROUND((a.sect0Count/a.lvlUserCount)*100,2)) as sect0CoutRate,
+			IF(a.lvlUserCount=0,0,ROUND((a.sect101Count/a.lvlUserCount)*100,2)) as sect101CoutRate,
+			IF(a.lvlUserCount=0,0,ROUND((a.sect1001Count/a.lvlUserCount)*100,2)) as sect1001CoutRate,
+			IF(a.lvlUserCount=0,0,ROUND((a.sect3001Count/a.lvlUserCount)*100,2)) as sect3001CoutRate,
+			IF(a.lvlUserCount=0,0,ROUND((a.sect10001Count/a.lvlUserCount)*100,2)) as sect10001CoutRate
+			from
+			(SELECT
+			statdate,
+			channel,
+			lvlsection,
+			IFNULL(SUM(count),0) as lvlUserCount,
+			IFNULL(SUM(IF(kejinsection=0,count,0)),0) as sect0Count,
+			IFNULL(SUM(IF(kejinsection=101,count,0)),0) as sect101Count,
+			IFNULL(SUM(IF(kejinsection=1001,count,0)),0) as sect1001Count,
+			IFNULL(SUM(IF(kejinsection=3001,count,0)),0) as sect3001Count,
+			IFNULL(SUM(IF(kejinsection=10001,count,0)),0) as sect10001Count
+		FROM
+			yh_leftkejin_stat
+		<include refid="BaseSelect"/>
+		GROUP BY
+			statdate,
+			channel,
+			lvlsection)a
+			LEFT JOIN tb_logplat_channel chn ON (chn.id = a.channel);
+		</select>
+			
+		<!--  货币消耗统计-->
+		<select id="selectCurrencyConsStatList" resultMap="currencyResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.IndependBaseSearchData">
+		SELECT
+		a.curtype as curType,
+		a.consumetype as consumeType,
+		a.consumeCnt,
+		a.count as currencyCount,
+		IF (a.consumeCnt = 0,0,ROUND(a.count / a.consumeCnt)) AS avgPerTimeCount,
+		 a.actUser,
+		IF (a.actUser = 0,0,ROUND(a.consumeCnt / a.actUser)) AS avgPerUserConsumeCnt,
+		IF (a.actUser = 0,0,ROUND(a.count / a.actUser)) AS avgPerUserCount
+	FROM
+		(
+			SELECT
+				curtype,
+				consumetype,
+				IFNULL(SUM(consumecnt), 0) AS consumeCnt,
+				IFNULL(SUM(count), 0) AS count,
+				IFNULL(SUM(actcnt), 0) AS actUser
+			FROM
+				yh_curout_stat
+			<include refid="BaseSelect"/>
+			<if test="checktype1!=null and checktype1!=-1">
+			AND curtype =#{checktype1}
+			</if>
+			AND consumetype <![CDATA[<>]]>-1
+			GROUP BY
+				curtype,
+				consumetype
+		) a
+		</select>
+		
+		<!--  货币输出与消耗统计-->
+		<select id="selectCurOutAndConsList" resultMap="currencyResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.IndependBaseSearchData">
+		SELECT
+			statdate,
+			curtype as curType,
+			IFNULL(SUM(gaincnt),0) as gainCnt,
+			IFNULL(SUM(conscnt),0) as consumeCnt,
+			IFNULL(SUM(gaincnt),0)-IFNULL(SUM(conscnt),0) as leftCount
+		FROM
+			yh_curoutandgain_stat
+		<include refid="BaseSelect"/>
+		GROUP BY
+		statdate,
+		curtype
+		</select>
+		
+		<!--  货币消费人数跟次数-->
+		<select id="selectCurConsUserTimesList" resultMap="currencyResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.IndependBaseSearchData">
+		SELECT
+		a.statdate,
+		a.curtype as curType,
+		a.actUser,
+		a.consumeCnt,
+		IF (a.actUser = 0,0,ROUND(a.consumeCnt / a.actUser)) AS avgPerUserConsumeCnt
+		FROM
+		(
+			SELECT
+				statdate,
+				curtype,
+				IFNULL(SUM(actcnt), 0) AS actUser,
+				IFNULL(SUM(consumecnt), 0) AS consumeCnt
+			FROM
+				yh_curout_stat
+			<include refid="BaseSelect"/>
+			AND consumetype =-1
+			GROUP BY
+				statdate,
+				curtype
+		) a
+		</select>
+		
+		
+		
+</mapper>

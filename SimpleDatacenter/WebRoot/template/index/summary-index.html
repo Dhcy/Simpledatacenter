@@ -1,0 +1,259 @@
+<div>
+	<div class="maintop">
+		<div datepicker class="col-xs-3 timeSelect" mstatdate="mstatdate">
+		</div>
+		<!--------日期选择控件----------->
+		<div class="playerTabs" class="fl margin_left" playertabs  tabsarr="tabsarr" >
+		</div>
+		
+		<!--------tab选择按钮----------->
+		<div selectChoose class="selectChoose">
+		</div>
+		<!--------渠道区服选择控件----------->
+		<div class="clear"></div>
+		<div class="panel-selectChoose" callbackchannelqf ng-show="iscallback">
+		</div>
+		<!--------已选择渠道区服显示----------->
+	</div>	
+	
+	<div class="panel panel-default panel_1">
+			<div class="panel-heading">
+				<strong>{{'关键指标' | translate}}</strong>
+				<!-- <div class="panel_downloadBtn" ng-click="mdownloaddata('avgGameTime')"></div> -->
+<!--				<div class="panel_downloadBtn" ng-click="downloadMainValue();"></div>-->
+				<div class="panel_downloadBtn"  down-file down-file-url="index/exportKeyIndicator.action" down-file-type="xlsx" down-file-name="关键指标{{mstatdate}}" savedata="" postdata="searchData" ></div>
+				<div class="clear"></div>
+			</div>
+			<div class="panel-body" ng-class="{'table':panel_1.model=='table','graph':panel_1.model=='graph'}">	
+				<ul class="nav nav-tabs fl cl" navtabs>
+				  <li role="presentation" class="active">
+				  	<a href="javascript:void(0);" ng-click="selectNewPlayerList()">{{'新增激活和玩家' | translate}}</a>
+				  	<div tipsmsg>{{'新增激活：当日新增的激活设备量/新增玩家：当日新增的玩家数' | translate}}</div>
+				  </li>
+				  <li role="presentation">
+				  	<a href="javascript:void(0);" ng-click="selectActivePlayerList()">{{'活跃玩家' | translate}}</a>
+				  	<div tipsmsg>{{'当日有开启过游戏的玩家数' | translate}}</div>
+				  </li>
+				  <li role="presentation" title="">
+				  	<a href="javascript:void(0);" ng-click="selectPaidPlayerList()">{{'付费玩家' | translate}}</a>
+				  	<div tipsmsg>{{'当日有进行过充值的玩家数' | translate}}</div></li>
+				  <li role="presentation" title="">
+				  	<a href="javascript:void(0);" ng-click="selectIncomeNumList()">{{'收入' | translate}}</a>
+				  	<div tipsmsg>{{'当日玩家充值的货币总额' | translate}}</div></li>
+				</ul>
+				<div class="fl cl info" >
+					<div class="infoact">
+						SUM {{'设备 | 账户' | translate}}：<font><em>{{panel_1.dataList_1.deviceSUM}}</em> | <em>{{panel_1.dataList_1.accountSUM}}</em></font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						AVG {{'设备 | 账户' | translate}}：<font><em>{{panel_1.dataList_1.devicAVG}}</em> | <em>{{panel_1.dataList_1.accountAVG}}</em></font>  
+					</div>
+					
+					<div class="infoact">
+						AVG ：<font><em>{{panel_1.dataList_2.activeUserAVG}}</em></font>  
+					</div>
+					
+					<div class="infoact">
+						AVG ：<font><em>{{panel_1.dataList_3.payUserAVG}}</em></font>  
+					</div>
+					
+					<div class="infoact">
+						SUM ：<font><em>{{panel_1.dataList_4.incomeSUM}}</em></font>&nbsp;&nbsp;&nbsp;&nbsp;AVG ：<font><em>{{panel_1.dataList_4.incomeAVG}}</em></font>  
+					</div>
+					
+				</div>
+				<div class="clear"></div>
+				<div class="panel-showData">
+					<div class="dataList dataList3 dataList_1">
+						<div class="dataGraph">
+							<div class="graph" data="dataList_1_1_graph"></div>			
+						</div>
+						<div class="dataTable">
+							<table class="table table-bordered text-center">
+								<tr class="tableTr">
+									<th width='33.3333%' ng-click="changeOrderBy(panel_1.dataList_1,'statdate')">{{'日期' | translate}}</th>
+									<th width='33.3333%' ng-click="changeOrderBy(panel_1.dataList_1,'deviceCount')">{{'激活台数(台)' | translate}}</th>
+									<th width='33.3333%' ng-click="changeOrderBy(panel_1.dataList_1,'userCount')">{{'新增玩家(角色)' | translate}}</th>
+								</tr>
+								<tr ng-repeat="data in panel_1.dataList_1.data | orderBy: panel_1.dataList_1.orderBy.t+panel_1.dataList_1.orderBy.s | pageStartFrom : panel_1.dataList_1.limit.now*panel_1.dataList_1.limit.max | limitTo: panel_1.dataList_1.limit.max">
+									<td>{{data.statdate}}</td>
+									<td>{{data.deviceCount}}</td>
+									<td>{{data.userCount}}</td>
+								</tr>
+							</table>
+							<div class="tableLimit" tablelimit datalimit="panel_1.dataList_1.limit"  tabledata="panel_1.dataList_1.data">							
+							</div>
+						</div>
+					</div>
+					<div class="dataList dataList3 dataList_2">
+						<div class="dataGraph">
+							<div class="graph"  data="dataList_1_2_graph"></div>
+						</div>
+						<div class="dataTable">
+							<table class="table table-bordered text-center">
+								<tr class="tableTr">
+									<th width='25%' ng-click="changeOrderBy(panel_1.dataList_2,'statdate')">{{'日期' | translate}}</th>
+									<th width='25%' ng-click="changeOrderBy(panel_1.dataList_2,'newActiveUser')">{{'新玩家(角色)' | translate}}</th>
+									<th width='25%' ng-click="changeOrderBy(panel_1.dataList_2,'oldActiveUser')">{{'老玩家(角色)' | translate}}</th>
+									<th width='25%' ng-click="changeOrderBy(panel_1.dataList_2,'activeUserSUM')">{{'总计(角色)' | translate}}</th>
+								</tr>
+								<tr ng-repeat="data in panel_1.dataList_2.data | orderBy: panel_1.dataList_2.orderBy.t+panel_1.dataList_2.orderBy.s  | pageStartFrom : panel_1.dataList_2.limit.now*panel_1.dataList_2.limit.max | limitTo: panel_1.dataList_2.limit.max">
+									<td>{{data.statdate}}</td>
+									<td>{{data.newActiveUser}}</td>
+									<td>{{data.oldActiveUser}}</td>
+									<td>{{data.activeUserSUM}}</td>
+								</tr>
+							</table>
+							<div class="tableLimit" tablelimit datalimit="panel_1.dataList_2.limit"  tabledata="panel_1.dataList_2.data">
+							</div>
+						</div>		
+					</div>
+					<div class="dataList dataList3 dataList_3">
+						<div class="dataGraph">
+							<div class="graph"  data="dataList_1_3_graph"></div>
+						</div>
+						<div class="dataTable">
+							<table class="table table-bordered text-center">
+								<tr class="tableTr">
+									<th width='25%' ng-click="changeOrderBy(panel_1.dataList_3,'statdate')">{{'日期' | translate}}</th>
+									<th width='25%' ng-click="changeOrderBy(panel_1.dataList_3,'newPayUser')">{{'新增付费玩家(角色)' | translate}}</th>
+									<th width='25%' ng-click="changeOrderBy(panel_1.dataList_3,'oldPayUser')">{{'老付费玩家(角色)' | translate}}</th>
+									<th width='25%' ng-click="changeOrderBy(panel_1.dataList_3,'payUserSUM')">{{'总计(角色)' | translate}}</th>
+								</tr>
+								<tr ng-repeat="data in panel_1.dataList_3.data | orderBy: panel_1.dataList_3.orderBy.t+panel_1.dataList_3.orderBy.s  | pageStartFrom : panel_1.dataList_3.limit.now*panel_1.dataList_3.limit.max | limitTo: panel_1.dataList_3.limit.max">
+									<td>{{data.statdate}}</td>
+									<td>{{data.newPayUser}}</td>
+									<td>{{data.oldPayUser}}</td>
+									<td>{{data.payUserSUM}}</td>
+								</tr>
+							</table>
+							<div class="tableLimit" tablelimit datalimit="panel_1.dataList_3.limit"  tabledata="panel_1.dataList_3.data">
+							</div>
+						</div>		
+					</div>
+					<div class="dataList dataList3 dataList_4">
+						<div class="dataGraph">
+							<div class="graph"  data="dataList_1_4_graph"></div>
+						</div>
+						<div class="dataTable">
+							<table class="table table-bordered text-center">
+								<tr class="tableTr">
+									<th width='50%' ng-click="changeOrderBy(panel_1.dataList_4,'statdate')">{{'日期' | translate}}</th>
+									<th width='50%' ng-click="changeOrderBy(panel_1.dataList_4,'income')">{{'收入' | translate}}(￥)</th>
+								</tr>
+								<tr ng-repeat="data in panel_1.dataList_4.data | orderBy: panel_1.dataList_4.orderBy.t+panel_1.dataList_4.orderBy.s  | pageStartFrom : panel_1.dataList_4.limit.now*panel_1.dataList_4.limit.max | limitTo: panel_1.dataList_4.limit.max">
+									<td>{{data.statdate}}</td>
+									<td>{{data.income}}</td>
+								</tr>
+							</table>
+							<div class="tableLimit" tablelimit datalimit="panel_1.dataList_4.limit"  tabledata="panel_1.dataList_4.data">
+							</div>
+						</div>		
+					</div>
+				</div>
+				<div class="panel-changeData" graphtbale graphtbale graphfun="graphfun" datachange="panel_1_change"  datalimit="0" model="panel_1.model">
+				</div>
+			</div>
+	</div>
+	<div class="panel panel-default panel_2">
+			<div class="panel-heading">
+				<strong>{{'付费渗透' | translate}}
+				</strong>
+				<!-- <div class="panel_downloadBtn" ng-click="mdownloaddata('avgGameTime')"></div> -->
+				<div class="panel_downloadBtn"  down-file down-file-url="index/exportPaidPermeate.action" down-file-type="xlsx" down-file-name="付费渗透{{mstatdate}}" savedata="" postdata="searchData" ></div>
+				
+				<div class="clear"></div>
+			</div>
+			<div class="panel-body" ng-class="{'table':panel_2.model=='table','graph':panel_2.model=='graph'}">	
+				<ul class="nav nav-tabs fl cl" navtabs>
+				  <li role="presentation" class="active">
+				  	<a href="javascript:void(0);" ng-click="selectDailyRateOfPay()">{{'日付费率' | translate}}</a>
+				  	<div tipsmsg>{{'付费玩家(角色)/活跃玩家(角色)' | translate}}</div></li>
+				  <li role="presentation">
+				  	<a href="javascript:void(0);" ng-click="selectDailyARPU()">日ARPU</a>
+				  	<div tipsmsg>{{'每用户平均收入：收入/活跃玩家(角色)' | translate}}</div></li>
+				  <li role="presentation">
+				  	<a href="javascript:void(0);" ng-click="selectDailyARPPU()">日ARPPU</a>
+				  	<div tipsmsg>{{'每付费用户平均收入:收入/付费玩家(角色)' | translate}}</div></li>
+				</ul>
+				<div class="fl cl info" >
+					<div class="infoact">
+						AVG ：<font><em>{{panel_2.dataList_1.payAVG}}</em></font>  
+					</div>
+					<div class="infoact">
+						AVG ：<font><em>{{panel_2.dataList_2.payAVG}}</em></font>  
+					</div>
+					<div class="infoact">
+						AVG ：<font><em>{{panel_2.dataList_3.payAVG}}</em></font>  
+					</div>
+				</div>
+				
+				<div class="clear"></div>
+				<div class="panel-showData">
+					<!-- 日付费率 -->
+					<div class="dataList dataList3 dataList_1">
+						<div class="dataGraph">
+							<div class="graph" data="dataList_2_1_graph"></div>			
+						</div>
+						<div class="dataTable">
+							<table class="table table-bordered text-center">
+								<tr class="tableTr">
+									<th width='50%' ng-click="changeOrderBy(panel_2.dataList_1,'statdate')">{{'日期' | translate}}</th>
+									<th width='50%' ng-click="changeOrderBy(panel_2.dataList_1,'payRate')">{{'日付费率' | translate}}(%)</th>
+								</tr>
+								<tr ng-repeat="data in panel_2.dataList_1.data | orderBy: panel_2.dataList_1.orderBy.t+panel_2.dataList_1.orderBy.s | pageStartFrom : panel_2.dataList_1.limit.now*panel_2.dataList_1.limit.max | limitTo: panel_2.dataList_1.limit.max">
+									<td>{{data.statdate}}</td>
+									<td>{{data.payRate}}</td>
+								</tr>
+							</table>
+							<div class="tableLimit" tablelimit datalimit="panel_2.dataList_1.limit"  tabledata="panel_2.dataList_1.data">							
+							</div>
+						</div>
+					</div>
+					
+					<!-- 日ARPU -->
+					<div class="dataList dataList3 dataList_2">
+						<div class="dataGraph">
+							<div class="graph"  data="dataList_2_2_graph"></div>
+						</div>
+						<div class="dataTable">
+							<table class="table table-bordered text-center">
+								<tr class="tableTr">
+									<th width='50%' ng-click="changeOrderBy(panel_2.dataList_2,'statdate')">{{'日期' | translate}}</th>
+									<th width='50%' ng-click="changeOrderBy(panel_2.dataList_2,'dayARPU')">{{'日' | translate}}ARPU</th>
+								</tr>
+								<tr ng-repeat="data in panel_2.dataList_2.data | orderBy: panel_2.dataList_2.orderBy.t+panel_2.dataList_2.orderBy.s  | pageStartFrom : panel_2.dataList_2.limit.now*panel_2.dataList_2.limit.max | limitTo: panel_2.dataList_2.limit.max">
+									<td>{{data.statdate}}</td>
+									<td>{{data.dayARPU}}</td>
+								</tr>
+							</table>
+							<div class="tableLimit" tablelimit datalimit="panel_2.dataList_2.limit"  tabledata="panel_2.dataList_2.data">
+							</div>
+						</div>		
+					</div>
+					
+					<!-- 日ARPPU -->
+					<div class="dataList dataList3 dataList_3">
+						<div class="dataGraph">
+							<div class="graph"  data="dataList_2_3_graph"></div>
+						</div>
+						<div class="dataTable">
+							<table class="table table-bordered text-center">
+								<tr class="tableTr">
+									<th width='50%' ng-click="changeOrderBy(panel_2.dataList_3,'statdate')">{{'日期' | translate}}</th>
+									<th width='50%' ng-click="changeOrderBy(panel_2.dataList_3,'dayARPPU')">{{'日' | translate}}ARPPU</th>
+								</tr>
+								<tr ng-repeat="data in panel_2.dataList_3.data | orderBy: panel_2.dataList_3.orderBy.t+panel_2.dataList_3.orderBy.s  | pageStartFrom : panel_2.dataList_3.limit.now*panel_2.dataList_3.limit.max | limitTo: panel_2.dataList_3.limit.max">
+									<td>{{data.statdate}}</td>
+									<td>{{data.dayARPPU}}</td>
+								</tr>
+							</table>
+							<div class="tableLimit" tablelimit datalimit="panel_2.dataList_3.limit"  tabledata="panel_2.dataList_3.data">
+							</div>
+						</div>		
+					</div>
+				</div>
+				<div class="panel-changeData" graphtbale  graphfun="graphfun" datachange="panel_2_change"  datalimit="0" model="panel_2.model">
+				</div>
+			</div>
+	</div>
+	
+</div>

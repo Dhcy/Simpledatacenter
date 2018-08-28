@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.independ.mapper.yhindex.YhGoodsStatMapper">
+	<resultMap id="BaseResultMap" type="com.good.plat.datacenter.independ.entity.yhindex.YhGoodsStat">
+		<result column="statdate" property="statdate"/>
+		<result column="gameid" property="gameid"/>
+		<result column="channelid" property="channelid"/>
+		<result column="channelName" property="channelName"/>
+		<result column="goodsid" property="goodsid"/>
+		<result column="shopname" property="shopname"/>
+		<result column="goodsname" property="goodsname"/>
+		<result column="count" property="count"/>
+		<result column="rate" property="rate"/>
+	</resultMap>
+	<sql id="BaseSelect">
+		where 1=1
+		<if test="startdate!=null and startdate!=''">
+		and statdate &gt;=#{startdate}
+		</if>
+		<if test="enddate!=null and enddate!=''">
+		and statdate &lt;=#{enddate}
+		</if>
+		and gameid=#{gameid}
+		<if test="channelid!=null and channelid!=-1">
+		and channel=#{channelid}
+		</if>
+		<if test="areaid!=null and areaid!=-1">
+			and areaid=#{areaid}
+		</if>
+	</sql>
+	<!--  商品贩卖-->
+	<select id="selectYhGoodsSoldList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.IndependBaseSearchData">
+			SELECT
+			a.statdate,
+			a.channel,
+			IF (chn.channelSimName IS NULL,CONCAT('未知渠道： ',a.channel),chn.channelSimName) AS channelName,
+			a.shopname,
+			a.goodsid,
+			a.goodsname,
+			a.count AS count,
+		IF (b.count = 0,0,ROUND(a.count / b.count * 100, 2)) as rate
+		FROM
+			(
+				SELECT
+					statdate,
+					gameid,
+					channel,
+					shopname,
+					goodsid,
+					goodsname,
+					IFNULL(SUM(count), 0) AS count
+				FROM
+					yh_shop_stat
+				<include refid="BaseSelect"/>
+				AND goodsid <![CDATA[<>]]> -1
+				AND shopname <![CDATA[<>]]> -1
+				GROUP BY
+					statdate,
+					gameid,
+					channel,
+					shopname,
+					goodsid,
+					goodsname
+			) a
+		LEFT JOIN (
+			SELECT
+				statdate,
+				gameid,
+				channel,
+				IFNULL(SUM(count), 0) AS count
+			FROM
+				yh_shop_stat
+			<include refid="BaseSelect"/>
+			AND goodsid =-1
+			AND shopname =-1
+			GROUP BY
+				statdate,
+				gameid,
+				channel
+		) b ON (
+			a.statdate = b.statdate
+			AND a.gameid = b.gameid
+			AND a.channel = b.channel
+		)LEFT JOIN tb_logplat_channel chn ON (chn.id = a.channel);
+	</select>
+	
+</mapper>

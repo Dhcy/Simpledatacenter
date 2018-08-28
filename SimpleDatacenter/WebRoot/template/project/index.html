@@ -1,0 +1,202 @@
+<style>
+   .tableListUl .listLi{
+    height: 30px;
+    line-height: 30px;
+    }
+    .tableListUl .listLi .tableListTh{
+   font-size: 14px;
+    }
+    .tableListLi .channelTr .channelTrLeftDiv{
+    display:inline-block;
+    font-size: 14px;
+    width:20%;
+    height: 92px;
+    float: left;
+    }
+     .tableListLi .channelTr .channelTrRightDiv{
+     	display:inline-block;
+	    font-size: 14px;
+	    width:72%;
+	    height: 92px;
+	    float: left;
+    }
+    .tableListLi .channelTr .channelTrRightDiv1{
+     	display:inline-block;
+	    font-size: 14px;
+	    width:8%;
+	    height: 92px;
+	    float: left;
+	    text-align: center;
+	    vertical-align: middle;
+    }
+    .tableListLi .channelTr .channelTrRightDiv1 img{
+    margin-top: 25px;
+    margin-bottom: 25px;
+    }
+    .tableListLi .channelTrLeftDiv .title{
+    margin-left: 10px;
+    }
+     .tableListLi .channelTr .channelTrLeftDiv .channelTrLeftDivContent{
+        width: 340px;
+    height: 92px;
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+    }
+    .channelTrRightDiv ul{
+    height: 100%;
+    }
+    .channelTrRightDiv .channelTh{
+    display: inline-block;
+    width: 12.50%;
+    text-align: center;
+    font-size: 14px;
+   	height:30px;
+   	margin-right:-4px;
+   	margin-top: 8px;
+   	margin-bottom: 8px;
+    }
+</style>
+<div style="padding-right:178px;">
+	<div class="maintop">
+		<!--------渠道区服选择控件----------->
+		<div class="clear"></div>
+	</div>	
+	<div class="clear"></div>
+		<!--------tab选择按钮----------->
+	<div class="panel panel-default panel_1">
+			<div class="panel-body pdlf pdtb">
+			<div class="tableList tableListAct" >
+				<ul class="tableListUl">
+					<li class="tableListLi tableListLiTh clear">
+						<span class="tableListTh" style="width:20%">
+							<strong title="">{{'游戏' | translate}}</strong>
+							<div tipsmsg></div>
+						</span>
+						<span class="tableListTh" style="width:9%">
+							<strong title="">{{'日期' | translate}}</strong>
+							<div tipsmsg></div>
+						</span>
+						<span class="tableListTh" style="width:9%">
+							<strong title="">{{'设备激活' | translate}}</strong>
+							<div tipsmsg></div>
+						</span>
+						<span class="tableListTh" style="width:9%">
+							<strong title="">{{'首次创角数' | translate}}</strong>
+							<div tipsmsg></div>
+						</span>
+						<span class="tableListTh" style="width:9%">
+							<strong title="">{{'活跃账户' | translate}}</strong>
+							<div tipsmsg></div>
+						</span>
+						<span class="tableListTh" style="width:9%">
+							<strong title="">{{'付费用户' | translate}}</strong>
+							<div tipsmsg></div>
+						</span>
+						<span class="tableListTh" style="width:9%">
+							<strong title="">{{'付费次数' | translate}}</strong>
+							<div tipsmsg></div>
+						</span>
+						<span class="tableListTh" style="width:9%">
+							<strong title="">{{'收入' | translate}}</strong>
+							<div tipsmsg></div>
+						</span>
+						<span class="tableListTh" style="width:9%">
+							<strong title="">arpu</strong>
+							<div tipsmsg></div>
+						</span>
+						<span class="tableListTh" style="width:8%">
+							<strong title="">{{'数据报表' | translate}}</strong>
+							<div tipsmsg></div>
+						</span>
+					</li>
+					<li class="tableListLi clear listLi" ng-if="panel_1.gameList.length!=0">
+						<div class="channelTr clear">
+							<span class="tableListTh" style="width:20%" >
+								{{'总计' | translate}}
+							</span>
+							<span class="tableListTh" style="width:9%">
+							</span>
+							<span class="tableListTh" style="width:9%">
+							{{panel_1.total_actvCount}}
+							</span>
+							<span class="tableListTh" style="width:9%">
+							{{panel_1.total_registerCount}}
+							</span>
+							<span class="tableListTh" style="width:9%">
+							{{panel_1.total_actUser}}
+							</span>
+							<span class="tableListTh" style="width:9%">
+							{{panel_1.total_payUser}}
+							</span>
+							<span class="tableListTh" style="width:9%">
+							{{panel_1.total_payTime}}
+							</span>
+							<span class="tableListTh" style="width:9%">
+							{{panel_1.total_income}}
+							</span>
+							<span class="tableListTh" style="width:9%">
+							{{panel_1.total_arpu}}
+							</span>
+							<span class="tableListTh" style="width:8%">
+							
+							</span>
+						</div>
+					</li>
+					
+					<li class="tableListLi clear" ng-repeat="data in panel_1.gameList" ng-class="({'show_panel':data.show_panel})">
+						<div class="channelTr clear">
+							<div class="channelTrLeftDiv">
+								<div class="channelTrLeftDivContent">
+									<label class="titleName">{{data.gameName}}</label>
+									<span class="title">
+									<img src="dist/images/IOS_icon.png" alt="" ui-sref="main({'projectid':projectId,'gameid':data.gameid,'systemType':systemType[1]})">
+									<img src="dist/images/Android_icon.png" alt=""  ui-sref="main({'projectid':projectId,'gameid':data.gameid,'systemType':systemType[2]})">
+									<img src="dist/images/Win_icon.png" alt="" ui-sref="main({'projectid':projectId,'gameid':data.gameid,'systemType':systemType[3]})">
+									</span>
+								</div>	
+							</div>
+							<div class="channelTrRightDiv">
+								<ul>
+									<li ng-repeat="x in data.gameDataList">
+									<span class="channelTh">
+									{{x.date}}
+									</span>
+									<span class="channelTh">
+									{{x.actvCount}}
+									</span>
+									<span class="channelTh">
+									{{x.registerCount}}
+									</span>
+									<span class="channelTh">
+									{{x.actUser}}
+									</span>
+									<span class="channelTh">
+									{{x.payUser}}
+									</span>
+									<span class="channelTh">
+									{{x.payTime}}
+									</span>
+									<span class="channelTh">
+									{{x.income}}
+									</span>
+									<span class="channelTh">
+									{{x.arpu}}
+									</span>
+									</li>
+								</ul>
+							</div>
+							<div class="channelTrRightDiv1">
+								<img src="dist/images/allSys.png" alt="" ui-sref="main({'projectid':projectId,'gameid':data.gameid,'systemType':systemType[0]})">
+							</div>
+						</div>
+				</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	
+	<div>
+		
+	</div>
+</div>

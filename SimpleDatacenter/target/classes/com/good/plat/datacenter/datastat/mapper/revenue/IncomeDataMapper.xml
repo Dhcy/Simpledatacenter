@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.datastat.mapper.revenue.IncomeDataMapper">
+	<resultMap id="BaseResultMap" type="com.good.plat.datacenter.datastat.entity.revenue.IncomeData">
+		<result column="gameid" property="gameid"/>
+		<result column="gameName" property="gameName"/>
+		<result column="channelid" property="channelid"/>
+		<result column="channelName" property="channelName"/>
+		<result column="subchannelid" property="subchannelid"/>
+		<result column="areaid" property="areaid"/>
+		<result column="areaName" property="areaName"/>
+		<result column="statdate" property="statdate"/>
+		<result column="statType" property="statType"/>
+		<result column="rate" property="rate"/>
+		<result column="incomes" property="incomes"/>
+		<result column="payCounts" property="payCounts"/>
+		<result column="payAccounts" property="payAccounts"/>
+	</resultMap>
+	
+	<sql id="BaseSelect">
+		where statdate between #{startdate} and #{enddate} 
+		<if test="termtypes != null">
+			and termtype in
+			<foreach collection="termtypes" item="term" index="index" open="(" close=")" separator=",">
+				#{term}
+			</foreach>
+		</if>
+		and gameid=#{gameid}
+		<if test="areas != null">
+			and areaid in
+			<foreach collection="areas" item="area" index="index" open="(" close=")" separator=",">
+				#{area}
+			</foreach>
+		</if>
+		<if test="channelList != null">
+			and channel in
+			<foreach collection="channelList" item="channel" index="index" open="(" close=")" separator=",">
+				#{channel.id}
+			</foreach>
+		</if>
+		<if test="subchannels != null">
+			and chnnnl in
+			<foreach collection="subchannels" item="subchannel" index="index" open="(" close=")" separator=",">
+				#{subchannel}
+			</foreach>
+		</if>
+	</sql>
+
+	<sql id="UnionSelect">
+		where re.statdate between #{startdate} and #{enddate} 
+		<if test="termtypes != null">
+			and re.termtype in
+			<foreach collection="termtypes" item="term" index="index" open="(" close=")" separator=",">
+				#{term}
+			</foreach>
+		</if>
+		and re.gameid=#{gameid}
+		<if test="areas != null">
+			and re.areaid in
+			<foreach collection="areas" item="area" index="index" open="(" close=")" separator=",">
+				#{area}
+			</foreach>
+		</if>
+		<if test="channelList != null">
+			and re.channel in
+			<foreach collection="channelList" item="channel" index="index" open="(" close=")" separator=",">
+				#{channel.id}
+			</foreach>
+		</if>
+		<if test="subchannels != null">
+			and re.chnnnl in
+			<foreach collection="subchannels" item="subchannel" index="index" open="(" close=")" separator=",">
+				#{subchannel}
+			</foreach>
+		</if>
+	</sql>
+
+	<!-- 收入金额 -->
+	<select id="selectIncomeNumList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select 
+			statdate, 
+			round(sum(money),2) as incomes 
+		from
+			logplat_actor_recharge 
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/>
+		<if test="cityList!=null">
+			and city in
+			<foreach collection="cityList" item="city" index="index" open="(" close=")" separator=",">
+				#{city}
+			</foreach>
+		</if>
+		group by statdate order by statdate
+		
+	</select>
+	
+	<select id="exportIncomeNumList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	
+	<!-- 充值次数 -->
+	<select id="selectChargeTimesList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select 
+			statdate, 
+			count(money) as payCounts 
+		from
+			logplat_actor_recharge 
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/>
+		<if test="cityList!=null">
+			and city in
+			<foreach collection="cityList" item="city" index="index" open="(" close=")" separator=",">
+				#{city}
+			</foreach>
+		</if>
+		group by statdate order by statdate
+		
+	</select>
+	
+	<select id="exportChargeTimesList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	
+	<!-- 充值人数 -->
+	<select id="selectChargePlayerNumList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select 
+			statdate, 
+			count(distinct uid,actorid) as payAccounts 
+		from
+			logplat_actor_recharge 
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/>
+		<if test="cityList!=null">
+			and city in
+			<foreach collection="cityList" item="city" index="index" open="(" close=")" separator=",">
+				#{city}
+			</foreach>
+		</if>
+		group by statdate order by statdate
+		
+	</select>
+	
+	<select id="exportChargePlayerNumList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	
+	<!-- 收入金额等级分布 -->
+	<select id="selectLevelIncomeNumDistribution" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	<select id="exportLevelIncomeNumDistribution" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	
+	<!-- 充值人次等级分布 -->
+	<select id="selectLevelChargePlayerNumDistribution" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	<select id="exportLevelChargePlayerNumDistribution" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	
+	<!-- 各地区收入 -->
+	<select id="selectLocationIncomeDistribution" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select 
+			city as statType, 
+			round(sum(money),2) as incomes, 
+			round(sum(money)/(select sum(money) 
+			from logplat_actor_recharge <include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/>
+			<if test="cityList!=null">
+			and city in
+			<foreach collection="cityList" item="city" index="index" open="(" close=")" separator=",">
+				#{city}
+			</foreach>
+		</if>)*100,2) as rate, 
+			count(distinct uid,actorid) as payAccounts
+		from 
+			logplat_actor_recharge
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/>
+		<if test="cityList!=null">
+			and city in
+			<foreach collection="cityList" item="city" index="index" open="(" close=")" separator=",">
+				#{city}
+			</foreach>
+		</if>
+		group by city order by city
+		
+	</select>
+	
+	<select id="exportLocationIncomeDistribution" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	
+	<!-- 各渠道收入 -->
+	<select id="selectChannelIncomeDistribution" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select 
+			cha.channelSimName as statType, 
+			round(sum(a.money),2) as incomes, 
+			round(sum(a.money)/(select sum(money) 
+			from logplat_actor_recharge <include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/>
+			<if test="cityList!=null">
+			and city in
+			<foreach collection="cityList" item="city" index="index" open="(" close=")" separator=",">
+				#{city}
+			</foreach>
+		</if>
+		)*100,2) as rate 
+		from 
+			logplat_actor_recharge a, tb_logplat_channel cha
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.ABaseSelect"/>
+		<if test="cityList!=null">
+			and a.city in
+			<foreach collection="cityList" item="city" index="index" open="(" close=")" separator=",">
+				#{city}
+			</foreach>
+		</if>
+		and cha.id=a.channel
+		group by a.channel order by a.channel
+		
+	</select>
+	
+	<select id="exportChannelIncomeDistribution" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		
+		
+	</select>
+	
+	<select id="selectFirstRechargeActor" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		select 
+			count(distinct uid,actorid) as payAccounts
+		from 
+			logplat_actor_recharge
+		<include refid="com.good.plat.datacenter.datastat.mapper.BaseMapper.BaseSelect"/> and isfirst=1
+	</select>
+</mapper>

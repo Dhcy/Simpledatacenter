@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.game.mapper.RechgGainWarnMapper">
+	<resultMap id="BaseResultMap" type="com.good.plat.datacenter.game.entity.RechgGainWarn">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="rechgTime" property="rechgTime" />
+		<result column="rechgMoney" property="rechgMoney" />
+		<result column="gainTime" property="gainTime"/>
+		<result column="gainCount" property="gainCount"/>
+		<result column="warmThreShold" property="warmThreShold"/>
+		<result column="msgMail" property="msgMail"/>
+		<result column="gameId" property="gameId"/>
+		<result column="rechgRate" property="rechgRate"/>
+		<result column="gameName" property="gameName"/>
+	</resultMap>
+	<sql id="Base_Column_List">
+		id,
+		rechg_time as rechgTime,
+		rechg_money as rechgMoney,
+		gain_time as gainTime,
+		gain_count as gainCount,
+		threshold as warmThreShold,
+		msg_mail as msgMail,
+		gameid as gameId,
+		rechg_rate as rechgRate
+	</sql>
+	
+	<sql id="Base_Column_List_With_Game">
+		a.id as id,
+		a.rechg_time AS rechgTime,
+		a.rechg_money AS rechgMoney,
+		a.gain_time AS gainTime,
+		a.gain_count AS gainCount,
+		a.threshold AS warmThreShold,
+		a.msg_mail AS msgMail,
+		a.gameid AS gameId,
+		b.name as gameName,
+		a.rechg_rate AS rechgRate
+	</sql>
+	<!-- 充值获取警告列表 -->
+	<select id="selectRechgGainWarnList" resultMap="BaseResultMap"
+		parameterType="com.good.plat.datacenter.game.entity.RechgGainWarn">
+		select
+		<include refid="Base_Column_List_With_Game" />
+		from warn_rechg_curr_detect a
+		LEFT JOIN tb_logplat_game b on b.id=a.gameid
+		where 1=1
+	</select>
+	<!-- 添加充值获取警告 -->
+	<insert id="insertRechgGainWarn" parameterType="com.good.plat.datacenter.game.entity.RechgGainWarn">
+		INSERT INTO warn_rechg_curr_detect (
+			rechg_time,
+			rechg_money,
+			gain_time,
+			gain_count,
+			threshold,
+			msg_mail,
+			gameid,
+			rechg_rate
+		)
+		VALUES
+			(
+				#{rechgTime,jdbcType=INTEGER},
+				#{rechgMoney,jdbcType=INTEGER},
+				#{gainTime,jdbcType=INTEGER},
+				#{gainCount,jdbcType=INTEGER},
+				#{warmThreShold,jdbcType=INTEGER},
+				#{msgMail,jdbcType=VARCHAR},
+				#{gameId,jdbcType=INTEGER},
+				#{rechgRate,jdbcType=INTEGER}
+			)
+	</insert>
+	<!-- 修改充值获取警告 -->
+	<update id="updateByPrimaryKey" parameterType="com.good.plat.datacenter.game.entity.RechgGainWarn">
+		update warn_rechg_curr_detect
+		<set>
+				<if test="rechgTime!=null">
+				rechg_time = #{rechgTime,jdbcType=INTEGER},
+				</if>
+				<if test="rechgMoney!=null">
+				rechg_money = #{rechgMoney,jdbcType=INTEGER},
+				</if>
+				<if test="gainTime!=null">
+				gain_time = #{gainTime,jdbcType=INTEGER},
+				</if>
+				<if test="gainCount!=null">
+				gain_count = #{gainCount,jdbcType=INTEGER},
+				</if>
+				<if test="warmThreShold!=null">
+				threshold = #{warmThreShold,jdbcType=INTEGER},
+				</if>
+				<if test="msgMail!=null">
+				msg_mail = #{msgMail,jdbcType=VARCHAR},
+				</if>
+				<if test="gameId!=null">
+				gameid = #{gameId,jdbcType=INTEGER},
+				</if>
+				<if test="rechgRate!=null">
+				rechg_rate = #{rechgRate,jdbcType=INTEGER}
+				</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<!-- 删除 -->
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from warn_rechg_curr_detect
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<!-- 获取充值警告-->
+	<select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from warn_rechg_curr_detect
+		where id=#{id,jdbcType=INTEGER}
+	</select> 
+	
+	<!-- 获取充值警告-->
+	<select id="selectByGameId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from warn_rechg_curr_detect
+		where gameid=#{id,jdbcType=INTEGER}
+	</select> 
+
+	
+</mapper>

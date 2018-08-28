@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.independ.mapper.fwindex.FWStageWeaponMapper">
+	<resultMap id="BaseResultMap" type="com.good.plat.datacenter.independ.entity.fwindex.FWStageWeapon">
+		<result column="statdate" property="statdate"/>
+		<result column="channelid" property="channelid"/>
+		<result column="channelName" property="channelName"/>
+		<result column="wpName" property="wpName"/>
+		<result column="stageId" property="stageId"/>
+		<result column="stageName" property="stageName"/>
+		<result column="amount" property="amount"/>
+	</resultMap>
+	
+	<sql id="ABaseSelect">
+		where a.statdate between #{startdate} and #{enddate} 
+		and a.gameid=#{gameid}
+		<if test="channelid!=null and channelid!=-1">
+			and a.channel=#{channelid}
+		</if>
+		<if test="areaid!=null and areaid!=-1">
+			and a.areaid=#{areaid}
+		</if>
+		<if test="checktype1!=null and checktype1!=-1">
+			and a.wptype=#{checktype1}
+		</if>
+	</sql>
+	
+	<!--
+	关卡武器
+	-->
+	<select id="selectStageWeaponList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+	SELECT
+		a.statdate as statdate,
+		a.channel as channelid,
+		b.channelSimName as channelName,
+		a.wpname as wpName,
+		a.stageid as stageId,
+		a.stage as stageName,
+		IFNULL(SUM(a.amount),0) as amount
+	FROM
+		ftw_logplat_stage_equip_state a
+		LEFT JOIN tb_logplat_channel b
+		on a.channel=b.id
+	<include refid="ABaseSelect"/>
+	GROUP BY
+	a.statdate,
+	a.channel,
+	a.wpname,
+	a.stageid,
+	a.stage
+	ORDER BY
+	a.statdate,
+	a.stageid
+	</select>
+	
+</mapper>

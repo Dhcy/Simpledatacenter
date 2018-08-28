@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.datastat.mapper.balanceplat.DZPTChannelAccountingMapper" >
+  <resultMap id="BaseResultMap" type="com.good.plat.datacenter.datastat.entity.balanceplat.DZPTChannelAccounting" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="gameid" property="gameid" jdbcType="INTEGER" />
+    <result column="channel" property="channel" jdbcType="INTEGER" />
+    
+    <result column="payrate" property="payrate" jdbcType="DECIMAL" />
+    <result column="finalpayrate" property="finalpayrate" jdbcType="DECIMAL" />
+    <result column="taxrate" property="taxrate" jdbcType="DECIMAL" />
+    <result column="sharingrate" property="sharingrate" jdbcType="DECIMAL" />
+    <result column="gradient" property="gradient" jdbcType="TINYINT" />
+    
+    <result column="contractstartdate" property="contractstartdate" jdbcType="DATE" />
+    <result column="constractenddate" property="constractenddate" jdbcType="DATE" />
+    <result column="ispayrate" property="ispayrate" jdbcType="TINYINT" />
+    <result column="currency" property="currency" jdbcType="INTEGER" />
+    <result column="coopmodel" property="coopmodel" jdbcType="TINYINT" />
+    <result column="settlementtype" property="settlementtype" jdbcType="TINYINT" />
+    <result column="isvalid" property="isvalid" jdbcType="INTEGER" />
+    <result column="contract_status" property="contract_status" jdbcType="INTEGER" />
+    <result column="channelName" property="channelName" jdbcType="VARCHAR" />
+    <result column="gameName" property="gameName" jdbcType="VARCHAR" />
+    <result column="msg" property="msg" jdbcType="VARCHAR"/>
+    <result column="projectName" property="projectName" jdbcType="VARCHAR"/>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, gameid, channel, coopmodel, payrate, finalpayrate, taxrate, sharingrate, gradient, 
+    settlementtype, contractstartdate, constractenddate, ispayrate, currency,isvalid,contract_status,msg,signCompany
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from dzpt_channel_accounting
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from dzpt_channel_accounting
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.good.plat.datacenter.datastat.entity.balanceplat.DZPTChannelAccounting" >
+    insert into dzpt_channel_accounting (id, gameid, channel, 
+      coopmodel, payrate, finalpayrate, 
+      taxrate, sharingrate, gradient, 
+      settlementtype, contractstartdate, constractenddate, 
+      ispayrate, currency,isvalid,contract_status,msg,signCompany)
+    values (#{id,jdbcType=INTEGER}, #{gameid,jdbcType=INTEGER}, #{channel,jdbcType=INTEGER}, 
+      #{coopmodel,jdbcType=TINYINT}, #{payrate,jdbcType=DECIMAL}, #{finalpayrate,jdbcType=DECIMAL}, 
+      #{taxrate,jdbcType=DECIMAL}, #{sharingrate,jdbcType=DECIMAL}, #{gradient,jdbcType=TINYINT}, 
+      #{settlementtype,jdbcType=TINYINT}, #{contractstartdate,jdbcType=DATE}, #{constractenddate,jdbcType=DATE}, 
+      #{ispayrate,jdbcType=TINYINT}, #{currency,jdbcType=INTEGER},#{isvalid,jdbcType=INTEGER},#{contract_status,jdbcType=INTEGER},#{msg,jdbcType=VARCHAR},#{signCompany,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.good.plat.datacenter.datastat.entity.balanceplat.DZPTChannelAccounting" >
+    insert into dzpt_channel_accounting
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="gameid != null" >
+        gameid,
+      </if>
+      <if test="channel != null" >
+        channel,
+      </if>
+      <if test="coopmodel != null" >
+        coopmodel,
+      </if>
+      <if test="payrate != null" >
+        payrate,
+      </if>
+      <if test="finalpayrate != null" >
+        finalpayrate,
+      </if>
+      <if test="taxrate != null" >
+        taxrate,
+      </if>
+      <if test="sharingrate != null" >
+        sharingrate,
+      </if>
+      <if test="gradient != null" >
+        gradient,
+      </if>
+      <if test="settlementtype != null" >
+        settlementtype,
+      </if>
+      <if test="contractstartdate != null" >
+        contractstartdate,
+      </if>
+      <if test="constractenddate != null" >
+        constractenddate,
+      </if>
+      <if test="ispayrate != null" >
+        ispayrate,
+      </if>
+      <if test="currency != null" >
+        currency,
+      </if>
+      <if test="isvalid != null" >
+        isvalid,
+      </if>
+      <if test="contract_status != null" >
+        contract_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="gameid != null" >
+        #{gameid,jdbcType=INTEGER},
+      </if>
+      <if test="channel != null" >
+        #{channel,jdbcType=INTEGER},
+      </if>
+      <if test="coopmodel != null" >
+        #{coopmodel,jdbcType=TINYINT},
+      </if>
+      <if test="payrate != null" >
+        #{payrate,jdbcType=DECIMAL},
+      </if>
+      <if test="finalpayrate != null" >
+        #{finalpayrate,jdbcType=DECIMAL},
+      </if>
+      <if test="taxrate != null" >
+        #{taxrate,jdbcType=DECIMAL},
+      </if>
+      <if test="sharingrate != null" >
+        #{sharingrate,jdbcType=DECIMAL},
+      </if>
+      <if test="gradient != null" >
+        #{gradient,jdbcType=TINYINT},
+      </if>
+      <if test="settlementtype != null" >
+        #{settlementtype,jdbcType=TINYINT},
+      </if>
+      <if test="contractstartdate != null" >
+        #{contractstartdate,jdbcType=DATE},
+      </if>
+      <if test="constractenddate != null" >
+        #{constractenddate,jdbcType=DATE},
+      </if>
+      <if test="ispayrate != null" >
+        #{ispayrate,jdbcType=TINYINT},
+      </if>
+      <if test="currency != null" >
+        #{currency,jdbcType=INTEGER},
+      </if>
+      <if test="isvalid != null" >
+        #{isvalid,jdbcType=INTEGER},
+      </if>
+      <if test="contract_status != null" >
+        #{contract_status,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.good.plat.datacenter.datastat.entity.balanceplat.DZPTChannelAccounting" >
+    update dzpt_channel_accounting
+    <set >
+      <if test="gameid != null" >
+        gameid = #{gameid,jdbcType=INTEGER},
+      </if>
+      <if test="channel != null" >
+        channel = #{channel,jdbcType=INTEGER},
+      </if>
+      <if test="coopmodel != null" >
+        coopmodel = #{coopmodel,jdbcType=TINYINT},
+      </if>
+      <if test="payrate != null" >
+        payrate = #{payrate,jdbcType=DECIMAL},
+      </if>
+      <if test="finalpayrate != null" >
+        finalpayrate = #{finalpayrate,jdbcType=DECIMAL},
+      </if>
+      <if test="taxrate != null" >
+        taxrate = #{taxrate,jdbcType=DECIMAL},
+      </if>
+      <if test="sharingrate != null" >
+        sharingrate = #{sharingrate,jdbcType=DECIMAL},
+      </if>
+      <if test="gradient != null" >
+        gradient = #{gradient,jdbcType=TINYINT},
+      </if>
+      <if test="settlementtype != null" >
+        settlementtype = #{settlementtype,jdbcType=TINYINT},
+      </if>
+      <if test="contractstartdate != null" >
+        contractstartdate = #{contractstartdate,jdbcType=DATE},
+      </if>
+      <if test="constractenddate != null" >
+        constractenddate = #{constractenddate,jdbcType=DATE},
+      </if>
+      <if test="ispayrate != null" >
+        ispayrate = #{ispayrate,jdbcType=TINYINT},
+      </if>
+      <if test="currency != null" >
+        currency = #{currency,jdbcType=INTEGER},
+      </if>
+      <if test="isvalid != null" >
+        isvalid = #{isvalid,jdbcType=INTEGER},
+      </if>
+      <if test="contract_status != null" >
+       contract_status = #{contract_status,jdbcType=INTEGER},
+      </if>
+       <if test="msg != null" >
+       msg = #{msg,jdbcType=VARCHAR},
+      </if>
+       <if test="signCompany != null" >
+       signCompany = #{signCompany,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.good.plat.datacenter.datastat.entity.balanceplat.DZPTChannelAccounting" >
+    update dzpt_channel_accounting
+    set gameid = #{gameid,jdbcType=INTEGER},
+      channel = #{channel,jdbcType=INTEGER},
+      coopmodel = #{coopmodel,jdbcType=TINYINT},
+      payrate = #{payrate,jdbcType=DECIMAL},
+      finalpayrate = #{finalpayrate,jdbcType=DECIMAL},
+      taxrate = #{taxrate,jdbcType=DECIMAL},
+      sharingrate = #{sharingrate,jdbcType=DECIMAL},
+      gradient = #{gradient,jdbcType=TINYINT},
+      settlementtype = #{settlementtype,jdbcType=TINYINT},
+      contractstartdate = #{contractstartdate,jdbcType=DATE},
+      constractenddate = #{constractenddate,jdbcType=DATE},
+      ispayrate = #{ispayrate,jdbcType=TINYINT},
+      currency = #{currency,jdbcType=INTEGER},
+      isvalid = #{isvalid,jdbcType=INTEGER},
+      contract_status = #{contract_status,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

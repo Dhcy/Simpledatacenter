@@ -1,0 +1,114 @@
+{
+  "itemCategoryPayingAccountTime": [
+    {
+      "percentage": 0.5,
+      "accounts": 31.0,
+      "title": "限时礼包03"
+    },
+    {
+      "percentage": 15.1,
+      "accounts": 860.0,
+      "title": "青铜宝箱"
+    },
+    {
+      "percentage": 2.0,
+      "accounts": 115.0,
+      "title": "礼包02"
+    },
+    {
+      "percentage": 9.3,
+      "accounts": 528.0,
+      "title": "钻石260"
+    },
+    {
+      "percentage": 4.8,
+      "accounts": 272.0,
+      "title": "钻石160"
+    },
+    {
+      "percentage": 6.7,
+      "accounts": 382.0,
+      "title": "钻石200"
+    },
+    {
+      "percentage": 4.8,
+      "accounts": 274.0,
+      "title": "钻石100"
+    },
+    {
+      "percentage": 3.7,
+      "accounts": 214.0,
+      "title": "钻石60"
+    },
+    {
+      "percentage": 0.6,
+      "accounts": 37.0,
+      "title": "礼包03"
+    },
+    {
+      "percentage": 2.1,
+      "accounts": 117.0,
+      "title": "礼包01"
+    },
+    {
+      "percentage": 0.2,
+      "accounts": 9.0,
+      "title": "黄金宝箱"
+    },
+    {
+      "percentage": 3.7,
+      "accounts": 211.0,
+      "title": "礼包06"
+    },
+    {
+      "percentage": 25.5,
+      "accounts": 1458.0,
+      "title": "大礼包05"
+    },
+    {
+      "percentage": 2.5,
+      "accounts": 142.0,
+      "title": "大礼包03"
+    },
+    {
+      "percentage": 2.9,
+      "accounts": 164.0,
+      "title": "大礼包02"
+    },
+    {
+      "percentage": 4.2,
+      "accounts": 238.0,
+      "title": "青铜宝箱"
+    },
+    {
+      "percentage": 2.2,
+      "accounts": 124.0,
+      "title": "大礼包04"
+    },
+    {
+      "percentage": 2.8,
+      "accounts": 162.0,
+      "title": "礼包01"
+    },
+    {
+      "percentage": 6.0,
+      "accounts": 345.0,
+      "title": "礼包04"
+    },
+    {
+      "percentage": 0.1,
+      "accounts": 6.0,
+      "title": "礼包03"
+    },
+    {
+      "percentage": 0.2,
+      "accounts": 9.0,
+      "title": "大礼包06"
+    },
+    {
+      "percentage": 0.2,
+      "accounts": 9.0,
+      "title": "礼包05"
+    }
+  ]
+}

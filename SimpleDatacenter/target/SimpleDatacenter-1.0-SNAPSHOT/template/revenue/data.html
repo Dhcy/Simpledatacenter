@@ -1,0 +1,258 @@
+<style>
+.scroll_menu{
+    height:430px;
+    font-size:14px;
+    overflow:auto;
+}
+</style>
+<div>
+	<div class="maintop">
+		<div datepicker class="col-xs-3 timeSelect" mstatdate="mstatdate">
+		</div>
+		<label for="" style="font-size: 14px;">{{'区域' | translate}}：</label>
+		<!-- <select multiple class="form-control" ng-model="cityArr" ng-options="data.city as data.city for data in cityData"></select> -->
+          <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              {{cityText}} <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" ng-class="{'scroll_menu': cityData.length>14}">
+              <li>
+                <div class="col-xs-offset-1">
+                 <input name="city" type="checkbox" ng-click="clickAllSelect()" ng-checked="isSelectedAll()"> <label for="">{{'全部' | translate}}</label>
+                 </div>
+              </li>
+                <li role="separator" class="divider"></li>
+              <li ng-repeat="data in cityData">
+                 <div class="col-xs-offset-1">
+                  <input name="city" type="checkbox" ng-click="setCityList(data.city)" ng-checked="isSelected(data.id)"> <label for="">{{data.city}}</label>
+                  </div>
+              </li>
+            </ul>
+          </div>
+          <button class="btn btn-default" ng-click="getAllData()">{{'查询' | translate}}</button>	
+		<!--------日期选择控件----------->
+		<div selectChoose class="selectChoose">
+		</div>
+		<!--------渠道区服选择控件----------->
+		<div class="clear"></div>
+		<div class="panel-selectChoose" callbackchannelqf ng-show="iscallback">
+			<ul ng-show="ischannel" class="cl">
+				<li>{{'渠道' | translate}}：</li>
+				<li ng-repeat="channellist in callbackchannelqfdata.channellist">{{channellist}}</li>
+			</ul>
+			<ul ng-show="isqf"  class="cl">
+				<li>{{'区服' | translate}}：</li>				
+				<li ng-repeat="qflist in callbackchannelqfdata.qflist">{{qflist}}</li>
+			</ul>
+		</div>
+		<!--------已选择渠道区服显示----------->
+	</div>	
+	<div class="panel panel-default panel_1">
+			<div class="panel-heading">
+				<strong>
+					{{'收入数据' | translate}}
+					<div tipsmsg></div>
+					<!--------提示框----------->
+				</strong>
+				<div class="panel_downloadBtn"  down-file down-file-url="revenue/incomeData/exportIncomeNumList.action" 
+					down-file-type="xlsx" down-file-name="收入数据{{mstatdate}}" savedata="" postdata="searchData" ></div>
+				<!--------下载按钮----------->
+				<div class="clear"></div>
+			</div>
+			<div class="panel-body" ng-class="{'table':panel_1.model=='table','graph':panel_1.model=='graph'}">	
+			<!--------默认panel展示类型，表格tale或图表graph---------->
+				<ul class="nav nav-tabs fl cl" navtabs>
+				  <li role="presentation" class="active">
+				  	<a href="javascript:void(0);">{{'收入金额' | translate}}</a>
+				  	<div tipsmsg>{{'所选时期每日玩家充值的货币总额' | translate}}</div>
+				  </li>
+				  <li role="presentation">
+				  	<a href="javascript:void(0);">{{'充值次数' | translate}}</a>
+				  	<div tipsmsg>{{'所选时期每日玩家进行充值的总次数' | translate}}</div>
+				  </li>
+				  <li role="presentation">
+				  	<a href="javascript:void(0);">{{'充值人数' | translate}}</a>
+				  	<div tipsmsg>{{'当日进行充值的玩家角色数。充值人数SUM是所选时期充值玩家的排重数目，不是简单加和' | translate}}</div>
+				  </li>
+				</ul>
+				<!--------选项卡----------->
+				<!-- <div class="fl cl info" >
+					<div class="infoact">
+					SUM ：<font><em>{{panel_1.dataList_1.SUM}}</em></font>
+					</div>
+					<div class="infoact">
+					SUM ：<font><em>{{panel_1.dataList_2.SUM}}次</em></font>
+					</div>
+					<div class="infoact">
+					SUM ：<font><em>{{panel_1.dataList_3.SUM}}</em></font>
+					</div>
+				</div> -->
+				<!--------各选项卡数据展示----------->
+				<div class="clear"></div>
+				<div class="panel-showData">
+					<div class="dataList dataList2 dataList_1">
+						<div class="dataGraph">
+							<div class="graph" data="dataList_1_1_graph"></div>	
+							<!--------图表div，data为graphfun的key----------->	
+						</div>
+						<div class="dataTable">
+							<table class="table table-bordered text-center">
+								<tr class="tableTr">
+									<th width='50%' ng-click="changeOrderBy(panel_1.dataList_1,'statdate')">{{'日期' | translate}}</th>
+									<th width='50%' ng-click="changeOrderBy(panel_1.dataList_1,'incomes')">{{'收入金额' | translate}}(￥)</th>
+									<!--------表格th(数据对象，排序字段)----------->
+								</tr>
+								<tr ng-repeat="data in panel_1.dataList_1.data | orderBy: panel_1.dataList_1.orderBy.t+panel_1.dataList_1.orderBy.s | pageStartFrom : panel_1.dataList_1.limit.now*panel_1.dataList_1.limit.max | limitTo: panel_1.dataList_1.limit.max">
+									<td>{{data.statdate}}</td>
+									<td>{{data.incomes}}</td>
+								</tr>
+							</table>
+							<div class="tableLimit" tablelimit datalimit="panel_1.dataList_1.limit"  tabledata="panel_1.dataList_1.data">							
+							</div>
+							<!--------表格分页，datalimit为分页参数，tabledata为数据----------->
+						</div>
+					</div>
+						<div class="dataList dataList2 dataList_2">
+						<div class="dataGraph">
+							<div class="graph" data="dataList_1_2_graph"></div>	
+							<!--------图表div，data为graphfun的key----------->
+							
+						</div>
+						<div class="dataTable">
+							<table class="table table-bordered text-center">
+								<tr class="tableTr">
+									<th width='50%' ng-click="changeOrderBy(panel_1.dataList_2,'statdate')">{{'日期' | translate}}</th>
+									<th width='50%' ng-click="changeOrderBy(panel_1.dataList_2,'payCounts')">{{'充值次数(次)' | translate}}</th>
+									<!--------表格th(数据对象，排序字段)----------->
+								</tr>
+								<tr ng-repeat="data in panel_1.dataList_2.data | orderBy: panel_1.dataList_2.orderBy.t+panel_1.dataList_2.orderBy.s | pageStartFrom : panel_1.dataList_2.limit.now*panel_1.dataList_2.limit.max | limitTo: panel_1.dataList_2.limit.max">
+									<td>{{data.statdate}}</td>
+									<td>{{data.payCounts}}</td>
+								</tr>
+							</table>
+							<div class="tableLimit" tablelimit datalimit="panel_1.dataList_2.limit"  tabledata="panel_1.dataList_2.data">							
+							</div>
+							<!--------表格分页，datalimit为分页参数，tabledata为数据----------->
+						</div>
+					</div>	
+						<div class="dataList dataList2 dataList_3">
+						<div class="dataGraph">
+							<div class="graph" data="dataList_1_3_graph"></div>	
+							<!--------图表div，data为graphfun的key----------->
+							
+						</div>
+						<div class="dataTable">
+							<table class="table table-bordered text-center">
+								<tr class="tableTr">
+									<th width='50%' ng-click="changeOrderBy(panel_1.dataList_3,'statdate')">{{'日期' | translate}}</th>
+									<th width='50%' ng-click="changeOrderBy(panel_1.dataList_3,'payAccounts')">{{'充值人数(角色数)' | translate}}</th>
+									<!--------表格th(数据对象，排序字段)----------->
+								</tr>
+								<tr ng-repeat="data in panel_1.dataList_3.data | orderBy: panel_1.dataList_3.orderBy.t+panel_1.dataList_3.orderBy.s | pageStartFrom : panel_1.dataList_3.limit.now*panel_1.dataList_3.limit.max | limitTo: panel_1.dataList_3.limit.max">
+									<td>{{data.statdate}}</td>
+									<td>{{data.payAccounts}}</td>
+								</tr>
+							</table>
+							<div class="tableLimit" tablelimit datalimit="panel_1.dataList_3.limit"  tabledata="panel_1.dataList_3.data">							
+							</div>
+							<!--------表格分页，datalimit为分页参数，tabledata为数据----------->
+						</div>
+					</div>					
+				</div>
+				<div class="panel-changeData" graphtbale  graphfun="graphfun" datachange="panel_1_change"  datalimit="0" model="panel_1.model">
+				</div>
+				<!-------------图表表格切换，graphfun ----datachange(需要分页时删除不填)------------->
+			</div>
+	</div>
+
+	<div class="clear">
+		<div class="col-xs-6">			
+			<div class="panel panel-default panel_3">
+				<div class="panel-heading">
+					<strong>
+						{{'各地区收入' | translate}}
+						<div tipsmsg>{{'所选期间，各个地区的玩家充值金额的分布情况。' | translate}}
+						{{'注意：单机版的IP存在问题。' | translate}}
+						</div>	
+					</strong>
+					<div class="panel_downloadBtn"  down-file down-file-url="revenue/incomeData/exportLocationIncomeDistribution.action" 
+					down-file-type="xlsx" down-file-name="各地区收入{{mstatdate}}" savedata="" postdata="searchData" ></div>
+					<div class="clear"></div>
+				</div>
+				<div class="panel-body"  ng-class="{'table':panel_3.model=='table','graph':panel_3.model=='graph'}">
+					<div class="panel-showData">
+						<div class="dataList dataList3 dataList_1 dataListAct">
+							<div class="dataGraph">
+								<div class="graph" data="dataList_3_1_graph"></div>		
+								<div class="graphLimit" graphLimit datalimit="panel_3.dataList_1.graphLimit" graphdata="panel_3.dataList_1.data"  graphfun="graphfun.dataList_3_1_graph" model="panel_3.model" isfist="false" key="{d:'data',y:'title'}">
+								</div>	
+							</div>
+							<div class="dataTable">
+								<table class="table table-bordered text-center">
+									<tr class="tableTr">
+										<th width='25%' ng-click="changeOrderBy(panel_3.dataList_1,'statType')">{{'省份' | translate}}</th>
+										<th level='25%' ng-click="changeOrderBy(panel_3.dataList_1,'incomes')">{{'收入' | translate}}</th>
+										<th width='25%' ng-click="changeOrderBy(panel_3.dataList_1,'rate')">{{'充值人数(角色数)' | translate}}</th>
+										<th width='25%' ng-click="changeOrderBy(panel_3.dataList_1,'rate')">{{'百分比' | translate}}</th>
+									</tr>
+									<tr ng-repeat="data in panel_3.dataList_1.data | orderBy: panel_3.dataList_1.orderBy.t+panel_3.dataList_1.orderBy.s | pageStartFrom : panel_3.dataList_1.limit.now*panel_3.dataList_1.limit.max | limitTo: panel_3.dataList_1.limit.max">
+										<td>{{data.statType}}</td>
+										<td>{{data.incomes}}</td>
+										<td>{{data.payAccounts}}</td>
+										<td>{{data.rate}}%</td>
+									</tr>
+								</table>
+								<div class="tableLimit" tablelimit datalimit="panel_3.dataList_1.limit"  tabledata="panel_3.dataList_1.data">							
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="panel-changeData" graphtbale  graphfun="graphfun" model="panel_3.model"  datalimit="panel_3.dataList_1.graphLimit" >
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-xs-6">
+			<div class="panel panel-default panel_4">
+				<div class="panel-heading">
+					<strong>
+						{{'渠道收入' | translate}}
+						<div tipsmsg>{{'所选期间，各个渠道来源的玩家充值金额的分布情况' | translate}}</div>
+					</strong>
+					<div class="panel_downloadBtn"  down-file down-file-url="revenue/incomeData/exportChannelIncomeDistribution.action" 
+					down-file-type="xlsx" down-file-name="渠道收入{{mstatdate}}" savedata="" postdata="searchData" ></div>
+					<div class="clear"></div>
+				</div>
+				<div class="panel-body"  ng-class="{'table':panel_4.model=='table','graph':panel_4.model=='graph'}">
+					<div class="panel-showData">
+						<div class="dataList dataList3 dataList_1 dataListAct">
+							<div class="dataGraph">
+								<div class="graph" data="dataList_5_1_graph"></div>		
+								<div class="graphLimit" graphLimit datalimit="panel_4.dataList_1.graphLimit" graphdata="panel_4.dataList_1.data"  graphfun="graphfun.dataList_4_1_graph" model="panel_4.model" isfist="false" key="{d:'data',y:'channel'}">
+								</div>	
+							</div>
+							<div class="dataTable">
+								<table class="table table-bordered text-center">
+									<tr class="tableTr">
+										<th width='33.33%' ng-click="changeOrderBy(panel_4.dataList_1,'statType')">{{'渠道' | translate}}</th>
+										<th level='33.33%' ng-click="changeOrderBy(panel_4.dataList_1,'incomes')">{{'收入' | translate}}</th>
+										<th width='33.33%' ng-click="changeOrderBy(panel_4.dataList_1,'rate')">{{'百分比' | translate}}</th>
+									</tr>
+									<tr ng-repeat="data in panel_4.dataList_1.data | orderBy: panel_4.dataList_1.orderBy.t+panel_4.dataList_1.orderBy.s | pageStartFrom : panel_4.dataList_1.limit.now*panel_4.dataList_1.limit.max | limitTo: panel_4.dataList_1.limit.max">
+										<td>{{data.statType}}</td>
+										<td>{{data.incomes}}</td>
+										<td>{{data.rate}}%</td>
+									</tr>
+								</table>
+								<div class="tableLimit" tablelimit datalimit="panel_4.dataList_1.limit"  tabledata="panel_4.dataList_1.data">							
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="panel-changeData" graphtbale  graphfun="graphfun" model="panel_4.model"  datalimit="panel_4.dataList_1.graphLimit" >
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

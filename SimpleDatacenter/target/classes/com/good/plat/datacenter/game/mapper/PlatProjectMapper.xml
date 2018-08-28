@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.game.mapper.PlatProjectMapper" >
+	<resultMap id="PlatProjectGameBaseResultMap" type="com.good.plat.datacenter.game.entity.TBLogplatSysPlat" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="platname" property="platname" jdbcType="VARCHAR" />
+    <!-- <result column="ctime" property="ctime" jdbcType="TIMESTAMP" /> -->
+    <result column="state" property="state" jdbcType="TINYINT" />
+    <collection property="projectList" ofType="com.good.plat.datacenter.game.entity.Project" 
+    	javaType="ArrayList" ><!-- resultMap="com.good.plat.datacenter.game.mapper.ProjectMapper.SelectProjectGame" -->
+    	<id column="projectid" property="id" jdbcType="INTEGER" />
+		<result column="projectname" property="name" jdbcType="VARCHAR" />
+		<collection property="gameList" ofType="com.good.plat.datacenter.game.entity.Game">
+			<id column="gameid" property="id" jdbcType="INTEGER" />
+    		<result column="projectid" property="projectid" jdbcType="INTEGER" />
+    		<result column="gamename" property="name" jdbcType="VARCHAR" />
+    		<!-- <result column="projectname" property="projectName"/> -->
+    		<!-- <result column="gametype" property="gameType" jdbcType="INTEGER" /> -->
+		</collection>
+    </collection>
+  	</resultMap>
+  	<resultMap type="com.good.plat.datacenter.game.entity.TBLogplatSysPlat" id="PlatProjectGameMenuBaseResultMap">
+  	</resultMap>
+  	
+	<select id="selectUserPlatProjectGameList" parameterType="java.lang.Integer" resultMap="PlatProjectGameBaseResultMap">
+		select distinct *
+		from tb_logplat_sys_plat plat
+		left join(
+			select distinct ab.platid,ab.projectid,b.name as projectname 
+			from tb_logplat_sys_plat_project ab,tb_logplat_project b,tb_logplat_user_resource res
+			where ab.projectid=b.id and b.id=res.relationid and res.restype ='project' and res.userid=#{userid,jdbcType=INTEGER}
+		) a on(plat.id=a.platid)
+		left join(
+			 select distinct game.id as gameid,game.name as gamename,game.projectid 
+			 from tb_logplat_game game,tb_logplat_user_resource res
+			 where game.id=res.relationid and res.restype ='game' and res.userid=#{userid,jdbcType=INTEGER}
+		) game on(game.projectid=a.projectid),tb_logplat_user_resource res
+		where (plat.id=res.relationid and res.restype ='platform') and res.userid=#{userid,jdbcType=INTEGER}
+	</select>
+	
+	<sql id="SelectUserPlatProjectGameMenu">
+	select
+		distinct(menu2.id) as menu2_id,
+		menu2.firstId as menu2_firstId,
+		menu2.secondKey as menu2_key,
+		menu2.secondName as menu2_name,
+		menu2.actkey as menu2_actkey,
+		menu2.url as menu2_url,
+		menu2.permission as menu2_permission,
+		menu2.type as menu2_type,
+		menu1.id as menu1_id, 
+		menu1.firstKey as menu1_key, 
+		menu1.firstName as menu1_name
+	from (
+		select distinct plat.id from tb_logplat_sys_plat plat 
+		join tb_logplat_user_resource res1 on(res1.restype='platform' and res1.relationid=plat.id and res1.userid=#{userid,jdbcType=INTEGER})
+		where 1=1 
+		<if test="platformid != null">
+			and plat.id=#{platformid,jdbcType=INTEGER}
+		</if>
+	) a ,
+		<if test="platformid != null and platformid!=7">
+		tb_logplat_role role,
+		tb_logplat_role_permission per, 
+		</if>
+		tb_logplat_second_menu menu2, 
+		tb_logplat_first_menu menu1,
+		tb_logplat_game game
+	where 
+		<if test="platformid != null and platformid!=7">
+		role.id=per.roleid
+		and per.menuid = menu2.id 
+		and 
+		</if>
+		menu1.id = menu2.firstId
+		and menu1.platid=a.id
+		<if test="platformid != null and platformid==7">
+		and menu2.type=game.gametype
+		and menu2.projectid=game.projectid
+		</if>
+		
+	</sql>
+	
+	<select id="selectUserPlatProjectGameMenuList" parameterType="com.good.plat.datacenter.common.base.BaseSearchData" resultMap="com.good.plat.datacenter.login.user.mapper.FirstMenuMapper.UserMenuMap">
+		<include refid="SelectUserPlatProjectGameMenu"/>
+		<if test="checktype2 != null">
+  			and menu2.type in(0,#{checktype2,jdbcType=INTEGER})
+  		</if>
+  		<choose>
+  			<when test="platformid != null and platformid!=7">
+				<if test="userid != null">
+	  			and role.id in (select roleid from tb_logplat_user_role where userid=#{userid,jdbcType=INTEGER})
+	  			</if>
+  			</when>
+  			<otherwise>
+				<if test="gameid != null ">
+	  			and game.id=#{gameid,jdbcType=INTEGER}
+	           <!--and (menu2.gameid=#{gameid,jdbcType=INTEGER} or menu2.gameid is null)  --><!--增加gameid设置  -->
+	       		 </if>
+  			</otherwise>
+  		</choose>
+  		order by menu1.id, menu2.id
+	</select>
+	
+	<select id="selectPlatList" resultMap="com.good.plat.datacenter.game.mapper.TBLogplatSysPlatMapper.BaseResultMap">
+		select * from tb_logplat_sys_plat
+	</select>
+	
+	<select id="selectUserPlatList" resultMap="com.good.plat.datacenter.game.mapper.TBLogplatSysPlatMapper.BaseResultMap">
+		select plat.* from tb_logplat_sys_plat plat
+		join tb_logplat_user_resource res on(plat.id=res.relationid and res.restype='platform' and res.userid=#{userid,jdbcType=INTEGER}) 
+	</select>
+	
+	<delete id="deleteByProjectId" parameterType="java.lang.Integer">
+		delete from tb_logplat_sys_plat_project where projectid=#{projectid,jdbcType=INTEGER}
+	</delete>
+	
+	<insert id="insertProjPlatPairs" parameterType="com.good.plat.datacenter.game.entity.Project">
+		<if test="platformids != null and id != null">
+		insert into tb_logplat_sys_plat_project(platid,projectid,state) values
+		<foreach collection="platformids" item="item" separator=",">
+			(#{item,jdbcType=INTEGER},#{id,jdbcType=INTEGER},1)
+		</foreach>
+		</if>
+	</insert>
+	
+	<delete id="deleteByPlatId" parameterType="java.lang.Integer">
+		delete from tb_logplat_sys_plat_project where platid=#{platid,jdbcType=INTEGER}
+	</delete>
+	
+	<delete id="deletePlatProjectPair" parameterType="com.good.plat.datacenter.game.entity.Project">
+		delete from tb_logplat_sys_plat_project where projectid=#{id,jdbcType=INTEGER} and platid=#{platformid,jdbcType=INTEGER}
+	</delete>
+	
+	<select id="selectPlatProjectPairByProjectId" parameterType="java.lang.Integer" resultMap="com.good.plat.datacenter.game.mapper.TBLogplatGameChannelMapper.BaseResultMap">
+		select * from tb_logplat_sys_plat_project where projectid=#{id,jdbcType=INTEGER}
+	</select>
+	
+	<delete id="deleteProjPlatPairs" parameterType="com.good.plat.datacenter.game.entity.Project">
+		delete from tb_logplat_sys_plat_project where projectid=#{id,jdbcType=INTEGER} and platid in 
+		<foreach collection="platformids" item="item" separator="," open="(" close=")">
+			(#{item,jdbcType=INTEGER})
+		</foreach>
+	</delete>
+</mapper>

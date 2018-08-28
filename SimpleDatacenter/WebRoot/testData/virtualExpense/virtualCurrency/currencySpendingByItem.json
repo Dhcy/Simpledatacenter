@@ -1,0 +1,74 @@
+{
+  "currencySpendingByItem": [
+    {
+      "percentage": 29.9,
+      "expense": 2487600.0,
+      "title": "item45"
+    },
+    {
+      "percentage": 8.8,
+      "expense": 734250.0,
+      "title": "item51"
+    },
+    {
+      "percentage": 3.2,
+      "expense": 262200.0,
+      "title": "item44"
+    },
+    {
+      "percentage": 28.4,
+      "expense": 2358300.0,
+      "title": "item70"
+    },
+    {
+      "percentage": 8.4,
+      "expense": 699600.0,
+      "title": "item50"
+    },
+    {
+      "percentage": 6.0,
+      "expense": 496800.0,
+      "title": "item02"
+    },
+    {
+      "percentage": 0.0,
+      "expense": 850.0,
+      "title": "item27"
+    },
+    {
+      "percentage": 2.8,
+      "expense": 232600.0,
+      "title": "item07"
+    },
+    {
+      "percentage": 0.4,
+      "expense": 36000.0,
+      "title": "item09"
+    },
+    {
+      "percentage": 4.3,
+      "expense": 359100.0,
+      "title": "item03"
+    },
+    {
+      "percentage": 7.3,
+      "expense": 609000.0,
+      "title": "itemfd"
+    },
+    {
+      "percentage": 0.0,
+      "expense": 2000.0,
+      "title": "item14"
+    },
+    {
+      "percentage": 0.3,
+      "expense": 29000.0,
+      "title": "item05"
+    },
+    {
+      "percentage": 0.1,
+      "expense": 6000.0,
+      "title": "item26"
+    }
+  ]
+}

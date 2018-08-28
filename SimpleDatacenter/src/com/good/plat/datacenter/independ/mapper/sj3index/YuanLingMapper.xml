@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.independ.mapper.sj3index.YuanLingMapper">
+	<resultMap id="BaseResultMap" type="com.good.plat.datacenter.independ.entity.sj3index.YuanLing">
+		<result column="gameid" property="gameid"/>
+		<result column="gameName" property="gameName"/>
+		<result column="channelid" property="channelid"/>
+		<result column="channelName" property="channelName"/>
+		<result column="subchannelid" property="subchannelid"/>
+		<result column="areaid" property="areaid"/>
+		<result column="areaName" property="areaName"/>
+		<result column="statdate" property="statdate"/>
+		<result column="statType" property="statType"/>
+		<result column="rate" property="rate"/>
+		
+		<result column="ylName" property="ylName"/>
+		<result column="ylUserCnt" property="ylUserCnt"/>
+		<result column="slcCnt" property="slcCnt"/>
+		<result column="ylLevel" property="ylLevel"/>
+		<result column="ylLevelCnt" property="ylLevelCnt"/>
+		<result column="actorLevel" property="actorLevel"/>
+		
+		<result column="cup1Cnt" property="cup1Cnt"/>
+		<result column="cup2Cnt" property="cup2Cnt"/>
+		<result column="cup3Cnt" property="cup3Cnt"/>
+		<result column="cup4Cnt" property="cup4Cnt"/>
+		<result column="cup5Cnt" property="cup5Cnt"/>
+		
+		
+		
+	</resultMap>
+	
+	<sql id="ABaseSelect">
+		where a.statdate between #{startdate} and #{enddate} 
+		and a.gameid=#{gameid}
+		<if test="channelList != null">
+			and a.channel in
+			<foreach collection="channelList" item="channel" index="index" open="(" close=")" separator=",">
+				#{channel.id}
+			</foreach>
+		</if>
+		<if test="subchannels != null">
+			and a.chnnnl in
+			<foreach collection="subchannels" item="subchannel" index="index" open="(" close=")" separator=",">
+				#{subchannel}
+			</foreach>
+		</if>
+		<if test="areas != null">
+			and a.areaid in
+			<foreach collection="areas" item="area" index="index" open="(" close=")" separator=",">
+				#{area}
+			</foreach>
+		</if>
+	</sql>
+	
+	<sql id="ABaseSelectwithTimeGame">
+		where a.statdate between #{startdate} and #{enddate} 
+		and a.gameid=#{gameid}
+	</sql>
+	
+	<!--
+	元灵统计（日期，渠道,元灵列表，装备元灵玩家人次）
+	-->
+	<select id="selectYlNameAndUserCntList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		SELECT
+			a.statdate as statdate,
+			a.channel as channelid,
+			b.channelSimName as channelName,
+			a.yl as ylName,
+			IFNULL(SUM(a.cnt),0) as ylUserCnt
+		FROM
+			sj3_yl_stat a
+		LEFT JOIN tb_logplat_channel b on b.id=a.channel
+		<include refid="ABaseSelect"/>
+		GROUP BY
+			a.statdate,
+			a.channel,
+			a.yl
+		ORDER BY
+			a.statdate,
+			a.channel
+	</select>
+	
+	<!--
+	 元灵统计(日期,渠道,二十连抽次数)
+	-->
+	<select id="selectYlslcCntList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		SELECT
+			a.statdate as statdate,
+			a.channel as channelid,
+			b.channelSimName as channelName,
+			IFNULL(SUM(a.cnt),0) as slcCnt
+		FROM
+			sj3_yl_shi_stat a
+			LEFT JOIN tb_logplat_channel b ON b.id=a.channel
+		<include refid="ABaseSelect"/>
+		and a.type=2
+		and a.subtype=-1
+		GROUP BY 
+		a.statdate,
+		a.channel
+		ORDER BY
+			a.statdate,
+			a.channel
+
+	</select>
+	<!--
+	 元灵统计(日期,渠道,元灵等级,对应玩家数量)
+	-->
+	<select id="selectYlLevelAndUserCntList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		SELECT
+			a.statdate as statdate,
+			a.channel as channelid,
+			b.channelSimName as channelName,
+			a.yl as ylLevel,
+			IFNULL(SUM(a.cnt),0) as ylLevelCnt
+		FROM
+			sj3_yl_lvl_stat a
+			LEFT JOIN tb_logplat_channel b ON b.id=a.channel
+		<include refid="ABaseSelect"/>
+		GROUP BY 
+		a.statdate,
+		a.channel,
+		a.yl
+		ORDER BY 
+		a.statdate,
+		a.channel
+	</select>
+	<!-- 元灵单次抽取 -->
+	<select id="selectYlSimExtractCntList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		SELECT
+			a.statdate AS statdate,
+			a.channel AS channelid,
+			b.channelSimName AS channelName,
+			SUM(IF(a.subtype=1,a.cnt,0)) as cup1Cnt,
+			SUM(IF(a.subtype=2,a.cnt,0)) as cup2Cnt,
+			SUM(IF(a.subtype=3,a.cnt,0)) as cup3Cnt,
+			SUM(IF(a.subtype=4,a.cnt,0)) as cup4Cnt,
+			SUM(IF(a.subtype=5,a.cnt,0)) as cup5Cnt
+		FROM
+			sj3_yl_shi_stat a
+		LEFT JOIN tb_logplat_channel b ON b.id = a.channel
+		<include refid="ABaseSelect"/>
+		and a.type=1
+		and a.subtype<![CDATA[<>]]>-1
+		GROUP BY
+			a.statdate,
+			a.channel
+		ORDER BY
+			a.statdate,
+			a.channel
+	</select>
+	
+	<!-- 元灵详情 (玩家等级，元灵等级，数量)-->
+	<select id="selectYlDetailList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		SELECT
+			a.statdate AS statdate,
+			a.channel AS channelid,
+			b.channelSimName AS channelName,
+			a.yl AS ylName,
+			a.actorlevel as actorLevel,
+			a.yllevel as ylLevel,
+			IFNULL(SUM(a.cnt),0) AS ylLevelCnt
+		FROM
+			sj3_yl_stat a
+		LEFT JOIN tb_logplat_channel b ON b.id = a.channel
+			<include refid="ABaseSelectwithTimeGame"/>
+		and a.channel=#{channelid,jdbcType=INTEGER}
+		and a.yl=#{checktype1,jdbcType=VARCHAR}
+		GROUP BY
+		a.statdate,
+		a.channel,
+		a.yl,
+		a.actorlevel,
+		a.yllevel
+		ORDER BY 
+		actorLevel,
+		ylLevel
+	</select>
+</mapper>

@@ -1,0 +1,223 @@
+<style>
+.panel-showData .table_scroll{
+overflow-x:auto;
+height:100%;
+}
+.panel-showData .table_style{
+width:1642px;
+}
+</style>
+<div>
+	<div class="panel panel-default ">
+			<div class="panel-heading">
+				<strong>
+					{{'在线用户' | translate}}
+				</strong>
+				<div class="clear"></div>
+			</div>
+			<div class="panel-body" style="height:250px;background:#fff;">
+				<div class="dataGraphLeft" style="width:300px;height:220px;float:left;">
+					<div id="onlineL_graph" class="graph" data="onlineL_graph"  style="width:100%;height:220px;"></div>
+				</div>
+				<div style="width:2;height:220px;float:left;background:url(dist/images/canvas_bg.png) no-repeat 100% 50%;"></div>
+				<div class="dataGraphRight" style="height:220px;margin-left:305px;">
+					<div id="onlineR_graph" class="graph" data="onlineR_graph" style="width:100%;height:220px;"></div>
+				</div>
+			</div>
+	</div>
+	<div class="maintop">
+		<div datepicker class="col-xs-3 timeSelect" mstatdate="mstatdate">
+		</div>
+		<!--------日期选择控件----------->
+		<div selectChoose class="selectChoose">
+		</div>
+		<!--------渠道区服选择控件----------->
+		<div class="clear"></div>
+		<div class="panel-selectChoose" callbackchannelqf ng-show="iscallback">
+			<ul ng-show="ischannel" class="cl">
+				<li>{{'渠道' | translate}}：</li>
+				<li ng-repeat="channellist in callbackchannelqfdata.channellist">{{channellist}}</li>
+			</ul>
+			<ul ng-show="isqf"  class="cl">
+				<li>{{'区服' | translate}}：</li>
+				<li ng-repeat="qflist in callbackchannelqfdata.qflist">{{qflist}}</li>
+			</ul>
+		</div>
+		<!--------已选择渠道区服显示----------->
+	</div>
+	<div class="panel panel-default panel_1">
+			<div class="panel-heading">
+				<strong>
+					{{'时段分布' | translate}}
+					<div tipsmsg>{{'统计所选时期内，每个时段内的总启动次数，如果为多天的话，则为这几天当前时段的均值' | translate}}。</div>
+
+					<!--------提示框----------->
+				</strong>
+				<div class="panel_downloadBtn"  down-file down-file-url="concurrent/exportTimeDistributeList.action"
+					down-file-type="xlsx" down-file-name="时段分布{{mstatdate}}" savedata="" postdata="searchData" ></div>
+				<!--------下载按钮----------->
+				<div class="clear"></div>
+			</div>
+			<div class="panel-body" ng-class="{'table':panel_1.model=='table','graph':panel_1.model=='graph'}">
+				<div class="clear"></div>
+				<div class="panel-showData">
+					<div class="dataList dataList2 dataList_1 dataListAct">
+						<div class="dataGraph">
+							<div class="graph" data="dataList_1_1_graph"></div>
+							<!--------图表div，data为graphfun的key----------->
+						</div>
+						<div class="dataTable">
+							<table class="table table-bordered text-center">
+								<tr class="tableTr">
+									<th width='50%' ng-click="changeOrderBy(panel_1.dataList_1,'description')">{{'时段' | translate}}</th>
+									<th width='50%' ng-click="changeOrderBy(panel_1.dataList_1,'avg_time_count')">{{'平均启动次数' | translate}}</th>
+									<!--------表格th(数据对象，排序字段)----------->
+								</tr>
+								<tr ng-repeat="data in panel_1.dataList_1.data | orderBy: panel_1.dataList_1.orderBy.t+panel_1.dataList_1.orderBy.s | pageStartFrom : panel_1.dataList_1.limit.now*panel_1.dataList_1.limit.max | limitTo: panel_1.dataList_1.limit.max">
+									<td>{{data.description}}</td>
+									<td>{{data.avg_time_count}}</td>
+								</tr>
+							</table>
+							<div class="tableLimit" tablelimit datalimit="panel_1.dataList_1.limit"  tabledata="panel_1.dataList_1.data">
+							</div>
+							<!--------表格分页，datalimit为分页参数，tabledata为数据----------->
+						</div>
+					</div>
+				</div>
+				<div class="panel-changeData" graphtbale  graphfun="graphfun" datachange="panel_1_change"  datalimit="0" model="panel_1.model">
+				</div>
+				<!-------------图表表格切换，graphfun ----datachange(需要分页时删除不填)------------->
+			</div>
+	</div>
+	<div class="panel panel-default panel_2">
+			<div class="panel-heading">
+				<strong>
+					{{'相邻启动间隔分布' | translate}}
+					<div tipsmsg>{{'统计所选时期内，有登陆行为的玩家2次间隔时间分布中的玩家数量情况' | translate}}。</div>
+					<!--------提示框----------->
+				</strong>
+				<div class="panel_downloadBtn"  down-file down-file-url="concurrent/exportDurationDistributeList.action"
+					down-file-type="xlsx" down-file-name="相邻启动间隔分布{{mstatdate}}" savedata="" postdata="searchData" ></div>
+				<!--------下载按钮----------->
+				<div class="clear"></div>
+			</div>
+			<div class="panel-body" ng-class="{'table':panel_2.model=='table','graph':panel_2.model=='graph'}">
+				<div class="clear"></div>
+				<div class="panel-showData">
+					<div class="dataList dataList2 dataList_1 dataListAct">
+						<div class="dataGraph">
+							<div class="graph" data="dataList_2_1_graph"></div>
+							<!--------图表div，data为graphfun的key----------->
+						</div>
+						<div class="dataTable">
+							<table class="table table-bordered text-center">
+								<tr class="tableTr">
+									<th width='50%' ng-click="changeOrderBy(panel_2.dataList_1,'description')">{{'启动间隔' | translate}}</th>
+									<th width='50%' ng-click="changeOrderBy(panel_2.dataList_1,'start_count')">{{'人数' | translate}}</th>
+									<!--------表格th(数据对象，排序字段)----------->
+								</tr>
+								<tr ng-repeat="data in panel_2.dataList_1.data | orderBy: panel_2.dataList_1.orderBy.t+panel_2.dataList_1.orderBy.s | pageStartFrom : panel_2.dataList_1.limit.now*panel_2.dataList_1.limit.max | limitTo: panel_2.dataList_1.limit.max">
+									<td>{{data.description}}</td>
+									<td>{{data.start_count}}</td>
+								</tr>
+							</table>
+							<div class="tableLimit" tablelimit datalimit="panel_2.dataList_1.limit"  tabledata="panel_2.dataList_1.data">
+							</div>
+							<!--------表格分页，datalimit为分页参数，tabledata为数据----------->
+						</div>
+					</div>
+				</div>
+				<div class="panel-changeData" graphtbale  graphfun="graphfun" datachange="panel_2_change"  datalimit="0" model="panel_2.model">
+				</div>
+				<!-------------图表表格切换，graphfun ----datachange(需要分页时删除不填)------------->
+			</div>
+	</div>
+	
+	<div class="panel panel-default panel_3">
+			<div class="panel-heading">
+				<strong>
+					{{'历史在线' | translate}}
+				</strong>
+				<div class="panel_downloadBtn"  down-file down-file-url="concurrent/exportDurationAcuList.action"
+					down-file-type="xlsx" down-file-name="历史在线{{mstatdate}}" savedata="" postdata="searchData" ></div>
+				<!--------下载按钮----------->
+				<div class="clear"></div>
+			</div>
+			<div class="panel-body" ng-class="{'table':panel_3.model=='table','graph':panel_3.model=='graph'}">
+				<div class="clear"></div>
+				<div class="panel-showData">
+					<div class="dataList dataList5 dataList_1 dataListAct">
+						<div class="dataGraph">
+							<div class="graph" data="dataList_3_1_graph"></div>
+							<!--------图表div，data为graphfun的key----------->
+						</div>
+						<div class="dataTable table_scroll">
+							<table class="table table-bordered text-center table_style">
+								<tr class="tableTr">
+									<th width='' ng-click="changeOrderBy(panel_3.dataList_1,'statdate')">{{'日期' | translate}}</th>
+									<th width='' ng-click="changeOrderBy(panel_3.dataList_1,'hour0_acu')">0:00</th>
+									<th width='' ng-click="changeOrderBy(panel_3.dataList_1,'hour1_acu')">1:00</th>
+									<th width='' ng-click="changeOrderBy(panel_3.dataList_1,'hour2_acu')">2:00</th>
+									<th width='' ng-click="changeOrderBy(panel_3.dataList_1,'hour3_acu')">3:00</th>
+									<th width='' ng-click="changeOrderBy(panel_3.dataList_1,'hour4_acu')">4:00</th>
+									<th width='' ng-click="changeOrderBy(panel_3.dataList_1,'hour5_acu')">5:00</th>
+									<th width='' ng-click="changeOrderBy(panel_3.dataList_1,'hour6_acu')">6:00</th>
+									<th width='' ng-click="changeOrderBy(panel_3.dataList_1,'hour7_acu')">7:00</th>
+									<th width='' ng-click="changeOrderBy(panel_3.dataList_1,'hour8_acu')">8:00</th>
+									<th width='' ng-click="changeOrderBy(panel_3.dataList_1,'hour9_acu')">9:00</th>
+									<th width='' ng-click="changeOrderBy(panel_3.dataList_1,'hour10_acu')">10:00</th>
+									<th width='' ng-click="changeOrderBy(panel_3.dataList_1,'hour11_acu')">11:00</th>
+									<th width='' ng-click="changeOrderBy(panel_3.dataList_1,'hour12_acu')">12:00</th>
+									<th width='' ng-click="changeOrderBy(panel_3.dataList_1,'hour13_acu')">13:00</th>
+									<th width='' ng-click="changeOrderBy(panel_3.dataList_1,'hour14_acu')">14:00</th>
+									<th width='' ng-click="changeOrderBy(panel_3.dataList_1,'hour15_acu')">15:00</th>
+									<th width='' ng-click="changeOrderBy(panel_3.dataList_1,'hour16_acu')">16:00</th>
+									<th width='' ng-click="changeOrderBy(panel_3.dataList_1,'hour17_acu')">17:00</th>
+									<th width='' ng-click="changeOrderBy(panel_3.dataList_1,'hour18_acu')">18:00</th>
+									<th width='' ng-click="changeOrderBy(panel_3.dataList_1,'hour19_acu')">19:00</th>
+									<th width='' ng-click="changeOrderBy(panel_3.dataList_1,'hour20_acu')">20:00</th>
+									<th width='' ng-click="changeOrderBy(panel_3.dataList_1,'hour21_acu')">21:00</th>
+									<th width='' ng-click="changeOrderBy(panel_3.dataList_1,'hour22_acu')">22:00</th>
+									<th width='' ng-click="changeOrderBy(panel_3.dataList_1,'hour23_acu')">23:00</th>
+									<!--------表格th(数据对象，排序字段)----------->
+								</tr>
+								<tr ng-repeat="data in panel_3.dataList_1.data | orderBy: panel_3.dataList_1.orderBy.t+panel_3.dataList_1.orderBy.s | pageStartFrom : panel_3.dataList_1.limit.now*panel_3.dataList_1.limit.max | limitTo: panel_3.dataList_1.limit.max">
+									<td>{{data.statdate}}</td>
+									<td>{{data.hour0_acu}}</td>
+									<td>{{data.hour1_acu}}</td>
+									<td>{{data.hour2_acu}}</td>
+									<td>{{data.hour3_acu}}</td>
+									<td>{{data.hour4_acu}}</td>
+									<td>{{data.hour5_acu}}</td>
+									<td>{{data.hour6_acu}}</td>
+									<td>{{data.hour7_acu}}</td>
+									<td>{{data.hour8_acu}}</td>
+									<td>{{data.hour9_acu}}</td>
+									<td>{{data.hour10_acu}}</td>
+									<td>{{data.hour11_acu}}</td>
+									<td>{{data.hour12_acu}}</td>
+									<td>{{data.hour13_acu}}</td>
+									<td>{{data.hour14_acu}}</td>
+									<td>{{data.hour15_acu}}</td>
+									<td>{{data.hour16_acu}}</td>
+									<td>{{data.hour17_acu}}</td>
+									<td>{{data.hour18_acu}}</td>
+									<td>{{data.hour19_acu}}</td>
+									<td>{{data.hour20_acu}}</td>
+									<td>{{data.hour21_acu}}</td>
+									<td>{{data.hour22_acu}}</td>
+									<td>{{data.hour23_acu}}</td>
+								</tr>
+							</table>
+							<div class="tableLimit" tablelimit datalimit="panel_3.dataList_1.limit"  tabledata="panel_3.dataList_1.data">
+							</div>
+							<!--------表格分页，datalimit为分页参数，tabledata为数据----------->
+						</div>
+					</div>
+				</div>
+				<div class="panel-changeData" graphtbale  graphfun="graphfun" datachange="panel_3_change"  datalimit="0" model="panel_3.model">
+				</div>
+				<!-------------图表表格切换，graphfun ----datachange(需要分页时删除不填)------------->
+			</div>
+	</div>
+</div>

@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.game.mapper.ChannelMapper">
+	<resultMap id="BaseResultMap" type="com.good.plat.datacenter.game.entity.Channel">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="channelSimName" property="channelSimName" jdbcType="VARCHAR" />
+		<result column="channelName" property="channelName" jdbcType="VARCHAR" />
+		<result column="createdate" property="createdate" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<resultMap type="com.good.plat.datacenter.game.entity.Channel" id="ChannelSubChannelList">
+		<id column="channel_id" property="id" jdbcType="INTEGER" />
+		<result column="channel_channelSimName" property="channelSimName" jdbcType="VARCHAR" />
+		<result column="channel_channelName" property="channelName" jdbcType="VARCHAR" />
+		<result column="channel_createdate" property="createdate" jdbcType="TIMESTAMP" />
+		<collection property="subChannelList"
+			ofType="com.good.plat.datacenter.game.entity.SubChannel">
+			<id column="sub_id" property="id" />
+			<result column="sub_gameid" property="gameid" />
+			<result column="sub_channelId" property="channelId" />
+			<result column="sub_subchannelId" property="subchannelId" />
+			<result column="sub_subId" property="subId" />
+		</collection>
+	</resultMap>
+	<select resultType="java.lang.String" id="selectSubIdListByChannels"
+		parameterType="java.util.List">
+		select
+			distinct(sub.subId)
+		from
+			tb_logplat_channel channel,
+			tb_logplat_subchannel sub
+		where
+			channel.id=sub.channelId
+			and channel.id in
+		<foreach item="item" collection="channelList" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+	<sql id="Base_Column_List">
+		id, channelSimName, channelName, createdate
+	</sql>
+	
+	<select id="selectChannelByUserid" resultMap="ChannelSubChannelList">
+		<include refid="select_channel_subchannel" />
+		and channel.id in(select distinct relationid 
+		from tb_logplat_user_resource 
+		where userid=#{userid,jdbcType=INTEGER} 
+		and restype='channel') 
+		order by channel.id, sub.subchannelId
+	</select>
+	
+	<select id="getSelectChannels" resultMap="ChannelSubChannelList" 
+		parameterType="com.good.plat.datacenter.game.entity.Channel">
+		<include refid="select_channel_subchannel" />
+		and sub.gameid=#{gameid} and channel.id in(select channelid from tb_logplat_game_channel where gameid=#{gameid}
+		<if test="userName != 'GMAdmin'">
+			and channelid in (select distinct relationid 
+				from tb_logplat_user_resource 
+				where userid=#{userid,jdbcType=INTEGER} 
+				and restype='channel')
+		</if>
+		) 
+		order by channel.id, sub.subchannelId
+	</select>
+	<!--
+	游戏下的渠道(带权限)
+	-->
+	<select id="selectGameChannelList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.game.entity.Channel">
+		SELECT
+			channel.id AS id,
+			channel.channelSimName AS channelSimName,
+			channel.channelName AS channelName,
+			channel.createdate AS createdate
+		FROM
+			tb_logplat_channel channel
+		WHERE
+			1 = 1
+		AND channel.id IN (
+			SELECT
+				channelid
+			FROM
+				tb_logplat_game_channel
+			WHERE
+				gameid =#{gameid}
+			<if test="userName != 'GMAdmin'">
+				AND channelid IN (
+				SELECT DISTINCT
+					relationid
+				FROM
+					tb_logplat_user_resource
+				WHERE
+					userid =#{userid}
+				AND restype = 'channel'
+			)
+			</if>
+		)
+		ORDER BY
+			channel.id;
+	</select>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from tb_logplat_channel
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+
+	<select id="selectByChannelId" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from tb_logplat_channel
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+
+	<select id="selectChannelList" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from tb_logplat_channel
+		order by id;
+	</select>
+
+	<sql id="select_channel_subchannel">
+		select
+			channel.id as channel_id,
+			channel.channelSimName as channel_channelSimName,
+			channel.channelName as channel_channelName,
+			channel.createdate as channel_createdate,
+			sub.id as sub_id,
+			sub.channelId as sub_channelId,
+			sub.gameid as sub_gameid,
+			sub.subchannelId as sub_subchannelId,
+			sub.subId as sub_subId
+		from
+		tb_logplat_channel channel
+		left join tb_logplat_subchannel sub
+		on channel.id=sub.channelId
+		where 1=1
+	</sql>
+
+	
+	
+	<select id="selectChannelSubChannelByChannelId" resultMap="ChannelSubChannelList"
+		parameterType="java.lang.Integer">
+		<include refid="select_channel_subchannel" />
+		<if test="channelId != -1 and channelId != null">
+			and channel.id=#{channelId,jdbcType=INTEGER}
+		</if>
+		order by channel.id,sub.subchannelId
+	</select>
+
+	<select id="selectChannelSubChannelByChannel" resultMap="ChannelSubChannelList"
+		parameterType="com.good.plat.datacenter.game.entity.Channel">
+		<include refid="select_channel_subchannel" />
+		<if test="id != -1 and id != null">
+			and channel.id=#{id,jdbcType=INTEGER}
+		</if>
+		<if test="gameid != -1 and gameid != null">
+			and sub.gameid=#{gameid,jdbcType=INTEGER}
+		</if>
+		order by channel.id,sub.subchannelId
+	</select>
+	
+	<resultMap type="com.good.plat.datacenter.game.entity.GameChannelDetail" id="GameChannelSubDetailMap">
+		<id column="id" property="id" jdbcType="INTEGER" />
+    <result column="gameid" property="gameid" jdbcType="INTEGER" />
+    <result column="channelid" property="channelid" jdbcType="INTEGER" />
+    <result column="servertype" property="servertype" jdbcType="VARCHAR" />
+    <result column="joinserver" property="joinserver" jdbcType="VARCHAR" />
+    <result column="sdkname" property="sdkname" jdbcType="VARCHAR" />
+    <result column="sdkversion" property="sdkversion" jdbcType="VARCHAR" />
+    <result column="sdkdownloadaddr" property="sdkdownloadaddr" jdbcType="VARCHAR" />
+    <result column="clientplattype" property="clientplattype" jdbcType="VARCHAR" />
+    <result column="icon" property="icon" jdbcType="VARCHAR" />
+    <result column="launchvideo" property="launchvideo" jdbcType="VARCHAR" />
+    <result column="packagename" property="packagename" jdbcType="VARCHAR" />
+    <result column="clientpacktype" property="clientpacktype" jdbcType="VARCHAR" />
+    <result column="updateaddr" property="updateaddr" jdbcType="VARCHAR" />
+    <result column="access_options" property="access_options" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="gameName" property="gameName" jdbcType="VARCHAR" />
+    <result column="channelName" property="channelName" jdbcType="VARCHAR" />
+    <result column="channelSimName" property="channelSimName" jdbcType="VARCHAR" />
+    <collection property="subChannelList"
+			ofType="com.good.plat.datacenter.game.entity.SubChannel">
+			<id column="sub_id" property="id" />
+			<result column="sub_gameid" property="gameid" />
+			<result column="sub_channelId" property="channelId" />
+			<result column="sub_subchannelId" property="subchannelId" />
+			<result column="sub_subId" property="subId" />
+		</collection>
+	</resultMap>
+	<select id="selectGameChannelSubchannelRelationshipDetail" resultMap="GameChannelSubDetailMap" parameterType="com.good.plat.datacenter.game.entity.TBLogplatGameChannel">
+		select g.name as gameName,c.channelName,c.channelSimName,gc.*,sub.id as sub_id,
+			sub.channelId as sub_channelId,
+			sub.gameid as sub_gameid,
+			sub.subchannelId as sub_subchannelId,
+			sub.subId as sub_subId
+		from tb_logplat_subchannel sub
+		left join tb_logplat_game_channel gc on(sub.gameid=gc.gameid and sub.channelId=gc.channelid)
+		join tb_logplat_game g on(g.id=sub.gameid)
+		join tb_logplat_channel c on(sub.channelId=c.id)
+		<if test="gameid != null">
+			and sub.gameid=#{gameid,jdbcType=INTEGER} 
+		</if>
+		<if test="channelid != null">
+			and sub.channelId=#{channelid,jdbcType=INTEGER}
+		</if>
+		order by sub.gameid,sub.channelId,sub.id
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from tb_logplat_channel
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+
+	<insert id="insert" parameterType="com.good.plat.datacenter.game.entity.Channel">
+		insert into tb_logplat_channel (id, channelSimName,
+		channelName, createdate)
+		values (#{id,jdbcType=INTEGER}, 
+		#{channelSimName,jdbcType=VARCHAR},
+		#{channelName,jdbcType=VARCHAR}, 
+		#{createdate,jdbcType=TIMESTAMP})
+	</insert>
+	
+	<insert id="insertSelective" parameterType="com.good.plat.datacenter.game.entity.Channel">
+		insert into tb_logplat_channel
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="channelSimName != null">
+				channelSimName,
+			</if>
+			<if test="channelName != null">
+				channelName,
+			</if>
+			<if test="createdate != null">
+				createdate,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="channelSimName != null">
+				#{channelSimName,jdbcType=VARCHAR},
+			</if>
+			<if test="channelName != null">
+				#{channelName,jdbcType=VARCHAR},
+			</if>
+			<if test="createdate != null">
+				#{createdate,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+	
+	
+	<update id="updateByPrimaryKeySelective" parameterType="com.good.plat.datacenter.game.entity.Channel">
+		update tb_logplat_channel
+		<set>
+			<if test="channelSimName != null">
+				channelSimName = #{channelSimName,jdbcType=VARCHAR},
+			</if>
+			<if test="channelName != null">
+				channelName = #{channelName,jdbcType=VARCHAR},
+			</if>
+			<if test="createdate != null">
+				createdate = #{createdate,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	
+	<update id="updateByPrimaryKey" parameterType="com.good.plat.datacenter.game.entity.Channel">
+		update tb_logplat_channel
+		set channelSimName = #{channelSimName,jdbcType=VARCHAR},
+		channelName = #{channelName,jdbcType=VARCHAR},
+		createdate = #{createdate,jdbcType=TIMESTAMP}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	
+	<!-- 删除tb_logplat_game_channel表数据 -->
+	<delete id="deleteGameChannel" parameterType="com.good.plat.datacenter.game.entity.GameChannel">
+		delete from tb_logplat_game_channel where 1=1 and gameid=#{gameid,jdbcType=INTEGER} 
+		<if test="channelList != null">
+			and channelid in
+			<foreach collection="channelList" item="channel" open="(" close=")" separator=",">
+				#{channel.id}
+			</foreach>
+		</if>
+	</delete>
+	
+	<!-- 删除子渠道表数据 -->
+	<delete id="deleteSubChannel" parameterType="com.good.plat.datacenter.game.entity.GameChannel">
+		delete from tb_logplat_subchannel where 1=1 and gameid=#{gameid,jdbcType=INTEGER} 
+		<if test="channelList != null">
+			and channelId in
+			<foreach collection="channelList" item="channel" open="(" close=")" separator=",">
+				#{channel.id}
+			</foreach>
+		</if>
+	</delete>
+	
+	<insert id="insertGameChannel" parameterType="com.good.plat.datacenter.game.entity.GameChannel">
+		insert into tb_logplat_game_channel(gameid, channelid) values
+		<if test="channelList != null">
+			<foreach collection="channelList" item="channel" separator=",">
+				(#{gameid,jdbcType=INTEGER}, #{channel.id})
+			</foreach>
+		</if>
+	</insert>
+	
+	<insert id="insertSubChannel" parameterType="java.util.List">
+		insert into tb_logplat_subchannel(gameid, channelId, subchannelId, subId) values
+		<if test="subList != null">
+			<foreach collection="subList" item="sub" separator=",">
+				(#{sub.gameid}, #{sub.channelId}, #{sub.subchannelId}, #{sub.subId})
+			</foreach>
+		</if>
+	</insert>
+	
+	<resultMap type="com.good.plat.datacenter.game.entity.GameChannel" id="GameChannelMap">
+		<id column="gameid" property="gameid" jdbcType="INTEGER" />
+		<collection property="channelList" javaType="ArrayList" ofType="com.good.plat.datacenter.game.entity.Channel">
+    		<id column="channelid" property="id" jdbcType="INTEGER"/>
+    	</collection>
+	</resultMap>
+	
+	<select id="selectGameChannelPair" parameterType="com.good.plat.datacenter.game.entity.GameChannel" resultMap="GameChannelMap">
+		select *
+		from tb_logplat_game_channel where gameid=#{gameid,jdbcType=INTEGER}
+		<if test="channelList != null">
+			and channelid in
+			<foreach collection="channelList" item="channel" open="(" close=")" separator=",">
+				#{channel.id}
+			</foreach>
+		</if>
+	</select>
+</mapper>

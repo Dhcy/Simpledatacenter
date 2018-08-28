@@ -1,0 +1,54 @@
+{
+  "activeUserLevel": [
+    {
+      "level": 1,
+      "count": 75696,
+      "rate": "34.5%"
+    },
+    {
+      "level": 2,
+      "count": 30130,
+      "rate": "13.7%"
+    },
+    {
+      "level": 3,
+      "count": 43979,
+      "rate": "20.0%"
+    },
+    {
+      "level": 4,
+      "count": 29831,
+      "rate": "13.6%"
+    },
+    {
+      "level": 5,
+      "count": 16482,
+      "rate": "7.5%"
+    },
+    {
+      "level": 6,
+      "count": 6705,
+      "rate": "3.1%"
+    },
+    {
+      "level": 7,
+      "count": 3561,
+      "rate": "1.6%"
+    },
+    {
+      "level": 8,
+      "count": 2516,
+      "rate": "1.1%"
+    },
+    {
+      "level": 9,
+      "count": 4326,
+      "rate": "2.0%"
+    },
+    {
+      "level": 10,
+      "count": 6240,
+      "rate": "2.8%"
+    }
+  ]
+}

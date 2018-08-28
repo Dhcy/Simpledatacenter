@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.independ.mapper.sj3index.RechargeQueryMapper">
+	<resultMap id="BaseResultMap" type="com.good.plat.datacenter.independ.entity.sj3index.RechargeQuery">
+		<result column="gameid" property="gameid"/>
+		<result column="gameName" property="gameName"/>
+		<result column="channelid" property="channelid"/>
+		<result column="channelName" property="channelName"/>
+		<result column="subchannelid" property="subchannelid"/>
+		<result column="areaid" property="areaid"/>
+		<result column="areaName" property="areaName"/>
+		<result column="statdate" property="statdate"/>
+		<result column="statType" property="statType"/>
+		<result column="rate" property="rate"/>
+		
+		<result column="termType" property="termType"/>
+		<result column="deviceId" property="deviceId"/>
+		<result column="money" property="money"/>
+		<result column="count" property="count"/>
+		<result column="actorLevel" property="actorLevel"/>
+		<result column="rechargeDate" property="rechargeDate"/>
+		<result column="orderId" property="orderId"/>
+		<result column="actorId" property="actorId"/>
+		<result column="actorName" property="actorName"/>
+		
+		
+		
+		
+	</resultMap>
+	
+	<sql id="ABaseSelect">
+		where a.statdate between #{startdate} and #{enddate} 
+		<if test="termtypes != null">
+			and a.termtype in
+			<foreach collection="termtypes" item="term" index="index" open="(" close=")" separator=",">
+				#{term}
+			</foreach>
+		</if>
+		and a.gameid=#{gameid}
+		<if test="areas != null">
+			and a.areaid in
+			<foreach collection="areas" item="area" index="index" open="(" close=")" separator=",">
+				#{area}
+			</foreach>
+		</if>
+		<if test="channelList != null">
+			and a.channel in
+			<foreach collection="channelList" item="channel" index="index" open="(" close=")" separator=",">
+				#{channel.id}
+			</foreach>
+		</if>
+		<if test="subchannels != null">
+			and a.chnnnl in
+			<foreach collection="subchannels" item="subchannel" index="index" open="(" close=")" separator=",">
+				#{subchannel}
+			</foreach>
+		</if>
+		<if test="versionList != null">
+			and a.edition in
+			<foreach collection="versionList" item="version" index="index" open="(" close=")" separator=",">
+				#{version.version_name}
+			 </foreach>
+		</if>
+		<if test="languageList != null">
+			and a.language in
+			<foreach collection="languageList" item="language" index="index" open="(" close=")" separator=",">
+				#{language.language_name}
+			 </foreach>
+		</if>
+	</sql>
+	
+	<!--
+	充值查询（日期,平台,渠道,设备id,充值金额,砖石数,充值等级,充值日期,订单号）
+	-->
+	<select id="selectRechargeList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		SELECT
+			a.statdate,
+			a.termtype as termType,
+			a.channel as channelid,
+			b.channelSimName as channelName,
+			a.actorid as actorId,
+			a.actorname as actorName,
+			IFNULL(a.money,0) as money,
+			IFNULL(a.count,0) as count,
+			a.actorlevel as actorLevel ,
+			a.logdate as rechargeDate ,
+			a.orderid as orderId
+		FROM
+			logplat_actor_recharge a
+			LEFT JOIN tb_logplat_channel b on b.id=a.channel
+		<include refid="ABaseSelect"/>
+		<if test="checktype1!=null and checktype1!=''">
+		AND a.actorname =#{checktype1}
+		</if>
+	</select>
+	
+</mapper>

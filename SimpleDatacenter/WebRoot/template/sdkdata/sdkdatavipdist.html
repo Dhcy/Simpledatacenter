@@ -1,0 +1,245 @@
+<style type="text/css">
+    .table th,.table td{ border:1px solid #ddd;}
+    .form-group{ margin-left: 10px; margin-top: 10px;}
+    .form-control{ display: inline-block; vertical-align: middle;}
+    .tableListTh{
+    	width: 6.5%;
+    	white-space: nowrap;
+    }
+    .channelTd{
+    	width: 6.5%;
+    	white-space: nowrap;
+    }
+</style>
+<div>
+    <div>
+        <div class="form-group">
+            <div class="div_select">
+                
+            </div>
+            <div datepicker format="yyyy-MM-dd"  class="col-xs-3 timeSelect" mstatdate="mstatdate" style="width:350px;"></div>
+            <!--
+            <div datepicker format="yyyy-MM-dd" minMode="month" class="col-xs-3 timeSelect" mstatdate="mstatdate" style="width:350px;"></div>
+            -->
+            <!-- <label for="">游戏：</label>
+            <select ng-model="postData.gameid" class="form-control" ng-options="data.id as data.name for data in panel_1.gameList"  ng-change="getChannelList()">
+			</select>
+			<label for="">系统：</label>
+            <select ng-model="postData.systemid" class="form-control" ng-options="data.id as data.name for data in panel_1.systemList">
+            </select>&nbsp;&nbsp;
+             -->
+            <a class="btn btn-default" ng-click="getData()" >{{'查询' | translate}}</a>
+        </div>
+    </div>
+    <div class="panel panel-default panel_1">
+		<div class="panel-heading">
+			<strong class="fl">
+				{{'渠道数据' | translate}}
+				<div tipsmsg></div>
+				<!--------提示框----------->
+			</strong>
+		<!--------tab选择按钮----------->
+			<div class="panel_downloadBtn"  down-file down-file-url="sdkdata/exportSDKVIPDistribute.action" 
+					down-file-type="xlsx" down-file-name="VIP分布{{mstatdate}}" savedata="" postdata="postData" ></div>
+			<!--------下载按钮----------->
+			<div class="clear"></div>
+		</div>
+		<div class="panel-body pdlf pdtb">
+			<div class="tableList tableListAct" >
+				<ul class="tableListUl">
+					<li class="tableListLi tableListLiTh clear">
+						<span class="tableListTh">
+							<strong title="">{{'日期' | translate}}</strong>
+							<div tipsmsg></div>
+						</span>
+						<span class="tableListTh">
+							<strong title="">VIP0</strong>
+							<div tipsmsg></div>
+						</span>
+						<span class="tableListTh">
+							<strong title="">VIP1</strong>
+							<div tipsmsg></div>
+						</span>
+						<span class="tableListTh">
+							<strong title="">VIP2</strong>
+							<div tipsmsg></div>
+						</span>
+						<span class="tableListTh">
+							<strong title="">VIP3</strong>
+							<div tipsmsg></div>
+						</span>
+						<span class="tableListTh">
+							<strong title="">VIP4</strong>
+							<div tipsmsg></div>
+						</span>
+						<span class="tableListTh">
+							<strong title="">VIP5</strong>
+							<div tipsmsg></div>
+						</span>
+						<span class="tableListTh">
+							<strong title="">VIP6</strong>
+							<div tipsmsg></div>
+						</span>
+						<span class="tableListTh">
+							<strong title="">VIP7</strong>
+							<div tipsmsg></div>
+						</span>
+						<span class="tableListTh">
+							<strong title="">VIP8</strong>
+							<div tipsmsg></div>
+						</span>
+						<span class="tableListTh">
+							<strong title="">VIP9</strong>
+							<div tipsmsg></div>
+						</span>
+						<span class="tableListTh">
+							<strong title="">VIP10</strong>
+							<div tipsmsg></div>
+						</span>
+						<span class="tableListTh">
+							<strong title="">VIP11</strong>
+							<div tipsmsg></div>
+						</span>
+						<span class="tableListTh">
+							<strong title="">VIP12</strong>
+							<div tipsmsg></div>
+						</span>
+						<span class="tableListTh">
+							<strong ng-click="expandDetail()">{{'详情' | translate}}</strong>
+							<div tipsmsg></div>
+						</span>
+					</li>
+					
+					<li class="tableListLi clear" ng-repeat="data in panel_1.dataList_1.data | pageStartFrom : panel_1.dataList_1.limit.now*panel_1.dataList_1.limit.max | limitTo: panel_1.dataList_1.limit.max" ng-class="({'show_panel':data.show_panel})">
+						<div class="channelTr clear">
+							<span class="channelTd">
+								{{data.statdate}}
+							</span>
+							<span class="channelTd">
+								{{data.lvl0}}
+							</span>
+							<span class="channelTd">
+								{{data.lvl1}}
+							</span>
+							<span class="channelTd">
+								{{data.lvl2}}
+							</span>
+							<span class="channelTd">
+								{{data.lvl3}}
+							</span>
+							<span class="channelTd">
+								{{data.lvl4}}
+							</span>
+							<span class="channelTd">
+								{{data.lvl5}}
+							</span>
+							<span class="channelTd">
+								{{data.lvl6}}
+							</span>
+							<span class="channelTd">
+								{{data.lvl7}}
+							</span>
+							<span class="channelTd">
+								{{data.lvl8}}
+							</span>
+							<span class="channelTd">
+								{{data.lvl9}}
+							</span>
+							<span class="channelTd">
+								{{data.lvl10}}
+							</span>
+							<span class="channelTd">
+								{{data.lvl11}}
+							</span>
+							<span class="channelTd">
+								{{data.lvl12}}
+							</span>
+							<span class="channelTd show_panel_btn">
+								<p ng-click="showPanel(data)" ng-show="!data.show_panel">{{'详情' | translate}}</p>
+								<p ng-click="data.show_panel=false;" ng-show="data.show_panel">{{'收起' | translate}}</p>
+							</span>
+						</div>
+					<div class="showData">
+					<div class="panel-body table" >
+					<div class="panel-showData">
+						<div class="dataList dataList2 dataList_1 dataListAct">
+							<div class="dataGraph">
+							</div>
+							<div class="dataTable">
+								<table class="table table-bordered text-center">
+									<tr class="tableTr">
+										<th width='8%' ng-click="changeOrderBy(data,'statdate')">{{'日期' | translate}}</th>
+										<th width='6%' ng-click="changeOrderBy(data,'os')">{{'系统' | translate}}</th>
+										<th width='6%' ng-click="changeOrderBy(data,'lvl0')">VIP0</th>
+										<th width='6%' ng-click="changeOrderBy(data,'lvl1')">VIP1</th>
+										<th width='6%' ng-click="changeOrderBy(data,'lvl2')">VIP2</th>
+										<th width='6%' ng-click="changeOrderBy(data,'lvl3')">VIP3</th>
+										<th width='6%' ng-click="changeOrderBy(data,'lvl4')">VIP4</th>
+										<th width='6%' ng-click="changeOrderBy(data,'lvl5')">VIP5</th>
+										<th width='6%' ng-click="changeOrderBy(data,'lvl6')">VIP6</th>
+										<th width='6%' ng-click="changeOrderBy(data,'lvl7')">VIP7</th>
+										<th width='6%' ng-click="changeOrderBy(data,'lvl8')">VIP8</th>
+										<th width='6%' ng-click="changeOrderBy(data,'lvl9')">VIP9</th>
+										<th width='6%' ng-click="changeOrderBy(data,'lvl10')">VIP10</th>
+										<th width='6%' ng-click="changeOrderBy(data,'lvl11')">VIP11</th>
+										<th width='6%' ng-click="changeOrderBy(data,'lvl12')">VIP12</th>
+									</tr>
+									<tr ng-repeat="value in data.details | orderBy: data.orderBy.t+data.orderBy.s | pageStartFrom : data.limit.now*data.limit.max | limitTo: data.limit.max">
+										<td>{{value.statdate}}</td>
+										<td ng-if="value.os==0">0</td>
+										<td ng-if="value.os==1">IOS</td>
+										<td ng-if="value.os==2">Android</td>
+										<td ng-if="value.os==3">Winphone</td>
+										<td ng-if="value.os==4">BlackBerry</td>
+										<td ng-if="value.os==5">Kjava</td>
+										<td ng-if="value.os==6">Windows(PC)</td>
+										<td ng-if="value.os==7">iOS{{'越狱' | translate}}</td>
+										<td ng-if="value.os==8">Web</td>
+										<td>{{value.lvl0}}</td>
+										<td>{{value.lvl1}}</td>
+										<td>{{value.lvl2}}</td>
+										<td>{{value.lvl3}}</td>
+										<td>{{value.lvl4}}</td>
+										<td>{{value.lvl5}}</td>
+										<td>{{value.lvl6}}</td>
+										<td>{{value.lvl7}}</td>
+										<td>{{value.lvl8}}</td>
+										<td>{{value.lvl9}}</td>
+										<td>{{value.lvl10}}</td>
+										<td>{{value.lvl11}}</td>
+										<td>{{value.lvl12}}</td>
+									</tr>
+								</table>
+								<div class="tableLimit" tablelimit datalimit="data.limit"  index="0" tabledata="data.trend.devices">
+								</div>
+							</div>
+						</div>
+                        <!-- <div class="panel-changeData" graphtbale graphfun="graphfun" datachange="panel_change" datalimit="panel_1.dataList_1.limit" model="data.model">
+                        </div> -->
+					<!-------------图表表格切换，graphfun ----datachange(需要分页时删除不填)------------->
+                    </div>
+					</div>
+					</div>
+				</li>
+				</ul>
+				<div class="tableFooter">
+						<div class="buttondiv fl" analysisdrop changei="changetype()">
+							<div class="selectlable fl">{{'每页显示' | translate}}：</div>
+							<div class="analysisdrop fl" style="width:60px;">
+								<div class="hadchoose">
+									<h6>{{val | translate}}</h6></div>
+								<ul class="dropUl">
+									<li ng-click="c('10');changetype(10)">10</li>
+									<li ng-click="c('20');changetype(20)">20</li>
+									<li ng-click="c('50');changetype(50)">50</li>
+									<li ng-click="c('100');changetype(100)">100</li>
+								</ul>
+							</div>
+							<div class="selectlable fl">&nbsp;&nbsp;{{'条记录' | translate}}</div>
+						</div>
+						<div class="dataTables_paginate fr" datatableslimit  datalimit="panel_1.dataList_1.limit"  tabledata="panel_1.dataList_1.data"  datachange="panel_1_change"></div>
+					</div>
+			</div>
+		</div>
+	</div>
+</div>

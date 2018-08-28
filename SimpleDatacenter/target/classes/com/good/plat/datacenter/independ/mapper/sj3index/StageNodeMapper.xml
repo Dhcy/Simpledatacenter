@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.plat.datacenter.independ.mapper.sj3index.StageNodeMapper">
+	<resultMap id="BaseResultMap" type="com.good.plat.datacenter.independ.entity.sj3index.StageNode">
+		<result column="stageId" property="stageId"/>
+		<result column="stageName" property="stageName"/>
+		<result column="nodeName" property="nodeName"/>
+		<result column="amount" property="amount"/>
+	</resultMap>
+	
+	<sql id="BaseSelect">
+		where statdate between #{startdate} and #{enddate} 
+		and gameid=#{gameid}
+	</sql>
+	<sql id="BaseSelectwithCondition">
+		where statdate between #{startdate} and #{enddate} 
+		and gameid=#{gameid}
+		<if test="stageId!=null and stageId!=-1">and stageid=#{stageId}
+		</if>
+	</sql>
+	
+<!--时间段内游戏的关卡列表-->
+	<select id="selectTimeGameStageList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		SELECT DISTINCT
+			stageid as stageId,
+			stage as stageName
+		FROM
+			sj3_stage_node_stat
+	<include refid="BaseSelect"/>
+	</select>	
+	
+	<!--关卡节点通关情况-->
+	<select id="selectStageNodeSuccessList" resultMap="BaseResultMap" 
+		parameterType="com.good.plat.datacenter.common.base.BaseSearchData">
+		SELECT
+			stageid as stageId,
+			stage as stageName,
+			node as nodeName,
+			IFNULL(SUM(amount),0) as amount
+			FROM
+			sj3_stage_node_stat
+		<include refid="BaseSelectwithCondition"/>
+		GROUP BY
+		stageid,
+		stage,
+		node
+		ORDER BY
+		stageId,
+		nodeName
+	</select>	
+	
+</mapper>
